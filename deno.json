@@ -1,0 +1,15 @@
+{
+  "workspace": [
+    "./infrastructure/platforms/deno"
+  ],
+  "tasks": {
+    "deno:dev": "deno run --watch --allow-net infrastructure/platforms/deno/index.ts",
+    "deno:start": "deno run --allow-net infrastructure/platforms/deno/index.ts"
+  },
+  "compilerOptions": {
+    "strict": true
+  },
+  "fmt": {
+    "lineWidth": 10000
+  }
+}
