@@ -25,14 +25,16 @@ Deno.test("Shoud return an appointment entity", () => {
   }
 
   const year = 2024;
-  const cost = 100;
+  const description = "Maintenance description";
   const motorcycle = MotorcycleEntity.create(brand, model, year);
+  const cost = 100;
   
-  const result = MaintenanceEntity.create(date, motorcycle, cost);
+  const result = MaintenanceEntity.create(date, description, motorcycle, cost);
 
+  expect(result.date.value.toISOString()).toStrictEqual(new Date(2030, 1, 1).toISOString());
+  expect(result.description).toStrictEqual("Maintenance description"); 
+  expect(result.cost).toStrictEqual(100);
   expect(result.motorcycle.brand.value).toStrictEqual("Triumph");
   expect(result.motorcycle.model.value).toStrictEqual("Street Triple");
   expect(result.motorcycle.year).toStrictEqual(2024);
-  expect(result.date.value.toISOString()).toStrictEqual(new Date(2030, 1, 1).toISOString());
-  expect(result.cost).toStrictEqual(100);
 });
