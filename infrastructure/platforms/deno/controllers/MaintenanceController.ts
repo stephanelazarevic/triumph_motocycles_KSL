@@ -42,9 +42,9 @@ export class MaintenanceController {
       });
     }
 
-    const { date, motorcycleId, cost } = validation.data;
+    const { date, description, motorcycleId, cost } = validation.data;
 
-    const error = await createMaintenanceUsecase.execute(date, motorcycleId, cost);
+    const error = await createMaintenanceUsecase.execute(date, description, motorcycleId, cost);
 
     if (!error) {
       return new Response(null, {

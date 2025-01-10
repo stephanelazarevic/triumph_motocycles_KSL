@@ -19,6 +19,8 @@ if (model instanceof Error) {
 }
 
 const motorcycle = MotorcycleEntity.create(brand, model, 2024);
+const description = "Maintenance description";
+const cost = 100;
 
 const motorcycleRepository = new MotorcycleRepositoryInMemory([
   motorcycle,
@@ -28,8 +30,7 @@ Deno.test("Should return an error if the date is in the past when createing a ma
   const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
   const today = new Date();
   const date = new Date(today.getFullYear() - 1, 1, 1);
-  const cost = 100;
-  const result = await createMaintenanceUsecase.execute(date, motorcycle.identifier, cost);
+  const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, cost);
 
   expect(result).not.toBeUndefined();
 });
@@ -38,8 +39,7 @@ Deno.test("Should return an error if the motorcycle does not exist", async () =>
   const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
   const today = new Date();
   const date = new Date(today.getFullYear() + 1, 1, 1);
-  const cost = 100;
-  const result = await createMaintenanceUsecase.execute(date, "", cost);
+  const result = await createMaintenanceUsecase.execute(date, description, "", cost);
 
   expect(result).not.toBeUndefined();
 });
@@ -48,18 +48,26 @@ Deno.test("Should return an error if the cost is null", async () => {
     const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
     const today = new Date();
     const date = new Date(today.getFullYear() + 1, 1, 1);
-    const cost = 100;
-    const result = await createMaintenanceUsecase.execute(date, motorcycle.identifier, 0);
+    const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, 0);
   
     expect(result).not.toBeUndefined();
   });
+
+  Deno.test("Should return an error if the description is null", async () => {
+    const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
+    const today = new Date();
+    const date = new Date(today.getFullYear() + 1, 1, 1);
+    const cost = 100;
+    const result = await createMaintenanceUsecase.execute(date, "", motorcycle.identifier, cost);
+  
+    expect(result).not.toBeUndefined();
+  });  
 
 Deno.test("Should succeed when creating an appointment correctly", async () => {
   const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
   const today = new Date();
   const date = new Date(today.getFullYear() + 1, 1, 1);
-  const cost = 100;
-  const result = await createMaintenanceUsecase.execute(date, motorcycle.identifier, cost);
+  const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, cost);
   const maintenances = await maintenanceRepository.all();
 
   expect(result).toBeUndefined();
