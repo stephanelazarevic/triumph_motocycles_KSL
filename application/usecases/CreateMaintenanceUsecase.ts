@@ -10,7 +10,7 @@ export class CreateMaintenanceUsecase {
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async execute(date: Date, motorcycleId: string, cost: number) {
+  public async execute(date: Date, description: string, motorcycleId: string, cost: number) {
     const motorcycle = await this.motorcycleRepository.findOneById(
       motorcycleId,
     );
@@ -27,6 +27,7 @@ export class CreateMaintenanceUsecase {
 
     const maintenance = MaintenanceEntity.create(
       maintenanceDateOrError,
+      description,
       motorcycle,
       cost,
     );

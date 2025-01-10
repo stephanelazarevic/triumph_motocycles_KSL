@@ -10,9 +10,8 @@ export class MaintenanceEntity {
     public readonly cost: number,
   ) {}
 
-  public static create(date: AppointmentDate, motorcycle: MotorcycleEntity, cost: number) {
+  public static create(date: AppointmentDate, description: string, motorcycle: MotorcycleEntity, cost: number) {
       const identifier = crypto.randomUUID();
-      const description = "Maintenance description"
   
       return new MaintenanceEntity(
         identifier,
