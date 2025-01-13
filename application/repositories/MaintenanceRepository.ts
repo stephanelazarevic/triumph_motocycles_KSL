@@ -2,5 +2,7 @@ import type { MaintenanceEntity } from "../../domain/entities/MaintenanceEntity.
 
 export interface MaintenanceRepository {
   save(maintenance: MaintenanceEntity): Promise<void>;
-  all(): Promise<MaintenanceEntity[]>;
+  findAll(): Promise<MaintenanceEntity[]>;
+  findOneById(id: string): Promise<MaintenanceEntity | null>;
+  delete(id: string): Promise<void>;  
 }

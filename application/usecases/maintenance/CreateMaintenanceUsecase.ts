@@ -1,8 +1,8 @@
-import { MaintenanceEntity } from "../../domain/entities/MaintenanceEntity.ts";
-import { MotorcycleNotFoundError } from "../../domain/errors/MotorcycleNotFoundError.ts";
-import { AppointmentDate } from "../../domain/types/AppointmentDate.ts";
-import type { MaintenanceRepository } from "../repositories/MaintenanceRepository.ts";
-import type { MotorcycleRepository } from "../repositories/MotorcycleRepository.ts";
+import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
+import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFoundError.ts";
+import { AppointmentDate } from "../../../domain/types/AppointmentDate.ts";
+import type { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
+import type { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 
 export class CreateMaintenanceUsecase {
   public constructor(
