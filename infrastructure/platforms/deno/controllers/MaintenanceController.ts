@@ -1,7 +1,10 @@
 import type { MaintenanceRepository } from "../../../../application/repositories/MaintenanceRepository.ts";
 import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
-import { CreateMaintenanceUsecase } from "../../../../application/usecases/CreateMaintenanceUsecase.ts";
-import { ListMaintenancesUsecase } from "../../../../application/usecases/ListMaintenancesUsecase.ts";
+import { CreateMaintenanceUsecase } from "../../../../application/usecases/maintenance/CreateMaintenanceUsecase.ts";
+import { FindMaintenanceUsecase } from "../../../../application/usecases/maintenance/FindMaintenanceUsecase.ts";
+import { FindAllMaintenancesUsecase } from "../../../../application/usecases/maintenance/FindAllMaintenancesUsecase.ts";
+import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maintenance/UpdateMaintenanceUsecase.ts";
+import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
 import { createMaintenanceRequestSchema } from "../schemas/createMaintenanceRequestSchema.ts";
 
@@ -11,14 +14,40 @@ export class MaintenanceController {
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async listMaintenances(): Promise<Response> {
-    const listMaintenancesUsecase = new ListMaintenancesUsecase(
+  public async getAllMaintenances(): Promise<Response> {
+    const listMaintenancesUsecase = new FindAllMaintenancesUsecase(
       this.maintenanceRepository,
     );
 
     const maintenances = await listMaintenancesUsecase.execute();
 
     return new Response(JSON.stringify(maintenances), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  }
+
+  public async getMaintenanceById(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    const id = url.searchParams.get("id");
+
+    if (!id) {
+      return new Response("Maintenance ID is required", { status: 400 });
+    }
+
+    const findMaintenanceUsecase = new FindMaintenanceUsecase(
+      this.maintenanceRepository,
+    );
+
+    const maintenance = await findMaintenanceUsecase.execute(id);
+
+    if (!maintenance) {
+      return new Response("Maintenance not found", { status: 404 });
+    }
+
+    return new Response(JSON.stringify(maintenance), {
       status: 200,
       headers: {
         "Content-Type": "application/json",
@@ -55,6 +84,59 @@ export class MaintenanceController {
     return exhaustive(error.name, {
       AppointmentDatePastError: () => new Response("AppointmentDatePastError", { status: 400 }),
       MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 400 }),
+    });
+  }
+
+  public async updateMaintenance(request: Request): Promise<Response> {
+    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(
+      this.maintenanceRepository,
+    );
+
+    const body = await request.json();
+
+    const validation = createMaintenanceRequestSchema.safeParse(body);
+
+    if (!validation.success) {
+      return new Response("Malformed request", {
+        status: 400,
+      });
+    }
+
+    const result = await updateMaintenanceUsecase.execute(validation.data);
+
+    if (result === undefined) {
+      return new Response(null, {
+        status: 201,
+      });
+    }
+
+    return exhaustive(result.name, {
+      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 400 }),
+    });
+  }
+
+  public async deleteMaintenance(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    const id = url.searchParams.get("id");
+
+    if (!id) {
+      return new Response("Maintenance ID is required", { status: 400 });
+    }
+
+    const deleteMaintenanceUsecase = new DeleteMaintenanceUsecase(
+      this.maintenanceRepository,
+    );
+
+    const result = await deleteMaintenanceUsecase.execute(id);
+
+    if (result === undefined) {
+      return new Response(null, {
+        status: 204,
+      });
+    }
+
+    return exhaustive(result.name, {
+      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 400 }),
     });
   }
 }

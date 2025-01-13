@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { CreateMaintenanceUsecase } from "../../../../application/usecases/CreateMaintenanceUsecase.ts";
+import { CreateMaintenanceUsecase } from "../../../../application/usecases/maintenance/CreateMaintenanceUsecase.ts";
 import { MaintenanceRepositoryInMemory } from "../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
@@ -68,7 +68,7 @@ Deno.test("Should succeed when creating an appointment correctly", async () => {
   const today = new Date();
   const date = new Date(today.getFullYear() + 1, 1, 1);
   const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, cost);
-  const maintenances = await maintenanceRepository.all();
+  const maintenances = await maintenanceRepository.findAll();
 
   expect(result).toBeUndefined();
   expect(maintenances.length).toStrictEqual(1);
