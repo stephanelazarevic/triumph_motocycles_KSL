@@ -1,10 +1,11 @@
 import { expect } from "jsr:@std/expect";
-import { CreateMaintenanceUsecase } from "../../../../application/usecases/maintenance/CreateMaintenanceUsecase.ts";
-import { MaintenanceRepositoryInMemory } from "../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
-import { MotorcycleRepositoryInMemory } from "../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
-import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../domain/types/Brand.ts";
-import { Model } from "../../../../domain/types/Model.ts";
+import { CreateMaintenanceUsecase } from "../../../../../application/usecases/maintenance/CreateMaintenanceUsecase.ts";
+import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
+import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
+import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
+import { Brand } from "../../../../../domain/types/Brand.ts";
+import { Model } from "../../../../../domain/types/Model.ts";
+import { EmptyListError } from "../../../../../domain/errors/EmptyListError.ts";
 
 const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
 const brand = Brand.from("Triumph");
@@ -26,7 +27,7 @@ const motorcycleRepository = new MotorcycleRepositoryInMemory([
   motorcycle,
 ]);
 
-Deno.test("Should return an error if the date is in the past when createing a maintenance", async () => {
+Deno.test("Should return an error if the date is in the past when creating a maintenance", async () => {
   const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
   const today = new Date();
   const date = new Date(today.getFullYear() - 1, 1, 1);
@@ -51,7 +52,7 @@ Deno.test("Should return an error if the cost is null", async () => {
     const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, 0);
   
     expect(result).not.toBeUndefined();
-  });
+});
 
   Deno.test("Should return an error if the description is null", async () => {
     const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
@@ -61,15 +62,21 @@ Deno.test("Should return an error if the cost is null", async () => {
     const result = await createMaintenanceUsecase.execute(date, "", motorcycle.identifier, cost);
   
     expect(result).not.toBeUndefined();
-  });  
+});  
 
 Deno.test("Should succeed when creating an appointment correctly", async () => {
   const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
   const today = new Date();
   const date = new Date(today.getFullYear() + 1, 1, 1);
   const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, cost);
+
   const maintenances = await maintenanceRepository.findAll();
 
   expect(result).toBeUndefined();
-  expect(maintenances.length).toStrictEqual(1);
+
+  if (maintenances instanceof EmptyListError) {
+    throw new Error("The list is empty");
+  } else {
+    expect(maintenances.length).toStrictEqual(1);
+  }
 });
