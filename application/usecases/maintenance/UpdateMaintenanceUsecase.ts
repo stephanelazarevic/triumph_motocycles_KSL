@@ -5,7 +5,7 @@ import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotF
 export class UpdateMaintenanceUsecase {
     constructor(private maintenanceRepository: MaintenanceRepository) {}
   
-    async execute(maintenance: MaintenanceEntity): Promise<MaintenanceNotFoundError | void> {
+    public async execute(maintenance: MaintenanceEntity): Promise<MaintenanceNotFoundError | void> {
       const existing = await this.maintenanceRepository.findOneById(maintenance.identifier);
       if (!existing) {
         return new MaintenanceNotFoundError();

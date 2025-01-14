@@ -1,5 +1,7 @@
 import type { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository.ts";
 import type { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
+import { EmptyListError } from "../../../domain/errors/EmptyListError.ts";
+import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
 
 export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
   public constructor(private maintenances: MaintenanceEntity[]) {}
@@ -14,16 +16,16 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
     return Promise.resolve();
   }
 
-  public findAll(): Promise<MaintenanceEntity[]> {
+  public findAll(): Promise<MaintenanceEntity[] | EmptyListError> {
     return Promise.resolve(this.maintenances);
   }
 
-  async findOneById(id: string): Promise<MaintenanceEntity | null> {
+  async findOneById(id: string): Promise<MaintenanceEntity | MaintenanceNotFoundError> {
     const foundMaintenance = this.maintenances.find((maintenance) => {
       return maintenance.identifier === id;
     });
 
-    return Promise.resolve(foundMaintenance ?? null);
+    return Promise.resolve(foundMaintenance ?? new MaintenanceNotFoundError());
   }
 
   async delete(id: string): Promise<void> {

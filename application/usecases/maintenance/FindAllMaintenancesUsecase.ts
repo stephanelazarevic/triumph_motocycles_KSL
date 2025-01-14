@@ -1,3 +1,5 @@
+import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
+import { EmptyListError } from "../../../domain/errors/EmptyListError.ts";
 import type { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
 
 export class FindAllMaintenancesUsecase {
@@ -5,7 +7,11 @@ export class FindAllMaintenancesUsecase {
     private readonly maintenanceRepository: MaintenanceRepository,
   ) {}
 
-  public execute() {
-    return this.maintenanceRepository.findAll();
+  public async execute(): Promise<MaintenanceEntity[] | EmptyListError> {
+    const existing = await this.maintenanceRepository.findAll();
+      if (!existing) {
+        return new EmptyListError();
+      }
+      return existing
   }
 }

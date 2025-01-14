@@ -7,6 +7,9 @@ import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maint
 import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
 import { createMaintenanceRequestSchema } from "../schemas/createMaintenanceRequestSchema.ts";
+import { EmptyListError } from "../../../../domain/errors/EmptyListError.ts";
+import { MaintenanceNotFoundError } from "../../../../domain/errors/MaintenanceNotFoundError.ts";
+import { updateMaintenanceRequestSchema } from "../schemas/updateMaintenanceRequestSchema.ts";
 
 export class MaintenanceController {
   public constructor(
@@ -19,13 +22,23 @@ export class MaintenanceController {
       this.maintenanceRepository,
     );
 
-    const maintenances = await listMaintenancesUsecase.execute();
+    const result = await listMaintenancesUsecase.execute();
 
-    return new Response(JSON.stringify(maintenances), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    if (result instanceof EmptyListError) {
+      return new Response("EmptyListError", { status: 204 });
+    }
+
+    if (Array.isArray(result)) {
+      return new Response(JSON.stringify(result), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    return exhaustive({
+      EmptyListError: () => new Response("EmptyListError", { status: 204 }),
     });
   }
 
@@ -41,18 +54,25 @@ export class MaintenanceController {
       this.maintenanceRepository,
     );
 
-    const maintenance = await findMaintenanceUsecase.execute(id);
+    const result = await findMaintenanceUsecase.execute(id);
 
-    if (!maintenance) {
-      return new Response("Maintenance not found", { status: 404 });
+    if (result instanceof MaintenanceNotFoundError) {
+      return new Response("MaintenanceNotFoundError", { status: 404 });
     }
 
-    return new Response(JSON.stringify(maintenance), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
+    if (typeof result === "object" && result !== null) {
+      return new Response(JSON.stringify(result), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    }
+
+    return exhaustive({
+      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
     });
+
   }
 
   public async createMaintenance(request: Request): Promise<Response> {
@@ -94,7 +114,7 @@ export class MaintenanceController {
 
     const body = await request.json();
 
-    const validation = createMaintenanceRequestSchema.safeParse(body);
+    const validation = updateMaintenanceRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", {
