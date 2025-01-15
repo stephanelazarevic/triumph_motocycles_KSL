@@ -6,6 +6,8 @@ import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntit
 import { Brand } from "../../../../../domain/types/Brand.ts";
 import { Model } from "../../../../../domain/types/Model.ts";
 import { EmptyListError } from "../../../../../domain/errors/EmptyListError.ts";
+import { AppointmentDatePastError } from "../../../../../domain/errors/AppointmentDatePastError.ts";
+import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
 
 const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
 const brand = Brand.from("Triumph");
@@ -33,7 +35,7 @@ Deno.test("Should return an error if the date is in the past when creating a mai
   const date = new Date(today.getFullYear() - 1, 1, 1);
   const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, cost);
 
-  expect(result).not.toBeUndefined();
+  expect(result).toBeInstanceOf(AppointmentDatePastError);
 });
 
 Deno.test("Should return an error if the motorcycle does not exist", async () => {
@@ -42,7 +44,7 @@ Deno.test("Should return an error if the motorcycle does not exist", async () =>
   const date = new Date(today.getFullYear() + 1, 1, 1);
   const result = await createMaintenanceUsecase.execute(date, description, "", cost);
 
-  expect(result).not.toBeUndefined();
+  expect(result).toBeInstanceOf(MotorcycleNotFoundError);
 });
 
 Deno.test("Should return an error if the cost is null", async () => {
