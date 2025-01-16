@@ -1,7 +1,5 @@
 {
-  "workspace": [
-    "./infrastructure/platforms/deno"
-  ],
+  "workspace": ["./infrastructure/platforms/deno"],
   "tasks": {
     "deno:dev": "deno run --watch --allow-net infrastructure/platforms/deno/index.ts",
     "deno:start": "deno run --allow-net infrastructure/platforms/deno/index.ts"
@@ -15,6 +13,8 @@
   "imports": {
     "domain/": "./domain/",
     "infrastructure/": "./infrastructure/",
-    "application/": "./application/"
+    "application/": "./application/",
+    "i18n-iso-countries": "npm:i18n-iso-countries@^7.13.0",
+    "libphonenumber-js": "npm:libphonenumber-js@^1.11.17"
   }
 }
