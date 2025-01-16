@@ -1,12 +1,14 @@
-import type { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository.ts";
-import type { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
-import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
+import type { MaintenanceRepository } from "application/repositories/MaintenanceRepository.ts";
+import type { MaintenanceEntity } from "domain/entities/MaintenanceEntity.ts";
+import { MaintenanceNotFoundError } from "domain/errors/MaintenanceNotFoundError.ts";
 
 export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
   public constructor(private maintenances: MaintenanceEntity[]) {}
 
   public save(maintenance: MaintenanceEntity): Promise<void> {
-    const index = this.maintenances.findIndex(maintenance => maintenance.identifier === maintenance.identifier);
+    const index = this.maintenances.findIndex(
+      (maintenance) => maintenance.identifier === maintenance.identifier
+    );
     if (index === -1) {
       this.maintenances.push(maintenance);
     } else {
@@ -19,7 +21,9 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
     return Promise.resolve(this.maintenances);
   }
 
-  async findOneById(id: string): Promise<MaintenanceEntity | MaintenanceNotFoundError> {
+  async findOneById(
+    id: string
+  ): Promise<MaintenanceEntity | MaintenanceNotFoundError> {
     const foundMaintenance = this.maintenances.find((maintenance) => {
       return maintenance.identifier === id;
     });
@@ -28,6 +32,8 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
   }
 
   async delete(id: string): Promise<void> {
-    this.maintenances = this.maintenances.filter(maintenance => maintenance.identifier !== id);
+    this.maintenances = this.maintenances.filter(
+      (maintenance) => maintenance.identifier !== id
+    );
   }
 }

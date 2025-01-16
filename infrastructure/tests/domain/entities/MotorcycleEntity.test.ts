@@ -1,7 +1,7 @@
 import { expect } from "jsr:@std/expect";
-import { Brand } from "../../../../domain/types/Brand.ts";
-import { Model } from "../../../../domain/types/Model.ts";
-import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
+import { Brand } from "domain/types/Brand.ts";
+import { Model } from "domain/types/Model.ts";
+import { MotorcycleEntity } from "domain/entities/MotorcycleEntity.ts";
 
 Deno.test("Shoud return a motorcycle entity", () => {
   const brand = Brand.from("Triumph");

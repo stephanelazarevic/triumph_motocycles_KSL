@@ -31,42 +31,83 @@ if (date instanceof Error) {
   throw new InvalidDateError("Invalid date");
 }
 
-const motorcycleRepository = new MotorcycleRepositoryInMemory([
-  motorcycle,
-]);
+const motorcycleRepository = new MotorcycleRepositoryInMemory([motorcycle]);
 
 Deno.test("Should return an error if the date is invalid", async () => {
-  const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
+  const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+    maintenanceRepository,
+    motorcycleRepository
+  );
   const badDate = new Date(2006, 1, 1);
-  const result = await createMaintenanceUsecase.execute(badDate, description, motorcycle.identifier, cost);
+  const result = await createMaintenanceUsecase.execute(
+    badDate,
+    description,
+    motorcycle.identifier,
+    cost
+  );
 
   expect(result).toBeInstanceOf(InvalidDateError);
 });
 
-Deno.test("Should return an error if the motorcycle does not exist", async () => {
-  const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
-  const result = await createMaintenanceUsecase.execute(date, description, "", cost);
+Deno.test(
+  "Should return an error if the motorcycle does not exist",
+  async () => {
+    const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+      maintenanceRepository,
+      motorcycleRepository
+    );
+    const result = await createMaintenanceUsecase.execute(
+      date,
+      description,
+      "",
+      cost
+    );
 
-  expect(result).toBeInstanceOf(MotorcycleNotFoundError);
-});
+    expect(result).toBeInstanceOf(MotorcycleNotFoundError);
+  }
+);
 
 Deno.test("Should return an error if the cost is null", async () => {
-    const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
-    const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, 0);
-  
-    expect(result).toBeInstanceOf(NullCostError);
+  const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+    maintenanceRepository,
+    motorcycleRepository
+  );
+  const result = await createMaintenanceUsecase.execute(
+    date,
+    description,
+    motorcycle.identifier,
+    0
+  );
+
+  expect(result).toBeInstanceOf(NullCostError);
 });
 
-  Deno.test("Should return an error if the description is empty", async () => {
-    const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
-    const result = await createMaintenanceUsecase.execute(date, "", motorcycle.identifier, cost);
-  
-    expect(result).toBeInstanceOf(EmptyDescriptionError);
-});  
+Deno.test("Should return an error if the description is empty", async () => {
+  const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+    maintenanceRepository,
+    motorcycleRepository
+  );
+  const result = await createMaintenanceUsecase.execute(
+    date,
+    "",
+    motorcycle.identifier,
+    cost
+  );
+
+  expect(result).toBeInstanceOf(EmptyDescriptionError);
+});
 
 Deno.test("Should succeed when creating an appointment correctly", async () => {
-  const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
-  const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, cost);
+  const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+    maintenanceRepository,
+    motorcycleRepository
+  );
+  const result = await createMaintenanceUsecase.execute(
+    date,
+    description,
+    motorcycle.identifier,
+    cost
+  );
 
   const maintenances = await maintenanceRepository.findAll();
 

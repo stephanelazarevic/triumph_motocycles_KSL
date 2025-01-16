@@ -11,13 +11,13 @@ const brand = Brand.from("Triumph");
 const model = Model.from("Street Triple");
 
 if (brand instanceof Error) {
-    throw new Error("Failed to initialize a new brand");
+  throw new Error("Failed to initialize a new brand");
 }
 
 if (model instanceof Error) {
-    throw new Error("Failed to initialize a new model");
+  throw new Error("Failed to initialize a new model");
 }
-  
+
 const motorcycle = MotorcycleEntity.create(brand, model, 2024);
 const date = new Date(2030, 1, 1);
 const description = "Maintenance description";
@@ -28,25 +28,38 @@ if (date instanceof Error) {
 }
 
 Deno.test("Should return all maintenances", async () => {
-    const maintenance = MaintenanceEntity.create(date, description, motorcycle, cost);
-    const maintenanceRepository = new MaintenanceRepositoryInMemory([maintenance]);
-  
-    const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(maintenanceRepository);
-    const result = await findAllMaintenancesUsecase.execute();
-  
-    expect(result.length).toStrictEqual(1);
-  
-    if (result.length > 0) {
-        expect(result[0].description).toStrictEqual("Maintenance description");
-      }
+  const maintenance = MaintenanceEntity.create(
+    date,
+    description,
+    motorcycle,
+    cost
+  );
+  const maintenanceRepository = new MaintenanceRepositoryInMemory([
+    maintenance,
+  ]);
+
+  const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(
+    maintenanceRepository
+  );
+  const result = await findAllMaintenancesUsecase.execute();
+
+  expect(result.length).toStrictEqual(1);
+
+  if (result.length > 0) {
+    expect(result[0].description).toStrictEqual("Maintenance description");
+  }
 });
 
-  Deno.test("Should return an empty list when no maintenances exist", async () => {
+Deno.test(
+  "Should return an empty list when no maintenances exist",
+  async () => {
     const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
-    const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(maintenanceRepository);
-  
+    const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(
+      maintenanceRepository
+    );
+
     const result = await findAllMaintenancesUsecase.execute();
 
     expect(result).toStrictEqual([]);
-});
-  
+  }
+);
