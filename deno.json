@@ -11,5 +11,10 @@
   },
   "fmt": {
     "lineWidth": 10000
+  },
+  "imports": {
+    "domain/": "./domain/",
+    "infrastructure/": "./infrastructure/",
+    "application/": "./application/"
   }
 }

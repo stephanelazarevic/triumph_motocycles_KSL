@@ -5,9 +5,10 @@ import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
 import { Brand } from "../../../../../domain/types/Brand.ts";
 import { Model } from "../../../../../domain/types/Model.ts";
-import { EmptyListError } from "../../../../../domain/errors/EmptyListError.ts";
 import { AppointmentDatePastError } from "../../../../../domain/errors/AppointmentDatePastError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
+import { NullCostError } from "../../../../../domain/errors/NullCostError.ts";
+import { EmptyDescriptionError } from "../../../../../domain/errors/EmptyDescriptionError.ts";
 
 const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
 const brand = Brand.from("Triumph");
@@ -53,7 +54,7 @@ Deno.test("Should return an error if the cost is null", async () => {
     const date = new Date(today.getFullYear() + 1, 1, 1);
     const result = await createMaintenanceUsecase.execute(date, description, motorcycle.identifier, 0);
   
-    expect(result).not.toBeUndefined();
+    expect(result).toBeInstanceOf(NullCostError);
 });
 
   Deno.test("Should return an error if the description is null", async () => {
@@ -63,7 +64,7 @@ Deno.test("Should return an error if the cost is null", async () => {
     const cost = 100;
     const result = await createMaintenanceUsecase.execute(date, "", motorcycle.identifier, cost);
   
-    expect(result).not.toBeUndefined();
+    expect(result).toBeInstanceOf(EmptyDescriptionError);
 });  
 
 Deno.test("Should succeed when creating an appointment correctly", async () => {
@@ -74,11 +75,11 @@ Deno.test("Should succeed when creating an appointment correctly", async () => {
 
   const maintenances = await maintenanceRepository.findAll();
 
-  expect(result).toBeUndefined();
+  expect(result).not.toBeInstanceOf(Error);
 
-  if (maintenances instanceof EmptyListError) {
-    throw new Error("The list is empty");
-  } else {
-    expect(maintenances.length).toStrictEqual(1);
-  }
+  expect(maintenances.length).toStrictEqual(1);
+  expect(maintenances[0].date).toStrictEqual(date);
+  expect(maintenances[0].description).toStrictEqual(description);
+  expect(maintenances[0].cost).toStrictEqual(cost);
+  expect(maintenances[0].motorcycle).toStrictEqual(motorcycle);
 });
