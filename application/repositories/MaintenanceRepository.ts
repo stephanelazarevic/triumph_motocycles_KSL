@@ -1,10 +1,9 @@
-import type { MaintenanceEntity } from "../../domain/entities/MaintenanceEntity.ts";
-import { EmptyListError } from "../../domain/errors/EmptyListError.ts";
+import { MaintenanceEntity } from "../../domain/entities/MaintenanceEntity.ts";
 import { MaintenanceNotFoundError } from "../../domain/errors/MaintenanceNotFoundError.ts";
 
 export interface MaintenanceRepository {
   save(maintenance: MaintenanceEntity): Promise<void>;
-  findAll(): Promise<MaintenanceEntity[] | EmptyListError>;
+  findAll(): Promise<MaintenanceEntity[]>;
   findOneById(id: string): Promise<MaintenanceEntity | MaintenanceNotFoundError>;
   delete(id: string): Promise<void>;  
 }

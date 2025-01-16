@@ -7,7 +7,6 @@ import { Brand } from "../../../../../domain/types/Brand.ts";
 import { Model } from "../../../../../domain/types/Model.ts";
 import { AppointmentDate } from "../../../../../domain/types/AppointmentDate.ts";
 import { AppointmentDatePastError } from "../../../../../domain/errors/AppointmentDatePastError.ts";
-import { EmptyListError } from "../../../../../domain/errors/EmptyListError.ts";
 
 const brand = Brand.from("Triumph");
 const model = Model.from("Street Triple");
@@ -36,10 +35,6 @@ Deno.test("Should return all maintenances", async () => {
     const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(maintenanceRepository);
     const result = await findAllMaintenancesUsecase.execute();
   
-    if (result instanceof EmptyListError) {
-      throw new EmptyListError("This is an EmptyList");
-    }
-  
     expect(result.length).toStrictEqual(1);
   
     if (result.length > 0) {
@@ -47,15 +42,12 @@ Deno.test("Should return all maintenances", async () => {
       }
 });
 
-  Deno.test("Should return an error when no maintenances exist", async () => {
+  Deno.test("Should return an empty list when no maintenances exist", async () => {
     const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
     const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(maintenanceRepository);
   
-    try {
-      await findAllMaintenancesUsecase.execute(); 
-    } catch (error) {
-      expect(error).toBeInstanceOf(EmptyListError);
-      expect(error.message).toStrictEqual("The maintenance list is empty");
-    }
+    const result = await findAllMaintenancesUsecase.execute();
+
+    expect(result).toStrictEqual([]);
 });
   

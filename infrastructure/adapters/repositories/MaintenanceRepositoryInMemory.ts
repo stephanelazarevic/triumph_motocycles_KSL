@@ -1,6 +1,5 @@
 import type { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository.ts";
 import type { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
-import { EmptyListError } from "../../../domain/errors/EmptyListError.ts";
 import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
 
 export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
@@ -16,7 +15,7 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
     return Promise.resolve();
   }
 
-  public findAll(): Promise<MaintenanceEntity[] | EmptyListError> {
+  public findAll(): Promise<MaintenanceEntity[]> {
     return Promise.resolve(this.maintenances);
   }
 

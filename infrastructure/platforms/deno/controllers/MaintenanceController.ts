@@ -5,11 +5,9 @@ import { FindMaintenanceUsecase } from "../../../../application/usecases/mainten
 import { FindAllMaintenancesUsecase } from "../../../../application/usecases/maintenance/FindAllMaintenancesUsecase.ts";
 import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maintenance/UpdateMaintenanceUsecase.ts";
 import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
-import { exhaustive } from "npm:exhaustive";
+import { exhaustive } from "npm:exhaustive"
 import { createMaintenanceRequestSchema } from "../schemas/createMaintenanceRequestSchema.ts";
-import { EmptyListError } from "../../../../domain/errors/EmptyListError.ts";
 import { MaintenanceNotFoundError } from "../../../../domain/errors/MaintenanceNotFoundError.ts";
-import { updateMaintenanceRequestSchema } from "../schemas/updateMaintenanceRequestSchema.ts";
 
 export class MaintenanceController {
   public constructor(
@@ -24,21 +22,11 @@ export class MaintenanceController {
 
     const result = await listMaintenancesUsecase.execute();
 
-    if (result instanceof EmptyListError) {
-      return new Response("EmptyListError", { status: 204 });
-    }
-
-    if (Array.isArray(result)) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    }
-
-    return exhaustive({
-      EmptyListError: () => new Response("EmptyListError", { status: 204 }),
+    return new Response(JSON.stringify(result), {
+      status: 200,
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
   }
 
@@ -114,7 +102,7 @@ export class MaintenanceController {
 
     const body = await request.json();
 
-    const validation = updateMaintenanceRequestSchema.safeParse(body);
+    const validation = createMaintenanceRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", {
