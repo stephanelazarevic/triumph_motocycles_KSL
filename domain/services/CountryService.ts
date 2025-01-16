@@ -8,8 +8,8 @@ export interface CountryService {
 
   /**
    * Validates if the given country is a valid country
-   * @param country - The country name or code to validate
+   * @param countryCode - The country code to validate
    * @returns true if an existing country false if unknown
    */
-  isValidCountry(country: string): boolean;
+  isValidCountry(countryCode: string): boolean;
 }

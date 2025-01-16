@@ -5,7 +5,7 @@ import { PhoneNumber } from "domain/types/PhoneNumber.ts";
 
 export class UserEntity {
   private constructor(
-    public readonly identifier: string,
+    public readonly id: string,
     public readonly firstname: string,
     public readonly lastname: string,
     public readonly password: Password,
@@ -28,7 +28,7 @@ export class UserEntity {
     countryCode: string,
     isAdministrator: boolean
   ) {
-    const identifier = crypto.randomUUID();
+    const id = crypto.randomUUID();
     const createdAt = new Date();
     const updatedAt = new Date();
 
@@ -56,7 +56,7 @@ export class UserEntity {
     }
 
     return new UserEntity(
-      identifier,
+      id,
       formattedFirstname,
       formattedLastname,
       password,

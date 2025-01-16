@@ -1,15 +1,22 @@
 export interface PhoneNumberService {
   /**
+   * Formats the provided phone number to the national standard.
+   * @param phoneNumber - The phone number to be formatted.
+   * @returns The phone number formatted to the national standard.
+   */
+  formatNational(phoneNumber: string): string;
+
+  /**
    * Formats the provided phone number to the international E.164 standard.
    * @param phoneNumber - The phone number to be formatted.
    * @returns The phone number formatted to the international standard.
    */
-  formatPhoneNumber(phoneNumber: string): string;
+  formatInternational(phoneNumber: string): string;
 
   /**
    * Validates whether the provided phone number is in a valid format according to international standards.
    * @param phoneNumber - The phone number to be validated.
    * @returns A boolean indicating whether the phone number is valid.
    */
-  isValidPhoneNumber(phoneNumber: string): boolean;
+  isValid(phoneNumber: string): boolean;
 }

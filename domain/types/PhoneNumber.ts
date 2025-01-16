@@ -8,11 +8,11 @@ export class PhoneNumber {
 
   public static from(phoneNumberValue: string): PhoneNumber | Error {
     const formattedPhone =
-      PhoneNumber.phoneNumberService.formatPhoneNumber(phoneNumberValue);
+      PhoneNumber.phoneNumberService.formatInternational(phoneNumberValue);
 
     if (
       !formattedPhone ||
-      !PhoneNumber.phoneNumberService.isValidPhoneNumber(formattedPhone)
+      !PhoneNumber.phoneNumberService.isValid(formattedPhone)
     ) {
       return new PhoneNumberInvalidError();
     }
