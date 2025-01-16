@@ -1,6 +1,6 @@
 import { AddressTooShortError } from "domain/errors/AddressTooShortError.ts";
-import { AddressInvalidPostalCodeError } from "../errors/AddressInvalidPostalCodeError.ts";
-import { AddressInvalidCountryError } from "../errors/AddressInvalidCountryError.ts";
+import { AddressInvalidPostalCodeError } from "domain/errors/AddressInvalidPostalCodeError.ts";
+import { AddressInvalidCountryError } from "domain/errors/AddressInvalidCountryError.ts";
 import { CountryService } from "domain/services/CountryService.ts";
 
 export class Address {

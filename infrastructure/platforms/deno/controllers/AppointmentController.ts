@@ -1,19 +1,19 @@
-import type { AppointmentRepository } from "../../../../application/repositories/AppointmentRepository.ts";
-import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
-import { CreateAppointmentUsecase } from "../../../../application/usecases/CreateAppointmentUsecase.ts";
-import { ListAppointmentsUsecase } from "../../../../application/usecases/ListAppointmentsUsecase.ts";
+import type { AppointmentRepository } from "application/repositories/AppointmentRepository.ts";
+import type { MotorcycleRepository } from "application/repositories/MotorcycleRepository.ts";
+import { CreateAppointmentUsecase } from "application/usecases/CreateAppointmentUsecase.ts";
+import { ListAppointmentsUsecase } from "application/usecases/ListAppointmentsUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createAppointmentRequestSchema } from "../schemas/createAppointmentRequestSchema.ts";
+import { createAppointmentRequestSchema } from "infrastructure/platforms/deno/schemas/createAppointmentRequestSchema.ts";
 
 export class AppointmentController {
   public constructor(
     private readonly appointmentRepository: AppointmentRepository,
-    private readonly motorcycleRepository: MotorcycleRepository,
+    private readonly motorcycleRepository: MotorcycleRepository
   ) {}
 
   public async listAppointments(): Promise<Response> {
     const listAppointmentsUsecase = new ListAppointmentsUsecase(
-      this.appointmentRepository,
+      this.appointmentRepository
     );
 
     const appointments = await listAppointmentsUsecase.execute();
@@ -29,7 +29,7 @@ export class AppointmentController {
   public async createAppointment(request: Request): Promise<Response> {
     const createAppointmentUsecase = new CreateAppointmentUsecase(
       this.appointmentRepository,
-      this.motorcycleRepository,
+      this.motorcycleRepository
     );
 
     const body = await request.json();
@@ -53,8 +53,10 @@ export class AppointmentController {
     }
 
     return exhaustive(error.name, {
-      AppointmentDatePastError: () => new Response("AppointmentDatePastError", { status: 400 }),
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 400 }),
+      AppointmentDatePastError: () =>
+        new Response("AppointmentDatePastError", { status: 400 }),
+      MotorcycleNotFoundError: () =>
+        new Response("MotorcycleNotFoundError", { status: 400 }),
     });
   }
 }

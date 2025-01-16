@@ -5,19 +5,19 @@ import { FindMaintenanceUsecase } from "../../../../application/usecases/mainten
 import { FindAllMaintenancesUsecase } from "../../../../application/usecases/maintenance/FindAllMaintenancesUsecase.ts";
 import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maintenance/UpdateMaintenanceUsecase.ts";
 import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
-import { exhaustive } from "npm:exhaustive"
+import { exhaustive } from "npm:exhaustive";
 import { createMaintenanceRequestSchema } from "../schemas/createMaintenanceRequestSchema.ts";
 import { MaintenanceNotFoundError } from "../../../../domain/errors/MaintenanceNotFoundError.ts";
 
 export class MaintenanceController {
   public constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
-    private readonly motorcycleRepository: MotorcycleRepository,
+    private readonly motorcycleRepository: MotorcycleRepository
   ) {}
 
   public async getAllMaintenances(): Promise<Response> {
     const listMaintenancesUsecase = new FindAllMaintenancesUsecase(
-      this.maintenanceRepository,
+      this.maintenanceRepository
     );
 
     const result = await listMaintenancesUsecase.execute();
@@ -39,7 +39,7 @@ export class MaintenanceController {
     }
 
     const findMaintenanceUsecase = new FindMaintenanceUsecase(
-      this.maintenanceRepository,
+      this.maintenanceRepository
     );
 
     const result = await findMaintenanceUsecase.execute(id);
@@ -58,15 +58,15 @@ export class MaintenanceController {
     }
 
     return exhaustive({
-      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
+      MaintenanceNotFoundError: () =>
+        new Response("MaintenanceNotFoundError", { status: 404 }),
     });
-
   }
 
   public async createMaintenance(request: Request): Promise<Response> {
     const createMaintenanceUsecase = new CreateMaintenanceUsecase(
       this.maintenanceRepository,
-      this.motorcycleRepository,
+      this.motorcycleRepository
     );
 
     const body = await request.json();
@@ -81,7 +81,12 @@ export class MaintenanceController {
 
     const { date, description, motorcycleId, cost } = validation.data;
 
-    const error = await createMaintenanceUsecase.execute(date, description, motorcycleId, cost);
+    const error = await createMaintenanceUsecase.execute(
+      date,
+      description,
+      motorcycleId,
+      cost
+    );
 
     if (!error) {
       return new Response(null, {
@@ -90,13 +95,14 @@ export class MaintenanceController {
     }
 
     return exhaustive(error.name, {
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
+      MotorcycleNotFoundError: () =>
+        new Response("MotorcycleNotFoundError", { status: 404 }),
     });
   }
 
   public async updateMaintenance(request: Request): Promise<Response> {
     const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(
-      this.maintenanceRepository,
+      this.maintenanceRepository
     );
 
     const body = await request.json();
@@ -118,7 +124,8 @@ export class MaintenanceController {
     }
 
     return exhaustive(result.name, {
-      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
+      MaintenanceNotFoundError: () =>
+        new Response("MaintenanceNotFoundError", { status: 404 }),
     });
   }
 
@@ -131,7 +138,7 @@ export class MaintenanceController {
     }
 
     const deleteMaintenanceUsecase = new DeleteMaintenanceUsecase(
-      this.maintenanceRepository,
+      this.maintenanceRepository
     );
 
     const result = await deleteMaintenanceUsecase.execute(id);
@@ -143,7 +150,8 @@ export class MaintenanceController {
     }
 
     return exhaustive(result.name, {
-      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
+      MaintenanceNotFoundError: () =>
+        new Response("MaintenanceNotFoundError", { status: 404 }),
     });
   }
 }

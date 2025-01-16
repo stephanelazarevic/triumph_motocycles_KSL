@@ -1,14 +1,18 @@
-import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
-import { ListMotorcyclesUsecase } from "../../../../application/usecases/ListMotorcyclesUsecase.ts";
-import { CreateMotorcycleUsecase } from "../../../../application/usecases/CreateMotorcycleUsecase.ts";
+import type { MotorcycleRepository } from "application/repositories/MotorcycleRepository.ts";
+import { ListMotorcyclesUsecase } from "application/usecases/ListMotorcyclesUsecase.ts";
+import { CreateMotorcycleUsecase } from "application/usecases/CreateMotorcycleUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createMotorcycleRequestSchema } from "../schemas/createMotorcycleRequestSchema.ts";
+import { createMotorcycleRequestSchema } from "infrastructure/platforms/deno/schemas/createMotorcycleRequestSchema.ts";
 
 export class MotorcycleController {
-  public constructor(private readonly motorcycleRepository: MotorcycleRepository) {}
+  public constructor(
+    private readonly motorcycleRepository: MotorcycleRepository
+  ) {}
 
   public async listMotorcycles(_: Request): Promise<Response> {
-    const listMotorcyclesUsecase = new ListMotorcyclesUsecase(this.motorcycleRepository);
+    const listMotorcyclesUsecase = new ListMotorcyclesUsecase(
+      this.motorcycleRepository
+    );
     const motorcycles = await listMotorcyclesUsecase.execute();
 
     return new Response(JSON.stringify(motorcycles), {
@@ -19,7 +23,9 @@ export class MotorcycleController {
   }
 
   public async createMotorcycle(request: Request): Promise<Response> {
-    const createMotorcycleUsecase = new CreateMotorcycleUsecase(this.motorcycleRepository);
+    const createMotorcycleUsecase = new CreateMotorcycleUsecase(
+      this.motorcycleRepository
+    );
     const body = await request.json();
     const validation = createMotorcycleRequestSchema.safeParse(body);
 
@@ -39,8 +45,10 @@ export class MotorcycleController {
     }
 
     return exhaustive(error.name, {
-      BrandLengthTooShortError: () => new Response("BrandLengthTooShortError", { status: 400 }),
-      ModelLengthTooShortError: () => new Response("ModelLengthTooShortError", { status: 400 }),
+      BrandLengthTooShortError: () =>
+        new Response("BrandLengthTooShortError", { status: 400 }),
+      ModelLengthTooShortError: () =>
+        new Response("ModelLengthTooShortError", { status: 400 }),
     });
   }
 }

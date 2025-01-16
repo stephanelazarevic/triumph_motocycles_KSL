@@ -1,4 +1,4 @@
-import { ModelLengthTooShortError } from "../errors/ModelLengthTooShortError.ts";
+import { ModelLengthTooShortError } from "domain/errors/ModelLengthTooShortError.ts";
 
 export class Model {
   private constructor(public readonly value: string) {}

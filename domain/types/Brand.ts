@@ -1,4 +1,4 @@
-import { BrandLengthTooShortError } from "../errors/BrandLengthTooShortError.ts";
+import { BrandLengthTooShortError } from "domain/errors/BrandLengthTooShortError.ts";
 
 export class Brand {
   private constructor(public readonly value: string) {}
