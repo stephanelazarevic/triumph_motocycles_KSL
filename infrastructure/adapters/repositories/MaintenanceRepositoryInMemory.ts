@@ -21,7 +21,7 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
     return Promise.resolve(this.maintenances);
   }
 
-  async findOneById(
+  public findOneById(
     id: string
   ): Promise<MaintenanceEntity | MaintenanceNotFoundError> {
     const foundMaintenance = this.maintenances.find((maintenance) => {
@@ -31,9 +31,10 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
     return Promise.resolve(foundMaintenance ?? new MaintenanceNotFoundError());
   }
 
-  async delete(id: string): Promise<void> {
+  public delete(id: string): Promise<void> {
     this.maintenances = this.maintenances.filter(
       (maintenance) => maintenance.identifier !== id
     );
+    return Promise.resolve();
   }
 }
