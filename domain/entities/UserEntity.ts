@@ -1,4 +1,3 @@
-import { Password } from "domain/types/Password.ts";
 import { Address } from "domain/types/Address.ts";
 import { EmailAddress } from "domain/types/EmailAddress.ts";
 import { PhoneNumber } from "domain/types/PhoneNumber.ts";
@@ -8,7 +7,7 @@ export class UserEntity {
     public readonly id: string,
     public readonly firstname: string,
     public readonly lastname: string,
-    public readonly password: Password,
+    public readonly hashedPassword: string,
     public readonly emailAddress: EmailAddress,
     public readonly phoneNumber: PhoneNumber,
     public readonly address: Address,
@@ -20,9 +19,9 @@ export class UserEntity {
   public static create(
     firstname: string,
     lastname: string,
-    emailAddressValue: string,
-    passwordValue: string,
-    phoneNumberValue: string,
+    emailAddress: string,
+    hashedPassword: string,
+    phoneNumber: string,
     street: string,
     postalCode: string,
     countryCode: string,
@@ -35,19 +34,14 @@ export class UserEntity {
     const formattedFirstname = this.formatFirstName(firstname);
     const formattedLastname = this.formatLastName(lastname);
 
-    const password = Password.from(passwordValue);
-    if (password instanceof Error) {
-      return password;
+    const validPhoneNumber = PhoneNumber.from(phoneNumber);
+    if (validPhoneNumber instanceof Error) {
+      return validPhoneNumber;
     }
 
-    const phoneNumber = PhoneNumber.from(phoneNumberValue);
-    if (phoneNumber instanceof Error) {
-      return phoneNumber;
-    }
-
-    const emailAddress = EmailAddress.from(emailAddressValue);
-    if (emailAddress instanceof Error) {
-      return emailAddress;
+    const validEmailAddress = EmailAddress.from(emailAddress);
+    if (validEmailAddress instanceof Error) {
+      return validEmailAddress;
     }
 
     const address = Address.from(street, postalCode, countryCode);
@@ -59,9 +53,9 @@ export class UserEntity {
       id,
       formattedFirstname,
       formattedLastname,
-      password,
-      emailAddress,
-      phoneNumber,
+      hashedPassword,
+      validEmailAddress,
+      validPhoneNumber,
       address,
       isAdministrator,
       updatedAt,

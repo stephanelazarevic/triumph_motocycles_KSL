@@ -11,6 +11,7 @@
     "lineWidth": 10000
   },
   "imports": {
+    "bcryptjs": "npm:bcryptjs@^2.4.3",
     "domain/": "./domain/",
     "infrastructure/": "./infrastructure/",
     "application/": "./application/",
