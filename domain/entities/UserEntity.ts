@@ -3,7 +3,7 @@ import { EmailAddress } from "domain/types/EmailAddress.ts";
 import { PhoneNumber } from "domain/types/PhoneNumber.ts";
 
 export class UserEntity {
-  private constructor(
+  protected constructor(
     public readonly id: string,
     public readonly firstname: string,
     public readonly lastname: string,
