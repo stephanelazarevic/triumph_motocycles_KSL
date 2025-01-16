@@ -6,23 +6,25 @@ import { PhoneNumberService } from "domain/services/PhoneNumberService.ts";
 import { PhoneNumberFormatError } from "domain/errors/PhoneNumberFormatError.ts";
 
 export class LibPhoneNumberService implements PhoneNumberService {
-  public formatPhoneNumber(phoneNumber: string): string {
+  public formatInternational(phoneNumber: string): string {
     try {
-      const parsedPhone = parsePhoneNumberWithError(phoneNumber);
-      if (parsedPhone) {
-        return parsedPhone.format("E.164");
-      }
-      throw new PhoneNumberFormatError();
+      const parsedPhoneNumber = parsePhoneNumberWithError(phoneNumber);
+      return parsedPhoneNumber.formatInternational();
     } catch {
-      throw new Error("Unable to format phone number");
+      throw new PhoneNumberFormatError();
     }
   }
 
-  public isValidPhoneNumber(phoneNumber: string): boolean {
+  public formatNational(phoneNumber: string): string {
     try {
-      return isValidPhoneNumber(phoneNumber);
+      const parsedPhoneNumber = parsePhoneNumberWithError(phoneNumber);
+      return parsedPhoneNumber.formatNational();
     } catch {
-      return false;
+      throw new PhoneNumberFormatError();
     }
+  }
+
+  public isValid(phoneNumber: string): boolean {
+    return isValidPhoneNumber(phoneNumber);
   }
 }
