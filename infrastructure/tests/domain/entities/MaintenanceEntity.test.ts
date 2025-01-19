@@ -1,13 +1,12 @@
 import { expect } from "jsr:@std/expect";
-import { AppointmentDate } from "../../../../domain/types/AppointmentDate.ts";
 import { Brand } from "../../../../domain/types/Brand.ts";
 import { Model } from "../../../../domain/types/Model.ts";
 import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
 import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity.ts";
-import { AppointmentDatePastError } from "../../../../domain/errors/AppointmentDatePastError.ts";
+import { InvalidDateError } from "../../../../domain/errors/InvalidDateError.ts";
 
 Deno.test("Shoud return an appointment entity", () => {
-  const date = AppointmentDate.from(new Date(2030, 1, 1));
+  const date = new Date(2030, 1, 1);
 
   if (date instanceof Error) {
     throw date;
@@ -32,7 +31,7 @@ Deno.test("Shoud return an appointment entity", () => {
   
   const result = MaintenanceEntity.create(date, description, motorcycle, cost);
 
-  expect(result.date.value.toISOString()).toStrictEqual(new Date(2030, 1, 1).toISOString());
+  expect(result.date.toISOString()).toStrictEqual(new Date(2030, 1, 1).toISOString());
   expect(result.description).toStrictEqual("Maintenance description"); 
   expect(result.cost).toStrictEqual(100);
   expect(result.motorcycle.brand.value).toStrictEqual("Triumph");
@@ -41,9 +40,9 @@ Deno.test("Shoud return an appointment entity", () => {
 });
 
 Deno.test("Should throw error for invalid maintenance entity data", () => {
-  const date = AppointmentDate.from(new Date(2010, 1, 1)); 
+  const date = new Date(2010, 1, 1); 
   if (!(date instanceof Error)) {
-    throw new AppointmentDatePastError("Invalid date");
+    throw new InvalidDateError("Invalid date");
   }
 
   const brand = Brand.from("");

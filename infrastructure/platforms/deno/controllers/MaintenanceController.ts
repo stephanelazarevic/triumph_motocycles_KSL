@@ -90,8 +90,7 @@ export class MaintenanceController {
     }
 
     return exhaustive(error.name, {
-      AppointmentDatePastError: () => new Response("AppointmentDatePastError", { status: 400 }),
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 400 }),
+      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
     });
   }
 
@@ -119,7 +118,7 @@ export class MaintenanceController {
     }
 
     return exhaustive(result.name, {
-      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 400 }),
+      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
     });
   }
 
@@ -144,7 +143,7 @@ export class MaintenanceController {
     }
 
     return exhaustive(result.name, {
-      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 400 }),
+      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
     });
   }
 }
