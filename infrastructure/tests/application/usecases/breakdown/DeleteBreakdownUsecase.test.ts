@@ -7,6 +7,7 @@ import { BreakdownType } from "../../../../../domain/entities/BreakdownEntity.ts
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
 import { Brand } from "../../../../../domain/types/Brand.ts";
 import { Model } from "../../../../../domain/types/Model.ts";
+import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 
 const breakdownRepository = new BreakdownRepositoryInMemory([]);
 
@@ -27,6 +28,10 @@ const type = BreakdownType.PANNE;
 const reportDate = new Date(2010, 1, 1);
 const resolutionDate = new Date(2011, 1, 1);
 const status = "resolved";
+
+if (reportDate || resolutionDate instanceof Error) {
+  throw new InvalidDateError("Invalid date");
+}
 
 const breakdown = BreakdownEntity.create(
   description,
