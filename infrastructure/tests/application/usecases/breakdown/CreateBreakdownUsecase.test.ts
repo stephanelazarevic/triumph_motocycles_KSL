@@ -27,10 +27,13 @@ if (model instanceof Error) {
 const motorcycle = MotorcycleEntity.create(brand, model, 2024);
 const description = "Breakdown description";
 const type = BreakdownType.PANNE;
-const today = new Date();
 const reportDate = (new Date(2010, 1, 1))
 const resolutionDate = (new Date(2011, 1, 1))
 const status = "resolved";
+
+if (reportDate || resolutionDate instanceof Error) {
+  throw new InvalidDateError("Invalid date");
+}
 
 const motorcycleRepository = new MotorcycleRepositoryInMemory([
   motorcycle,

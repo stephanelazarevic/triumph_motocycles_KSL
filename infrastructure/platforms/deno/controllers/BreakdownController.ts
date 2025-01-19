@@ -119,7 +119,7 @@ export class BreakdownController {
     }
 
     return exhaustive(result.name, {
-      BreakdownNotFoundError: () => new Response("BreakdownNotFoundError", { status: 400 }),
+      BreakdownNotFoundError: () => new Response("BreakdownNotFoundError", { status: 404 }),
     });
   }
 
