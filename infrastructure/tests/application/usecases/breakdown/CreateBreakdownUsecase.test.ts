@@ -39,7 +39,7 @@ const motorcycleRepository = new MotorcycleRepositoryInMemory([
   motorcycle,
 ]);
 
-Deno.test("Should return an error if the description is null", async () => {
+Deno.test("Should return an error if the description is empty", async () => {
   const createBreakdownUsecase = new CreateBreakdownUsecase(breakdownRepository, motorcycleRepository);
   const result = await createBreakdownUsecase.execute("", motorcycle.identifier, type, reportDate, resolutionDate, status);
 
