@@ -1,8 +1,8 @@
-import type { MotorcycleRepository } from "application/repositories/MotorcycleRepository.ts";
-import { ListMotorcyclesUsecase } from "application/usecases/ListMotorcyclesUsecase.ts";
-import { CreateMotorcycleUsecase } from "application/usecases/CreateMotorcycleUsecase.ts";
+import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
+import { ListMotorcyclesUsecase } from "../../../../application/usecases/ListMotorcyclesUsecase.ts";
+import { CreateMotorcycleUsecase } from "../../../../application/usecases/CreateMotorcycleUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createMotorcycleRequestSchema } from "infrastructure/platforms/deno/schemas/createMotorcycleRequestSchema.ts";
+import { createMotorcycleRequestSchema } from "../../../../infrastructure/platforms/deno/schemas/createMotorcycleRequestSchema.ts";
 
 export class MotorcycleController {
   public constructor(

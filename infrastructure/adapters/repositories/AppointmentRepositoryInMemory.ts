@@ -1,5 +1,5 @@
-import type { AppointmentRepository } from "application/repositories/AppointmentRepository.ts";
-import type { AppointmentEntity } from "domain/entities/AppointmentEntity.ts";
+import type { AppointmentRepository } from "../../../application/repositories/AppointmentRepository.ts";
+import type { AppointmentEntity } from "../../../domain/entities/AppointmentEntity.ts";
 
 export class AppointmentRepositoryInMemory implements AppointmentRepository {
   public constructor(private readonly appointments: AppointmentEntity[]) {}

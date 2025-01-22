@@ -12,9 +12,6 @@
   },
   "imports": {
     "bcryptjs": "npm:bcryptjs@^2.4.3",
-    "domain/": "./domain/",
-    "infrastructure/": "./infrastructure/",
-    "application/": "./application/",
     "i18n-iso-countries": "npm:i18n-iso-countries@^7.13.0",
     "libphonenumber-js": "npm:libphonenumber-js@^1.11.17"
   }

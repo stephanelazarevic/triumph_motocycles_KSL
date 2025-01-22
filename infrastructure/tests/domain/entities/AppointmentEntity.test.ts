@@ -1,9 +1,9 @@
 import { expect } from "jsr:@std/expect";
-import { AppointmentDate } from "domain/types/AppointmentDate.ts";
-import { Brand } from "domain/types/Brand.ts";
-import { Model } from "domain/types/Model.ts";
-import { MotorcycleEntity } from "domain/entities/MotorcycleEntity.ts";
-import { AppointmentEntity } from "domain/entities/AppointmentEntity.ts";
+import { AppointmentDate } from "../../../../domain/types/AppointmentDate.ts";
+import { Brand } from "../../../../domain/types/Brand.ts";
+import { Model } from "../../../../domain/types/Model.ts";
+import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
+import { AppointmentEntity } from "../../../../domain/entities/AppointmentEntity.ts";
 
 Deno.test("Shoud return an appointment entity", () => {
   const date = AppointmentDate.from(new Date(2030, 1, 1));

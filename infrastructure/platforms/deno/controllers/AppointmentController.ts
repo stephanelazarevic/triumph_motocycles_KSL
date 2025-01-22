@@ -1,9 +1,9 @@
-import type { AppointmentRepository } from "application/repositories/AppointmentRepository.ts";
-import type { MotorcycleRepository } from "application/repositories/MotorcycleRepository.ts";
-import { CreateAppointmentUsecase } from "application/usecases/CreateAppointmentUsecase.ts";
-import { ListAppointmentsUsecase } from "application/usecases/ListAppointmentsUsecase.ts";
+import type { AppointmentRepository } from "../../../../application/repositories/AppointmentRepository.ts";
+import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
+import { CreateAppointmentUsecase } from "../../../../application/usecases/CreateAppointmentUsecase.ts";
+import { ListAppointmentsUsecase } from "../../../../application/usecases/ListAppointmentsUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createAppointmentRequestSchema } from "infrastructure/platforms/deno/schemas/createAppointmentRequestSchema.ts";
+import { createAppointmentRequestSchema } from "../../../../infrastructure/platforms/deno/schemas/createAppointmentRequestSchema.ts";
 
 export class AppointmentController {
   public constructor(

@@ -1,6 +1,6 @@
 import isoCountries from "npm:i18n-iso-countries";
-import { CountryService } from "domain/services/CountryService.ts";
-import { AddressCountryNotFoundError } from "domain/errors/AddressCountryNotFoundError.ts";
+import { CountryService } from "../../domain/services/CountryService.ts";
+import { AddressCountryNotFoundError } from "../../domain/errors/AddressCountryNotFoundError.ts";
 
 export class I18nCountryService implements CountryService {
   public getCountryName(countryCode: string): string {
