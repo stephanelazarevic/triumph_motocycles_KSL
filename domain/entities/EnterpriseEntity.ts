@@ -1,7 +1,7 @@
-import { UserEntity } from "domain/entities/UserEntity.ts";
-import { Address } from "domain/types/Address.ts";
-import { EmailAddress } from "domain/types/EmailAddress.ts";
-import { PhoneNumber } from "domain/types/PhoneNumber.ts";
+import { UserEntity } from "../../domain/entities/UserEntity.ts";
+import { Address } from "../../domain/types/Address.ts";
+import { EmailAddress } from "../../domain/types/EmailAddress.ts";
+import { PhoneNumber } from "../../domain/types/PhoneNumber.ts";
 
 export class EnterpriseEntity extends UserEntity {
   constructor(

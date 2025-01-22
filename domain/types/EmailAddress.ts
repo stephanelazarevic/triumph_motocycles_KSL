@@ -1,4 +1,4 @@
-import { EmailAddressInvalidFormatError } from "domain/errors/EmailAddressInvalidFormatError.ts";
+import { EmailAddressInvalidFormatError } from "../../domain/errors/EmailAddressInvalidFormatError.ts";
 
 export class EmailAddress {
   private constructor(public readonly email: string) {}

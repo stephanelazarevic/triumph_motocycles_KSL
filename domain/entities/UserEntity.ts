@@ -1,6 +1,6 @@
-import { Address } from "domain/types/Address.ts";
-import { EmailAddress } from "domain/types/EmailAddress.ts";
-import { PhoneNumber } from "domain/types/PhoneNumber.ts";
+import { Address } from "../../domain/types/Address.ts";
+import { EmailAddress } from "../../domain/types/EmailAddress.ts";
+import { PhoneNumber } from "../../domain/types/PhoneNumber.ts";
 
 export class UserEntity {
   protected constructor(

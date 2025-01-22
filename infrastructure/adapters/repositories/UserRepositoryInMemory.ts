@@ -1,7 +1,7 @@
-import type { UserRepository } from "application/repositories/UserRepository.ts";
-import type { UserEntity } from "domain/entities/UserEntity.ts";
-import { UserNotFoundError } from "domain/errors/UserNotFoundError.ts";
-import { EmailAddress } from "domain/types/EmailAddress.ts";
+import type { UserRepository } from "../../../application/repositories/UserRepository.ts";
+import type { UserEntity } from "../../../domain/entities/UserEntity.ts";
+import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
+import { EmailAddress } from "../../../domain/types/EmailAddress.ts";
 
 export class UserRepositoryInMemory implements UserRepository {
   constructor(private users: UserEntity[] = []) {}

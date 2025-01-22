@@ -1,10 +1,10 @@
 import { expect } from "jsr:@std/expect";
-import { CreateAppointmentUsecase } from "application/usecases/CreateAppointmentUsecase.ts";
-import { AppointmentRepositoryInMemory } from "infrastructure/adapters/repositories/AppointmentRepositoryInMemory.ts";
-import { MotorcycleRepositoryInMemory } from "infrastructure/adapters/repositories/MotorcycleRepositoryInMemory.ts";
-import { MotorcycleEntity } from "domain/entities/MotorcycleEntity.ts";
-import { Brand } from "domain/types/Brand.ts";
-import { Model } from "domain/types/Model.ts";
+import { CreateAppointmentUsecase } from "../../../../application/usecases/CreateAppointmentUsecase.ts";
+import { AppointmentRepositoryInMemory } from "../../../../infrastructure/adapters/repositories/AppointmentRepositoryInMemory.ts";
+import { MotorcycleRepositoryInMemory } from "../../../../infrastructure/adapters/repositories/MotorcycleRepositoryInMemory.ts";
+import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
+import { Brand } from "../../../../domain/types/Brand.ts";
+import { Model } from "../../../../domain/types/Model.ts";
 
 const appointmentRepository = new AppointmentRepositoryInMemory([]);
 const brand = Brand.from("Triumph");

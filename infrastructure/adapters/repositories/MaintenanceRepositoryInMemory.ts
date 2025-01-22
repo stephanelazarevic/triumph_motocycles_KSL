@@ -1,6 +1,6 @@
-import type { MaintenanceRepository } from "application/repositories/MaintenanceRepository.ts";
-import type { MaintenanceEntity } from "domain/entities/MaintenanceEntity.ts";
-import { MaintenanceNotFoundError } from "domain/errors/MaintenanceNotFoundError.ts";
+import type { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository.ts";
+import type { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
+import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
 
 export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
   public constructor(private maintenances: MaintenanceEntity[]) {}

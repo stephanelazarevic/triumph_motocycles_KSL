@@ -1,7 +1,7 @@
-import { UserEntity } from "domain/entities/UserEntity.ts";
-import { UserRepository } from "application/repositories/UserRepository.ts";
-import { PasswordService } from "domain/services/PasswordService.ts";
-import { Password } from "domain/types/Password.ts";
+import { UserEntity } from "../../../domain/entities/UserEntity.ts";
+import { UserRepository } from "../../../application/repositories/UserRepository.ts";
+import { PasswordService } from "../../../domain/services/PasswordService.ts";
+import { Password } from "../../../domain/types/Password.ts";
 
 export class CreateUserUsecase {
   private static passwordService: PasswordService;

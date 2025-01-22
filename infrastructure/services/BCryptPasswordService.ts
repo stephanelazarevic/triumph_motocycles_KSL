@@ -1,6 +1,6 @@
 import bcrypt from "npm:bcryptjs";
-import { PasswordService } from "domain/services/PasswordService.ts";
-import { Password } from "domain/types/Password.ts";
+import { PasswordService } from "../../domain/services/PasswordService.ts";
+import { Password } from "../../domain/types/Password.ts";
 
 export class BCryptPasswordService implements PasswordService {
   public async hashPassword(password: Password): Promise<string> {

@@ -1,6 +1,6 @@
-import { MaintenanceEntity } from "domain/entities/MaintenanceEntity.ts";
-import { MaintenanceNotFoundError } from "domain/errors/MaintenanceNotFoundError.ts";
-import { MaintenanceRepository } from "application/repositories/MaintenanceRepository.ts";
+import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
+import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
+import { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository.ts";
 
 export class FindMaintenanceUsecase {
   constructor(private maintenanceRepository: MaintenanceRepository) {}

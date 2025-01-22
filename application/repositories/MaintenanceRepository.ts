@@ -1,5 +1,5 @@
-import { MaintenanceEntity } from "domain/entities/MaintenanceEntity.ts";
-import { MaintenanceNotFoundError } from "domain/errors/MaintenanceNotFoundError.ts";
+import { MaintenanceEntity } from "../../domain/entities/MaintenanceEntity.ts";
+import { MaintenanceNotFoundError } from "../../domain/errors/MaintenanceNotFoundError.ts";
 
 export interface MaintenanceRepository {
   save(maintenance: MaintenanceEntity): Promise<void>;

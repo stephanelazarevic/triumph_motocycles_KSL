@@ -1,5 +1,5 @@
-import type { MotorcycleRepository } from "application/repositories/MotorcycleRepository.ts";
-import type { MotorcycleEntity } from "domain/entities/MotorcycleEntity.ts";
+import type { MotorcycleRepository } from "../../../application/repositories/MotorcycleRepository.ts";
+import type { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
 
 export class MotorcycleRepositoryInMemory implements MotorcycleRepository {
   public constructor(public readonly motorcycles: MotorcycleEntity[]) {}

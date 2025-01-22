@@ -2,8 +2,8 @@ import {
   parsePhoneNumberWithError,
   isValidPhoneNumber,
 } from "npm:libphonenumber-js";
-import { PhoneNumberService } from "domain/services/PhoneNumberService.ts";
-import { PhoneNumberFormatError } from "domain/errors/PhoneNumberFormatError.ts";
+import { PhoneNumberService } from "../../domain/services/PhoneNumberService.ts";
+import { PhoneNumberFormatError } from "../../domain/errors/PhoneNumberFormatError.ts";
 
 export class LibPhoneNumberService implements PhoneNumberService {
   public formatInternational(phoneNumber: string): string {
