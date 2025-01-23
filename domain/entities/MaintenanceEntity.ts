@@ -1,4 +1,4 @@
-import type { MotorcycleEntity } from "./MotorcycleEntity.ts";
+import { MotorcycleEntity } from "./MotorcycleEntity.ts";
 
 export class MaintenanceEntity {
   private constructor(

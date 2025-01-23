@@ -1,5 +1,5 @@
-import type { AppointmentDate } from "../../domain/types/AppointmentDate.ts";
-import type { MotorcycleEntity } from "../../domain/entities/MotorcycleEntity.ts";
+import { AppointmentDate } from "../types/AppointmentDate.ts";
+import { MotorcycleEntity } from "./MotorcycleEntity.ts";
 
 export class AppointmentEntity {
   private constructor(

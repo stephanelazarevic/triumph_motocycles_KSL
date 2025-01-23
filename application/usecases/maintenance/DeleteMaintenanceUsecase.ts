@@ -1,4 +1,4 @@
-import { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository.ts";
+import { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
 import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
 
 export class DeleteMaintenanceUsecase {

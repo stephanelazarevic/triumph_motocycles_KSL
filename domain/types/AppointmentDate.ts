@@ -1,4 +1,4 @@
-import { AppointmentDatePastError } from "../../domain/errors/AppointmentDatePastError.ts";
+import { AppointmentDatePastError } from "../errors/AppointmentDatePastError.ts";
 
 export class AppointmentDate {
   private constructor(public readonly value: Date) {}

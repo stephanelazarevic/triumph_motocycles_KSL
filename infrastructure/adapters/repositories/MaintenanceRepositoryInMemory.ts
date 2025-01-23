@@ -1,5 +1,5 @@
-import type { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository.ts";
-import type { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
+import { MaintenanceRepository } from "../../../application/repositories/MaintenanceRepository.ts";
+import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
 import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
 
 export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
@@ -21,9 +21,7 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
     return Promise.resolve(this.maintenances);
   }
 
-  public findOneById(
-    id: string
-  ): Promise<MaintenanceEntity | MaintenanceNotFoundError> {
+  public findOneById(id: string): Promise<MaintenanceEntity | MaintenanceNotFoundError> {
     const foundMaintenance = this.maintenances.find((maintenance) => {
       return maintenance.identifier === id;
     });
