@@ -1,8 +1,8 @@
-import { PasswordMissingLowercaseError } from "../../domain/errors/PasswordMissingLowercaseError.ts";
-import { PasswordMissingUppercaseError } from "../../domain/errors/PasswordMissingUppercaseError.ts";
-import { PasswordMissingNumberError } from "../../domain/errors/PasswordMissingNumberError.ts";
-import { PasswordMissingSymbolError } from "../../domain/errors/PasswordMissingSymbolError.ts";
-import { PasswordTooShortError } from "../../domain/errors/PasswordTooShortError.ts";
+import { PasswordMissingLowercaseError } from "../errors/PasswordMissingLowercaseError.ts";
+import { PasswordMissingNumberError } from "../errors/PasswordMissingNumberError.ts";
+import { PasswordMissingSymbolError } from "../errors/PasswordMissingSymbolError.ts";
+import { PasswordMissingUppercaseError } from "../errors/PasswordMissingUppercaseError.ts";
+import { PasswordTooShortError } from "../errors/PasswordTooShortError.ts";
 
 export class Password {
   private constructor(public readonly value: string) {}

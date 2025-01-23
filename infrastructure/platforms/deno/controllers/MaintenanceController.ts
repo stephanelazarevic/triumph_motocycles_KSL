@@ -16,9 +16,7 @@ export class MaintenanceController {
   ) {}
 
   public async getAllMaintenances(): Promise<Response> {
-    const listMaintenancesUsecase = new FindAllMaintenancesUsecase(
-      this.maintenanceRepository
-    );
+    const listMaintenancesUsecase = new FindAllMaintenancesUsecase(this.maintenanceRepository);
 
     const result = await listMaintenancesUsecase.execute();
 
@@ -38,9 +36,7 @@ export class MaintenanceController {
       return new Response("Maintenance ID is required", { status: 400 });
     }
 
-    const findMaintenanceUsecase = new FindMaintenanceUsecase(
-      this.maintenanceRepository
-    );
+    const findMaintenanceUsecase = new FindMaintenanceUsecase(this.maintenanceRepository);
 
     const result = await findMaintenanceUsecase.execute(id);
 
@@ -89,9 +85,7 @@ export class MaintenanceController {
     );
 
     if (!error) {
-      return new Response(null, {
-        status: 201,
-      });
+      return new Response(null, { status: 201 });
     }
 
     return exhaustive(error.name, {
@@ -101,26 +95,20 @@ export class MaintenanceController {
   }
 
   public async updateMaintenance(request: Request): Promise<Response> {
-    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(
-      this.maintenanceRepository
-    );
+    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
 
     const body = await request.json();
 
     const validation = createMaintenanceRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return new Response("Malformed request", { status: 400 });
     }
 
     const result = await updateMaintenanceUsecase.execute(validation.data);
 
     if (result === undefined) {
-      return new Response(null, {
-        status: 201,
-      });
+      return new Response(null, { status: 201 });
     }
 
     return exhaustive(result.name, {
@@ -144,9 +132,7 @@ export class MaintenanceController {
     const result = await deleteMaintenanceUsecase.execute(id);
 
     if (result === undefined) {
-      return new Response(null, {
-        status: 204,
-      });
+      return new Response(null, { status: 204 });
     }
 
     return exhaustive(result.name, {

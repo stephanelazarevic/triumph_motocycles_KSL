@@ -1,5 +1,5 @@
-import { PhoneNumberInvalidError } from "../../domain/errors/PhoneNumberInvalidError.ts";
-import { PhoneNumberService } from "../../domain/services/PhoneNumberService.ts";
+import { PhoneNumberInvalidError } from "../errors/PhoneNumberInvalidError.ts";
+import { PhoneNumberService } from "../services/PhoneNumberService.ts";
 
 export class PhoneNumber {
   private static phoneNumberService: PhoneNumberService;

@@ -4,8 +4,6 @@ import { MaintenanceNotFoundError } from "../../domain/errors/MaintenanceNotFoun
 export interface MaintenanceRepository {
   save(maintenance: MaintenanceEntity): Promise<void>;
   findAll(): Promise<MaintenanceEntity[]>;
-  findOneById(
-    id: string
-  ): Promise<MaintenanceEntity | MaintenanceNotFoundError>;
+  findOneById(id: string): Promise<MaintenanceEntity | MaintenanceNotFoundError>;
   delete(id: string): Promise<void>;
 }
