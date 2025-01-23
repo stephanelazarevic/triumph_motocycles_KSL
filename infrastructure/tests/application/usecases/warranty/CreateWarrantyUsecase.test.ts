@@ -56,7 +56,7 @@ Deno.test("Should return an error if the terms are null", async () => {
     expect(result).toBeInstanceOf(EmptyDescriptionError);
 });
 
-Deno.test("Should return an error if the startDate is not good", async () => {
+Deno.test("Should return an error if the startDate is invalid", async () => {
     const createWarrantyUsecase = new CreateWarrantyUsecase(warrantyRepository, motorcycleRepository);
     const badStartDate = new Date(2022, 1, 1);
     const result = await createWarrantyUsecase.execute(badStartDate, endDate, motorcycle.identifier, warrantyType, terms);
@@ -64,7 +64,7 @@ Deno.test("Should return an error if the startDate is not good", async () => {
     expect(result).toBeInstanceOf(InvalidDateError);
 });  
 
-Deno.test("Should return an error if the endDate is not good", async () => {
+Deno.test("Should return an error if the endDate is invalid", async () => {
     const createWarrantyUsecase = new CreateWarrantyUsecase(warrantyRepository, motorcycleRepository);
     const badEndDate = new Date(2022, 1, 1);
     const result = await createWarrantyUsecase.execute(startDate, badEndDate, motorcycle.identifier, warrantyType, terms);
