@@ -35,7 +35,7 @@ const motorcycleRepository = new MotorcycleRepositoryInMemory([
   motorcycle,
 ]);
 
-Deno.test("Should return an error if the date is not good", async () => {
+Deno.test("Should return an error if the date is invalid", async () => {
   const createMaintenanceUsecase = new CreateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
   const badDate = new Date(2006, 1, 1);
   const result = await createMaintenanceUsecase.execute(badDate, description, motorcycle.identifier, cost);
