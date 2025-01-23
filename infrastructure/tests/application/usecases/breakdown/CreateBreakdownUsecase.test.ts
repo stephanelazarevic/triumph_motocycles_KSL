@@ -53,14 +53,14 @@ Deno.test("Should return an error if the motorcycle does not exist", async () =>
   expect(result).toBeInstanceOf(MotorcycleNotFoundError);
 });
 
-Deno.test("Should return an error if the type is not the good one", async () => {
+Deno.test("Should return an error if the type is invalid", async () => {
     const createBreakdownUsecase = new CreateBreakdownUsecase(breakdownRepository, motorcycleRepository);
     const result = await createBreakdownUsecase.execute(description, motorcycle.identifier, BreakdownType.ACCIDENT, reportDate, resolutionDate, status);
   
     expect(result).toBeInstanceOf(NullCostError);
 }); 
 
-Deno.test("Should return an error if the reportDate is not good", async () => {
+Deno.test("Should return an error if the reportDate is invalid", async () => {
   const createBreakdownUsecase = new CreateBreakdownUsecase(breakdownRepository, motorcycleRepository);
   const badReportDate = new Date(2005, 1, 1);
   const result = await createBreakdownUsecase.execute(description, motorcycle.identifier, type, badReportDate, resolutionDate, status);
@@ -68,7 +68,7 @@ Deno.test("Should return an error if the reportDate is not good", async () => {
   expect(result).toBeInstanceOf(InvalidDateError);
 }); 
 
-Deno.test("Should return an error if the resolutionDate is not good", async () => {
+Deno.test("Should return an error if the resolutionDate is invalid", async () => {
   const createBreakdownUsecase = new CreateBreakdownUsecase(breakdownRepository, motorcycleRepository);
   const badResolutionDate = new Date(2005, 1, 1);
   const result = await createBreakdownUsecase.execute(description, motorcycle.identifier, type, reportDate, badResolutionDate, status);
@@ -85,14 +85,14 @@ Deno.test("Should return an error if the resolutionDate is before the reportDate
   expect(result).toBeInstanceOf(InvalidDateError);
 }); 
 
-Deno.test("Should return an error if the status is not good", async () => {
+Deno.test("Should return an error if the status is invalid", async () => {
   const createBreakdownUsecase = new CreateBreakdownUsecase(breakdownRepository, motorcycleRepository);
   const result = await createBreakdownUsecase.execute(description, motorcycle.identifier, type, reportDate, resolutionDate, "status");
 
   expect(result).toBeInstanceOf(BadStatusError);
 }); 
 
-Deno.test("Should succeed when creating an appointment correctly", async () => {
+Deno.test("Should succeed when creating a breakdown correctly", async () => {
   const createBreakdownUsecase = new CreateBreakdownUsecase(breakdownRepository, motorcycleRepository);
   const result = await createBreakdownUsecase.execute(description, motorcycle.identifier, type, reportDate, resolutionDate, status);
 
