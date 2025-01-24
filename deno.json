@@ -11,5 +11,8 @@
   },
   "fmt": {
     "lineWidth": 10000
+  },
+  "imports": {
+    "prisma": "https://deno.land/x/prisma@2.30.0/mod.ts"
   }
 }
