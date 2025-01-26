@@ -208,7 +208,7 @@ model Maintenance {
 
 model Breakdown {
   id             Int      @id @default(autoincrement())
-  idMoto         Intk
+  idMoto         Int
   type           BreakdownType
   description    String
   reportDate     DateTime
