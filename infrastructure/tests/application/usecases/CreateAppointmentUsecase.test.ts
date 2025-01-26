@@ -20,33 +20,52 @@ if (model instanceof Error) {
 
 const motorcycle = MotorcycleEntity.create(brand, model, 2024);
 
-const motorcycleRepository = new MotorcycleRepositoryInMemory([
-  motorcycle,
-]);
+const motorcycleRepository = new MotorcycleRepositoryInMemory([motorcycle]);
 
-Deno.test("Should return an error if the date is in the past when createing an appointment", async () => {
-  const createAppointmentUsecase = new CreateAppointmentUsecase(appointmentRepository, motorcycleRepository);
-  const today = new Date();
-  const date = new Date(today.getFullYear() - 1, 1, 1);
-  const result = await createAppointmentUsecase.execute(date, motorcycle.identifier);
+Deno.test(
+  "Should return an error if the date is in the past when createing an appointment",
+  async () => {
+    const createAppointmentUsecase = new CreateAppointmentUsecase(
+      appointmentRepository,
+      motorcycleRepository
+    );
+    const today = new Date();
+    const date = new Date(today.getFullYear() - 1, 1, 1);
+    const result = await createAppointmentUsecase.execute(
+      date,
+      motorcycle.identifier
+    );
 
-  expect(result).not.toBeUndefined();
-});
+    expect(result).not.toBeUndefined();
+  }
+);
 
-Deno.test("Should return an error if the the motorcycle does not exist", async () => {
-  const createAppointmentUsecase = new CreateAppointmentUsecase(appointmentRepository, motorcycleRepository);
-  const today = new Date();
-  const date = new Date(today.getFullYear() + 1, 1, 1);
-  const result = await createAppointmentUsecase.execute(date, "");
+Deno.test(
+  "Should return an error if the the motorcycle does not exist",
+  async () => {
+    const createAppointmentUsecase = new CreateAppointmentUsecase(
+      appointmentRepository,
+      motorcycleRepository
+    );
+    const today = new Date();
+    const date = new Date(today.getFullYear() + 1, 1, 1);
+    const result = await createAppointmentUsecase.execute(date, "");
 
-  expect(result).not.toBeUndefined();
-});
+    expect(result).not.toBeUndefined();
+  }
+);
 
 Deno.test("Should succeed when creating an appointment correctly", async () => {
-  const createAppointmentUsecase = new CreateAppointmentUsecase(appointmentRepository, motorcycleRepository);
+  const createAppointmentUsecase = new CreateAppointmentUsecase(
+    appointmentRepository,
+    motorcycleRepository
+  );
   const today = new Date();
   const date = new Date(today.getFullYear() + 1, 1, 1);
-  const result = await createAppointmentUsecase.execute(date, motorcycle.identifier);
+  const result = await createAppointmentUsecase.execute(
+    date,
+    motorcycle.identifier
+  );
   const appointments = await appointmentRepository.all();
 
   expect(result).toBeUndefined();

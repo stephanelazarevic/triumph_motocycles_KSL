@@ -1,5 +1,5 @@
-import type { AppointmentDate } from "../types/AppointmentDate.ts";
-import type { MotorcycleEntity } from "./MotorcycleEntity.ts";
+import { AppointmentDate } from "../types/AppointmentDate.ts";
+import { MotorcycleEntity } from "./MotorcycleEntity.ts";
 
 export class AppointmentEntity {
   private constructor(
@@ -7,7 +7,7 @@ export class AppointmentEntity {
     public readonly date: AppointmentDate,
     public readonly motorcycle: MotorcycleEntity,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date,
+    public readonly updatedAt: Date
   ) {}
 
   public static create(date: AppointmentDate, motorcycle: MotorcycleEntity) {
@@ -20,7 +20,7 @@ export class AppointmentEntity {
       date,
       motorcycle,
       createdAt,
-      updatedAt,
+      updatedAt
     );
   }
 }

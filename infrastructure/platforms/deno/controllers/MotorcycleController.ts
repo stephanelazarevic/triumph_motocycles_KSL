@@ -24,18 +24,14 @@ export class MotorcycleController {
     const validation = createMotorcycleRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return new Response("Malformed request", { status: 400 });
     }
 
     const { brand, model, year } = validation.data;
     const error = await createMotorcycleUsecase.execute(brand, model, year);
 
     if (!error) {
-      return new Response(null, {
-        status: 201,
-      });
+      return new Response(null, { status: 201 });
     }
 
     return exhaustive(error.name, {

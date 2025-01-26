@@ -8,13 +8,11 @@ import { createAppointmentRequestSchema } from "../schemas/createAppointmentRequ
 export class AppointmentController {
   public constructor(
     private readonly appointmentRepository: AppointmentRepository,
-    private readonly motorcycleRepository: MotorcycleRepository,
+    private readonly motorcycleRepository: MotorcycleRepository
   ) {}
 
   public async listAppointments(): Promise<Response> {
-    const listAppointmentsUsecase = new ListAppointmentsUsecase(
-      this.appointmentRepository,
-    );
+    const listAppointmentsUsecase = new ListAppointmentsUsecase(this.appointmentRepository);
 
     const appointments = await listAppointmentsUsecase.execute();
 
@@ -29,7 +27,7 @@ export class AppointmentController {
   public async createAppointment(request: Request): Promise<Response> {
     const createAppointmentUsecase = new CreateAppointmentUsecase(
       this.appointmentRepository,
-      this.motorcycleRepository,
+      this.motorcycleRepository
     );
 
     const body = await request.json();
@@ -37,9 +35,7 @@ export class AppointmentController {
     const validation = createAppointmentRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return new Response("Malformed request", { status: 400 });
     }
 
     const { date, motorcycleId } = validation.data;
@@ -47,9 +43,7 @@ export class AppointmentController {
     const error = await createAppointmentUsecase.execute(date, motorcycleId);
 
     if (!error) {
-      return new Response(null, {
-        status: 201,
-      });
+      return new Response(null, { status: 201 });
     }
 
     return exhaustive(error.name, {
