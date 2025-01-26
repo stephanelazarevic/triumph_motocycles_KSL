@@ -1,0 +1,10 @@
+import { z } from "npm:zod";
+import { NotificationStatus, NotificationType } from "../../../../domain/entities/NotificationEntity";
+
+export const createNotificationRequestSchema = z.object({
+    userId: z.string().uuid(),
+    type: z.nativeEnum(NotificationType, { errorMap: () => ({ message: "Invalid notification type" }) }),
+    message: z.string().required("Message is required"),
+    date: z.date({ coerce: true }),
+    status: z.nativeEnum(NotificationStatus, { errorMap: () => ({ message: "Invalid notification status" }) }),
+});
