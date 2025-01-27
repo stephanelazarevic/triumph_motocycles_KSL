@@ -6,9 +6,9 @@ import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.
 import { UserEntity } from "../../../../../domain/entities/UserEntity.ts";
 import { NotificationStatus, NotificationType } from "../../../../../domain/enum/NotificationEnum.ts";
 import { UserNotFoundError } from "../../../../../domain/errors/UserNotFoundError.ts";
-import { InvalidNotificationTypeError } from "../../../../../domain/errors/InvalidNotificationTypeError.ts";
+import { NotificationInvalidTypeError } from "../../../../../domain/errors/NotificationInvalidTypeError.ts";
 import { EmptyMessageError } from "../../../../../domain/errors/EmptyMessageError.ts";
-import { InvalidNotificationStatusError } from "../../../../../domain/errors/InvalidNotificationStatusError.ts";
+import { NotificationInvalidStatusError } from "../../../../../domain/errors/NotificationInvalidStatusError.ts";
     
 const notificationRepository = new NotificationRepositoryInMemory([]);
 
@@ -60,7 +60,7 @@ Deno.test("Should return an error if the type is invalid", async () => {
     status
   );
 
-  expect(result).toBeInstanceOf(InvalidNotificationTypeError);
+  expect(result).toBeInstanceOf(NotificationInvalidTypeError);
 });
 
 Deno.test("Should return an error if the message is empty", async () => {
@@ -111,7 +111,7 @@ Deno.test("Should return an error if the status is invalid", async () => {
     invalidNotificationStatus
   );
 
-  expect(result).toBeInstanceOf(InvalidNotificationStatusError);
+  expect(result).toBeInstanceOf(NotificationInvalidStatusError);
 });
 
 Deno.test("Should succeed when creating a notification correctly", async () => {
