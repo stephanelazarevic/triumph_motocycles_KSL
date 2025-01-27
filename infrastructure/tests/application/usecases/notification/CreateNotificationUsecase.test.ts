@@ -4,7 +4,7 @@ import { NotificationRepositoryInMemory } from "../../../../adapters/repositorie
 import { UserRepositoryInMemory } from "../../../../adapters/repositories/UserRepositoryInMemory.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { UserEntity } from "../../../../../domain/entities/UserEntity.ts";
-import { NotificationStatus, NotificationType } from "../../../../../domain/entities/NotificationEntity.ts";
+import { NotificationStatus, NotificationType } from "../../../../../domain/enum/NotificationEnum.ts";
 import { UserNotFoundError } from "../../../../../domain/errors/UserNotFoundError.ts";
 import { InvalidNotificationTypeError } from "../../../../../domain/errors/InvalidNotificationTypeError.ts";
 import { EmptyMessageError } from "../../../../../domain/errors/EmptyMessageError.ts";

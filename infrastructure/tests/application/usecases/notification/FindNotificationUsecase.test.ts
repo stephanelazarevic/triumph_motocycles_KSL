@@ -2,7 +2,8 @@ import { expect } from "jsr:@std/expect";
 import { FindNotificationUsecase } from "../../../../../application/usecases/notification/FindNotificationUsecase.ts";
 import { UserEntity } from "../../../../../domain/entities/UserEntity.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
-import { NotificationEntity, NotificationStatus, NotificationType } from "../../../../../domain/entities/NotificationEntity.ts";
+import { NotificationEntity } from "../../../../../domain/entities/NotificationEntity.ts";
+import { NotificationStatus, NotificationType } from "../../../../../domain/enum/NotificationEnum.ts";
 import { NotificationRepositoryInMemory } from "../../../../adapters/repositories/NotificationRepositoryInMemory.ts";
 import { NotificationNotFoundError } from "../../../../../domain/errors/NotificationNotFoundError.ts";
 

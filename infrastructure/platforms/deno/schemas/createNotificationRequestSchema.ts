@@ -1,5 +1,5 @@
 import { z } from "npm:zod";
-import { NotificationStatus, NotificationType } from "../../../../domain/entities/NotificationEntity";
+import { NotificationStatus, NotificationType } from "../../../../domain/enum/NotificationEnum.ts";
 
 export const createNotificationRequestSchema = z.object({
     userId: z.string().uuid(),

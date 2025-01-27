@@ -1,6 +1,7 @@
 import { expect } from "jsr:@std/expect";
 import { UserEntity } from "../../../../domain/entities/UserEntity.ts";
-import { NotificationEntity, NotificationStatus, NotificationType } from "../../../../domain/entities/NotificationEntity.ts";
+import { NotificationEntity } from "../../../../domain/entities/NotificationEntity.ts";
+import { NotificationStatus, NotificationType } from "../../../../domain/enum/NotificationEnum.ts";
 
 Deno.test("Shoud return a notification entity", () => {
   const user = UserEntity.create("Pierre", "Robin", "pierre.robin@gmail.com", "123456", "0624252627", "street1", "75010", "19", true);

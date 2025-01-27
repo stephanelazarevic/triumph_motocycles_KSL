@@ -1,15 +1,5 @@
 import { UserEntity } from "./UserEntity.ts";
-
-export enum NotificationType {
-    INFO = "info",
-    ALERTE = "alerte",
-    ERREUR = "erreur",
-}
-
-export enum NotificationStatus {
-    READ = "read",
-    UNREAD = "unread",
-}
+import { NotificationType, NotificationStatus } from "../enum/NotificationEnum.ts";
 
 export class NotificationEntity {
   private constructor(

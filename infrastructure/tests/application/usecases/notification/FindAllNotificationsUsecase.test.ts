@@ -2,7 +2,8 @@ import { expect } from "jsr:@std/expect";
 import { FindAllNotificationsUsecase } from "../../../../../application/usecases/notification/FindAllNotificationsUsecase.ts";
 import { UserEntity } from "../../../../../domain/entities/UserEntity.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
-import { NotificationEntity, NotificationStatus, NotificationType } from "../../../../../domain/entities/NotificationEntity.ts";
+import { NotificationEntity } from "../../../../../domain/entities/NotificationEntity.ts";
+import { NotificationStatus, NotificationType } from "../../../../../domain/enum/NotificationEnum.ts";
 import { NotificationRepositoryInMemory } from "../../../../adapters/repositories/NotificationRepositoryInMemory.ts";
 
 const user = UserEntity.create("Pierre", "Robin", "pierre.robin@gmail.com", "123456", "0624252627", "street1", "75010", "19", true);

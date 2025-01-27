@@ -1,4 +1,5 @@
-import { NotificationEntity, NotificationStatus, NotificationType } from "../../../domain/entities/NotificationEntity.ts";
+import { NotificationEntity } from "../../../domain/entities/NotificationEntity.ts";
+import { NotificationStatus, NotificationType } from "../../../domain/enum/NotificationEnum.ts";
 import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 import { NotificationRepository } from "../../repositories/NotificationRepository.ts";
