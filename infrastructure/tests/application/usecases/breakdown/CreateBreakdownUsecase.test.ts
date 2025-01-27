@@ -7,7 +7,7 @@ import { Brand } from "../../../../../domain/types/Brand.ts";
 import { Model } from "../../../../../domain/types/Model.ts";
 import { BadStatusError } from "../../../../../domain/errors/BadStatusError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
-import { InvalidBreakdownTypeError } from "../../../../../domain/errors/InvalidBreakdownTypeError.ts";
+import { BreakdownInvalidTypeError } from "../../../../../domain/errors/BreakdownInvalidTypeError.ts";
 import { EmptyDescriptionError } from "../../../../../domain/errors/EmptyDescriptionError.ts";
 import { BreakdownType } from "../../../../../domain/enum/BreakdownEnum.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
@@ -58,7 +58,7 @@ Deno.test("Should return an error if the type is invalid", async () => {
     const invalidBreakdownType = "INVALID_TYPE" as unknown as BreakdownType;
     const result = await createBreakdownUsecase.execute(description, motorcycle.identifier, invalidBreakdownType, reportDate, resolutionDate, status);
   
-    expect(result).toBeInstanceOf(InvalidBreakdownTypeError);
+    expect(result).toBeInstanceOf(BreakdownInvalidTypeError);
 }); 
 
 Deno.test("Should return an error if the reportDate is invalid", async () => {
