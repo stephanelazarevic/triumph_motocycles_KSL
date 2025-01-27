@@ -3,7 +3,7 @@ import { DeleteBreakdownUsecase } from "../../../../../application/usecases/brea
 import { BreakdownRepositoryInMemory } from "../../../../adapters/repositories/BreakdownRepositoryInMemory.ts";
 import { BreakdownEntity } from "../../../../../domain/entities/BreakdownEntity.ts";
 import { BreakdownNotFoundError } from "../../../../../domain/errors/BreakdownNotFoundError.ts";
-import { BreakdownType } from "../../../../../domain/entities/BreakdownEntity.ts";
+import { BreakdownType } from "../../../../../domain/enum/BreakdownEnum.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
 import { Brand } from "../../../../../domain/types/Brand.ts";
 import { Model } from "../../../../../domain/types/Model.ts";

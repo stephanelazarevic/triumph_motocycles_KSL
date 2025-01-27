@@ -1,4 +1,5 @@
-import { BreakdownEntity, BreakdownType } from "../../../domain/entities/BreakdownEntity.ts";
+import { BreakdownEntity } from "../../../domain/entities/BreakdownEntity.ts";
+import { BreakdownType } from "../../../domain/enum/BreakdownEnum.ts";
 import { InvalidDateError } from "../../../domain/errors/InvalidDateError.ts";
 import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFoundError.ts";
 import type { BreakdownRepository } from "../../repositories/BreakdownRepository.ts";

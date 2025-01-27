@@ -1,9 +1,5 @@
 import type { MotorcycleEntity } from "./MotorcycleEntity.ts";
-
-export enum BreakdownType {
-    PANNE = "panne",
-    ACCIDENT = "accident",
-  }
+import type { BreakdownType } from "../enum/BreakdownEnum.ts";
 
 export class BreakdownEntity {
   private constructor(
