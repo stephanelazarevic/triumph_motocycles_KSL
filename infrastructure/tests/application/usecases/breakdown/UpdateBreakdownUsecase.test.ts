@@ -2,7 +2,7 @@ import { expect } from "jsr:@std/expect";
 import { UpdateBreakdownUsecase } from "../../../../../application/usecases/breakdown/UpdateBreakdownUsecase.ts";
 import { BreakdownRepositoryInMemory } from "../../../../adapters/repositories/BreakdownRepositoryInMemory.ts";
 import { BreakdownEntity } from "../../../../../domain/entities/BreakdownEntity.ts";
-import { BreakdownType } from "../../../../../domain/entities/BreakdownEntity.ts";
+import { BreakdownType } from "../../../../../domain/enum/BreakdownEnum.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
 import { Brand } from "../../../../../domain/types/Brand.ts";
 import { Model } from "../../../../../domain/types/Model.ts";
