@@ -1,17 +1,17 @@
-import { BreakdownEntity } from "../../../domain/entities/BreakdownEntity.ts";
-import { BreakdownType } from "../../../domain/enum/BreakdownEnum.ts";
+import { IncidentEntity } from "../../../domain/entities/IncidentEntity.ts";
+import { IncidentType } from "../../../domain/enum/IncidentEnum.ts";
 import { InvalidDateError } from "../../../domain/errors/InvalidDateError.ts";
 import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFoundError.ts";
-import type { BreakdownRepository } from "../../repositories/BreakdownRepository.ts";
+import type { IncidentRepository } from "../../repositories/IncidentRepository.ts";
 import type { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 
-export class CreateBreakdownUsecase {
+export class CreateIncidentUsecase {
   public constructor(
-    private readonly breakdownRepository: BreakdownRepository,
+    private readonly incidentRepository: IncidentRepository,
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async execute(description: string, motorcycleId: string, type: BreakdownType, reportDate: Date, resolutionDate: Date, status: string) {
+  public async execute(description: string, motorcycleId: string, type: IncidentType, reportDate: Date, resolutionDate: Date, status: string) {
 
     if (!(reportDate instanceof Date) || isNaN(reportDate.getTime())) {
         throw new InvalidDateError("La date de signalement est invalide.");
@@ -35,7 +35,7 @@ export class CreateBreakdownUsecase {
       return new MotorcycleNotFoundError();
     }
 
-    const breakdown = BreakdownEntity.create(
+    const incident = IncidentEntity.create(
       description,
       motorcycle,
       type,
@@ -44,6 +44,6 @@ export class CreateBreakdownUsecase {
       status
     );
 
-    await this.breakdownRepository.save(breakdown);
+    await this.incidentRepository.save(incident);
   }
 }
