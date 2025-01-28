@@ -2,6 +2,7 @@ import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserRepository } from "../../../application/repositories/UserRepository.ts";
 import { PasswordService } from "../../../domain/services/PasswordService.ts";
 import { Password } from "../../../domain/types/Password.ts";
+import { UserEmailAddressAlreadyUsedError } from "../../../domain/errors/UserEmailAddressAlreadyUsedError.ts";
 
 export class CreateUserUsecase {
   private static passwordService: PasswordService;
@@ -19,6 +20,11 @@ export class CreateUserUsecase {
     countryCode: string,
     isAdministrator: boolean
   ): Promise<UserEntity | Error> {
+    const existingUser = await this.userRepository.findByEmail(emailAddress);
+    if (existingUser) {
+      return new UserEmailAddressAlreadyUsedError();
+    }
+
     const validPasssword = Password.from(plainPassword);
     if (validPasssword instanceof Error) {
       return validPasssword;

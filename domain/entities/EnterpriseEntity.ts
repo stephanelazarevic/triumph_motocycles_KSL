@@ -1,33 +1,41 @@
-import { Address } from "../types/Address.ts";
-import { EmailAddress } from "../types/EmailAddress.ts";
-import { PhoneNumber } from "../types/PhoneNumber.ts";
+import { IndustryType } from "../types/IndustryType.ts";
+import { TaxNumber } from "../types/TaxNumber.ts";
 import { UserEntity } from "./UserEntity.ts";
 
+export class EnterpriseEntity {
+  private constructor(
+    public readonly id: string,
+    public readonly user: UserEntity,
+    public readonly taxNumber: TaxNumber,
+    public readonly industryType: IndustryType,
+    public readonly createdAt: Date,
+    public readonly updatedAt: Date
+  ) {}
 
-export class EnterpriseEntity extends UserEntity {
-  constructor(
-    id: string,
-    firstname: string,
-    lastname: string,
-    hashedPassword: string,
-    emailAddress: EmailAddress,
-    phoneNumber: PhoneNumber,
-    address: Address,
-    isAdministrator: boolean,
-    createdAt: Date,
-    updatedAt: Date,
-    public readonly taxNumber: string,
-    public readonly industryType: string[]
-  ) {
-    super(
+  public static create(
+    user: UserEntity,
+    taxNumber: string,
+    industryType: string
+  ): EnterpriseEntity | Error {
+    const validIndustryType = IndustryType.from(industryType);
+    if (validIndustryType instanceof Error) {
+      return validIndustryType;
+    }
+
+    const validTaxNumber = TaxNumber.from(taxNumber);
+    if (validTaxNumber instanceof Error) {
+      return validTaxNumber;
+    }
+
+    const id = crypto.randomUUID();
+    const createdAt = new Date();
+    const updatedAt = new Date();
+
+    return new EnterpriseEntity(
       id,
-      firstname,
-      lastname,
-      hashedPassword,
-      emailAddress,
-      phoneNumber,
-      address,
-      isAdministrator,
+      user,
+      validTaxNumber,
+      validIndustryType,
       createdAt,
       updatedAt
     );

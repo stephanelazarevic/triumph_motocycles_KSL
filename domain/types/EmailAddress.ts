@@ -1,7 +1,7 @@
 import { EmailAddressInvalidFormatError } from "../errors/EmailAddressInvalidFormatError.ts";
 
 export class EmailAddress {
-  private constructor(public readonly email: string) {}
+  private constructor(public readonly value: string) {}
 
   public static from(email: string): EmailAddress | Error {
     const emailFormatted = email.trim().toLowerCase();
