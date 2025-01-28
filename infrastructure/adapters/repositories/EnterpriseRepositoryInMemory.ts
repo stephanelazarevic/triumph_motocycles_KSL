@@ -30,7 +30,7 @@ export class EnterpriseRepositoryInMemory implements EnterpriseRepository {
   /**
    * Finds a single enterprise by ID. Returns the enterprise or throws an EnterpriseNotFoundError.
    */
-  public findById(
+  public findOneById(
     id: string
   ): Promise<EnterpriseEntity | EnterpriseNotFoundError> {
     const foundEnterprise = this.enterprises.find(

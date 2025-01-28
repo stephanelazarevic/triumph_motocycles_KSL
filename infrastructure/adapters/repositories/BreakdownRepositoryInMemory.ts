@@ -6,7 +6,9 @@ export class BreakdownRepositoryInMemory implements BreakdownRepository {
   public constructor(private breakdowns: BreakdownEntity[]) {}
 
   public save(breakdown: BreakdownEntity): Promise<void> {
-    const index = this.breakdowns.findIndex(breakdown => breakdown.identifier === breakdown.identifier);
+    const index = this.breakdowns.findIndex(
+      (breakdown) => breakdown.identifier === breakdown.identifier
+    );
     if (index === -1) {
       this.breakdowns.push(breakdown);
     } else {
@@ -19,7 +21,9 @@ export class BreakdownRepositoryInMemory implements BreakdownRepository {
     return Promise.resolve(this.breakdowns);
   }
 
-  async findOneById(id: string): Promise<BreakdownEntity | BreakdownNotFoundError> {
+  public findOneById(
+    id: string
+  ): Promise<BreakdownEntity | BreakdownNotFoundError> {
     const foundBreakdown = this.breakdowns.find((breakdown) => {
       return breakdown.identifier === id;
     });
@@ -27,7 +31,10 @@ export class BreakdownRepositoryInMemory implements BreakdownRepository {
     return Promise.resolve(foundBreakdown ?? new BreakdownNotFoundError());
   }
 
-  async delete(id: string): Promise<void> {
-    this.breakdowns = this.breakdowns.filter(breakdown => breakdown.identifier !== id);
+  public delete(id: string): Promise<void> {
+    this.breakdowns = this.breakdowns.filter(
+      (breakdown) => breakdown.identifier !== id
+    );
+    return Promise.resolve();
   }
 }

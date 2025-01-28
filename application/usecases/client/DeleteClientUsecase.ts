@@ -9,7 +9,7 @@ export class DeleteClientUseCase {
   ) {}
 
   public async execute(id: string): Promise<void> {
-    const client = await this.clientRepository.findById(id);
+    const client = await this.clientRepository.findOneById(id);
     if (client instanceof ClientNotFoundError) {
       throw client;
     }

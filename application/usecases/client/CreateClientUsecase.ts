@@ -1,7 +1,6 @@
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
 import { CreateUserUsecase } from "../user/CreateUserUsecase.ts";
 import { ClientEntity } from "../../../domain/entities/ClientEntity.ts";
-import { ClientDealerNotFoundError } from "../../../domain/errors/ClientDealerNotFoundError.ts";
 
 export class CreateClientUsecase {
   private readonly createUserUsecase: CreateUserUsecase;
@@ -35,14 +34,13 @@ export class CreateClientUsecase {
       countryCode,
       false
     );
-
     if (userEntity instanceof Error) {
       return userEntity;
     }
 
-    const dealer = await this.dealerRepository.findById(dealerId);
-    if (!dealer) {
-      return new ClientDealerNotFoundError();
+    const dealer = await this.dealerRepository.findOneById(dealerId);
+    if (dealer instanceof Error) {
+      return dealer;
     }
 
     const client = ClientEntity.create(userEntity, dealer.id);

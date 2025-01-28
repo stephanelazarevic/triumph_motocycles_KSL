@@ -30,7 +30,7 @@ export class DealerRepositoryInMemory implements DealerRepository {
   /**
    * Finds a single dealer by ID. Returns the dealer or throws a DealerNotFoundError.
    */
-  public findById(id: string): Promise<DealerEntity | DealerNotFoundError> {
+  public findOneById(id: string): Promise<DealerEntity | DealerNotFoundError> {
     const foundDealer = this.dealers.find((dealer) => dealer.id === id);
     return Promise.resolve(foundDealer ?? new DealerNotFoundError());
   }

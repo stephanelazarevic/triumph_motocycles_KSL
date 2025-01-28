@@ -30,7 +30,7 @@ export class ClientRepositoryInMemory implements ClientRepository {
   /**
    * Finds a single client by ID. Returns the client or throws a ClientNotFoundError.
    */
-  public findById(id: string): Promise<ClientEntity | ClientNotFoundError> {
+  public findOneById(id: string): Promise<ClientEntity | ClientNotFoundError> {
     const foundClient = this.clients.find((client) => client.id === id);
     return Promise.resolve(foundClient ?? new ClientNotFoundError());
   }

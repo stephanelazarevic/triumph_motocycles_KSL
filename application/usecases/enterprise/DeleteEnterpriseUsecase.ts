@@ -9,7 +9,7 @@ export class DeleteEnterpriseUseCase {
   ) {}
 
   public async execute(id: string): Promise<void> {
-    const enterprise = await this.enterpriseRepository.findById(id);
+    const enterprise = await this.enterpriseRepository.findOneById(id);
     if (enterprise instanceof EnterpriseNotFoundError) {
       throw enterprise;
     }

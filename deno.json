@@ -2,13 +2,11 @@
   "workspace": ["./infrastructure/platforms/deno"],
   "tasks": {
     "deno:dev": "deno run --watch --allow-net infrastructure/platforms/deno/index.ts",
-    "deno:start": "deno run --allow-net infrastructure/platforms/deno/index.ts"
+    "deno:start": "deno run --allow-net infrastructure/platforms/deno/index.ts",
+    "deno:analyze": "deno lint"
   },
   "compilerOptions": {
     "strict": true
-  },
-  "fmt": {
-    "lineWidth": 10000
   },
   "imports": {
     "bcryptjs": "npm:bcryptjs@^2.4.3",

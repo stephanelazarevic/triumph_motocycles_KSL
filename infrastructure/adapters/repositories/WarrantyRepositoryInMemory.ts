@@ -6,7 +6,9 @@ export class WarrantyRepositoryInMemory implements WarrantyRepository {
   public constructor(private warranties: WarrantyEntity[]) {}
 
   public save(warranty: WarrantyEntity): Promise<void> {
-    const index = this.warranties.findIndex(warranty => warranty.identifier === warranty.identifier);
+    const index = this.warranties.findIndex(
+      (warranty) => warranty.identifier === warranty.identifier
+    );
     if (index === -1) {
       this.warranties.push(warranty);
     } else {
@@ -19,7 +21,9 @@ export class WarrantyRepositoryInMemory implements WarrantyRepository {
     return Promise.resolve(this.warranties);
   }
 
-  async findOneById(id: string): Promise<WarrantyEntity | WarrantyNotFoundError> {
+  public findOneById(
+    id: string
+  ): Promise<WarrantyEntity | WarrantyNotFoundError> {
     const foundWarranty = this.warranties.find((warranty) => {
       return warranty.identifier === id;
     });
@@ -27,7 +31,10 @@ export class WarrantyRepositoryInMemory implements WarrantyRepository {
     return Promise.resolve(foundWarranty ?? new WarrantyNotFoundError());
   }
 
-  async delete(id: string): Promise<void> {
-    this.warranties = this.warranties.filter(warranty => warranty.identifier !== id);
+  public delete(id: string): Promise<void> {
+    this.warranties = this.warranties.filter(
+      (warranty) => warranty.identifier !== id
+    );
+    return Promise.resolve();
   }
 }

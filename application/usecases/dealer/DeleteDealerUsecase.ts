@@ -9,7 +9,7 @@ export class DeleteDealerUseCase {
   ) {}
 
   public async execute(id: string): Promise<void> {
-    const dealer = await this.dealerRepository.findById(id);
+    const dealer = await this.dealerRepository.findOneById(id);
     if (dealer instanceof DealerNotFoundError) {
       throw dealer;
     }
