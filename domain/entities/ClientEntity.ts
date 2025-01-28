@@ -6,12 +6,12 @@ export class ClientEntity {
     public readonly user: UserEntity,
     public readonly dealerId: string,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
   ) {}
 
   public static create(
     user: UserEntity,
-    dealerId: string
+    dealerId: string,
   ): ClientEntity | Error {
     const id = crypto.randomUUID();
     const createdAt = new Date();

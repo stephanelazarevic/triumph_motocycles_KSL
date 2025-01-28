@@ -10,7 +10,7 @@ export class ClientRepositoryInMemory implements ClientRepository {
    */
   public save(client: ClientEntity): Promise<void> {
     const index = this.clients.findIndex(
-      (existingClient) => existingClient.id === client.id
+      (existingClient) => existingClient.id === client.id,
     );
     if (index === -1) {
       this.clients.push(client);

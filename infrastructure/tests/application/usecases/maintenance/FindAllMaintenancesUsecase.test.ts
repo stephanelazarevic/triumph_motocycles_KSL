@@ -32,14 +32,14 @@ Deno.test("Should return all maintenances", async () => {
     date,
     description,
     motorcycle,
-    cost
+    cost,
   );
   const maintenanceRepository = new MaintenanceRepositoryInMemory([
     maintenance,
   ]);
 
   const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(
-    maintenanceRepository
+    maintenanceRepository,
   );
   const result = await findAllMaintenancesUsecase.execute();
 
@@ -55,11 +55,11 @@ Deno.test(
   async () => {
     const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
     const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(
-      maintenanceRepository
+      maintenanceRepository,
     );
 
     const result = await findAllMaintenancesUsecase.execute();
 
     expect(result).toStrictEqual([]);
-  }
+  },
 );

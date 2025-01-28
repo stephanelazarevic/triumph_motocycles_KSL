@@ -7,7 +7,7 @@ export class CreateEnterpriseUsecase {
 
   public constructor(
     private readonly enterpriseRepository: EnterpriseRepository,
-    createUserUsecase: CreateUserUsecase
+    createUserUsecase: CreateUserUsecase,
   ) {
     this.createUserUsecase = createUserUsecase;
   }
@@ -22,7 +22,7 @@ export class CreateEnterpriseUsecase {
     postalCode: string,
     countryCode: string,
     taxNumber: string,
-    industryType: string
+    industryType: string,
   ) {
     const userEntity = await this.createUserUsecase.execute(
       firstname,
@@ -33,7 +33,7 @@ export class CreateEnterpriseUsecase {
       street,
       postalCode,
       countryCode,
-      false
+      false,
     );
 
     if (userEntity instanceof Error) {
@@ -43,7 +43,7 @@ export class CreateEnterpriseUsecase {
     const enterprise = EnterpriseEntity.create(
       userEntity,
       taxNumber,
-      industryType
+      industryType,
     );
 
     if (enterprise instanceof Error) {

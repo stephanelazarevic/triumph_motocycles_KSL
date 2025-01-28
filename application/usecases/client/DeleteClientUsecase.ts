@@ -5,7 +5,7 @@ import { ClientNotFoundError } from "../../../domain/errors/ClientNotFoundError.
 export class DeleteClientUseCase {
   constructor(
     private readonly clientRepository: ClientRepository,
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
   ) {}
 
   public async execute(id: string): Promise<void> {

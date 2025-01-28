@@ -16,6 +16,6 @@ export interface PasswordService {
    */
   comparePassword(
     plainPassword: string,
-    hashedPassword: string
+    hashedPassword: string,
   ): Promise<boolean>;
 }

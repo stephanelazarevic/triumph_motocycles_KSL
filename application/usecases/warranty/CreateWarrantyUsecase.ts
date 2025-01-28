@@ -10,8 +10,13 @@ export class CreateWarrantyUsecase {
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async execute(startDate: Date, endDate: Date, motorcycleId: string, warrantyType: string, terms: string) {
-
+  public async execute(
+    startDate: Date,
+    endDate: Date,
+    motorcycleId: string,
+    warrantyType: string,
+    terms: string,
+  ) {
     if (!(startDate instanceof Date) || isNaN(startDate.getTime())) {
       throw new InvalidDateError("La date de départ est invalide.");
     }

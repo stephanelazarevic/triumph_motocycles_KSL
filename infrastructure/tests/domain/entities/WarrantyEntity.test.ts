@@ -23,7 +23,7 @@ Deno.test("Shoud return a warranty entity", () => {
   const endDate = new Date(2030, 1, 1);
   const warrantyType = "Extended";
   const terms = "Terms and conditions";
-  
+
   const result = WarrantyEntity.create(startDate, endDate, motorcycle, warrantyType, terms);
 
   expect(result.startDate.toISOString()).toStrictEqual(new Date(2024, 1, 1).toISOString());
@@ -41,7 +41,7 @@ Deno.test("Should throw error for invalid warranty entity data", () => {
     throw new Error("Invalid brand");
   }
 
-  const model = Model.from(""); 
+  const model = Model.from("");
   if (!(model instanceof Error)) {
     throw new Error("Invalid model");
   }

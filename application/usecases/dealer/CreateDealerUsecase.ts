@@ -7,7 +7,7 @@ export class CreateDealerUsecase {
 
   public constructor(
     private readonly dealerRepository: DealerRepository,
-    createUserUsecase: CreateUserUsecase
+    createUserUsecase: CreateUserUsecase,
   ) {
     this.createUserUsecase = createUserUsecase;
   }
@@ -21,7 +21,7 @@ export class CreateDealerUsecase {
     street: string,
     postalCode: string,
     countryCode: string,
-    site: string
+    site: string,
   ) {
     const userEntity = await this.createUserUsecase.execute(
       firstname,
@@ -32,7 +32,7 @@ export class CreateDealerUsecase {
       street,
       postalCode,
       countryCode,
-      false
+      false,
     );
 
     if (userEntity instanceof Error) {

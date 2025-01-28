@@ -1,5 +1,4 @@
 export enum BreakdownType {
-    PANNE = "panne",
-    ACCIDENT = "accident",
-  }
-  
+  PANNE = "panne",
+  ACCIDENT = "accident",
+}

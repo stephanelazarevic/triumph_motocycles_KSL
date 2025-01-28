@@ -18,7 +18,7 @@ export class CreateUserUsecase {
     street: string,
     postalCode: string,
     countryCode: string,
-    isAdministrator: boolean
+    isAdministrator: boolean,
   ): Promise<UserEntity | Error> {
     const existingUser = await this.userRepository.findByEmail(emailAddress);
     if (existingUser) {
@@ -31,7 +31,7 @@ export class CreateUserUsecase {
     }
 
     const hashedPassword = await CreateUserUsecase.passwordService.hashPassword(
-      validPasssword
+      validPasssword,
     );
 
     const userEntity = UserEntity.create(
@@ -43,7 +43,7 @@ export class CreateUserUsecase {
       street,
       postalCode,
       countryCode,
-      isAdministrator
+      isAdministrator,
     );
 
     if (userEntity instanceof Error) {

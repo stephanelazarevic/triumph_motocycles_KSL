@@ -6,7 +6,7 @@ export class DealerEntity {
     public readonly user: UserEntity,
     public readonly site: string,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
   ) {}
 
   public static create(user: UserEntity, site: string): DealerEntity {

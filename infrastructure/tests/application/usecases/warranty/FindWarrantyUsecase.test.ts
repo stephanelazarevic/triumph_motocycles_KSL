@@ -26,7 +26,7 @@ Deno.test("Should return a warranty when it exists", async () => {
     new Date(2011, 1, 1),
     motorcycle,
     "Partial warranty",
-    "Terms and conditions"
+    "Terms and conditions",
   );
 
   const warrantyRepository = new WarrantyRepositoryInMemory([warranty]);

@@ -33,6 +33,6 @@ Deno.test("Shoud return an appointment entity", () => {
   expect(result.motorcycle.model.value).toStrictEqual("Street Triple");
   expect(result.motorcycle.year).toStrictEqual(2024);
   expect(result.date.value.toISOString()).toStrictEqual(
-    new Date(2030, 1, 1).toISOString()
+    new Date(2030, 1, 1).toISOString(),
   );
 });

@@ -12,7 +12,7 @@ Deno.test("Should create a valid EmailAddress instance", () => {
 
   console.assert(
     result.email === "john.doe@example.com",
-    "Expected email to be normalized to lowercase."
+    "Expected email to be normalized to lowercase.",
   );
 });
 
@@ -27,7 +27,7 @@ Deno.test("Should fail for an email with invalid format (missing @)", () => {
 
   console.assert(
     result.message === "Email address has an invalid format.",
-    "Expected error message to match."
+    "Expected error message to match.",
   );
 });
 
@@ -44,9 +44,9 @@ Deno.test(
 
     console.assert(
       result.message === "Email address has an invalid format.",
-      "Expected error message to match."
+      "Expected error message to match.",
     );
-  }
+  },
 );
 
 Deno.test(
@@ -62,9 +62,9 @@ Deno.test(
 
     console.assert(
       result.message === "Email address has an invalid format.",
-      "Expected error message to match."
+      "Expected error message to match.",
     );
-  }
+  },
 );
 
 Deno.test("Should fail for an email with invalid format (missing TLD)", () => {
@@ -78,7 +78,7 @@ Deno.test("Should fail for an email with invalid format (missing TLD)", () => {
 
   console.assert(
     result.message === "Email address has an invalid format.",
-    "Expected error message to match."
+    "Expected error message to match.",
   );
 });
 
@@ -93,6 +93,6 @@ Deno.test("Should normalize a valid email by trimming spaces", () => {
 
   console.assert(
     result.email === "john.doe@example.com",
-    "Expected email to be trimmed and normalized."
+    "Expected email to be trimmed and normalized.",
   );
 });

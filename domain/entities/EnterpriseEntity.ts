@@ -9,13 +9,13 @@ export class EnterpriseEntity {
     public readonly taxNumber: TaxNumber,
     public readonly industryType: IndustryType,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
   ) {}
 
   public static create(
     user: UserEntity,
     taxNumber: string,
-    industryType: string
+    industryType: string,
   ): EnterpriseEntity | Error {
     const validIndustryType = IndustryType.from(industryType);
     if (validIndustryType instanceof Error) {
@@ -37,7 +37,7 @@ export class EnterpriseEntity {
       validTaxNumber,
       validIndustryType,
       createdAt,
-      updatedAt
+      updatedAt,
     );
   }
 }

@@ -13,7 +13,7 @@ export class UserEntity {
     public readonly address: Address,
     public readonly isAdministrator: boolean,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
   ) {}
 
   public static create(
@@ -25,7 +25,7 @@ export class UserEntity {
     street: string,
     postalCode: string,
     countryCode: string,
-    isAdministrator: boolean
+    isAdministrator: boolean,
   ) {
     const id = crypto.randomUUID();
     const createdAt = new Date();
@@ -59,7 +59,7 @@ export class UserEntity {
       address,
       isAdministrator,
       updatedAt,
-      createdAt
+      createdAt,
     );
   }
 

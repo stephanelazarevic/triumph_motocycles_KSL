@@ -7,12 +7,12 @@ import type { MotorcycleRepository } from "../repositories/MotorcycleRepository.
 export class CreateAppointmentUsecase {
   public constructor(
     private readonly appointmentRepository: AppointmentRepository,
-    private readonly motorcycleRepository: MotorcycleRepository
+    private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
   public async execute(date: Date, motorcycleId: string) {
     const motorcycle = await this.motorcycleRepository.findOneById(
-      motorcycleId
+      motorcycleId,
     );
 
     if (!motorcycle) {
@@ -27,7 +27,7 @@ export class CreateAppointmentUsecase {
 
     const appointment = AppointmentEntity.create(
       appointmentDateOrError,
-      motorcycle
+      motorcycle,
     );
 
     await this.appointmentRepository.save(appointment);

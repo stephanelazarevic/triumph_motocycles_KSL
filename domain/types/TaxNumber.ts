@@ -1,4 +1,4 @@
-import { EnterpriseInvalidTaxNumberError } from '../errors/EnterpriseInvalidTaxNumberError.ts'
+import { EnterpriseInvalidTaxNumberError } from "../errors/EnterpriseInvalidTaxNumberError.ts";
 
 export class TaxNumber {
   private constructor(public readonly value: string) {}

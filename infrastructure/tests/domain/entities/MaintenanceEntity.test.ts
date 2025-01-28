@@ -32,7 +32,7 @@ Deno.test("Shoud return an appointment entity", () => {
   const result = MaintenanceEntity.create(date, description, motorcycle, cost);
 
   expect(result.date.toISOString()).toStrictEqual(
-    new Date(2030, 1, 1).toISOString()
+    new Date(2030, 1, 1).toISOString(),
   );
   expect(result.description).toStrictEqual("Maintenance description");
   expect(result.cost).toStrictEqual(100);
@@ -60,7 +60,7 @@ Deno.test("Should throw error for invalid maintenance entity data", () => {
   const motorcycle = MotorcycleEntity.create(
     brand as never,
     model as never,
-    2024
+    2024,
   );
 
   const description = "";

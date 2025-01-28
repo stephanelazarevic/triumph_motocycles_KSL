@@ -5,7 +5,7 @@ import { EnterpriseNotFoundError } from "../../../domain/errors/EnterpriseNotFou
 export class DeleteEnterpriseUseCase {
   constructor(
     private readonly enterpriseRepository: EnterpriseRepository,
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
   ) {}
 
   public async execute(id: string): Promise<void> {

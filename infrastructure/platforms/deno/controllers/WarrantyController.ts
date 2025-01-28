@@ -5,7 +5,7 @@ import { FindWarrantyUsecase } from "../../../../application/usecases/warranty/F
 import { FindAllWarrantiesUsecase } from "../../../../application/usecases/warranty/FindAllWarrantiesUsecase.ts";
 import { UpdateWarrantyUsecase } from "../../../../application/usecases/warranty/UpdateWarrantyUsecase.ts";
 import { DeleteWarrantyUsecase } from "../../../../application/usecases/warranty/DeleteWarrantyUsecase.ts";
-import { exhaustive } from "npm:exhaustive"
+import { exhaustive } from "npm:exhaustive";
 import { createWarrantyRequestSchema } from "../schemas/createWarrantyRequestSchema.ts";
 import { WarrantyNotFoundError } from "../../../../domain/errors/WarrantyNotFoundError.ts";
 
@@ -60,7 +60,6 @@ export class WarrantyController {
     return exhaustive({
       WarrantyNotFoundError: () => new Response("WarrantyNotFoundError", { status: 404 }),
     });
-
   }
 
   public async createWarranty(request: Request): Promise<Response> {

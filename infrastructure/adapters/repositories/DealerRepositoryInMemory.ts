@@ -10,7 +10,7 @@ export class DealerRepositoryInMemory implements DealerRepository {
    */
   public save(dealer: DealerEntity): Promise<void> {
     const index = this.dealers.findIndex(
-      (existingDealer) => existingDealer.id === dealer.id
+      (existingDealer) => existingDealer.id === dealer.id,
     );
     if (index === -1) {
       this.dealers.push(dealer);

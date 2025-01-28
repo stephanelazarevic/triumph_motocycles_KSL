@@ -9,13 +9,13 @@ export class Address {
   private constructor(
     public readonly street: string,
     public readonly postalCode: string,
-    public readonly countryCode: string
+    public readonly countryCode: string,
   ) {}
 
   public static from(
     street: string,
     postalCode: string,
-    countryCode: string
+    countryCode: string,
   ): Address | Error {
     if (street.length < 3) {
       return new AddressTooShortError();

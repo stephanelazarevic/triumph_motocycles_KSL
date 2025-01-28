@@ -28,7 +28,7 @@ Deno.test("Should update a breakdown successfully when it exists", async () => {
     BreakdownType.PANNE,
     new Date(2010, 1, 1),
     new Date(2011, 1, 1),
-    "résolue"
+    "résolue",
   );
 
   const breakdownRepository = new BreakdownRepositoryInMemory([existingBreakdown]);
@@ -40,7 +40,7 @@ Deno.test("Should update a breakdown successfully when it exists", async () => {
 
   const breakdowns = await breakdownRepository.findAll();
 
-  expect(result).toBeUndefined(); 
+  expect(result).toBeUndefined();
   expect(breakdowns.length).toStrictEqual(1);
   expect(breakdowns[0].description).toStrictEqual("Description mise à jour");
 });
@@ -61,12 +61,12 @@ Deno.test("Should return an error when the breakdown does not exist", async () =
   }
 
   const nonExistentBreakdown = BreakdownEntity.create(
-    "Description de la panne non existante", 
+    "Description de la panne non existante",
     MotorcycleEntity.create(brand, model, 2022),
     BreakdownType.ACCIDENT,
     new Date(2020, 1, 1),
     new Date(2021, 1, 1),
-    "résolue"
+    "résolue",
   );
 
   const result = await updateBreakdownUsecase.execute(nonExistentBreakdown);

@@ -11,20 +11,26 @@ export class CreateBreakdownUsecase {
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async execute(description: string, motorcycleId: string, type: BreakdownType, reportDate: Date, resolutionDate: Date, status: string) {
-
+  public async execute(
+    description: string,
+    motorcycleId: string,
+    type: BreakdownType,
+    reportDate: Date,
+    resolutionDate: Date,
+    status: string,
+  ) {
     if (!(reportDate instanceof Date) || isNaN(reportDate.getTime())) {
-        throw new InvalidDateError("La date de signalement est invalide.");
+      throw new InvalidDateError("La date de signalement est invalide.");
     }
-  
+
     if (!(resolutionDate instanceof Date) || isNaN(resolutionDate.getTime())) {
-        throw new InvalidDateError("La date de résolution est invalide.");
+      throw new InvalidDateError("La date de résolution est invalide.");
     }
-  
+
     if (resolutionDate < reportDate) {
-        throw new InvalidDateError(
-          "La date de résolution doit être postérieure à la date de signalement.",
-        );
+      throw new InvalidDateError(
+        "La date de résolution doit être postérieure à la date de signalement.",
+      );
     }
 
     const motorcycle = await this.motorcycleRepository.findOneById(
@@ -41,7 +47,7 @@ export class CreateBreakdownUsecase {
       type,
       reportDate,
       resolutionDate,
-      status
+      status,
     );
 
     await this.breakdownRepository.save(breakdown);

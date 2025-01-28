@@ -27,17 +27,17 @@ Deno.test(
   async () => {
     const createAppointmentUsecase = new CreateAppointmentUsecase(
       appointmentRepository,
-      motorcycleRepository
+      motorcycleRepository,
     );
     const today = new Date();
     const date = new Date(today.getFullYear() - 1, 1, 1);
     const result = await createAppointmentUsecase.execute(
       date,
-      motorcycle.identifier
+      motorcycle.identifier,
     );
 
     expect(result).not.toBeUndefined();
-  }
+  },
 );
 
 Deno.test(
@@ -45,26 +45,26 @@ Deno.test(
   async () => {
     const createAppointmentUsecase = new CreateAppointmentUsecase(
       appointmentRepository,
-      motorcycleRepository
+      motorcycleRepository,
     );
     const today = new Date();
     const date = new Date(today.getFullYear() + 1, 1, 1);
     const result = await createAppointmentUsecase.execute(date, "");
 
     expect(result).not.toBeUndefined();
-  }
+  },
 );
 
 Deno.test("Should succeed when creating an appointment correctly", async () => {
   const createAppointmentUsecase = new CreateAppointmentUsecase(
     appointmentRepository,
-    motorcycleRepository
+    motorcycleRepository,
   );
   const today = new Date();
   const date = new Date(today.getFullYear() + 1, 1, 1);
   const result = await createAppointmentUsecase.execute(
     date,
-    motorcycle.identifier
+    motorcycle.identifier,
   );
   const appointments = await appointmentRepository.all();
 

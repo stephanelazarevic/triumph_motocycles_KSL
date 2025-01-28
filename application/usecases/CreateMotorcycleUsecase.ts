@@ -22,7 +22,7 @@ export class CreateMotorcycleUsecase {
     const motorcycle = MotorcycleEntity.create(
       motorcycleBrand,
       motorcycleModel,
-      year
+      year,
     );
 
     await this.motorcycleRepository.save(motorcycle);

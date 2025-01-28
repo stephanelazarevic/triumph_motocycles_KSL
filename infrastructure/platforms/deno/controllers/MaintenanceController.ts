@@ -12,7 +12,7 @@ import { MaintenanceNotFoundError } from "../../../../domain/errors/MaintenanceN
 export class MaintenanceController {
   public constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
-    private readonly motorcycleRepository: MotorcycleRepository
+    private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
   public async getAllMaintenances(): Promise<Response> {
@@ -54,15 +54,14 @@ export class MaintenanceController {
     }
 
     return exhaustive({
-      MaintenanceNotFoundError: () =>
-        new Response("MaintenanceNotFoundError", { status: 404 }),
+      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
     });
   }
 
   public async createMaintenance(request: Request): Promise<Response> {
     const createMaintenanceUsecase = new CreateMaintenanceUsecase(
       this.maintenanceRepository,
-      this.motorcycleRepository
+      this.motorcycleRepository,
     );
 
     const body = await request.json();
@@ -81,7 +80,7 @@ export class MaintenanceController {
       date,
       description,
       motorcycleId,
-      cost
+      cost,
     );
 
     if (!error) {
@@ -89,8 +88,7 @@ export class MaintenanceController {
     }
 
     return exhaustive(error.name, {
-      MotorcycleNotFoundError: () =>
-        new Response("MotorcycleNotFoundError", { status: 404 }),
+      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
     });
   }
 
@@ -112,8 +110,7 @@ export class MaintenanceController {
     }
 
     return exhaustive(result.name, {
-      MaintenanceNotFoundError: () =>
-        new Response("MaintenanceNotFoundError", { status: 404 }),
+      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
     });
   }
 
@@ -126,7 +123,7 @@ export class MaintenanceController {
     }
 
     const deleteMaintenanceUsecase = new DeleteMaintenanceUsecase(
-      this.maintenanceRepository
+      this.maintenanceRepository,
     );
 
     const result = await deleteMaintenanceUsecase.execute(id);
@@ -136,8 +133,7 @@ export class MaintenanceController {
     }
 
     return exhaustive(result.name, {
-      MaintenanceNotFoundError: () =>
-        new Response("MaintenanceNotFoundError", { status: 404 }),
+      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
     });
   }
 }

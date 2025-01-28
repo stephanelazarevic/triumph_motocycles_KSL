@@ -12,14 +12,14 @@ export enum IndustryTypeEnum {
   Hospitality = "Hospitality",
   Transportation = "Transportation",
   Agriculture = "Agriculture",
-  Entertainment = "Entertainment"
+  Entertainment = "Entertainment",
 }
 
 export class IndustryType {
   private constructor(public readonly value: string) {}
 
   public static from(industryType: string) {
-    if(!(industryType in IndustryTypeEnum)) {
+    if (!(industryType in IndustryTypeEnum)) {
       return new EnterpriseIndustryTypeError();
     }
 

@@ -7,7 +7,7 @@ export class CreateClientUsecase {
 
   constructor(
     private readonly dealerRepository: DealerRepository,
-    createUserUsecase: CreateUserUsecase
+    createUserUsecase: CreateUserUsecase,
   ) {
     this.createUserUsecase = createUserUsecase;
   }
@@ -21,7 +21,7 @@ export class CreateClientUsecase {
     street: string,
     postalCode: string,
     countryCode: string,
-    dealerId: string
+    dealerId: string,
   ): Promise<ClientEntity | Error> {
     const userEntity = await this.createUserUsecase.execute(
       firstname,
@@ -32,7 +32,7 @@ export class CreateClientUsecase {
       street,
       postalCode,
       countryCode,
-      false
+      false,
     );
     if (userEntity instanceof Error) {
       return userEntity;

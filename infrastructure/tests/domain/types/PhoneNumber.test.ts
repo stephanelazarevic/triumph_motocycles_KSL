@@ -12,7 +12,7 @@ Deno.test("Should create a valid PhoneNumber instance", () => {
 
   console.assert(
     result.value === phoneNumberValue,
-    "Expected phone number value to match."
+    "Expected phone number value to match.",
   );
 });
 
@@ -27,6 +27,6 @@ Deno.test("Should fail for invalid phone number format", () => {
 
   console.assert(
     result.message === "Invalid phone number.",
-    "Expected invalid phone number error message."
+    "Expected invalid phone number error message.",
   );
 });

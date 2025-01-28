@@ -5,7 +5,7 @@ import { FindBreakdownUsecase } from "../../../../application/usecases/breakdown
 import { FindAllBreakdownsUsecase } from "../../../../application/usecases/breakdown/FindAllBreakdownsUsecase.ts";
 import { UpdateBreakdownUsecase } from "../../../../application/usecases/breakdown/UpdateBreakdownUsecase.ts";
 import { DeleteBreakdownUsecase } from "../../../../application/usecases/breakdown/DeleteBreakdownUsecase.ts";
-import { exhaustive } from "npm:exhaustive"
+import { exhaustive } from "npm:exhaustive";
 import { createBreakdownRequestSchema } from "../schemas/createBreakdownRequestSchema.ts";
 import { BreakdownNotFoundError } from "../../../../domain/errors/BreakdownNotFoundError.ts";
 
@@ -60,7 +60,6 @@ export class BreakdownController {
     return exhaustive({
       BreakdownNotFoundError: () => new Response("BreakdownNotFoundError", { status: 404 }),
     });
-
   }
 
   public async createBreakdown(request: Request): Promise<Response> {
@@ -81,7 +80,14 @@ export class BreakdownController {
 
     const { description, motorcycleId, type, reportDate, resolutionDate, status } = validation.data;
 
-    const error = await createBreakdownUsecase.execute(description, motorcycleId, type, reportDate, resolutionDate, status);
+    const error = await createBreakdownUsecase.execute(
+      description,
+      motorcycleId,
+      type,
+      reportDate,
+      resolutionDate,
+      status,
+    );
 
     if (!error) {
       return new Response(null, {

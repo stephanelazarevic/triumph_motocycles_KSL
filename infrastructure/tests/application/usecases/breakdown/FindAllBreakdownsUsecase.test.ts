@@ -37,7 +37,7 @@ Deno.test("Should return all breakdowns when they exist", async () => {
     BreakdownType.PANNE,
     new Date(2010, 1, 1),
     new Date(2011, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const breakdown2 = BreakdownEntity.create(
@@ -46,7 +46,7 @@ Deno.test("Should return all breakdowns when they exist", async () => {
     BreakdownType.ACCIDENT,
     new Date(2015, 1, 1),
     new Date(2016, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const breakdownRepository = new BreakdownRepositoryInMemory([breakdown1, breakdown2]);

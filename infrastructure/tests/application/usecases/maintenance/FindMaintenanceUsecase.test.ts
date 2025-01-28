@@ -22,10 +22,10 @@ Deno.test("Should find a maintenance successfully when it exists", async () => {
   const motorcycle = MotorcycleEntity.create(brand, model, 2022);
 
   const maintenance = MaintenanceEntity.create(
-    new Date(2023, 5, 20), 
+    new Date(2023, 5, 20),
     "Remplacement des plaquettes de frein",
     motorcycle,
-    1000
+    1000,
   );
 
   const maintenanceRepository = new MaintenanceRepositoryInMemory([maintenance]);

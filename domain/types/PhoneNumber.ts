@@ -7,8 +7,7 @@ export class PhoneNumber {
   private constructor(public readonly value: string) {}
 
   public static from(phoneNumberValue: string): PhoneNumber | Error {
-    const formattedPhone =
-      PhoneNumber.phoneNumberService.formatInternational(phoneNumberValue);
+    const formattedPhone = PhoneNumber.phoneNumberService.formatInternational(phoneNumberValue);
 
     if (
       !formattedPhone ||

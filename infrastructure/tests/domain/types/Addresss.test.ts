@@ -37,15 +37,15 @@ Deno.test("Should create a valid Address instance", () => {
 
   console.assert(
     result.street === validStreet,
-    "Street should match the input."
+    "Street should match the input.",
   );
   console.assert(
     result.postalCode === validPostalCode,
-    "Postal code should match the input."
+    "Postal code should match the input.",
   );
   console.assert(
     result.countryCode === validCountryCode,
-    "Country code should match the input."
+    "Country code should match the input.",
   );
 });
 
@@ -111,6 +111,6 @@ Deno.test("Should return full address with country name", () => {
   const fullAddress = result.getFullAddress();
   console.assert(
     fullAddress === "123 Main St, 12345 United States",
-    `Expected full address to be '123 Main St, 12345 United States', got '${fullAddress}'.`
+    `Expected full address to be '123 Main St, 12345 United States', got '${fullAddress}'.`,
   );
 });

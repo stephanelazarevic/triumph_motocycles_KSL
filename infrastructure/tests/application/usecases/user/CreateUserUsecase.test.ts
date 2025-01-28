@@ -22,7 +22,7 @@ Deno.test("Should create and persist a user successfully", async () => {
     "123 Main St",
     "12345",
     "US",
-    false
+    false,
   );
 
   if (result instanceof Error) {
@@ -45,7 +45,7 @@ Deno.test("Should fail when the password is too short", async () => {
     "123 Main St",
     "12345",
     "US",
-    false
+    false,
   );
 
   if (!(result instanceof PasswordTooShortError)) {
@@ -65,7 +65,7 @@ Deno.test("Should fail when the phone number is invalid", async () => {
     "123 Main St",
     "12345",
     "US",
-    false
+    false,
   );
 
   if (!(result instanceof PhoneNumberInvalidError)) {
@@ -85,7 +85,7 @@ Deno.test("Should fail when the email address is invalid", async () => {
     "123 Main St",
     "12345",
     "US",
-    false
+    false,
   );
 
   if (!(result instanceof EmailAddressInvalidFormatError)) {
@@ -105,7 +105,7 @@ Deno.test("Should fail when the address is invalid", async () => {
     "St",
     "123",
     "INVALID_COUNTRY",
-    false
+    false,
   );
 
   if (result instanceof AddressTooShortError) {
@@ -130,7 +130,7 @@ Deno.test("Should fail when required fields are empty", async () => {
 
   if (!(result instanceof Error)) {
     throw new Error(
-      "Test failed: Expected an error for missing required fields."
+      "Test failed: Expected an error for missing required fields.",
     );
   }
 });
@@ -147,7 +147,7 @@ Deno.test("Should persist the created user", async () => {
     "123 Main St",
     "12345",
     "US",
-    false
+    false,
   );
 
   if (result instanceof Error) {
@@ -159,7 +159,7 @@ Deno.test("Should persist the created user", async () => {
   if (persistedUser instanceof UserEntity) {
     console.assert(
       String(persistedUser.emailAddress) === "john.doe@example.com",
-      "Email should match."
+      "Email should match.",
     );
   } else {
     throw new Error("Test failed: User not found.");

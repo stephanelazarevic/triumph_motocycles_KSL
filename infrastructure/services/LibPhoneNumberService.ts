@@ -1,7 +1,4 @@
-import {
-  parsePhoneNumberWithError,
-  isValidPhoneNumber,
-} from "npm:libphonenumber-js";
+import { isValidPhoneNumber, parsePhoneNumberWithError } from "npm:libphonenumber-js";
 import { PhoneNumberService } from "../../domain/services/PhoneNumberService.ts";
 import { PhoneNumberFormatError } from "../../domain/errors/PhoneNumberFormatError.ts";
 

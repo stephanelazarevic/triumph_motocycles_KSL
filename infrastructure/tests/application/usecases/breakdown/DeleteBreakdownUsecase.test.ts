@@ -39,7 +39,7 @@ const breakdown = BreakdownEntity.create(
   type,
   reportDate,
   resolutionDate,
-  status
+  status,
 );
 
 breakdownRepository.save(breakdown);

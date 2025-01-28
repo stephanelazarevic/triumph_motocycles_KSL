@@ -7,7 +7,7 @@ export class AppointmentEntity {
     public readonly date: AppointmentDate,
     public readonly motorcycle: MotorcycleEntity,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
   ) {}
 
   public static create(date: AppointmentDate, motorcycle: MotorcycleEntity) {
@@ -20,7 +20,7 @@ export class AppointmentEntity {
       date,
       motorcycle,
       createdAt,
-      updatedAt
+      updatedAt,
     );
   }
 }

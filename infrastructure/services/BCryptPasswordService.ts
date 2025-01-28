@@ -10,7 +10,7 @@ export class BCryptPasswordService implements PasswordService {
 
   public comparePassword(
     plainPassword: string,
-    hashedPassword: string
+    hashedPassword: string,
   ): Promise<boolean> {
     return bcrypt.compare(plainPassword, hashedPassword);
   }

@@ -10,7 +10,7 @@ export class EnterpriseRepositoryInMemory implements EnterpriseRepository {
    */
   public save(enterprise: EnterpriseEntity): Promise<void> {
     const index = this.enterprises.findIndex(
-      (existingEnterprise) => existingEnterprise.id === enterprise.id
+      (existingEnterprise) => existingEnterprise.id === enterprise.id,
     );
     if (index === -1) {
       this.enterprises.push(enterprise);
@@ -31,10 +31,10 @@ export class EnterpriseRepositoryInMemory implements EnterpriseRepository {
    * Finds a single enterprise by ID. Returns the enterprise or throws an EnterpriseNotFoundError.
    */
   public findOneById(
-    id: string
+    id: string,
   ): Promise<EnterpriseEntity | EnterpriseNotFoundError> {
     const foundEnterprise = this.enterprises.find(
-      (enterprise) => enterprise.id === id
+      (enterprise) => enterprise.id === id,
     );
     return Promise.resolve(foundEnterprise ?? new EnterpriseNotFoundError());
   }
@@ -44,7 +44,7 @@ export class EnterpriseRepositoryInMemory implements EnterpriseRepository {
    */
   public delete(id: string): Promise<void> {
     this.enterprises = this.enterprises.filter(
-      (enterprise) => enterprise.id !== id
+      (enterprise) => enterprise.id !== id,
     );
     return Promise.resolve();
   }

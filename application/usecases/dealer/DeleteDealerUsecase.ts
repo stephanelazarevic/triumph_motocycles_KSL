@@ -5,7 +5,7 @@ import { DealerNotFoundError } from "../../../domain/errors/DealerNotFoundError.
 export class DeleteDealerUseCase {
   constructor(
     private readonly dealerRepository: DealerRepository,
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
   ) {}
 
   public async execute(id: string): Promise<void> {

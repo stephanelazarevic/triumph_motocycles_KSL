@@ -10,7 +10,7 @@ export class UserRepositoryInMemory implements UserRepository {
    */
   public save(user: UserEntity): Promise<void> {
     const index = this.users.findIndex(
-      (existingUser) => existingUser.id === user.id
+      (existingUser) => existingUser.id === user.id,
     );
     if (index === -1) {
       this.users.push(user);
@@ -40,7 +40,7 @@ export class UserRepositoryInMemory implements UserRepository {
    */
   public findByEmail(email: string): Promise<UserEntity | UserNotFoundError> {
     const foundUser = this.users.find(
-      (user) => user.emailAddress.value === email
+      (user) => user.emailAddress.value === email,
     );
     return Promise.resolve(foundUser ?? new UserNotFoundError());
   }

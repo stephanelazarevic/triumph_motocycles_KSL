@@ -28,7 +28,7 @@ Deno.test("Should return a breakdown when it exists", async () => {
     BreakdownType.PANNE,
     new Date(2010, 1, 1),
     new Date(2011, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const breakdownRepository = new BreakdownRepositoryInMemory([breakdown]);

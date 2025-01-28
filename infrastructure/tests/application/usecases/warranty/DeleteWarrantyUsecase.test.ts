@@ -36,7 +36,7 @@ const warranty = WarrantyEntity.create(
   endDate,
   motorcycle,
   warrantyType,
-  terms
+  terms,
 );
 
 warrantyRepository.save(warranty);

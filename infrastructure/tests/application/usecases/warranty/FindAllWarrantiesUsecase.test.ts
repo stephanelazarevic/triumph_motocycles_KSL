@@ -35,7 +35,7 @@ Deno.test("Should return all warranties when they exist", async () => {
     new Date(2011, 1, 1),
     motorcycle,
     "Partial warranty",
-    "Terms and conditions"
+    "Terms and conditions",
   );
 
   const warranty2 = WarrantyEntity.create(
@@ -43,7 +43,7 @@ Deno.test("Should return all warranties when they exist", async () => {
     new Date(2015, 1, 1),
     motorcycle,
     "Full warranty",
-    "Terms and conditions"
+    "Terms and conditions",
   );
 
   const warrantyRepository = new WarrantyRepositoryInMemory([warranty1, warranty2]);

@@ -8,7 +8,7 @@ import { createAppointmentRequestSchema } from "../schemas/createAppointmentRequ
 export class AppointmentController {
   public constructor(
     private readonly appointmentRepository: AppointmentRepository,
-    private readonly motorcycleRepository: MotorcycleRepository
+    private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
   public async listAppointments(): Promise<Response> {
@@ -27,7 +27,7 @@ export class AppointmentController {
   public async createAppointment(request: Request): Promise<Response> {
     const createAppointmentUsecase = new CreateAppointmentUsecase(
       this.appointmentRepository,
-      this.motorcycleRepository
+      this.motorcycleRepository,
     );
 
     const body = await request.json();
