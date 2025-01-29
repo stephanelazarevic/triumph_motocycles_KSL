@@ -1,7 +1,7 @@
 import type { UserRepository } from "../../../../application/repositories/UserRepository.ts";
 import { CreateUserUsecase } from "../../../../application/usecases/user/CreateUserUsecase.ts";
-import { FindUserUsecase } from "../../../../application/usecases/user/FindUserUsecase.ts";
-import { FindAllUsersUsecase } from "../../../../application/usecases/user/FindAllUsersUsecase.ts";
+import { FindUserUsecase } from "../../../../application/usecases/user/GetUserUsecase.ts";
+import { FindAllUsersUsecase } from "../../../../application/usecases/user/ListUsersUsecase.ts";
 import { UpdateUserUsecase } from "../../../../application/usecases/user/UpdateUserUsecase.ts";
 import { DeleteUserUsecase } from "../../../../application/usecases/user/DeleteUserUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
@@ -42,7 +42,6 @@ export class UserController {
         "Content-Type": "application/json",
       }, });
     }
-
 
     return exhaustive(result.name, {
       UserNotFoundError:  () => new Response("User not found", { status: 404 }),
