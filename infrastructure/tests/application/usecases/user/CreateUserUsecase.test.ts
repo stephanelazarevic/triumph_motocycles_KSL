@@ -154,7 +154,7 @@ Deno.test("Should persist the created user", async () => {
     throw new Error("Test failed: Unexpected error.");
   }
 
-  const persistedUser = await userRepository.findById(result.id);
+  const persistedUser = await userRepository.findOneById(result.id);
 
   if (persistedUser instanceof UserEntity) {
     console.assert(

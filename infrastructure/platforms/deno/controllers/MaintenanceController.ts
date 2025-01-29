@@ -7,15 +7,16 @@ import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maint
 import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
 import { createMaintenanceRequestSchema } from "../schemas/createMaintenanceRequestSchema.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { MaintenanceNotFoundError } from "../../../../domain/errors/MaintenanceNotFoundError.ts";
 
-export class MaintenanceController {
+export class MaintenanceController implements EntityControllerInterface {
   public constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async getAllMaintenances(): Promise<Response> {
+  public async getAll(): Promise<Response> {
     const listMaintenancesUsecase = new FindAllMaintenancesUsecase(this.maintenanceRepository);
 
     const result = await listMaintenancesUsecase.execute();
@@ -28,7 +29,7 @@ export class MaintenanceController {
     });
   }
 
-  public async getMaintenanceById(request: Request): Promise<Response> {
+  public async getById(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 
@@ -58,7 +59,7 @@ export class MaintenanceController {
     });
   }
 
-  public async createMaintenance(request: Request): Promise<Response> {
+  public async create(request: Request): Promise<Response> {
     const createMaintenanceUsecase = new CreateMaintenanceUsecase(
       this.maintenanceRepository,
       this.motorcycleRepository,
@@ -92,7 +93,7 @@ export class MaintenanceController {
     });
   }
 
-  public async updateMaintenance(request: Request): Promise<Response> {
+  public async update(request: Request): Promise<Response> {
     const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
 
     const body = await request.json();
@@ -114,7 +115,7 @@ export class MaintenanceController {
     });
   }
 
-  public async deleteMaintenance(request: Request): Promise<Response> {
+  public async delete(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 

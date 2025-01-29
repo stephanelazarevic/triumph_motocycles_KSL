@@ -19,8 +19,8 @@ export class CreateMaintenanceUsecase {
       motorcycleId,
     );
 
-    if (!motorcycle) {
-      return new MotorcycleNotFoundError();
+    if (motorcycle instanceof MotorcycleNotFoundError) {
+      throw motorcycle;
     }
 
     const maintenance = MaintenanceEntity.create(

@@ -1,7 +1,7 @@
-import { MotorcycleEntity } from "../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../domain/value-objects/Brand.ts";
-import { Model } from "../../domain/value-objects/Model.ts";
-import type { MotorcycleRepository } from "../repositories/MotorcycleRepository.ts";
+import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
+import { Brand } from "../../../domain/types/Brand.ts";
+import { Model } from "../../../domain/types/Model.ts";
+import type { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 
 export class CreateMotorcycleUsecase {
   public constructor(private readonly motorcycleRepository: MotorcycleRepository) {}
