@@ -1,21 +1,22 @@
 import type { IncidentRepository } from "../../../../application/repositories/IncidentRepository.ts";
 import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
-import { CreateIncidentUsecase } from "../../../../application/usecases/breakdown/CreateIncidentUsecase.ts";
-import { FindIncidentUsecase } from "../../../../application/usecases/breakdown/FindIncidentUsecase.ts";
-import { FindAllIncidentsUsecase } from "../../../../application/usecases/breakdown/FindAllIncidentsUsecase.ts";
-import { UpdateIncidentUsecase } from "../../../../application/usecases/breakdown/UpdateIncidentUsecase.ts";
-import { DeleteIncidentUsecase } from "../../../../application/usecases/breakdown/DeleteIncidentUsecase.ts";
+import { CreateIncidentUsecase } from "../../../../application/usecases/incident/CreateIncidentUsecase.ts";
+import { FindIncidentUsecase } from "../../../../application/usecases/incident/FindIncidentUsecase.ts";
+import { FindAllIncidentsUsecase } from "../../../../application/usecases/incident/FindAllIncidentsUsecase.ts";
+import { UpdateIncidentUsecase } from "../../../../application/usecases/incident/UpdateIncidentUsecase.ts";
+import { DeleteIncidentUsecase } from "../../../../application/usecases/incident/DeleteIncidentUsecase.ts";
 import { exhaustive } from "npm:exhaustive"
 import { createIncidentRequestSchema } from "../schemas/createIncidentRequestSchema.ts";
 import { IncidentNotFoundError } from "../../../../domain/errors/IncidentNotFoundError.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class IncidentController {
+export class IncidentController implements EntityControllerInterface{
   public constructor(
     private readonly incidentRepository: IncidentRepository,
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async getAllIncidents(): Promise<Response> {
+  public async getAll(): Promise<Response> {
     const listIncidentsUsecase = new FindAllIncidentsUsecase(
       this.incidentRepository,
     );
@@ -30,7 +31,7 @@ export class IncidentController {
     });
   }
 
-  public async getIncidentById(request: Request): Promise<Response> {
+  public async getById(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 
@@ -63,7 +64,7 @@ export class IncidentController {
 
   }
 
-  public async createIncident(request: Request): Promise<Response> {
+  public async create(request: Request): Promise<Response> {
     const createIncidentUsecase = new CreateIncidentUsecase(
       this.incidentRepository,
       this.motorcycleRepository,
@@ -95,7 +96,7 @@ export class IncidentController {
     });
   }
 
-  public async updateIncident(request: Request): Promise<Response> {
+  public async update(request: Request): Promise<Response> {
     const updateIncidentUsecase = new UpdateIncidentUsecase(
       this.incidentRepository,
     );
@@ -123,7 +124,7 @@ export class IncidentController {
     });
   }
 
-  public async deleteIncident(request: Request): Promise<Response> {
+  public async delete(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 

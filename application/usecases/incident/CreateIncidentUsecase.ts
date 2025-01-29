@@ -31,8 +31,8 @@ export class CreateIncidentUsecase {
       motorcycleId,
     );
 
-    if (!motorcycle) {
-      return new MotorcycleNotFoundError();
+    if (motorcycle instanceof MotorcycleNotFoundError) {
+      throw motorcycle; 
     }
 
     const incident = IncidentEntity.create(

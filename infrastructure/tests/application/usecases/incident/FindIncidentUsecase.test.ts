@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { FindIncidentUsecase } from "../../../../../application/usecases/breakdown/FindIncidentUsecase.ts";
+import { FindIncidentUsecase } from "../../../../../application/usecases/incident/FindIncidentUsecase.ts";
 import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/IncidentRepositoryInMemory.ts";
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
