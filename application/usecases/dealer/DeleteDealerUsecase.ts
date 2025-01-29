@@ -2,7 +2,7 @@ import { DealerRepository } from "../../../application/repositories/DealerReposi
 import { UserRepository } from "../../../application/repositories/UserRepository.ts";
 import { DealerNotFoundError } from "../../../domain/errors/DealerNotFoundError.ts";
 
-export class DeleteDealerUseCase {
+export class DeleteDealerUsecase {
   constructor(
     private readonly dealerRepository: DealerRepository,
     private readonly userRepository: UserRepository,

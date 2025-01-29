@@ -2,7 +2,7 @@ import { EnterpriseRepository } from "../../../application/repositories/Enterpri
 import { UserRepository } from "../../../application/repositories/UserRepository.ts";
 import { EnterpriseNotFoundError } from "../../../domain/errors/EnterpriseNotFoundError.ts";
 
-export class DeleteEnterpriseUseCase {
+export class DeleteEnterpriseUsecase {
   constructor(
     private readonly enterpriseRepository: EnterpriseRepository,
     private readonly userRepository: UserRepository,

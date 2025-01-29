@@ -2,7 +2,7 @@ import { ClientRepository } from "../../../application/repositories/ClientReposi
 import { UserRepository } from "../../../application/repositories/UserRepository.ts";
 import { ClientNotFoundError } from "../../../domain/errors/ClientNotFoundError.ts";
 
-export class DeleteClientUseCase {
+export class DeleteClientUsecase {
   constructor(
     private readonly clientRepository: ClientRepository,
     private readonly userRepository: UserRepository,

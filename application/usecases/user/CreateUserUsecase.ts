@@ -15,9 +15,11 @@ export class CreateUserUsecase {
     emailAddress: string,
     plainPassword: string,
     phoneNumber: string,
-    street: string,
-    postalCode: string,
-    countryCode: string,
+    address: {
+      street: string,
+      postalCode: string,
+      countryCode: string,
+    },
     isAdministrator: boolean,
   ): Promise<UserEntity | Error> {
     const existingUser = await this.userRepository.findByEmail(emailAddress);
@@ -40,10 +42,8 @@ export class CreateUserUsecase {
       emailAddress,
       hashedPassword,
       phoneNumber,
-      street,
-      postalCode,
-      countryCode,
-      isAdministrator,
+      address,
+      isAdministrator
     );
 
     if (userEntity instanceof Error) {

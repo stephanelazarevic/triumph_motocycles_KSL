@@ -22,9 +22,11 @@ export class UserEntity {
     emailAddress: string,
     hashedPassword: string,
     phoneNumber: string,
-    street: string,
-    postalCode: string,
-    countryCode: string,
+    address: {
+      street: string,
+      postalCode: string,
+      countryCode: string,
+    },
     isAdministrator: boolean,
   ) {
     const id = crypto.randomUUID();
@@ -44,9 +46,9 @@ export class UserEntity {
       return validEmailAddress;
     }
 
-    const address = Address.from(street, postalCode, countryCode);
-    if (address instanceof Error) {
-      return address;
+    const validAddress = Address.from(address.street, address.postalCode, address.countryCode);
+    if (validAddress instanceof Error) {
+      return validAddress;
     }
 
     return new UserEntity(
@@ -56,12 +58,36 @@ export class UserEntity {
       hashedPassword,
       validEmailAddress,
       validPhoneNumber,
-      address,
+      validAddress,
       isAdministrator,
       updatedAt,
       createdAt,
     );
   }
+
+  public update(
+    firstname?: string,
+    lastname?: string,
+    emailAddress?: EmailAddress,
+    hashedPassword?: string,
+    phoneNumber?: PhoneNumber,
+    address?: Address,
+    isAdministrator?: boolean,
+  ): UserEntity | Error{
+    return new UserEntity(
+      this.id,
+      firstname ?? this.firstname,
+      lastname ?? this.lastname,
+      hashedPassword ?? this.hashedPassword,
+      emailAddress ?? this.emailAddress,
+      phoneNumber ?? this.phoneNumber,
+      address ?? this.address,
+      isAdministrator ?? this.isAdministrator,
+      this.createdAt,
+      new Date()
+    );
+  }
+
 
   public getName(): string {
     return `${this.firstname} ${this.lastname}`;
