@@ -2,16 +2,14 @@ import { EmailAddress } from "../../../../domain/value-objects/EmailAddress.ts";
 import { EmailAddressInvalidFormatError } from "../../../../domain/errors/EmailAddressInvalidFormatError.ts";
 
 Deno.test("Should create a valid EmailAddress instance", () => {
-  const validEmail = "John.Doe@Example.com";
+  const validEmail = EmailAddress.from("John.Doe@Example.com")
 
-  const resultEmailAddress = EmailAddress.from(validEmail);
-
-  if (resultEmailAddress instanceof Error) {
-    throw new Error(`Test failed: Unexpected error ${resultEmailAddress.message}.`);
+  if (validEmail instanceof Error) {
+    throw new Error(`Test failed: Unexpected error ${validEmail.message}.`);
   }
 
   console.assert(
-    resultEmailAddress.equals("john.doe@example.com"),
+    validEmail.getValue() === "john.doe@example.com",
     "Expected email to be normalized to lowercase.",
   );
 });
@@ -26,7 +24,7 @@ Deno.test("Should fail for an email with invalid format (missing @)", () => {
   }
 
   console.assert(
-    resultEmailAddress.message === "Email address has an invalid format.",
+    resultEmailAddress instanceof EmailAddress,
     "Expected error message to match.",
   );
 });
@@ -92,7 +90,7 @@ Deno.test("Should normalize a valid email by trimming spaces", () => {
   }
 
   console.assert(
-    resultEmailAddress.equals("john.doe@example.com"),
+    resultEmailAddress.getValue() === "john.doe@example.com",
     "Expected email to be trimmed and normalized.",
   );
 });

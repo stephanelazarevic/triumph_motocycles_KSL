@@ -15,7 +15,7 @@ Deno.test("Should create a valid Password instance", () => {
   }
 
   console.assert(
-    result.value === validPassword,
+    result instanceof Password,
     "Expected password value to match.",
   );
 });

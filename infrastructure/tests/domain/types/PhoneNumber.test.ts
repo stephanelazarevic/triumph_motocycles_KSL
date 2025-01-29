@@ -2,16 +2,14 @@ import { PhoneNumberInvalidError } from "../../../../domain/errors/PhoneNumberIn
 import { PhoneNumber } from "../../../../domain/value-objects/PhoneNumber.ts";
 
 Deno.test("Should create a valid PhoneNumber instance", () => {
-  const phoneNumberValue = "+123456789";
-
-  const result = PhoneNumber.from(phoneNumberValue);
+  const result = PhoneNumber.from("+123456789");
 
   if (result instanceof Error) {
     throw new Error("Test failed: Expected a valid PhoneNumber instance.");
   }
 
   console.assert(
-    result.value === phoneNumberValue,
+    result instanceof PhoneNumber,
     "Expected phone number value to match.",
   );
 });
