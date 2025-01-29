@@ -1,4 +1,4 @@
-import { Dealer } from "../../../domain/entities/DealerEntity.ts";
+import { Dealer } from "../../../domain/entities/Dealer.ts";
 import { DealerNotFoundError } from "../../../domain/errors/DealerNotFoundError.ts";
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
 

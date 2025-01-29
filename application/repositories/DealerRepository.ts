@@ -1,9 +1,9 @@
-import { DealerEntity } from "../../domain/entities/DealerEntity.ts";
+import { Dealer } from "../../domain/entities/Dealer.ts";
 import { DealerNotFoundError } from "../../domain/errors/DealerNotFoundError.ts";
 
 export interface DealerRepository {
-  save(dealer: DealerEntity): Promise<void>;
-  findAll(): Promise<DealerEntity[]>;
-  findOneById(id: string): Promise<DealerEntity | DealerNotFoundError>;
+  save(dealer: Dealer): Promise<void>;
+  findAll(): Promise<Dealer[]>;
+  findOneById(id: string): Promise<Dealer | DealerNotFoundError>;
   delete(id: string): Promise<void>;
 }

@@ -1,6 +1,6 @@
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
 import { DealerNotFoundError } from "../../../domain/errors/DealerNotFoundError.ts";
-import { Dealer } from "../../../domain/entities/DealerEntity.ts";
+import { Dealer } from "../../../domain/entities/Dealer.ts";
 import { UpdateDealerSiteCommand } from "../../../domain/types/DealerType.ts";
 
 export class UpdateDealerSiteUsecase {
@@ -12,7 +12,7 @@ export class UpdateDealerSiteUsecase {
       return new DealerNotFoundError();
     }
 
-    dealer.taxNumber = command.site;
+    dealer.site = command.site;
     dealer.markAsUpdated();
     await this.dealerRepository.save(dealer);
     return dealer;

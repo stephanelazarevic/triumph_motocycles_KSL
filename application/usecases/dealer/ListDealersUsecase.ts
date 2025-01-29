@@ -1,4 +1,4 @@
-import { Dealer } from "../../../domain/entities/DealerEntity.ts";
+import { Dealer } from "../../../domain/entities/Dealer.ts";
 import type { DealerRepository } from "../../repositories/DealerRepository.ts";
 
 export class ListDealersUsecase {
