@@ -92,7 +92,7 @@ Deno.test("Should normalize a valid email by trimming spaces", () => {
   }
 
   console.assert(
-    resultEmailAddress.equals('john.doe@example.com'),
+    resultEmailAddress.equals("john.doe@example.com"),
     "Expected email to be trimmed and normalized.",
   );
 });

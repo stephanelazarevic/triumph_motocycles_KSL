@@ -54,8 +54,8 @@ export class Address {
   }
 
   public equals(address: Address): boolean {
-    return this.street === address.street
-      && this.postalCode === address.postalCode
-      && this.countryCode === address.countryCode;
+    return this.street === address.street &&
+      this.postalCode === address.postalCode &&
+      this.countryCode === address.countryCode;
   }
 }

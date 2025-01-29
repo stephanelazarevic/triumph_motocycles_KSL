@@ -6,10 +6,10 @@ export class UpdateEnterpriseUsecase {
   constructor(private enterpriseRepository: EnterpriseRepository) {}
 
   public async execute(
-    dealer: EnterpriseEntity
+    dealer: EnterpriseEntity,
   ): Promise<EnterpriseNotFoundError | void> {
     const existingEnterprise = await this.enterpriseRepository.findOneById(
-      dealer.id
+      dealer.id,
     );
     if (!existingEnterprise) {
       return new EnterpriseNotFoundError();

@@ -1,4 +1,4 @@
 export enum NameType {
   FIRSTNAME,
-  LASTNAME
+  LASTNAME,
 }

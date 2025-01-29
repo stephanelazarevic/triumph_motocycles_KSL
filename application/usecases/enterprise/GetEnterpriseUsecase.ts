@@ -6,7 +6,7 @@ export class FindEnterpriseUsecase {
   constructor(private enterpriseRepository: EnterpriseRepository) {}
 
   public async execute(
-    id: string
+    id: string,
   ): Promise<EnterpriseEntity | EnterpriseNotFoundError> {
     const existingEnterprise = await this.enterpriseRepository.findOneById(id);
     if (!existingEnterprise) {

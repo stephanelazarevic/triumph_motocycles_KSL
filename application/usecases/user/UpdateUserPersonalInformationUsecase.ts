@@ -4,7 +4,7 @@ import { Address } from "../../../domain/value-objects/Address.ts";
 import { Name } from "../../../domain/value-objects/Name.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 import { NameType } from "../../../domain/enum/NameEnum.ts";
-import type { UpdateUserPersonalInformationCommand } from '../../../domain/types/UserType.ts'
+import type { UpdateUserPersonalInformationCommand } from "../../../domain/types/UserType.ts";
 
 export class UpdateUserPersonalInformationUsecase {
   constructor(private readonly userRepository: UserRepository) {}
@@ -36,7 +36,7 @@ export class UpdateUserPersonalInformationUsecase {
       const validAddress = this.validateAddress({
         street: command.address.street ?? currentAddress.street,
         postalCode: command.address.postalCode ?? currentAddress.postalCode,
-        countryCode: command.address.countryCode ?? currentAddress.countryCode
+        countryCode: command.address.countryCode ?? currentAddress.countryCode,
       });
       if (validAddress instanceof Error) {
         return validAddress;
@@ -57,14 +57,14 @@ export class UpdateUserPersonalInformationUsecase {
   }
 
   private validateAddress(address: {
-    street: string,
-    postalCode: string,
-    countryCode: string
+    street: string;
+    postalCode: string;
+    countryCode: string;
   }): Address | Error {
     return Address.from(
       address.street,
       address.postalCode,
-      address.countryCode
+      address.countryCode,
     );
   }
 }

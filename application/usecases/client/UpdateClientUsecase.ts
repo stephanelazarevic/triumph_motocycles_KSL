@@ -6,7 +6,7 @@ export class UpdateClientUsecase {
   constructor(private clientRepository: ClientRepository) {}
 
   public async execute(
-    dealer: ClientEntity
+    dealer: ClientEntity,
   ): Promise<ClientNotFoundError | void> {
     const existingClient = await this.clientRepository.findOneById(dealer.id);
     if (!existingClient) {

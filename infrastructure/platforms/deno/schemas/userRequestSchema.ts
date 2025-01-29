@@ -14,7 +14,7 @@ export const createUserRequestSchema = z.object({
   address: z.object({
     street: z.string().min(5),
     postalCode: z.string().min(5),
-    countryCode: z.string().min(2)
+    countryCode: z.string().min(2),
   }),
   isAdministrator: z.boolean(),
 });
@@ -30,7 +30,7 @@ export const updateUserPersonalInformationRequestSchema = z.object({
   address: z.object({
     street: z.string().min(5),
     postalCode: z.string().min(5),
-    countryCode: z.string().min(2)
+    countryCode: z.string().min(2),
   }).optional(),
 });
 

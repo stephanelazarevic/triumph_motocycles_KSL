@@ -13,7 +13,7 @@ import { PhoneNumber } from "../../../domain/value-objects/PhoneNumber.ts";
 export class AddUserUsecase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly passwordService: PasswordService
+    private readonly passwordService: PasswordService,
   ) {}
 
   public async execute(command: AddUserCommand): Promise<User | Error> {
@@ -40,7 +40,7 @@ export class AddUserUsecase {
     const validAddress = Address.from(
       command.address.street,
       command.address.postalCode,
-      command.address.countryCode
+      command.address.countryCode,
     );
     if (validAddress instanceof Error) {
       return validAddress;
@@ -64,7 +64,7 @@ export class AddUserUsecase {
       emailAddress: validEmailAddress,
       hashedPassword,
       phoneNumber: validPhoneNumber,
-      address: validAddress
+      address: validAddress,
     });
 
     if (user instanceof Error) {

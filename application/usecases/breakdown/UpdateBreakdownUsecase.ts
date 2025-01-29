@@ -6,10 +6,10 @@ export class UpdateBreakdownUsecase {
   constructor(private breakdownRepository: BreakdownRepository) {}
 
   public async execute(
-    breakdown: BreakdownEntity
+    breakdown: BreakdownEntity,
   ): Promise<BreakdownNotFoundError | void> {
     const existing = await this.breakdownRepository.findOneById(
-      breakdown.identifier
+      breakdown.identifier,
     );
     if (!existing) {
       return new BreakdownNotFoundError();

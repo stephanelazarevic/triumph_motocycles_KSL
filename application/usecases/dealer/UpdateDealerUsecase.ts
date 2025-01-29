@@ -6,7 +6,7 @@ export class UpdateDealerUsecase {
   constructor(private dealerRepository: DealerRepository) {}
 
   public async execute(
-    dealer: DealerEntity
+    dealer: DealerEntity,
   ): Promise<DealerNotFoundError | void> {
     const existingDealer = await this.dealerRepository.findOneById(dealer.id);
     if (!existingDealer) {

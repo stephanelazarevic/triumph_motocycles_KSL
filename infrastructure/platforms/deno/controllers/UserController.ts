@@ -7,19 +7,19 @@ import { exhaustive } from "npm:exhaustive";
 import {
   createUserRequestSchema,
   updateUserContactInformationRequestSchema,
+  updateUserPasswordRequestSchema,
   updateUserPersonalInformationRequestSchema,
-  updateUserPasswordRequestSchema
 } from "../schemas/userRequestSchema.ts";
 import { User } from "../../../../domain/entities/User.ts";
 import { PasswordService } from "../../../../domain/services/PasswordService.ts";
-import { UpdateUserContactInformationUsecase } from "../../../../application/usecases/user/UpdateUserContactInformationUsecase.ts"
-import { UpdateUserPersonalInformationUsecase } from "../../../../application/usecases/user/UpdateUserPersonalInformationUsecase.ts"
-import { UpdateUserPasswordUsecase } from "../../../../application/usecases/user/UpdateUserPasswordUsecase.ts"
+import { UpdateUserContactInformationUsecase } from "../../../../application/usecases/user/UpdateUserContactInformationUsecase.ts";
+import { UpdateUserPersonalInformationUsecase } from "../../../../application/usecases/user/UpdateUserPersonalInformationUsecase.ts";
+import { UpdateUserPasswordUsecase } from "../../../../application/usecases/user/UpdateUserPasswordUsecase.ts";
 
 export class UserController {
   public constructor(
     private readonly userRepository: UserRepository,
-    private readonly passwordService: PasswordService
+    private readonly passwordService: PasswordService,
   ) {}
 
   public async getAllUsers(): Promise<Response> {
@@ -48,13 +48,16 @@ export class UserController {
     const result = await findUserUsecase.execute(id);
 
     if (result instanceof User) {
-      return new Response(JSON.stringify(result), { status: 200, headers: {
-        "Content-Type": "application/json",
-      }, });
+      return new Response(JSON.stringify(result), {
+        status: 200,
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
     }
 
     return exhaustive(result.name, {
-      UserNotFoundError:  () => new Response("User not found", { status: 404 }),
+      UserNotFoundError: () => new Response("User not found", { status: 404 }),
     });
   }
 
@@ -86,7 +89,7 @@ export class UserController {
       emailAddress,
       plainPassword,
       phoneNumber,
-      address
+      address,
     });
 
     if (error instanceof User) {
@@ -94,14 +97,14 @@ export class UserController {
     }
 
     return exhaustive(error.name, {
-      UserEmailAddressAlreadyUsedError: () => new Response("Email address already used",    { status: 400 }),
-      PhoneNumberInvalidError:          () => new Response("Invalid phone number format",   { status: 400 }),
-      EmailAddressInvalidFormatError:   () => new Response("Invalid email address format",  { status: 400 }),
-      AddressTooShortError:             () => new Response("Address too short",             { status: 400 }),
-      AddressInvalidPostalCodeError:    () => new Response("Invalid postal code",           { status: 400 }),
-      AddressInvalidCountryError:       () => new Response("Invalid country code",          { status: 400 }),
-      PasswordError:                    () => new Response("Invalid password",              { status: 400 }),
-      default:                          () => new Response("An unexpected error occurred.", { status: 500 })
+      UserEmailAddressAlreadyUsedError: () => new Response("Email address already used", { status: 400 }),
+      PhoneNumberInvalidError: () => new Response("Invalid phone number format", { status: 400 }),
+      EmailAddressInvalidFormatError: () => new Response("Invalid email address format", { status: 400 }),
+      AddressTooShortError: () => new Response("Address too short", { status: 400 }),
+      AddressInvalidPostalCodeError: () => new Response("Invalid postal code", { status: 400 }),
+      AddressInvalidCountryError: () => new Response("Invalid country code", { status: 400 }),
+      PasswordError: () => new Response("Invalid password", { status: 400 }),
+      default: () => new Response("An unexpected error occurred.", { status: 500 }),
     });
   }
 
@@ -126,10 +129,10 @@ export class UserController {
 
     if (result instanceof Error) {
       return exhaustive(result.name, {
-        UserNotFoundError:        () => new Response("User not found",                { status: 404 }),
-        PhoneNumberInvalidError:  () => new Response("Invalid phone number",          { status: 400 }),
-        EmailAddressInvalidError: () => new Response("Invalid email address",         { status: 400 }),
-        default:                  () => new Response("An unexpected error occurred.", { status: 500 })
+        UserNotFoundError: () => new Response("User not found", { status: 404 }),
+        PhoneNumberInvalidError: () => new Response("Invalid phone number", { status: 400 }),
+        EmailAddressInvalidError: () => new Response("Invalid email address", { status: 400 }),
+        default: () => new Response("An unexpected error occurred.", { status: 500 }),
       });
     }
 
@@ -157,10 +160,10 @@ export class UserController {
 
     if (result instanceof Error) {
       return exhaustive(result.name, {
-        UserNotFoundError:            () => new Response("User not found",                { status: 404 }),
-        InvalidCurrentPasswordError:  () => new Response("Invalid current password",      { status: 400 }),
-        PasswordError:                () => new Response("Invalid new password",          { status: 400 }),
-        default:                      () => new Response("An unexpected error occurred.", { status: 500 })
+        UserNotFoundError: () => new Response("User not found", { status: 404 }),
+        InvalidCurrentPasswordError: () => new Response("Invalid current password", { status: 400 }),
+        PasswordError: () => new Response("Invalid new password", { status: 400 }),
+        default: () => new Response("An unexpected error occurred.", { status: 500 }),
       });
     }
 
@@ -188,9 +191,9 @@ export class UserController {
 
     if (result instanceof Error) {
       return exhaustive(result.name, {
-        UserNotFoundError:   () => new Response("User not found",                { status: 404 }),
-        AddressInvalidError: () => new Response("Invalid address",               { status: 400 }),
-        default:             () => new Response("An unexpected error occurred.", { status: 500 })
+        UserNotFoundError: () => new Response("User not found", { status: 404 }),
+        AddressInvalidError: () => new Response("Invalid address", { status: 400 }),
+        default: () => new Response("An unexpected error occurred.", { status: 500 }),
       });
     }
 

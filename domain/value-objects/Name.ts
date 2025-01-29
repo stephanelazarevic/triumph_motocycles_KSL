@@ -1,5 +1,5 @@
 import { NameTooShortError } from "../errors/NameTooShortError.ts";
-import { NameType } from '../enum/NameEnum.ts'
+import { NameType } from "../enum/NameEnum.ts";
 
 export class Name {
   private constructor(private readonly value: string) {}
@@ -9,9 +9,7 @@ export class Name {
       return new NameTooShortError();
     }
 
-    const formatted = type === NameType.FIRSTNAME
-      ? Name.formatFirstname(name)
-      : Name.formatLastname(name);
+    const formatted = type === NameType.FIRSTNAME ? Name.formatFirstname(name) : Name.formatLastname(name);
 
     return new Name(formatted);
   }
@@ -20,8 +18,8 @@ export class Name {
     return name
       .trim()
       .split(/[\s-]/)
-      .map(part => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
-      .join('-');
+      .map((part) => part.charAt(0).toUpperCase() + part.slice(1).toLowerCase())
+      .join("-");
   }
 
   private static formatLastname(name: string): string {

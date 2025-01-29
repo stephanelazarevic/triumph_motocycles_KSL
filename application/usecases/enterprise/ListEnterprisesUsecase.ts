@@ -3,7 +3,7 @@ import type { EnterpriseRepository } from "../../repositories/EnterpriseReposito
 
 export class FindAllEnterprisesUsecase {
   public constructor(
-    private readonly enterpriseRepository: EnterpriseRepository
+    private readonly enterpriseRepository: EnterpriseRepository,
   ) {}
 
   public async execute(): Promise<EnterpriseEntity[]> {

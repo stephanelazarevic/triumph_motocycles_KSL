@@ -10,7 +10,7 @@ import { UserRepository } from "../../repositories/UserRepository.ts";
 export class UpdateUserPasswordUsecase {
   constructor(
     private readonly userRepository: UserRepository,
-    private readonly passwordService: PasswordService
+    private readonly passwordService: PasswordService,
   ) {}
 
   public async execute(userId: string, command: UpdateUserPasswordCommand): Promise<User | Error> {
@@ -21,7 +21,7 @@ export class UpdateUserPasswordUsecase {
 
     const passwordsMatchError = this.validatePasswordsMatch(
       command.newPassword,
-      command.confirmNewPassword
+      command.confirmNewPassword,
     );
     if (passwordsMatchError instanceof Error) {
       return passwordsMatchError;
@@ -34,7 +34,7 @@ export class UpdateUserPasswordUsecase {
 
     const isSamePasswordError = await this.validatePasswordIsDifferent(
       command.newPassword,
-      user.hashedPassword
+      user.hashedPassword,
     );
     if (isSamePasswordError instanceof Error) {
       return isSamePasswordError;
@@ -68,11 +68,11 @@ export class UpdateUserPasswordUsecase {
 
   private async validatePasswordIsDifferent(
     newPassword: string,
-    currentHashedPassword: string
+    currentHashedPassword: string,
   ): Promise<void | Error> {
     const isSamePassword = await this.passwordService.comparePassword(
       newPassword,
-      currentHashedPassword
+      currentHashedPassword,
     );
     if (isSamePassword) {
       return new UserSamePasswordError();
