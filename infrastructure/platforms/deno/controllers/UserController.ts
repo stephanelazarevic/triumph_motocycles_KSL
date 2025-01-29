@@ -2,7 +2,7 @@ import type { UserRepository } from "../../../../application/repositories/UserRe
 import { AddUserUsecase } from "../../../../application/usecases/user/AddUserUsecase.ts";
 import { GetUserUsecase } from "../../../../application/usecases/user/GetUserUsecase.ts";
 import { ListUsersUsecase } from "../../../../application/usecases/user/ListUsersUsecase.ts";
-import { DeleteUserUsecase } from "../../../../application/usecases/user/DeleteUserUsecase.ts";
+import { SoftDeleteUserUsecase } from "../../../../application/usecases/user/SoftDeleteUserUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
 import {
   createUserRequestSchema,
@@ -208,9 +208,9 @@ export class UserController {
       return new Response("User ID is required", { status: 400 });
     }
 
-    const deleteUserUsecase = new DeleteUserUsecase(this.userRepository);
+    const softDeleteUserUsecase = new SoftDeleteUserUsecase(this.userRepository);
 
-    const result = await deleteUserUsecase.execute(id);
+    const result = await softDeleteUserUsecase.execute(id);
 
     if (result instanceof Error) {
       return exhaustive(result.name, {

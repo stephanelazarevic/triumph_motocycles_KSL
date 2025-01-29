@@ -14,7 +14,7 @@ export class User extends Entity {
     public phoneNumber: PhoneNumber,
     public address: Address,
     public isAdministrator: boolean = false,
-    public isActive: boolean = true,
+    public deletedAt: Date | null = null,
   ) {
     super(id);
   }
@@ -36,14 +36,5 @@ export class User extends Entity {
       params.phoneNumber,
       params.address,
     );
-  }
-
-  public deactivate(): void {
-    this.isActive = false;
-    this.markAsUpdated();
-  }
-
-  public getFullName(): string {
-    return `${this.firstname.getValue()} ${this.lastname.getValue()}`;
   }
 }

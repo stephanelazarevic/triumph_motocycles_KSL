@@ -5,7 +5,7 @@ export abstract class Entity {
     protected updatedAt: Date = new Date(),
   ) {}
 
-  protected markAsUpdated(): void {
+  public markAsUpdated(): void {
     this.updatedAt = new Date();
   }
 }

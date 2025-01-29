@@ -43,6 +43,7 @@ export class UpdateUserPasswordUsecase {
     const hashedPassword = await this.passwordService.hashPassword(validPassword);
 
     user.hashedPassword = hashedPassword;
+    user.markAsUpdated();
 
     await this.userRepository.save(user);
     return user;

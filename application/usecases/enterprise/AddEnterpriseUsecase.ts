@@ -1,13 +1,13 @@
 import { EnterpriseEntity } from "../../../domain/entities/EnterpriseEntity.ts";
 import { EnterpriseRepository } from "../../repositories/EnterpriseRepository.ts";
-import { CreateUserUsecase } from "../user/AddUserUsecase.ts";
+import { AddUserUsecase } from "../user/AddUserUsecase.ts";
 
 export class CreateEnterpriseUsecase {
-  private readonly createUserUsecase: CreateUserUsecase;
+  private readonly createUserUsecase: AddUserUsecase;
 
   public constructor(
     private readonly enterpriseRepository: EnterpriseRepository,
-    createUserUsecase: CreateUserUsecase,
+    createUserUsecase: AddUserUsecase,
   ) {
     this.createUserUsecase = createUserUsecase;
   }
@@ -18,22 +18,22 @@ export class CreateEnterpriseUsecase {
     emailAddress: string,
     plainPassword: string,
     phoneNumber: string,
-    street: string,
-    postalCode: string,
-    countryCode: string,
+    address: {
+      street: string;
+      postalCode: string;
+      countryCode: string;
+    },
     taxNumber: string,
     industryType: string,
   ) {
-    const userEntity = await this.createUserUsecase.execute(
+    const userEntity = await this.createUserUsecase.execute({
       firstname,
       lastname,
       emailAddress,
       plainPassword,
       phoneNumber,
-      street,
-      postalCode,
-      countryCode,
-      false,
+      address,
+    }
     );
 
     if (userEntity instanceof Error) {

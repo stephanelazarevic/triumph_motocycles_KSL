@@ -20,6 +20,7 @@ export class UpdateUserContactInformationUsecase {
         return validEmailAddress;
       }
       user.emailAddress = validEmailAddress;
+      user.markAsUpdated();
     }
 
     if (command.phoneNumber !== undefined) {
@@ -28,6 +29,7 @@ export class UpdateUserContactInformationUsecase {
         return validPhoneNumber;
       }
       user.phoneNumber = validPhoneNumber;
+      user.markAsUpdated();
     }
 
     await this.userRepository.save(user);

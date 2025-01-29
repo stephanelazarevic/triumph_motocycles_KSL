@@ -11,8 +11,8 @@ export class UpdateUserPersonalInformationUsecase {
 
   public async execute(userId: string, command: UpdateUserPersonalInformationCommand): Promise<User | Error> {
     const user = await this.userRepository.findOneById(userId);
-    if (!user) {
-      return new UserNotFoundError();
+    if (user instanceof UserNotFoundError) {
+      return user;
     }
 
     if (command.firstname !== undefined) {
@@ -21,6 +21,7 @@ export class UpdateUserPersonalInformationUsecase {
         return validFirstname;
       }
       user.firstname = validFirstname;
+      user.markAsUpdated();
     }
 
     if (command.lastname !== undefined) {
@@ -29,6 +30,7 @@ export class UpdateUserPersonalInformationUsecase {
         return validLastname;
       }
       user.lastname = validLastname;
+      user.markAsUpdated();
     }
 
     if (command.address) {
@@ -42,6 +44,7 @@ export class UpdateUserPersonalInformationUsecase {
         return validAddress;
       }
       user.address = validAddress;
+      user.markAsUpdated();
     }
 
     await this.userRepository.save(user);

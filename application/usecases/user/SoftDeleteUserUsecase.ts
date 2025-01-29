@@ -1,7 +1,7 @@
-import { UserRepository } from "../../../application/repositories/UserRepository.ts";
+import { UserRepository } from "../../repositories/UserRepository.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 
-export class DeleteUserUsecase {
+export class SoftDeleteUserUsecase {
   constructor(private readonly userRepository: UserRepository) {}
 
   public async execute(id: string): Promise<void | UserNotFoundError> {
@@ -10,6 +10,8 @@ export class DeleteUserUsecase {
       return new UserNotFoundError();
     }
 
-    await this.userRepository.delete(user.id);
+    user.deletedAt = new Date();
+    user.markAsUpdated();
+    await this.userRepository.save(user);
   }
 }
