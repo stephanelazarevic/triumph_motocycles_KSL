@@ -9,11 +9,11 @@
     "npm:bcryptjs@^2.4.3": "2.4.3",
     "npm:exhaustive@*": "1.1.2",
     "npm:exhaustive@^1.1.2": "1.1.2",
-    "npm:prisma@*": "6.2.1",
     "npm:i18n-iso-countries@*": "7.13.0",
     "npm:i18n-iso-countries@^7.13.0": "7.13.0",
     "npm:libphonenumber-js@*": "1.11.17",
     "npm:libphonenumber-js@^1.11.17": "1.11.17",
+    "npm:prisma@*": "6.2.1",
     "npm:zod@*": "3.23.8",
     "npm:zod@^3.23.8": "3.23.8"
   },
@@ -64,6 +64,7 @@
       "dependencies": [
         "@prisma/debug"
       ]
+    },
     "bcryptjs@2.4.3": {
       "integrity": "sha512-V/Hy/X9Vt7f3BbPJEi8BdVFMByHi+jNXrYkW3huaybV/kQ0KJg0Y6PkEMbn+zeT+i+SiKZ/HMqJGIIt4LZDqNQ=="
     },
@@ -76,13 +77,6 @@
     "fsevents@2.3.3": {
       "integrity": "sha512-5xoDfX+fL7faATnagmWPpbFtwh/R77WmMMqqHGS65C3vvB0YHrgF+B1YmZ3441tMj5n63k0212XNoJwzlhffQw=="
     },
-    "prisma@6.2.1": {
-      "integrity": "sha512-hhyM0H13pQleQ+br4CkzGizS5I0oInoeTw3JfLw1BRZduBSQxPILlJLwi+46wZzj9Je7ndyQEMGw/n5cN2fknA==",
-      "dependencies": [
-        "@prisma/engines",
-        "fsevents"
-      ]
-    },
     "i18n-iso-countries@7.13.0": {
       "integrity": "sha512-pVh4CjdgAHZswI98hzG+1BItQlsQfR+yGDsjDISoWIV/jHDAvCmSyZ5vj2YWwAjfVZ8/BhBDqWcFvuGOyHe4vg==",
       "dependencies": [
@@ -91,6 +85,13 @@
     },
     "libphonenumber-js@1.11.17": {
       "integrity": "sha512-Jr6v8thd5qRlOlc6CslSTzGzzQW03uiscab7KHQZX1Dfo4R6n6FDhZ0Hri6/X7edLIDv9gl4VMZXhxTjLnl0VQ=="
+    },
+    "prisma@6.2.1": {
+      "integrity": "sha512-hhyM0H13pQleQ+br4CkzGizS5I0oInoeTw3JfLw1BRZduBSQxPILlJLwi+46wZzj9Je7ndyQEMGw/n5cN2fknA==",
+      "dependencies": [
+        "@prisma/engines",
+        "fsevents"
+      ]
     },
     "zod@3.23.8": {
       "integrity": "sha512-XBx9AXhXktjUqnepgTiE5flcKIYWi/rme0Eaj+5Y0lftuGBq+jyRu/md4WnuxqgP1ubdpNCsYEYPxrzVHD8d6g=="
@@ -126,6 +127,10 @@
     "https://deno.land/std@0.154.0/testing/_diff.ts": "141f978a283defc367eeee3ff7b58aa8763cf7c8e0c585132eae614468e9d7b8",
     "https://deno.land/std@0.154.0/testing/_format.ts": "cd11136e1797791045e639e9f0f4640d5b4166148796cad37e6ef75f7d7f3832",
     "https://deno.land/std@0.154.0/testing/asserts.ts": "ac295f7fd22a7af107580e2475402a8c386cb1bf18bf837ae266ac0665786026",
+    "https://deno.land/x/bcrypt@v0.4.1/mod.ts": "ff09bdae282583cf5f7d87efe37ddcecef7f14f6d12e8b8066a3058db8c6c2f7",
+    "https://deno.land/x/bcrypt@v0.4.1/src/bcrypt/base64.ts": "b8266450a4f1eb6960f60f2f7986afc4dde6b45bd2d7ee7ba10789e67e17b9f7",
+    "https://deno.land/x/bcrypt@v0.4.1/src/bcrypt/bcrypt.ts": "ec221648cc6453ea5e3803bc817c01157dada06aa6f7a0ba6b9f87aae32b21e2",
+    "https://deno.land/x/bcrypt@v0.4.1/src/main.ts": "08d201b289c8d9c46f8839c69cd6625b213863db29775c7a200afc3b540e64f8",
     "https://deno.land/x/mongo@v0.31.1/deps.ts": "ba57aa94021d88959c6aac77edbbe85226e4a6836230dcdd891da63afcbf88c1",
     "https://deno.land/x/mongo@v0.31.1/mod.ts": "0989f34d08c40440b8786140abdaf863e964e23df5d1a80e661d3d4170d9d21e",
     "https://deno.land/x/mongo@v0.31.1/src/auth/base.ts": "7fe14cf0a63d6bbc4ba69a000a04b3b184d26842504d94652a6af2d0c9494944",
@@ -200,6 +205,11 @@
       "npm:i18n-iso-countries@^7.13.0",
       "npm:libphonenumber-js@^1.11.17"
     ],
+    "packageJson": {
+      "dependencies": [
+        "npm:prisma@^6.2.1"
+      ]
+    },
     "members": {
       "infrastructure/platforms/deno": {
         "dependencies": [

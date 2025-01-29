@@ -53,6 +53,7 @@ model Dealer {
   user      User     @relation(fields: [id], references: [id])
   clients   Client[]
   motos     Moto[]   @relation("DealerMotos")  // Relation avec les motos
+  part Part[]
 }
 
 model Enterprise {
@@ -136,15 +137,16 @@ model MotoPart {
 
 model Part {
   id          Int      @id @default(autoincrement())
+  idDealer   Int
   idCommand   Int
   reference   String
   type        String
   price       Float
   stockQuantity Int
   command     Command  @relation(fields: [idCommand], references: [id])
+  dealer      Dealer  @relation(fields: [idDealer], references: [id])
   warranties  WarrantyParts[]
-
-  MotoPart MotoPart[]
+  motoPart MotoPart[]
 }
 
 model Command {
