@@ -1,14 +1,14 @@
 import { ClientRepository } from "../../../application/repositories/ClientRepository.ts";
-import { ClientEntity } from "../../../domain/entities/ClientEntity.ts";
+import { Client } from "../../../domain/entities/Client.ts";
 import { ClientNotFoundError } from "../../../domain/errors/ClientNotFoundError.ts";
 
 export class ClientRepositoryInMemory implements ClientRepository {
-  constructor(private clients: ClientEntity[] = []) {}
+  constructor(private clients: Client[] = []) {}
 
   /**
    * Saves a client to the repository. If the client exists, it updates the record.
    */
-  public save(client: ClientEntity): Promise<void> {
+  public save(client: Client): Promise<void> {
     const index = this.clients.findIndex(
       (existingClient) => existingClient.id === client.id,
     );
@@ -23,14 +23,14 @@ export class ClientRepositoryInMemory implements ClientRepository {
   /**
    * Finds all clients in the repository.
    */
-  public findAll(): Promise<ClientEntity[]> {
+  public findAll(): Promise<Client[]> {
     return Promise.resolve(this.clients);
   }
 
   /**
    * Finds a single client by ID. Returns the client or throws a ClientNotFoundError.
    */
-  public findOneById(id: string): Promise<ClientEntity | ClientNotFoundError> {
+  public findOneById(id: string): Promise<Client | ClientNotFoundError> {
     const foundClient = this.clients.find((client) => client.id === id);
     return Promise.resolve(foundClient ?? new ClientNotFoundError());
   }

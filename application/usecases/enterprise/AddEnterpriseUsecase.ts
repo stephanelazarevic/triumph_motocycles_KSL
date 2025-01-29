@@ -5,7 +5,7 @@ import { TaxNumber } from "../../../domain/value-objects/TaxNumber.ts";
 import { EnterpriseRepository } from "../../repositories/EnterpriseRepository.ts";
 import { AddUserUsecase } from "../user/AddUserUsecase.ts";
 
-export class CreateEnterpriseUsecase {
+export class AddEnterpriseUsecase {
   public constructor(
     private readonly enterpriseRepository: EnterpriseRepository,
     private readonly createUserUsecase: AddUserUsecase,
