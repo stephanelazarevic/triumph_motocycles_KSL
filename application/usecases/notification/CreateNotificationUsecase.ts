@@ -1,6 +1,5 @@
 import { NotificationEntity } from "../../../domain/entities/NotificationEntity.ts";
 import { NotificationStatus, NotificationType } from "../../../domain/enum/NotificationEnum.ts";
-import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 import { NotificationRepository } from "../../repositories/NotificationRepository.ts";
 import { UserRepository } from "../../repositories/UserRepository.ts";
@@ -18,12 +17,12 @@ export class CreateNotificationUsecase {
     date: Date,
     status: NotificationStatus
   ) {
-    const user = await this.userRepository.findById(
+    const user = await this.userRepository.findOneById(
       userId
     );
 
-    if (!(user instanceof UserEntity)) {
-      return new UserNotFoundError();
+    if (user instanceof UserNotFoundError) {
+      throw user;
     }
 
     const notification = NotificationEntity.create(

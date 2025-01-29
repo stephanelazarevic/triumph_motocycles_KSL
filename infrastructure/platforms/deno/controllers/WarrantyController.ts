@@ -82,15 +82,15 @@ export class WarrantyController implements EntityControllerInterface {
 
     const { startDate, endDate, warrantyType, motorcycle, terms } = validation.data;
 
-    const error = await createWarrantyUsecase.execute(startDate, endDate, warrantyType, motorcycle, terms);
+    const result = await createWarrantyUsecase.execute(startDate, endDate, warrantyType, motorcycle, terms);
 
-    if (!error) {
+    if (result === undefined) {
       return new Response(null, {
         status: 201,
       });
     }
 
-    return exhaustive(error.name, {
+    return exhaustive({
       InvalidDateError: () => new Response("InvalidDateError", { status: 400 }),
       MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
     });

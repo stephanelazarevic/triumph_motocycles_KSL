@@ -78,18 +78,18 @@ export class MaintenanceController implements EntityControllerInterface {
 
     const { date, description, motorcycleId, cost } = validation.data;
 
-    const error = await createMaintenanceUsecase.execute(
+    const result = await createMaintenanceUsecase.execute(
       date,
       description,
       motorcycleId,
       cost
     );
 
-    if (!error) {
+    if (result === undefined) {
       return new Response(null, { status: 201 });
     }
 
-    return exhaustive(error.name, {
+    return exhaustive({
       MotorcycleNotFoundError: () =>
         new Response("MotorcycleNotFoundError", { status: 404 }),
     });

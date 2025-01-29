@@ -1,6 +1,6 @@
 import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
-import { ListMotorcyclesUsecase } from "../../../../application/usecases/ListMotorcyclesUsecase.ts";
-import { CreateMotorcycleUsecase } from "../../../../application/usecases/CreateMotorcycleUsecase.ts";
+import { ListMotorcyclesUsecase } from "../../../../application/usecases/motorcycle/ListMotorcyclesUsecase.ts";
+import { CreateMotorcycleUsecase } from "../../../../application/usecases/motorcycle/CreateMotorcycleUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
 import { createMotorcycleRequestSchema } from "../schemas/createMotorcycleRequestSchema.ts";
 
@@ -28,13 +28,13 @@ export class MotorcycleController {
     }
 
     const { brand, model, year } = validation.data;
-    const error = await createMotorcycleUsecase.execute(brand, model, year);
+    const result = await createMotorcycleUsecase.execute(brand, model, year);
 
-    if (!error) {
+    if (result === undefined) {
       return new Response(null, { status: 201 });
     }
 
-    return exhaustive(error.name, {
+    return exhaustive(result.name, {
       BrandLengthTooShortError: () => new Response("BrandLengthTooShortError", { status: 400 }),
       ModelLengthTooShortError: () => new Response("ModelLengthTooShortError", { status: 400 }),
     });

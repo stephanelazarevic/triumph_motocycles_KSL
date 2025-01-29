@@ -8,14 +8,15 @@ import { exhaustive } from "npm:exhaustive";
 import { createNotificationRequestSchema } from "../schemas/createNotificationRequestSchema.ts";
 import { UserRepository } from "../../../../application/repositories/UserRepository.ts";
 import { NotificationNotFoundError } from "../../../../domain/errors/NotificationNotFoundError.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class NotificationController {
+export class NotificationController implements EntityControllerInterface{
   public constructor(
     private readonly notificationRepository: NotificationRepository, 
     private readonly userRepository: UserRepository
   ) {}
 
-  public async getAllNotifications(): Promise<Response> {
+  public async getAll(): Promise<Response> {
     const listNotificationsUsecase = new FindAllNotificationsUsecase(this.notificationRepository);
 
     const result = await listNotificationsUsecase.execute();
@@ -28,7 +29,7 @@ export class NotificationController {
     });
   }
 
-  public async getNotificationById(request: Request): Promise<Response> {
+  public async getById(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 
@@ -59,7 +60,7 @@ export class NotificationController {
     });
   }
 
-  public async createNotification(request: Request): Promise<Response> {
+  public async create(request: Request): Promise<Response> {
     const createNotificationUsecase = new CreateNotificationUsecase(
       this.notificationRepository,
       this.userRepository
@@ -77,7 +78,7 @@ export class NotificationController {
 
     const { userId, type, message, date, status } = validation.data;
 
-    const error = await createNotificationUsecase.execute(
+    const result = await createNotificationUsecase.execute(
       userId,
       type,
       message,
@@ -85,17 +86,17 @@ export class NotificationController {
       status
     );
 
-    if (!error) {
+    if (result === undefined) {
       return new Response(null, { status: 201 });
     }
 
-    return exhaustive(error.name, {
+    return exhaustive({
       UserNotFoundError: () =>
         new Response("UserNotFoundError", { status: 404 }),
     });
   }
 
-  public async updateNotification(request: Request): Promise<Response> {
+  public async update(request: Request): Promise<Response> {
     const updateNotificationUsecase = new UpdateNotificationUsecase(this.notificationRepository);
 
     const body = await request.json();
@@ -118,7 +119,7 @@ export class NotificationController {
     });
   }
 
-  public async deleteNotification(request: Request): Promise<Response> {
+  public async delete(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 
