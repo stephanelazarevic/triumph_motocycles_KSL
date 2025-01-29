@@ -1,9 +1,9 @@
-import { EnterpriseEntity } from "../../domain/entities/EnterpriseEntity.ts";
+import { Enterprise } from "../../domain/entities/Enterprise.ts";
 import { EnterpriseNotFoundError } from "../../domain/errors/EnterpriseNotFoundError.ts";
 
 export interface EnterpriseRepository {
-  save(enterprise: EnterpriseEntity): Promise<void>;
-  findAll(): Promise<EnterpriseEntity[]>;
-  findOneById(id: string): Promise<EnterpriseEntity | EnterpriseNotFoundError>;
+  save(enterprise: Enterprise): Promise<void>;
+  findAll(): Promise<Enterprise[]>;
+  findOneById(id: string): Promise<Enterprise | EnterpriseNotFoundError>;
   delete(id: string): Promise<void>;
 }

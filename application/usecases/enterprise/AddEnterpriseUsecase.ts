@@ -1,55 +1,52 @@
-import { EnterpriseEntity } from "../../../domain/entities/EnterpriseEntity.ts";
+import { Enterprise } from "../../../domain/entities/Enterprise.ts";
+import { AddEnterpriseCommand } from "../../../domain/types/EnterpriseType.ts";
+import { IndustryType } from "../../../domain/value-objects/IndustryType.ts";
+import { TaxNumber } from "../../../domain/value-objects/TaxNumber.ts";
 import { EnterpriseRepository } from "../../repositories/EnterpriseRepository.ts";
 import { AddUserUsecase } from "../user/AddUserUsecase.ts";
 
 export class CreateEnterpriseUsecase {
-  private readonly createUserUsecase: AddUserUsecase;
-
   public constructor(
     private readonly enterpriseRepository: EnterpriseRepository,
-    createUserUsecase: AddUserUsecase,
+    private readonly createUserUsecase: AddUserUsecase,
   ) {
     this.createUserUsecase = createUserUsecase;
   }
 
-  public async execute(
-    firstname: string,
-    lastname: string,
-    emailAddress: string,
-    plainPassword: string,
-    phoneNumber: string,
-    address: {
-      street: string;
-      postalCode: string;
-      countryCode: string;
-    },
-    taxNumber: string,
-    industryType: string,
-  ) {
-    const userEntity = await this.createUserUsecase.execute({
-      firstname,
-      lastname,
-      emailAddress,
-      plainPassword,
-      phoneNumber,
-      address,
-    }
-    );
-
-    if (userEntity instanceof Error) {
-      return userEntity;
+  public async execute(command: AddEnterpriseCommand) {
+    const user = await this.createUserUsecase.execute({
+      firstname: command.firstname,
+      lastname: command.lastname,
+      emailAddress: command.emailAddress,
+      plainPassword: command.plainPassword,
+      phoneNumber: command.phoneNumber,
+      address: command.address,
+    });
+    if (user instanceof Error) {
+      return user;
     }
 
-    const enterprise = EnterpriseEntity.create(
-      userEntity,
-      taxNumber,
-      industryType,
-    );
+    const validTaxNumber = TaxNumber.from(command.taxNumber);
+    if (validTaxNumber instanceof Error) {
+      return validTaxNumber;
+    }
 
+    const validIndustryType = IndustryType.from(command.industryType);
+    if (validIndustryType instanceof Error) {
+      return validIndustryType;
+    }
+
+    const enterprise = Enterprise.create( {
+      user,
+      taxNumber: validTaxNumber,
+      industryType: validIndustryType,
+    });
     if (enterprise instanceof Error) {
       return enterprise;
     }
 
     await this.enterpriseRepository.save(enterprise);
+
+    return enterprise;
   }
 }

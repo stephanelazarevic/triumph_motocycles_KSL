@@ -14,7 +14,6 @@ export class User extends Entity {
     public phoneNumber: PhoneNumber,
     public address: Address,
     public isAdministrator: boolean = false,
-    public deletedAt: Date | null = null,
   ) {
     super(id);
   }

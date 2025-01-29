@@ -3,6 +3,7 @@ export abstract class Entity {
     public readonly id: string,
     public readonly createdAt: Date = new Date(),
     protected updatedAt: Date = new Date(),
+    public deletedAt: Date | null = null,
   ) {}
 
   public markAsUpdated(): void {
