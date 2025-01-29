@@ -1,4 +1,4 @@
-import { CreateUserUsecase } from "../../../../../application/usecases/user/CreateUserUsecase.ts";
+import { CreateUserUsecase } from "../../../../../application/usecases/user/AddUserUsecase.ts";
 import { UserEntity } from "../../../../../domain/entities/UserEntity.ts";
 import { AddressInvalidCountryError } from "../../../../../domain/errors/AddressInvalidCountryError.ts";
 import { AddressInvalidPostalCodeError } from "../../../../../domain/errors/AddressInvalidPostalCodeError.ts";

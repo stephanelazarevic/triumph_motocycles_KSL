@@ -1,10 +1,10 @@
-import { UserEntity } from "../../../domain/entities/UserEntity.ts";
+import { User } from "../../../domain/entities/User.ts";
 import type { UserRepository } from "../../repositories/UserRepository.ts";
 
-export class FindAllUsersUsecase {
+export class ListUsersUsecase {
   public constructor(private readonly userRepository: UserRepository) {}
 
-  public async execute(): Promise<UserEntity[]> {
+  public async execute(): Promise<User[]> {
     return await this.userRepository.findAll();
   }
 }

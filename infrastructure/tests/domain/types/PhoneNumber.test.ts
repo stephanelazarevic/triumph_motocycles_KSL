@@ -1,5 +1,5 @@
 import { PhoneNumberInvalidError } from "../../../../domain/errors/PhoneNumberInvalidError.ts";
-import { PhoneNumber } from "../../../../domain/types/PhoneNumber.ts";
+import { PhoneNumber } from "../../../../domain/value-objects/PhoneNumber.ts";
 
 Deno.test("Should create a valid PhoneNumber instance", () => {
   const phoneNumberValue = "+123456789";

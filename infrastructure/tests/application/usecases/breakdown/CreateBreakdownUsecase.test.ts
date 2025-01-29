@@ -3,8 +3,8 @@ import { CreateBreakdownUsecase } from "../../../../../application/usecases/brea
 import { BreakdownRepositoryInMemory } from "../../../../adapters/repositories/BreakdownRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { BadStatusError } from "../../../../../domain/errors/BadStatusError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
 import { BreakdownInvalidTypeError } from "../../../../../domain/errors/BreakdownInvalidTypeError.ts";

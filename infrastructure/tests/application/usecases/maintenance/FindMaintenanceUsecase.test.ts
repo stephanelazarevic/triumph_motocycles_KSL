@@ -3,8 +3,8 @@ import { FindMaintenanceUsecase } from "../../../../../application/usecases/main
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MaintenanceEntity } from "../../../../../domain/entities/MaintenanceEntity.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { MaintenanceNotFoundError } from "../../../../../domain/errors/MaintenanceNotFoundError.ts";
 
 Deno.test("Should find a maintenance successfully when it exists", async () => {

@@ -1,7 +1,7 @@
 import { expect } from "jsr:@std/expect";
-import { AppointmentDate } from "../../../../domain/types/AppointmentDate.ts";
-import { Brand } from "../../../../domain/types/Brand.ts";
-import { Model } from "../../../../domain/types/Model.ts";
+import { AppointmentDate } from "../../../../domain/value-objects/AppointmentDate.ts";
+import { Brand } from "../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../domain/value-objects/Model.ts";
 import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
 import { AppointmentEntity } from "../../../../domain/entities/AppointmentEntity.ts";
 

@@ -3,8 +3,8 @@ import { CreateAppointmentUsecase } from "../../../../application/usecases/Creat
 import { AppointmentRepositoryInMemory } from "../../../adapters/repositories/AppointmentRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../domain/types/Brand.ts";
-import { Model } from "../../../../domain/types/Model.ts";
+import { Brand } from "../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../domain/value-objects/Model.ts";
 
 const appointmentRepository = new AppointmentRepositoryInMemory([]);
 const brand = Brand.from("Triumph");

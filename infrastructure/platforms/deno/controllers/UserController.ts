@@ -1,19 +1,29 @@
 import type { UserRepository } from "../../../../application/repositories/UserRepository.ts";
-import { CreateUserUsecase } from "../../../../application/usecases/user/CreateUserUsecase.ts";
-import { FindUserUsecase } from "../../../../application/usecases/user/GetUserUsecase.ts";
-import { FindAllUsersUsecase } from "../../../../application/usecases/user/ListUsersUsecase.ts";
-import { UpdateUserUsecase } from "../../../../application/usecases/user/UpdateUserUsecase.ts";
+import { AddUserUsecase } from "../../../../application/usecases/user/AddUserUsecase.ts";
+import { GetUserUsecase } from "../../../../application/usecases/user/GetUserUsecase.ts";
+import { ListUsersUsecase } from "../../../../application/usecases/user/ListUsersUsecase.ts";
 import { DeleteUserUsecase } from "../../../../application/usecases/user/DeleteUserUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createUserRequestSchema } from "../schemas/createUserRequestSchema.ts";
-import { updateUserRequestSchema } from "../schemas/updateUserRequestSchema.ts";
-import { UserEntity } from "../../../../domain/entities/UserEntity.ts";
+import {
+  createUserRequestSchema,
+  updateUserContactInformationRequestSchema,
+  updateUserPersonalInformationRequestSchema,
+  updateUserPasswordRequestSchema
+} from "../schemas/userRequestSchema.ts";
+import { User } from "../../../../domain/entities/User.ts";
+import { PasswordService } from "../../../../domain/services/PasswordService.ts";
+import { UpdateUserContactInformationUsecase } from "../../../../application/usecases/user/UpdateUserContactInformationUsecase.ts"
+import { UpdateUserPersonalInformationUsecase } from "../../../../application/usecases/user/UpdateUserPersonalInformationUsecase.ts"
+import { UpdateUserPasswordUsecase } from "../../../../application/usecases/user/UpdateUserPasswordUsecase.ts"
 
 export class UserController {
-  public constructor(private readonly userRepository: UserRepository) {}
+  public constructor(
+    private readonly userRepository: UserRepository,
+    private readonly passwordService: PasswordService
+  ) {}
 
   public async getAllUsers(): Promise<Response> {
-    const listUsersUsecase = new FindAllUsersUsecase(this.userRepository);
+    const listUsersUsecase = new ListUsersUsecase(this.userRepository);
 
     const result = await listUsersUsecase.execute();
 
@@ -33,11 +43,11 @@ export class UserController {
       return new Response("User ID is required", { status: 400 });
     }
 
-    const findUserUsecase = new FindUserUsecase(this.userRepository);
+    const findUserUsecase = new GetUserUsecase(this.userRepository);
 
     const result = await findUserUsecase.execute(id);
 
-    if (result instanceof UserEntity) {
+    if (result instanceof User) {
       return new Response(JSON.stringify(result), { status: 200, headers: {
         "Content-Type": "application/json",
       }, });
@@ -49,7 +59,7 @@ export class UserController {
   }
 
   public async createUser(request: Request): Promise<Response> {
-    const createUserUsecase = new CreateUserUsecase(this.userRepository);
+    const addUserUsecase = new AddUserUsecase(this.userRepository, this.passwordService);
 
     const body = await request.json();
 
@@ -68,12 +78,18 @@ export class UserController {
       plainPassword,
       phoneNumber,
       address,
-      isAdministrator
     } = validation.data;
 
-    const error = await createUserUsecase.execute(firstname, lastname, emailAddress, plainPassword, phoneNumber, address, isAdministrator);
+    const error = await addUserUsecase.execute({
+      firstname,
+      lastname,
+      emailAddress,
+      plainPassword,
+      phoneNumber,
+      address
+    });
 
-    if (error instanceof UserEntity) {
+    if (error instanceof User) {
       return new Response(null, { status: 201 });
     }
 
@@ -85,36 +101,96 @@ export class UserController {
       AddressInvalidPostalCodeError:    () => new Response("Invalid postal code",           { status: 400 }),
       AddressInvalidCountryError:       () => new Response("Invalid country code",          { status: 400 }),
       PasswordError:                    () => new Response("Invalid password",              { status: 400 }),
-      UserEntityError:                  () => new Response("Failed to create user",         { status: 500 }),
       default:                          () => new Response("An unexpected error occurred.", { status: 500 })
     });
   }
 
-  public async updateUser(request: Request, userId: string): Promise<Response> {
-    const body = await request.json();
-    const validation = updateUserRequestSchema.safeParse(body);
+  public async updateUserContactInfo(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    const userId = url.searchParams.get("id");
 
-    if (!validation.success) {
-      return new Response(
-        JSON.stringify(validation.error.errors),
-        {
-          status: 400,
-          headers: { "Content-Type": "application/json" },
-        }
-      );
+    if (!userId) {
+      return new Response("User ID is required", { status: 400 });
     }
 
-    const { ...userData } = validation.data;
-    const updateUserUsecase = new UpdateUserUsecase(this.userRepository);
-    const result = await updateUserUsecase.execute(userId, userData);
+    const body = await request.json();
+    const validation = updateUserContactInformationRequestSchema.safeParse(body);
+    if (!validation.success) {
+      return new Response("Malformed request", {
+        status: 400,
+      });
+    }
+
+    const updateUserContactInformationUsecase = new UpdateUserContactInformationUsecase(this.userRepository);
+    const result = await updateUserContactInformationUsecase.execute(userId, validation.data);
 
     if (result instanceof Error) {
       return exhaustive(result.name, {
         UserNotFoundError:        () => new Response("User not found",                { status: 404 }),
         PhoneNumberInvalidError:  () => new Response("Invalid phone number",          { status: 400 }),
         EmailAddressInvalidError: () => new Response("Invalid email address",         { status: 400 }),
-        AddressInvalidError:      () => new Response("Invalid address",               { status: 400 }),
         default:                  () => new Response("An unexpected error occurred.", { status: 500 })
+      });
+    }
+
+    return new Response(null, { status: 200 });
+  }
+
+  public async updateUserPassword(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    const userId = url.searchParams.get("id");
+
+    if (!userId) {
+      return new Response("User ID is required", { status: 400 });
+    }
+
+    const body = await request.json();
+    const validation = updateUserPasswordRequestSchema.safeParse(body);
+    if (!validation.success) {
+      return new Response("Malformed request", {
+        status: 400,
+      });
+    }
+
+    const updateUserPasswordUsecase = new UpdateUserPasswordUsecase(this.userRepository, this.passwordService);
+    const result = await updateUserPasswordUsecase.execute(userId, validation.data);
+
+    if (result instanceof Error) {
+      return exhaustive(result.name, {
+        UserNotFoundError:            () => new Response("User not found",                { status: 404 }),
+        InvalidCurrentPasswordError:  () => new Response("Invalid current password",      { status: 400 }),
+        PasswordError:                () => new Response("Invalid new password",          { status: 400 }),
+        default:                      () => new Response("An unexpected error occurred.", { status: 500 })
+      });
+    }
+
+    return new Response(null, { status: 200 });
+  }
+
+  public async updateUserPersonalInfo(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    const userId = url.searchParams.get("id");
+
+    if (!userId) {
+      return new Response("User ID is required", { status: 400 });
+    }
+
+    const body = await request.json();
+    const validation = updateUserPersonalInformationRequestSchema.safeParse(body);
+    if (!validation.success) {
+      return new Response("Malformed request", {
+        status: 400,
+      });
+    }
+
+    const updateUserPersonalInformationUsecase = new UpdateUserPersonalInformationUsecase(this.userRepository);
+    const result = await updateUserPersonalInformationUsecase.execute(userId, validation.data);
+
+    if (result instanceof Error) {
+      return exhaustive(result.name, {
+        UserNotFoundError:   () => new Response("User not found",                { status: 404 }),
+        AddressInvalidError: () => new Response("Invalid address",               { status: 400 }),
+        default:             () => new Response("An unexpected error occurred.", { status: 500 })
       });
     }
 

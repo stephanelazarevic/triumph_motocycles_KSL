@@ -24,4 +24,14 @@ export class LibPhoneNumberService implements PhoneNumberService {
   public isValid(phoneNumber: string): boolean {
     return isValidPhoneNumber(phoneNumber);
   }
+
+  public extractCountryCode(phoneNumber: string): string {
+    const parsed = parsePhoneNumberWithError(phoneNumber);
+    return parsed.countryCallingCode;
+  }
+
+  public extractNumber(phoneNumber: string): string {
+    const parsed = parsePhoneNumberWithError(phoneNumber);
+    return parsed.nationalNumber;
+  }
 }

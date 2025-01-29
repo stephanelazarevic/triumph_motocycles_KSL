@@ -1,4 +1,4 @@
-import { Address } from "../../../../domain/types/Address.ts";
+import { Address } from "../../../../domain/value-objects/Address.ts";
 import { AddressTooShortError } from "../../../../domain/errors/AddressTooShortError.ts";
 import { AddressInvalidPostalCodeError } from "../../../../domain/errors/AddressInvalidPostalCodeError.ts";
 import { AddressInvalidCountryError } from "../../../../domain/errors/AddressInvalidCountryError.ts";

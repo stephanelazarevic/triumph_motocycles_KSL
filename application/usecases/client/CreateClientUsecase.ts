@@ -1,5 +1,5 @@
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
-import { CreateUserUsecase } from "../user/CreateUserUsecase.ts";
+import { CreateUserUsecase } from "../user/AddUserUsecase.ts";
 import { ClientEntity } from "../../../domain/entities/ClientEntity.ts";
 
 export class CreateClientUsecase {

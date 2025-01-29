@@ -1,6 +1,6 @@
 import { AppointmentEntity } from "../../domain/entities/AppointmentEntity.ts";
 import { MotorcycleNotFoundError } from "../../domain/errors/MotorcycleNotFoundError.ts";
-import { AppointmentDate } from "../../domain/types/AppointmentDate.ts";
+import { AppointmentDate } from "../../domain/value-objects/AppointmentDate.ts";
 import type { AppointmentRepository } from "../repositories/AppointmentRepository.ts";
 import type { MotorcycleRepository } from "../repositories/MotorcycleRepository.ts";
 

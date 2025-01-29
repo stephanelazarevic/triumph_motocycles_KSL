@@ -1,6 +1,6 @@
 import { EnterpriseEntity } from "../../../domain/entities/EnterpriseEntity.ts";
 import { EnterpriseRepository } from "../../repositories/EnterpriseRepository.ts";
-import { CreateUserUsecase } from "../user/CreateUserUsecase.ts";
+import { CreateUserUsecase } from "../user/AddUserUsecase.ts";
 
 export class CreateEnterpriseUsecase {
   private readonly createUserUsecase: CreateUserUsecase;

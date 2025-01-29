@@ -1,4 +1,4 @@
-import { AppointmentDate } from "../types/AppointmentDate.ts";
+import { AppointmentDate } from "../value-objects/AppointmentDate.ts";
 import { MotorcycleEntity } from "./MotorcycleEntity.ts";
 
 export class AppointmentEntity {

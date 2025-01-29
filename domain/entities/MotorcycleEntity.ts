@@ -1,5 +1,5 @@
-import { Brand } from "../types/Brand.ts";
-import { Model } from "../types/Model.ts";
+import { Brand } from "../value-objects/Brand.ts";
+import { Model } from "../value-objects/Model.ts";
 
 export class MotorcycleEntity {
   private constructor(

@@ -19,4 +19,18 @@ export interface PhoneNumberService {
    * @returns A boolean indicating whether the phone number is valid.
    */
   isValid(phoneNumber: string): boolean;
+
+  /**
+   * Extracts the country code out of a phoneNumber.
+   * @param phoneNumber - The phone number to extract the country code from.
+   * @returns A string of the outputed country code.
+   */
+  extractCountryCode(phoneNumber: string): string;
+
+  /**
+   * Extracts the national number out of a phoneNumber.
+   * @param phoneNumber - The phone number to extract the national number from.
+   * @returns A string of the outputed national number.
+   */
+  extractNumber(phoneNumber: string): string;
 }

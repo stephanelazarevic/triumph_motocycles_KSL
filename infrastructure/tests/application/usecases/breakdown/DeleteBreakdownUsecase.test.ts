@@ -5,8 +5,8 @@ import { BreakdownEntity } from "../../../../../domain/entities/BreakdownEntity.
 import { BreakdownNotFoundError } from "../../../../../domain/errors/BreakdownNotFoundError.ts";
 import { BreakdownType } from "../../../../../domain/enum/BreakdownEnum.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 
 const breakdownRepository = new BreakdownRepositoryInMemory([]);

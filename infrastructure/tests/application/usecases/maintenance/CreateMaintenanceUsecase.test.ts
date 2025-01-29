@@ -3,8 +3,8 @@ import { CreateMaintenanceUsecase } from "../../../../../application/usecases/ma
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
 import { NullCostError } from "../../../../../domain/errors/NullCostError.ts";

@@ -1,5 +1,5 @@
-import { IndustryType } from "../types/IndustryType.ts";
-import { TaxNumber } from "../types/TaxNumber.ts";
+import { IndustryType } from "../value-objects/IndustryType.ts";
+import { TaxNumber } from "../value-objects/TaxNumber.ts";
 import { UserEntity } from "./UserEntity.ts";
 
 export class EnterpriseEntity {

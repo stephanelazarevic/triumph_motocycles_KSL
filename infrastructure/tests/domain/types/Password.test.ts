@@ -1,4 +1,4 @@
-import { Password } from "../../../../domain/types/Password.ts";
+import { Password } from "../../../../domain/value-objects/Password.ts";
 import { PasswordTooShortError } from "../../../../domain/errors/PasswordTooShortError.ts";
 import { PasswordMissingLowercaseError } from "../../../../domain/errors/PasswordMissingLowercaseError.ts";
 import { PasswordMissingUppercaseError } from "../../../../domain/errors/PasswordMissingUppercaseError.ts";

@@ -17,27 +17,45 @@ export class Address {
     postalCode: string,
     countryCode: string,
   ): Address | Error {
-    if (street.length < 3) {
+    if (!Address.isValidStreet(street)) {
       return new AddressTooShortError();
     }
 
-    const postalCodeRegex = /^\d{5}$/;
-    if (!postalCodeRegex.test(postalCode)) {
+    if (!Address.isValidPostalCode(postalCode)) {
       return new AddressInvalidPostalCodeError();
     }
 
-    if (!Address.countryService.isValidCountry(countryCode)) {
+    if (!Address.isValidCountryCode(countryCode)) {
       return new AddressInvalidCountryError();
     }
 
     return new Address(street, postalCode, countryCode);
   }
 
-  public getFullAddress(): string {
+  private static isValidStreet(street: string): boolean {
+    return street.length >= 3;
+  }
+
+  private static isValidPostalCode(postalCode: string): boolean {
+    const postalCodeRegex = /^\d{5}$/;
+    return postalCodeRegex.test(postalCode);
+  }
+
+  private static isValidCountryCode(countryCode: string): boolean {
+    return Address.countryService.isValidCountry(countryCode);
+  }
+
+  public getFormattedAddress(): string {
     return `${this.street}, ${this.postalCode} ${this.getCountryName()}`;
   }
 
   public getCountryName(): string {
     return Address.countryService.getCountryName(this.countryCode);
+  }
+
+  public equals(address: Address): boolean {
+    return this.street === address.street
+      && this.postalCode === address.postalCode
+      && this.countryCode === address.countryCode;
   }
 }
