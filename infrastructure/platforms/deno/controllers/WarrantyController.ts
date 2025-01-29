@@ -8,14 +8,15 @@ import { DeleteWarrantyUsecase } from "../../../../application/usecases/warranty
 import { exhaustive } from "npm:exhaustive"
 import { createWarrantyRequestSchema } from "../schemas/createWarrantyRequestSchema.ts";
 import { WarrantyNotFoundError } from "../../../../domain/errors/WarrantyNotFoundError.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class WarrantyController {
+export class WarrantyController implements EntityControllerInterface {
   public constructor(
     private readonly warrantyRepository: WarrantyRepository,
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async getAllWarranties(): Promise<Response> {
+  public async getAll(): Promise<Response> {
     const listWarrantiesUsecase = new FindAllWarrantiesUsecase(
       this.warrantyRepository,
     );
@@ -30,7 +31,7 @@ export class WarrantyController {
     });
   }
 
-  public async getWarrantyById(request: Request): Promise<Response> {
+  public async getById(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 
@@ -63,7 +64,7 @@ export class WarrantyController {
 
   }
 
-  public async createWarranty(request: Request): Promise<Response> {
+  public async create(request: Request): Promise<Response> {
     const createWarrantyUsecase = new CreateWarrantyUsecase(
       this.warrantyRepository,
       this.motorcycleRepository,
@@ -95,7 +96,7 @@ export class WarrantyController {
     });
   }
 
-  public async updateWarranty(request: Request): Promise<Response> {
+  public async update(request: Request): Promise<Response> {
     const updateWarrantyUsecase = new UpdateWarrantyUsecase(
       this.warrantyRepository,
     );
@@ -123,7 +124,7 @@ export class WarrantyController {
     });
   }
 
-  public async deleteWarranty(request: Request): Promise<Response> {
+  public async delete(request: Request): Promise<Response> {
     const url = new URL(request.url);
     const id = url.searchParams.get("id");
 

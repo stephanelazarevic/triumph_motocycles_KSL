@@ -24,3 +24,19 @@ Deno.test("Shoud return a motorcycle entity", () => {
   expect(result.model.value).toStrictEqual("Street Triple");
   expect(result.year).toStrictEqual(2024);
 });
+
+Deno.test("Should throw error for invalid motorcycle entity data", () => {
+  const brand = Brand.from("");
+  if (!(brand instanceof Error)) {
+    throw new Error("Invalid brand");
+  }
+
+  const model = Model.from(""); 
+  if (!(model instanceof Error)) {
+    throw new Error("Invalid model");
+  }
+
+  expect(() => {
+    MotorcycleEntity.create(brand as never, model as never, 2024);
+  }).toThrow();
+});

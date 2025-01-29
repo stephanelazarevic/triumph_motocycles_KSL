@@ -30,8 +30,8 @@ export class CreateWarrantyUsecase {
       motorcycleId,
     );
 
-    if (!motorcycle) {
-      return new MotorcycleNotFoundError();
+    if (motorcycle instanceof MotorcycleNotFoundError) {
+      throw motorcycle;
     }
 
     const warranty = WarrantyEntity.create(

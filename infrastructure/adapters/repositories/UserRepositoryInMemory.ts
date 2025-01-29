@@ -32,7 +32,7 @@ export class UserRepositoryInMemory implements UserRepository {
   /**
    * Finds a single user by ID. Returns the user or throws a UserNotFoundError.
    */
-  public findById(id: string): Promise<UserEntity | UserNotFoundError> {
+  public findOneById(id: string): Promise<UserEntity | UserNotFoundError> {
     const foundUser = this.users.find((user) => user.id === id);
     return Promise.resolve(foundUser ?? new UserNotFoundError());
   }

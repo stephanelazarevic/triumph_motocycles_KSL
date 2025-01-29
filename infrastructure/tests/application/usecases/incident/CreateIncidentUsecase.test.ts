@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { CreateIncidentUsecase } from "../../../../../application/usecases/breakdown/CreateIncidentUsecase.ts";
+import { CreateIncidentUsecase } from "../../../../../application/usecases/incident/CreateIncidentUsecase.ts";
 import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/IncidentRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";

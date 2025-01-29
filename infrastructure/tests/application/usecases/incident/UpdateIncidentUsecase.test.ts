@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { UpdateIncidentUsecase } from "../../../../../application/usecases/breakdown/UpdateIncidentUsecase.ts";
+import { UpdateIncidentUsecase } from "../../../../../application/usecases/incident/UpdateIncidentUsecase.ts";
 import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/IncidentRepositoryInMemory.ts";
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
