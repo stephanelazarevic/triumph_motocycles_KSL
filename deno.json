@@ -11,8 +11,10 @@
     "lineWidth": 10000
   },
   "imports": {
+    "prisma": "https://deno.land/x/prisma@2.30.0/mod.ts"
     "bcryptjs": "npm:bcryptjs@^2.4.3",
     "i18n-iso-countries": "npm:i18n-iso-countries@^7.13.0",
     "libphonenumber-js": "npm:libphonenumber-js@^1.11.17"
+
   }
 }
