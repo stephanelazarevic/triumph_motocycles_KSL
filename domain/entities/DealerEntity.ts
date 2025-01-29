@@ -1,19 +1,24 @@
-import { UserEntity } from "./UserEntity.ts";
+import { Entity } from "./Entity.ts";
+import { User } from "./User.ts";
 
-export class DealerEntity {
+export class Dealer extends Entity {
   private constructor(
-    public readonly id: string,
-    public readonly user: UserEntity,
-    public readonly site: string,
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date,
-  ) {}
+    id: string,
+    public user: User,
+    public site: string,
+  ) {
+    super(id);
+  }
 
-  public static create(user: UserEntity, site: string): DealerEntity {
-    const id = crypto.randomUUID();
-    const createdAt = new Date();
-    const updatedAt = new Date();
 
-    return new DealerEntity(id, user, site, createdAt, updatedAt);
+  public static create(params: {
+    user: User;
+    site: string;
+  }): Dealer {
+    return new Dealer(
+      crypto.randomUUID(),
+      params.user,
+      params.site
+    );
   }
 }

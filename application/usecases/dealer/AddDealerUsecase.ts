@@ -1,40 +1,39 @@
-import { Client } from "../../../domain/entities/Client.ts";
-import { AddClientCommand } from "../../../domain/types/ClientType.ts";
+import { Dealer } from "../../../domain/entities/DealerEntity.ts";
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
-import { ClientRepository } from "../../repositories/ClientRepository.ts";
 import { AddUserUsecase } from "../user/AddUserUsecase.ts";
+import { AddDealerCommand } from "../../../domain/types/DealerType.ts";
 
-export class CreateClientUsecase {
-  constructor(
-    private readonly clientRepository: ClientRepository,
+export class AddDealerUsecase {
+
+  public constructor(
     private readonly dealerRepository: DealerRepository,
     private readonly addUserUsecase: AddUserUsecase,
   ) {
     this.addUserUsecase = addUserUsecase;
   }
 
-  public async execute(command: AddClientCommand
-  ): Promise<Client | Error> {
+  public async execute(command: AddDealerCommand) {
     const user = await this.addUserUsecase.execute({
       firstname: command.firstname,
       lastname: command.lastname,
       emailAddress: command.emailAddress,
       plainPassword: command.plainPassword,
       phoneNumber: command.phoneNumber,
-      address: command.address
+      address: command.address,
     });
     if (user instanceof Error) {
       return user;
     }
 
-    const dealer = await this.dealerRepository.findOneById(command.dealerId);
+    const dealer = Dealer.create( {
+      user,
+      site: command.site,
+    });
     if (dealer instanceof Error) {
       return dealer;
     }
+    await this.dealerRepository.save(dealer);
 
-    const client = Client.create({ user, dealerId: dealer.id });
-    await this.clientRepository.save(client);
-
-    return client;
+    return dealer;
   }
 }

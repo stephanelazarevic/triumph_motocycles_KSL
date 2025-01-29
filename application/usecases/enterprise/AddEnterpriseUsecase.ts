@@ -8,13 +8,13 @@ import { AddUserUsecase } from "../user/AddUserUsecase.ts";
 export class AddEnterpriseUsecase {
   public constructor(
     private readonly enterpriseRepository: EnterpriseRepository,
-    private readonly createUserUsecase: AddUserUsecase,
+    private readonly addUserUsecase: AddUserUsecase,
   ) {
-    this.createUserUsecase = createUserUsecase;
+    this.addUserUsecase = addUserUsecase;
   }
 
   public async execute(command: AddEnterpriseCommand) {
-    const user = await this.createUserUsecase.execute({
+    const user = await this.addUserUsecase.execute({
       firstname: command.firstname,
       lastname: command.lastname,
       emailAddress: command.emailAddress,
