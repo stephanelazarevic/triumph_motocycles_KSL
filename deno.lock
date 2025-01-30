@@ -207,6 +207,9 @@
     ],
     "packageJson": {
       "dependencies": [
+        "npm:@prisma/client@^6.2.1",
+        "npm:@types/bcryptjs@^2.4.6",
+        "npm:bcryptjs@^2.4.3",
         "npm:prisma@^6.2.1"
       ]
     },
