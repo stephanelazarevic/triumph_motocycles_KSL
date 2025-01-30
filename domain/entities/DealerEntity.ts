@@ -1,10 +1,10 @@
 import { Entity } from "./Entity.ts";
-import { User } from "./User.ts";
+import { UserEntity } from "./UserEntity.ts";
 
-export class Dealer extends Entity {
+export class DealerEntity extends Entity {
   private constructor(
     id: string,
-    public user: User,
+    public user: UserEntity,
     public site: string,
   ) {
     super(id);
@@ -12,10 +12,10 @@ export class Dealer extends Entity {
 
 
   public static create(params: {
-    user: User;
+    user: UserEntity;
     site: string;
-  }): Dealer {
-    return new Dealer(
+  }): DealerEntity {
+    return new DealerEntity(
       crypto.randomUUID(),
       params.user,
       params.site

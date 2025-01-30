@@ -1,4 +1,4 @@
-import { User } from "../../../domain/entities/User.ts";
+import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserRepository } from "../../../application/repositories/UserRepository.ts";
 import { EmailAddress } from "../../../domain/value-objects/EmailAddress.ts";
 import { PhoneNumber } from "../../../domain/value-objects/PhoneNumber.ts";
@@ -8,7 +8,7 @@ import type { UpdateUserContactInformationCommand } from "../../../domain/types/
 export class UpdateUserContactInformationUsecase {
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async execute(userId: string, command: UpdateUserContactInformationCommand): Promise<User | Error> {
+  public async execute(userId: string, command: UpdateUserContactInformationCommand): Promise<UserEntity | Error> {
     const user = await this.findUser(userId);
     if (user instanceof Error) {
       return user;
@@ -36,7 +36,7 @@ export class UpdateUserContactInformationUsecase {
     return user;
   }
 
-  private async findUser(userId: string): Promise<User | Error> {
+  private async findUser(userId: string): Promise<UserEntity | Error> {
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
       return new UserNotFoundError();

@@ -10,7 +10,7 @@ import {
   updateUserPasswordRequestSchema,
   updateUserPersonalInformationRequestSchema,
 } from "../schemas/userRequestSchema.ts";
-import { User } from "../../../../domain/entities/User.ts";
+import { UserEntity } from "../../../../domain/entities/UserEntity.ts";
 import { PasswordService } from "../../../../domain/services/PasswordService.ts";
 import { UpdateUserContactInformationUsecase } from "../../../../application/usecases/user/UpdateUserContactInformationUsecase.ts";
 import { UpdateUserPersonalInformationUsecase } from "../../../../application/usecases/user/UpdateUserPersonalInformationUsecase.ts";
@@ -47,7 +47,7 @@ export class UserController {
 
     const result = await findUserUsecase.execute(id);
 
-    if (result instanceof User) {
+    if (result instanceof UserEntity) {
       return new Response(JSON.stringify(result), {
         status: 200,
         headers: {
@@ -92,7 +92,7 @@ export class UserController {
       address,
     });
 
-    if (error instanceof User) {
+    if (error instanceof UserEntity) {
       return new Response(null, { status: 201 });
     }
 

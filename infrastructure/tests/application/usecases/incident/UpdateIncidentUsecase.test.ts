@@ -4,8 +4,8 @@ import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/In
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { IncidentNotFoundError } from "../../../../../domain/errors/IncidentNotFoundError.ts";
 
 Deno.test("Should update an incident successfully when it exists", async () => {
@@ -40,7 +40,7 @@ Deno.test("Should update an incident successfully when it exists", async () => {
 
   const incidents = await incidentRepository.findAll();
 
-  expect(result).toBeUndefined(); 
+  expect(result).toBeUndefined();
   expect(incidents.length).toStrictEqual(1);
   expect(incidents[0].description).toStrictEqual("Description mise à jour");
 });
@@ -61,7 +61,7 @@ Deno.test("Should return an error when the incident does not exist", async () =>
   }
 
   const nonExistentIncident = IncidentEntity.create(
-    "Description de l'incident non existant", 
+    "Description de l'incident non existant",
     MotorcycleEntity.create(brand, model, 2022),
     IncidentType.ACCIDENT,
     new Date(2020, 1, 1),

@@ -1,14 +1,14 @@
 import { EnterpriseRepository } from "../../../application/repositories/EnterpriseRepository.ts";
-import { Enterprise } from "../../../domain/entities/Enterprise.ts";
+import { EnterpriseEntity } from "../../../domain/entities/EnterpriseEntity.ts";
 import { EnterpriseNotFoundError } from "../../../domain/errors/EnterpriseNotFoundError.ts";
 
 export class EnterpriseRepositoryInMemory implements EnterpriseRepository {
-  constructor(private enterprises: Enterprise[] = []) {}
+  constructor(private enterprises: EnterpriseEntity[] = []) {}
 
   /**
    * Saves an enterprise to the repository. If the enterprise exists, it updates the record.
    */
-  public save(enterprise: Enterprise): Promise<void> {
+  public save(enterprise: EnterpriseEntity): Promise<void> {
     const index = this.enterprises.findIndex(
       (existingEnterprise) => existingEnterprise.id === enterprise.id,
     );
@@ -23,7 +23,7 @@ export class EnterpriseRepositoryInMemory implements EnterpriseRepository {
   /**
    * Finds all enterprises in the repository.
    */
-  public findAll(): Promise<Enterprise[]> {
+  public findAll(): Promise<EnterpriseEntity[]> {
     return Promise.resolve(this.enterprises);
   }
 
@@ -32,7 +32,7 @@ export class EnterpriseRepositoryInMemory implements EnterpriseRepository {
    */
   public findOneById(
     id: string,
-  ): Promise<Enterprise | EnterpriseNotFoundError> {
+  ): Promise<EnterpriseEntity | EnterpriseNotFoundError> {
     const foundEnterprise = this.enterprises.find(
       (enterprise) => enterprise.id === id,
     );

@@ -4,7 +4,7 @@ import { Name } from "../value-objects/Name.ts";
 import { PhoneNumber } from "../value-objects/PhoneNumber.ts";
 import { Entity } from "./Entity.ts";
 
-export class User extends Entity {
+export class UserEntity extends Entity {
   private constructor(
     id: string,
     public firstname: Name,
@@ -25,8 +25,8 @@ export class User extends Entity {
     hashedPassword: string;
     phoneNumber: PhoneNumber;
     address: Address;
-  }): User {
-    return new User(
+  }): UserEntity {
+    return new UserEntity(
       crypto.randomUUID(),
       params.firstname,
       params.lastname,

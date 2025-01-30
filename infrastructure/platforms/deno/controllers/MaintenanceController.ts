@@ -8,7 +8,7 @@ import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maint
 import { exhaustive } from "npm:exhaustive";
 import { createMaintenanceRequestSchema } from "../schemas/createMaintenanceRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
-import { MaintenanceNotFoundError } from "../../../../domain/errors/MaintenanceNotFoundError.ts";
+import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity.ts";
 
 export class MaintenanceController implements EntityControllerInterface {
   public constructor(
@@ -41,11 +41,7 @@ export class MaintenanceController implements EntityControllerInterface {
 
     const result = await findMaintenanceUsecase.execute(id);
 
-    if (result instanceof MaintenanceNotFoundError) {
-      return new Response("MaintenanceNotFoundError", { status: 404 });
-    }
-
-    if (typeof result === "object" && result !== null) {
+    if (result instanceof MaintenanceEntity) {
       return new Response(JSON.stringify(result), {
         status: 200,
         headers: {
@@ -54,7 +50,7 @@ export class MaintenanceController implements EntityControllerInterface {
       });
     }
 
-    return exhaustive({
+    return exhaustive(result.name, {
       MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
     });
   }
@@ -77,18 +73,18 @@ export class MaintenanceController implements EntityControllerInterface {
 
     const { date, description, motorcycleId, cost } = validation.data;
 
-    const error = await createMaintenanceUsecase.execute(
+    const result = await createMaintenanceUsecase.execute(
       date,
       description,
       motorcycleId,
       cost,
     );
 
-    if (!error) {
+    if (result instanceof MaintenanceEntity) {
       return new Response(null, { status: 201 });
     }
 
-    return exhaustive(error.name, {
+    return exhaustive(result.name, {
       MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
     });
   }
@@ -98,12 +94,14 @@ export class MaintenanceController implements EntityControllerInterface {
 
     const body = await request.json();
 
+    // @TODO: use update request schema
     const validation = createMaintenanceRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", { status: 400 });
     }
 
+    // @TODO: validation.data doesn't match execute expected input
     const result = await updateMaintenanceUsecase.execute(validation.data);
 
     if (result === undefined) {

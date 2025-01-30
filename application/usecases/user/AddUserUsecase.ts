@@ -1,4 +1,4 @@
-import { User } from "../../../domain/entities/User.ts";
+import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserRepository } from "../../repositories/UserRepository.ts";
 import { PasswordService } from "../../../domain/services/PasswordService.ts";
 import { Password } from "../../../domain/value-objects/Password.ts";
@@ -16,7 +16,7 @@ export class AddUserUsecase {
     private readonly passwordService: PasswordService,
   ) {}
 
-  public async execute(command: AddUserCommand): Promise<User | Error> {
+  public async execute(command: AddUserCommand): Promise<UserEntity | Error> {
     const validFirstname = Name.from(command.firstname, NameType.FIRSTNAME);
     if (validFirstname instanceof Error) {
       return validFirstname;
@@ -51,14 +51,14 @@ export class AddUserUsecase {
       return validPasssword;
     }
 
-    const existingUser = await this.userRepository.findByEmail(command.emailAddress);
+    const existingUser = await this.userRepository.findByEmail(validEmailAddress);
     if (existingUser) {
       return new UserEmailAddressAlreadyUsedError();
     }
 
     const hashedPassword = await this.passwordService.hashPassword(validPasssword);
 
-    const user = User.create({
+    const user = UserEntity.create({
       firstname: validFirstname,
       lastname: validLastname,
       emailAddress: validEmailAddress,

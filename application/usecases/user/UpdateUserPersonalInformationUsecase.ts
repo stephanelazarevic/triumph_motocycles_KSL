@@ -1,4 +1,4 @@
-import { User } from "../../../domain/entities/User.ts";
+import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserRepository } from "../../../application/repositories/UserRepository.ts";
 import { Address } from "../../../domain/value-objects/Address.ts";
 import { Name } from "../../../domain/value-objects/Name.ts";
@@ -9,7 +9,7 @@ import type { UpdateUserPersonalInformationCommand } from "../../../domain/types
 export class UpdateUserPersonalInformationUsecase {
   constructor(private readonly userRepository: UserRepository) {}
 
-  public async execute(userId: string, command: UpdateUserPersonalInformationCommand): Promise<User | Error> {
+  public async execute(userId: string, command: UpdateUserPersonalInformationCommand): Promise<UserEntity | Error> {
     const user = await this.userRepository.findOneById(userId);
     if (user instanceof UserNotFoundError) {
       return user;

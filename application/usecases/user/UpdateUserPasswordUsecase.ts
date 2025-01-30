@@ -1,4 +1,4 @@
-import { User } from "../../../domain/entities/User.ts";
+import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 import { UserPasswordsDoNotMatchError } from "../../../domain/errors/UserPasswordsDoNotMatchError.ts";
 import { UserSamePasswordError } from "../../../domain/errors/UserSamePasswordError.ts";
@@ -13,7 +13,7 @@ export class UpdateUserPasswordUsecase {
     private readonly passwordService: PasswordService,
   ) {}
 
-  public async execute(userId: string, command: UpdateUserPasswordCommand): Promise<User | Error> {
+  public async execute(userId: string, command: UpdateUserPasswordCommand): Promise<UserEntity | Error> {
     const user = await this.findUser(userId);
     if (user instanceof Error) {
       return user;
@@ -49,7 +49,7 @@ export class UpdateUserPasswordUsecase {
     return user;
   }
 
-  private async findUser(userId: string): Promise<User | Error> {
+  private async findUser(userId: string): Promise<UserEntity | Error> {
     const user = await this.userRepository.findOneById(userId);
     if (!user) {
       return new UserNotFoundError();

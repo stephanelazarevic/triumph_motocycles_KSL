@@ -1,12 +1,12 @@
 import { IndustryType } from "../value-objects/IndustryType.ts";
 import { TaxNumber } from "../value-objects/TaxNumber.ts";
 import { Entity } from "./Entity.ts";
-import { User } from "./User.ts";
+import { UserEntity } from "./UserEntity.ts";
 
-export class Enterprise extends Entity {
+export class EnterpriseEntity extends Entity {
   private constructor(
     id: string,
-    public user: User,
+    public user: UserEntity,
     public taxNumber: TaxNumber,
     public industryType: IndustryType,
   ) {
@@ -14,11 +14,11 @@ export class Enterprise extends Entity {
   }
 
   public static create(params: {
-    user: User;
+    user: UserEntity;
     taxNumber: TaxNumber;
     industryType: IndustryType;
-  }): Enterprise {
-    return new Enterprise(
+  }): EnterpriseEntity {
+    return new EnterpriseEntity(
       crypto.randomUUID(),
       params.user,
       params.taxNumber,

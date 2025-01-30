@@ -12,6 +12,7 @@ export class SoftDeleteUserUsecase {
 
     user.deletedAt = new Date();
     user.markAsUpdated();
+
     await this.userRepository.save(user);
   }
 }

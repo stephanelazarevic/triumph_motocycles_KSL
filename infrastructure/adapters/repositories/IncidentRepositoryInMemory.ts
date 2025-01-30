@@ -19,7 +19,7 @@ export class IncidentRepositoryInMemory implements IncidentRepository {
     return Promise.resolve(this.incidents);
   }
 
-  async findOneById(id: string): Promise<IncidentEntity | IncidentNotFoundError> {
+  findOneById(id: string): Promise<IncidentEntity | IncidentNotFoundError> {
     const foundIncident = this.incidents.find((incident) => {
       return incident.identifier === id;
     });
@@ -27,7 +27,8 @@ export class IncidentRepositoryInMemory implements IncidentRepository {
     return Promise.resolve(foundIncident ?? new IncidentNotFoundError());
   }
 
-  async delete(id: string): Promise<void> {
+  delete(id: string): Promise<void> {
     this.incidents = this.incidents.filter(incident => incident.identifier !== id);
+    return Promise.resolve();
   }
 }

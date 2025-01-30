@@ -1,12 +1,12 @@
-import { User } from "../../domain/entities/User.ts";
+import { UserEntity } from "../../domain/entities/UserEntity.ts";
 import { UserNotFoundError } from "../../domain/errors/UserNotFoundError.ts";
 import { EmailAddress } from "../../domain/value-objects/EmailAddress.ts";
 import { EntityRepositoryInterface } from "./EntityRepositoryInterface.ts";
 
-export interface UserRepository extends EntityRepositoryInterface<User> {
-  save(user: User): Promise<void>;
-  findAll(): Promise<User[]>;
-  findOneById(id: string): Promise<User | UserNotFoundError>;
-  findByEmail(email: EmailAddress): Promise<User | UserNotFoundError>;
+export interface UserRepository extends EntityRepositoryInterface<UserEntity> {
+  save(user: UserEntity): Promise<void>;
+  findAll(): Promise<UserEntity[]>;
+  findOneById(id: string): Promise<UserEntity | UserNotFoundError>;
+  findByEmail(email: EmailAddress): Promise<UserEntity | UserNotFoundError>;
   delete(id: string): Promise<void>;
 }

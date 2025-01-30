@@ -8,15 +8,17 @@ export class SoftDeleteEnterpriseUsecase {
     private readonly softDeleteUserUscase: SoftDeleteUserUsecase,
   ) {}
 
-  public async execute(id: string): Promise<void> {
+  public async execute(id: string): Promise<void | EnterpriseNotFoundError> {
     const enterprise = await this.enterpriseRepository.findOneById(id);
     if (enterprise instanceof EnterpriseNotFoundError) {
-      throw enterprise;
+      return enterprise;
     }
 
     await this.softDeleteUserUscase.execute(enterprise.user.id);
+
     enterprise.deletedAt = new Date();
     enterprise.markAsUpdated();
+
     await this.enterpriseRepository.save(enterprise);
   }
 }

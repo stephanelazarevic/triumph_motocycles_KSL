@@ -6,8 +6,8 @@ export class UpdateWarrantyUsecase {
   constructor(private warrantyRepository: WarrantyRepository) {}
 
   public async execute(warranty: WarrantyEntity): Promise<WarrantyNotFoundError | void> {
-    const existing = await this.warrantyRepository.findOneById(warranty.identifier);
-    if (!existing) {
+    const existingWarranty = await this.warrantyRepository.findOneById(warranty.identifier);
+    if (!existingWarranty) {
       return new WarrantyNotFoundError();
     }
     await this.warrantyRepository.save(warranty);

@@ -1,4 +1,4 @@
-export enum IndustryTypeEnum {
+export enum Industry {
   Technology = "Technology",
   Healthcare = "Healthcare",
   Finance = "Finance",

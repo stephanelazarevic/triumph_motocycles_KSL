@@ -7,8 +7,8 @@ import { UpdateIncidentUsecase } from "../../../../application/usecases/incident
 import { DeleteIncidentUsecase } from "../../../../application/usecases/incident/DeleteIncidentUsecase.ts";
 import { exhaustive } from "npm:exhaustive"
 import { createIncidentRequestSchema } from "../schemas/createIncidentRequestSchema.ts";
-import { IncidentNotFoundError } from "../../../../domain/errors/IncidentNotFoundError.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
+import { IncidentEntity } from "../../../../domain/entities/IncidentEntity.ts";
 
 export class IncidentController implements EntityControllerInterface{
   public constructor(
@@ -45,11 +45,7 @@ export class IncidentController implements EntityControllerInterface{
 
     const result = await findIncidentUsecase.execute(id);
 
-    if (result instanceof IncidentNotFoundError) {
-      return new Response("IncidentNotFoundError", { status: 404 });
-    }
-
-    if (typeof result === "object" && result !== null) {
+    if (result instanceof IncidentEntity) {
       return new Response(JSON.stringify(result), {
         status: 200,
         headers: {
@@ -58,7 +54,7 @@ export class IncidentController implements EntityControllerInterface{
       });
     }
 
-    return exhaustive({
+    return exhaustive(result.name, {
       IncidentNotFoundError: () => new Response("IncidentNotFoundError", { status: 404 }),
     });
 
@@ -82,15 +78,15 @@ export class IncidentController implements EntityControllerInterface{
 
     const { description, motorcycleId, type, reportDate, resolutionDate, status } = validation.data;
 
-    const error = await createIncidentUsecase.execute(description, motorcycleId, type, reportDate, resolutionDate, status);
+    const result = await createIncidentUsecase.execute(description, motorcycleId, type, reportDate, resolutionDate, status);
 
-    if (!error) {
+    if (result instanceof IncidentEntity) {
       return new Response(null, {
         status: 201,
       });
     }
 
-    return exhaustive(error.name, {
+    return exhaustive(result.name, {
       InvalidDateError: () => new Response("InvalidDateError", { status: 400 }),
       MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
     });
@@ -103,6 +99,7 @@ export class IncidentController implements EntityControllerInterface{
 
     const body = await request.json();
 
+    // @TODO: use update request schema
     const validation = createIncidentRequestSchema.safeParse(body);
 
     if (!validation.success) {
@@ -111,6 +108,7 @@ export class IncidentController implements EntityControllerInterface{
       });
     }
 
+    // @TODO: validation.data doesn't match execute expected input
     const result = await updateIncidentUsecase.execute(validation.data);
 
     if (result === undefined) {

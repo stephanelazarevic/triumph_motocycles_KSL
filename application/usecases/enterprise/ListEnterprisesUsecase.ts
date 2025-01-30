@@ -1,10 +1,10 @@
-import { Enterprise } from "../../../domain/entities/Enterprise.ts";
+import { EnterpriseEntity } from "../../../domain/entities/EnterpriseEntity.ts";
 import type { EnterpriseRepository } from "../../repositories/EnterpriseRepository.ts";
 
 export class ListEnterprisesUsecase {
   public constructor(private readonly enterpriseRepository: EnterpriseRepository) {}
 
-  public async execute(): Promise<Enterprise[]> {
+  public async execute(): Promise<EnterpriseEntity[]> {
     return await this.enterpriseRepository.findAll();
   }
 }

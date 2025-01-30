@@ -1,4 +1,4 @@
-import { Enterprise } from "../../../domain/entities/Enterprise.ts";
+import { EnterpriseEntity } from "../../../domain/entities/EnterpriseEntity.ts";
 import { AddEnterpriseCommand } from "../../../domain/types/EnterpriseType.ts";
 import { IndustryType } from "../../../domain/value-objects/IndustryType.ts";
 import { TaxNumber } from "../../../domain/value-objects/TaxNumber.ts";
@@ -36,7 +36,7 @@ export class AddEnterpriseUsecase {
       return validIndustryType;
     }
 
-    const enterprise = Enterprise.create( {
+    const enterprise = EnterpriseEntity.create( {
       user,
       taxNumber: validTaxNumber,
       industryType: validIndustryType,

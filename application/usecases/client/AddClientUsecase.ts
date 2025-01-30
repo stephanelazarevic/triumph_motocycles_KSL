@@ -1,4 +1,4 @@
-import { Client } from "../../../domain/entities/Client.ts";
+import { ClientEntity } from "../../../domain/entities/ClientEntity.ts";
 import { AddClientCommand } from "../../../domain/types/ClientType.ts";
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
 import { ClientRepository } from "../../repositories/ClientRepository.ts";
@@ -14,7 +14,7 @@ export class CreateClientUsecase {
   }
 
   public async execute(command: AddClientCommand
-  ): Promise<Client | Error> {
+  ): Promise<ClientEntity | Error> {
     const user = await this.addUserUsecase.execute({
       firstname: command.firstname,
       lastname: command.lastname,
@@ -32,7 +32,7 @@ export class CreateClientUsecase {
       return dealer;
     }
 
-    const client = Client.create({ user, dealerId: dealer.id });
+    const client = ClientEntity.create({ user, dealerId: dealer.id });
     await this.clientRepository.save(client);
 
     return client;

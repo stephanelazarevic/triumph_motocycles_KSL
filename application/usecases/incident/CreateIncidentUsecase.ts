@@ -11,7 +11,7 @@ export class CreateIncidentUsecase {
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async execute(description: string, motorcycleId: string, type: IncidentType, reportDate: Date, resolutionDate: Date, status: string) {
+  public async execute(description: string, motorcycleId: string, type: IncidentType, reportDate: Date, resolutionDate: Date, status: string): Promise<IncidentEntity | Error> {
 
     if (!(reportDate instanceof Date) || isNaN(reportDate.getTime())) {
         throw new InvalidDateError("La date de signalement est invalide.");
@@ -45,5 +45,6 @@ export class CreateIncidentUsecase {
     );
 
     await this.incidentRepository.save(incident);
+    return incident;
   }
 }

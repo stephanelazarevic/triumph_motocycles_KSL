@@ -1,6 +1,6 @@
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
-import { EnterpriseNotFoundError } from "../../../domain/errors/EnterpriseNotFoundError.ts";
 import { SoftDeleteUserUsecase } from "../user/SoftDeleteUserUsecase.ts";
+import { DealerNotFoundError } from "../../../domain/errors/DealerNotFoundError.ts";
 
 export class SoftDeleteDealerUsecase {
   constructor(
@@ -8,15 +8,17 @@ export class SoftDeleteDealerUsecase {
     private readonly softDeleteUserUscase: SoftDeleteUserUsecase,
   ) {}
 
-  public async execute(id: string): Promise<void> {
+  public async execute(id: string): Promise<void | DealerNotFoundError> {
     const dealer = await this.dealerRepository.findOneById(id);
-    if (dealer instanceof EnterpriseNotFoundError) {
-      throw dealer;
+    if (dealer instanceof DealerNotFoundError) {
+      return dealer;
     }
 
     await this.softDeleteUserUscase.execute(dealer.user.id);
+
     dealer.deletedAt = new Date();
     dealer.markAsUpdated();
+
     await this.dealerRepository.save(dealer);
   }
 }

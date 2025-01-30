@@ -14,7 +14,7 @@ export class CreateMaintenanceUsecase {
     description: string,
     motorcycleId: string,
     cost: number,
-  ) {
+  ): Promise<MaintenanceEntity | MotorcycleNotFoundError> {
     const motorcycle = await this.motorcycleRepository.findOneById(
       motorcycleId,
     );
@@ -31,5 +31,6 @@ export class CreateMaintenanceUsecase {
     );
 
     await this.maintenanceRepository.save(maintenance);
+    return maintenance;
   }
 }

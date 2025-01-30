@@ -1,4 +1,4 @@
-import { Enterprise } from "../../../domain/entities/Enterprise.ts";
+import { EnterpriseEntity } from "../../../domain/entities/EnterpriseEntity.ts";
 import { EnterpriseRepository } from "../../repositories/EnterpriseRepository.ts";
 import { EnterpriseNotFoundError } from "../../../domain/errors/EnterpriseNotFoundError.ts";
 import { TaxNumber } from "../../../domain/value-objects/TaxNumber.ts";
@@ -8,7 +8,7 @@ import { UpdateEnterprisePersonalInformationCommand } from "../../../domain/type
 export class UpdateEnterpriseInformationUsecase {
   constructor(private enterpriseRepository: EnterpriseRepository) {}
 
-  public async execute(enterpriseId: string, command: UpdateEnterprisePersonalInformationCommand): Promise<Enterprise | Error> {
+  public async execute(enterpriseId: string, command: UpdateEnterprisePersonalInformationCommand): Promise<EnterpriseEntity | Error> {
     const enterprise = await this.enterpriseRepository.findOneById(enterpriseId);
     if (enterprise instanceof EnterpriseNotFoundError) {
       return enterprise;

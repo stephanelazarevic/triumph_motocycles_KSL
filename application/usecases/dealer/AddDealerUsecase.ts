@@ -1,10 +1,9 @@
-import { Dealer } from "../../../domain/entities/Dealer.ts";
+import { DealerEntity } from "../../../domain/entities/DealerEntity.ts";
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
 import { AddUserUsecase } from "../user/AddUserUsecase.ts";
 import { AddDealerCommand } from "../../../domain/types/DealerType.ts";
 
 export class AddDealerUsecase {
-
   public constructor(
     private readonly dealerRepository: DealerRepository,
     private readonly addUserUsecase: AddUserUsecase,
@@ -25,7 +24,7 @@ export class AddDealerUsecase {
       return user;
     }
 
-    const dealer = Dealer.create( {
+    const dealer = DealerEntity.create( {
       user,
       site: command.site,
     });

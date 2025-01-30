@@ -3,8 +3,8 @@ import { CreateIncidentUsecase } from "../../../../../application/usecases/incid
 import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/IncidentRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { BadStatusError } from "../../../../../domain/errors/BadStatusError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
 import { IncidentInvalidTypeError } from "../../../../../domain/errors/IncidentInvalidTypeError.ts";
@@ -57,9 +57,9 @@ Deno.test("Should return an error if the type is invalid", async () => {
     const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);
     const invalidIncidentType = "INVALID_TYPE" as unknown as IncidentType;
     const result = await createIncidentUsecase.execute(description, motorcycle.identifier, invalidIncidentType, reportDate, resolutionDate, status);
-  
+
     expect(result).toBeInstanceOf(IncidentInvalidTypeError);
-}); 
+});
 
 Deno.test("Should return an error if the reportDate is invalid", async () => {
   const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);
@@ -67,7 +67,7 @@ Deno.test("Should return an error if the reportDate is invalid", async () => {
   const result = await createIncidentUsecase.execute(description, motorcycle.identifier, type, badReportDate, resolutionDate, status);
 
   expect(result).toBeInstanceOf(InvalidDateError);
-}); 
+});
 
 Deno.test("Should return an error if the resolutionDate is invalid", async () => {
   const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);
@@ -75,7 +75,7 @@ Deno.test("Should return an error if the resolutionDate is invalid", async () =>
   const result = await createIncidentUsecase.execute(description, motorcycle.identifier, type, reportDate, badResolutionDate, status);
 
   expect(result).toBeInstanceOf(InvalidDateError);
-}); 
+});
 
 Deno.test("Should return an error if the resolutionDate is before the reportDate", async () => {
   const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);
@@ -84,14 +84,14 @@ Deno.test("Should return an error if the resolutionDate is before the reportDate
   const result = await createIncidentUsecase.execute(description, motorcycle.identifier, type, badReportDate, badResolutionDate, status);
 
   expect(result).toBeInstanceOf(InvalidDateError);
-}); 
+});
 
 Deno.test("Should return an error if the status is invalid", async () => {
   const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);
   const result = await createIncidentUsecase.execute(description, motorcycle.identifier, type, reportDate, resolutionDate, "status");
 
   expect(result).toBeInstanceOf(BadStatusError);
-}); 
+});
 
 Deno.test("Should succeed when creating a incident correctly", async () => {
   const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);

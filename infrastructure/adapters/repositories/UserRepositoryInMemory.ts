@@ -1,15 +1,15 @@
 import { UserRepository } from "../../../application/repositories/UserRepository.ts";
-import { User } from "../../../domain/entities/User.ts";
+import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 import { EmailAddress } from "../../../domain/value-objects/EmailAddress.ts";
 
 export class UserRepositoryInMemory implements UserRepository {
-  constructor(private users: User[] = []) {}
+  constructor(private users: UserEntity[] = []) {}
 
   /**
    * Saves a user to the repository. If the user exists, it updates the record.
    */
-  public save(user: User): Promise<void> {
+  public save(user: UserEntity): Promise<void> {
     const index = this.users.findIndex(
       (existingUser) => existingUser.id === user.id,
     );
@@ -24,14 +24,14 @@ export class UserRepositoryInMemory implements UserRepository {
   /**
    * Finds all users in the repository.
    */
-  public findAll(): Promise<User[]> {
+  public findAll(): Promise<UserEntity[]> {
     return Promise.resolve(this.users);
   }
 
   /**
    * Finds a single user by ID. Returns the user or throws a UserNotFoundError.
    */
-  public findOneById(id: string): Promise<User | UserNotFoundError> {
+  public findOneById(id: string): Promise<UserEntity | UserNotFoundError> {
     const foundUser = this.users.find((user) => user.id === id);
     return Promise.resolve(foundUser ?? new UserNotFoundError());
   }
@@ -39,7 +39,7 @@ export class UserRepositoryInMemory implements UserRepository {
   /**
    * Finds a single user by email. Returns the user or throws a UserNotFoundError.
    */
-  public findByEmail(email: EmailAddress): Promise<User | UserNotFoundError> {
+  public findByEmail(email: EmailAddress): Promise<UserEntity | UserNotFoundError> {
     const foundUser = this.users.find(
       (user) => user.emailAddress.getValue() === email.getValue(),
     );

@@ -4,6 +4,6 @@ export class ListMotorcyclesUsecase {
   public constructor(private readonly motorcycleRepository: MotorcycleRepository) {}
 
   public execute() {
-    return this.motorcycleRepository.all();
+    return this.motorcycleRepository.findAll();
   }
 }

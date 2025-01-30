@@ -1,5 +1,5 @@
 import { EnterpriseIndustryTypeError } from "../errors/EnterpriseIndustryTypeError.ts";
-import { IndustryTypeEnum } from "../enum/IndustryTypeEnum.ts";
+import { Industry } from "../enum/IndustryEnum.ts";
 
 export class IndustryType {
   private constructor(private readonly value: string) {}
@@ -13,7 +13,7 @@ export class IndustryType {
   }
 
   private static isValidIndustryType(industryType: string): boolean {
-    return Object.values(IndustryTypeEnum).includes(industryType as IndustryTypeEnum);
+    return Object.values(Industry).includes(industryType as Industry);
   }
 
   public getValue(): string {
