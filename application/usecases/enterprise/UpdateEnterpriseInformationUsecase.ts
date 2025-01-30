@@ -8,7 +8,10 @@ import { UpdateEnterprisePersonalInformationCommand } from "../../../domain/type
 export class UpdateEnterpriseInformationUsecase {
   constructor(private enterpriseRepository: EnterpriseRepository) {}
 
-  public async execute(enterpriseId: string, command: UpdateEnterprisePersonalInformationCommand): Promise<EnterpriseEntity | Error> {
+  public async execute(
+    enterpriseId: string,
+    command: UpdateEnterprisePersonalInformationCommand,
+  ): Promise<EnterpriseEntity | Error> {
     const enterprise = await this.enterpriseRepository.findOneById(enterpriseId);
     if (enterprise instanceof EnterpriseNotFoundError) {
       return enterprise;

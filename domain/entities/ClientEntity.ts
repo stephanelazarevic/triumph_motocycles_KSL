@@ -17,7 +17,7 @@ export class ClientEntity extends Entity {
     return new ClientEntity(
       crypto.randomUUID(),
       params.user,
-      params.dealerId
+      params.dealerId,
     );
   }
 }

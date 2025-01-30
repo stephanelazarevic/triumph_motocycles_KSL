@@ -2,7 +2,7 @@ import { EmailAddress } from "../../../../domain/value-objects/EmailAddress.ts";
 import { EmailAddressInvalidFormatError } from "../../../../domain/errors/EmailAddressInvalidFormatError.ts";
 
 Deno.test("Should create a valid EmailAddress instance", () => {
-  const validEmail = EmailAddress.from("John.Doe@Example.com")
+  const validEmail = EmailAddress.from("John.Doe@Example.com");
 
   if (validEmail instanceof Error) {
     throw new Error(`Test failed: Unexpected error ${validEmail.message}.`);

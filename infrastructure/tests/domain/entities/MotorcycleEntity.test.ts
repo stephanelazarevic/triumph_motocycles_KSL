@@ -31,7 +31,7 @@ Deno.test("Should throw error for invalid motorcycle entity data", () => {
     throw new Error("Invalid brand");
   }
 
-  const model = Model.from(""); 
+  const model = Model.from("");
   if (!(model instanceof Error)) {
     throw new Error("Invalid model");
   }

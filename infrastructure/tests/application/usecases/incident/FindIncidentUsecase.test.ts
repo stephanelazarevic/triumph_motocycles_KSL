@@ -28,7 +28,7 @@ Deno.test("Should return a incident when it exists", async () => {
     IncidentType.BREAKDOWN,
     new Date(2010, 1, 1),
     new Date(2011, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const incidentRepository = new IncidentRepositoryInMemory([incident]);

@@ -36,7 +36,7 @@ export class AddEnterpriseUsecase {
       return validIndustryType;
     }
 
-    const enterprise = EnterpriseEntity.create( {
+    const enterprise = EnterpriseEntity.create({
       user,
       taxNumber: validTaxNumber,
       industryType: validIndustryType,

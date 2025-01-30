@@ -28,7 +28,7 @@ Deno.test("Should update an incident successfully when it exists", async () => {
     IncidentType.BREAKDOWN,
     new Date(2010, 1, 1),
     new Date(2011, 1, 1),
-    "résolue"
+    "résolue",
   );
 
   const incidentRepository = new IncidentRepositoryInMemory([existingIncident]);
@@ -66,7 +66,7 @@ Deno.test("Should return an error when the incident does not exist", async () =>
     IncidentType.ACCIDENT,
     new Date(2020, 1, 1),
     new Date(2021, 1, 1),
-    "résolue"
+    "résolue",
   );
 
   const result = await updateIncidentUsecase.execute(nonExistentIncident);

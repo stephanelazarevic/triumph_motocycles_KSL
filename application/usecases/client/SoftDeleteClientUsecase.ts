@@ -11,7 +11,7 @@ export class SoftDeleteEnterpriseUsecase {
   public async execute(id: string): Promise<void | ClientNotFoundError> {
     const client = await this.clientRepository.findOneById(id);
     if (client instanceof ClientNotFoundError) {
-      return  client;
+      return client;
     }
 
     await this.softDeleteUserUscase.execute(client.user.id);

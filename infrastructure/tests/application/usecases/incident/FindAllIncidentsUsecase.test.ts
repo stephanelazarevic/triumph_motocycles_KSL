@@ -37,7 +37,7 @@ Deno.test("Should return all incidents when they exist", async () => {
     IncidentType.BREAKDOWN,
     new Date(2010, 1, 1),
     new Date(2011, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const incident2 = IncidentEntity.create(
@@ -46,7 +46,7 @@ Deno.test("Should return all incidents when they exist", async () => {
     IncidentType.ACCIDENT,
     new Date(2015, 1, 1),
     new Date(2016, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const incidentRepository = new IncidentRepositoryInMemory([incident1, incident2]);

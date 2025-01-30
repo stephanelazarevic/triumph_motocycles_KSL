@@ -12,17 +12,24 @@ export class IncidentEntity {
     public readonly status: string,
   ) {}
 
-  public static create(description: string, motorcycle: MotorcycleEntity, type: IncidentType, reportDate: Date, resolutionDate: Date, status: string) {
-      const identifier = crypto.randomUUID();
+  public static create(
+    description: string,
+    motorcycle: MotorcycleEntity,
+    type: IncidentType,
+    reportDate: Date,
+    resolutionDate: Date,
+    status: string,
+  ) {
+    const identifier = crypto.randomUUID();
 
-      return new IncidentEntity(
-        identifier,
-        description,
-        motorcycle,
-        type,
-        reportDate,
-        resolutionDate,
-        status
-      );
-    }
+    return new IncidentEntity(
+      identifier,
+      description,
+      motorcycle,
+      type,
+      reportDate,
+      resolutionDate,
+      status,
+    );
+  }
 }

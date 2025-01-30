@@ -1,4 +1,4 @@
-import { AddUserCommand } from './UserType.ts';
+import { AddUserCommand } from "./UserType.ts";
 
 export type AddClientCommand = AddUserCommand & {
   dealerId: string;
@@ -6,4 +6,4 @@ export type AddClientCommand = AddUserCommand & {
 
 export type UpdateClientDealerCommand = {
   dealerId: string;
-}
+};

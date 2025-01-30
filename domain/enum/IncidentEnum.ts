@@ -1,5 +1,4 @@
 export enum IncidentType {
-    BREAKDOWN = "panne",
-    ACCIDENT = "accident",
-  }
-  
+  BREAKDOWN = "panne",
+  ACCIDENT = "accident",
+}

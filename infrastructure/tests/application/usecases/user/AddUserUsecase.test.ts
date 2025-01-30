@@ -25,7 +25,7 @@ Deno.test("Should create and persist a user successfully", async () => {
       street: "123 Main St",
       postalCode: "12345",
       countryCode: "US",
-    }
+    },
   });
 
   if (result instanceof Error) {
@@ -49,7 +49,7 @@ Deno.test("Should fail when the password is too short", async () => {
       street: "123 Main St",
       postalCode: "12345",
       countryCode: "US",
-    }
+    },
   });
 
   if (!(result instanceof PasswordTooShortError)) {
@@ -70,7 +70,7 @@ Deno.test("Should fail when the phone number is invalid", async () => {
       street: "123 Main St",
       postalCode: "12345",
       countryCode: "US",
-    }
+    },
   });
 
   if (!(result instanceof PhoneNumberInvalidError)) {
@@ -91,7 +91,7 @@ Deno.test("Should fail when the email address is invalid", async () => {
       street: "123 Main St",
       postalCode: "12345",
       countryCode: "US",
-    }
+    },
   });
 
   if (!(result instanceof EmailAddressInvalidFormatError)) {
@@ -112,7 +112,7 @@ Deno.test("Should fail when the address is invalid", async () => {
       street: "St",
       postalCode: "123",
       countryCode: "INVALID_COUNTRY",
-    }
+    },
   });
 
   if (result instanceof AddressTooShortError) {
@@ -143,7 +143,7 @@ Deno.test("Should fail when required fields are empty", async () => {
       street: "",
       postalCode: "",
       countryCode: "",
-    }
+    },
   });
 
   if (!(result instanceof Error)) {
@@ -166,7 +166,7 @@ Deno.test("Should persist the created user", async () => {
       street: "123 Main St",
       postalCode: "12345",
       countryCode: "US",
-    }
+    },
   });
 
   if (result instanceof Error) {

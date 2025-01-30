@@ -10,7 +10,6 @@ export class DealerEntity extends Entity {
     super(id);
   }
 
-
   public static create(params: {
     user: UserEntity;
     site: string;
@@ -18,7 +17,7 @@ export class DealerEntity extends Entity {
     return new DealerEntity(
       crypto.randomUUID(),
       params.user,
-      params.site
+      params.site,
     );
   }
 }

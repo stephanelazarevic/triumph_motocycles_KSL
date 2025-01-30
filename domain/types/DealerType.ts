@@ -1,4 +1,4 @@
-import { AddUserCommand } from './UserType.ts';
+import { AddUserCommand } from "./UserType.ts";
 
 export type AddDealerCommand = AddUserCommand & {
   site: string;
@@ -6,4 +6,4 @@ export type AddDealerCommand = AddUserCommand & {
 
 export type UpdateDealerSiteCommand = {
   site: string;
-}
+};

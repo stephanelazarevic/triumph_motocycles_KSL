@@ -13,15 +13,14 @@ export class CreateClientUsecase {
     this.addUserUsecase = addUserUsecase;
   }
 
-  public async execute(command: AddClientCommand
-  ): Promise<ClientEntity | Error> {
+  public async execute(command: AddClientCommand): Promise<ClientEntity | Error> {
     const user = await this.addUserUsecase.execute({
       firstname: command.firstname,
       lastname: command.lastname,
       emailAddress: command.emailAddress,
       plainPassword: command.plainPassword,
       phoneNumber: command.phoneNumber,
-      address: command.address
+      address: command.address,
     });
     if (user instanceof Error) {
       return user;

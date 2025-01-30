@@ -5,12 +5,12 @@ import { FindIncidentUsecase } from "../../../../application/usecases/incident/F
 import { FindAllIncidentsUsecase } from "../../../../application/usecases/incident/FindAllIncidentsUsecase.ts";
 import { UpdateIncidentUsecase } from "../../../../application/usecases/incident/UpdateIncidentUsecase.ts";
 import { DeleteIncidentUsecase } from "../../../../application/usecases/incident/DeleteIncidentUsecase.ts";
-import { exhaustive } from "npm:exhaustive"
+import { exhaustive } from "npm:exhaustive";
 import { createIncidentRequestSchema } from "../schemas/createIncidentRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { IncidentEntity } from "../../../../domain/entities/IncidentEntity.ts";
 
-export class IncidentController implements EntityControllerInterface{
+export class IncidentController implements EntityControllerInterface {
   public constructor(
     private readonly incidentRepository: IncidentRepository,
     private readonly motorcycleRepository: MotorcycleRepository,
@@ -57,7 +57,6 @@ export class IncidentController implements EntityControllerInterface{
     return exhaustive(result.name, {
       IncidentNotFoundError: () => new Response("IncidentNotFoundError", { status: 404 }),
     });
-
   }
 
   public async create(request: Request): Promise<Response> {
@@ -78,7 +77,14 @@ export class IncidentController implements EntityControllerInterface{
 
     const { description, motorcycleId, type, reportDate, resolutionDate, status } = validation.data;
 
-    const result = await createIncidentUsecase.execute(description, motorcycleId, type, reportDate, resolutionDate, status);
+    const result = await createIncidentUsecase.execute(
+      description,
+      motorcycleId,
+      type,
+      reportDate,
+      resolutionDate,
+      status,
+    );
 
     if (result instanceof IncidentEntity) {
       return new Response(null, {

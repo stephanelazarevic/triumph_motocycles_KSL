@@ -24,7 +24,7 @@ export class AddDealerUsecase {
       return user;
     }
 
-    const dealer = DealerEntity.create( {
+    const dealer = DealerEntity.create({
       user,
       site: command.site,
     });

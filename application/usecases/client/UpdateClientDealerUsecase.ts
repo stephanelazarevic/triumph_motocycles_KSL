@@ -8,7 +8,7 @@ import { ClientEntity } from "../../../domain/entities/ClientEntity.ts";
 export class UpdateClientDealerUsecase {
   constructor(
     private clientRepository: ClientRepository,
-    private dealerRepository: DealerRepository
+    private dealerRepository: DealerRepository,
   ) {}
 
   public async execute(clientId: string, command: UpdateClientDealerCommand): Promise<ClientEntity | Error> {

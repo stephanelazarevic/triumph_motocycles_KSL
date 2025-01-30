@@ -1,4 +1,4 @@
-import { MongoClient, Database } from "https://deno.land/x/mongo@v0.31.1/mod.ts";
+import { Database, MongoClient } from "https://deno.land/x/mongo@v0.31.1/mod.ts";
 
 // URI et nom de la base MongoDB
 const MONGO_URI = Deno.env.get("MONGO_URI") || "mongodb://localhost:27017";

@@ -6,7 +6,7 @@ export class IncidentRepositoryInMemory implements IncidentRepository {
   public constructor(private incidents: IncidentEntity[]) {}
 
   public save(incident: IncidentEntity): Promise<void> {
-    const index = this.incidents.findIndex(incident => incident.identifier === incident.identifier);
+    const index = this.incidents.findIndex((incident) => incident.identifier === incident.identifier);
     if (index === -1) {
       this.incidents.push(incident);
     } else {
@@ -28,7 +28,7 @@ export class IncidentRepositoryInMemory implements IncidentRepository {
   }
 
   delete(id: string): Promise<void> {
-    this.incidents = this.incidents.filter(incident => incident.identifier !== id);
+    this.incidents = this.incidents.filter((incident) => incident.identifier !== id);
     return Promise.resolve();
   }
 }

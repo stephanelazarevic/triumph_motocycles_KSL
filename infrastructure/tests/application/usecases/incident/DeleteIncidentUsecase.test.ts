@@ -39,7 +39,7 @@ const incident = IncidentEntity.create(
   type,
   reportDate,
   resolutionDate,
-  status
+  status,
 );
 
 incidentRepository.save(incident);
