@@ -82,15 +82,15 @@ export class IncidentController implements EntityControllerInterface{
 
     const { description, motorcycleId, type, reportDate, resolutionDate, status } = validation.data;
 
-    const error = await createIncidentUsecase.execute(description, motorcycleId, type, reportDate, resolutionDate, status);
+    const result = await createIncidentUsecase.execute(description, motorcycleId, type, reportDate, resolutionDate, status);
 
-    if (!error) {
+    if (result === undefined) {
       return new Response(null, {
         status: 201,
       });
     }
 
-    return exhaustive(error.name, {
+    return exhaustive({
       InvalidDateError: () => new Response("InvalidDateError", { status: 400 }),
       MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
     });
