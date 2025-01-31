@@ -1,12 +1,12 @@
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../domain/types/Brand.ts";
-import { Model } from "../../../domain/types/Model.ts";
+import { Brand } from "../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../domain/value-objects/Model.ts";
 import type { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 
 export class CreateMotorcycleUsecase {
   public constructor(private readonly motorcycleRepository: MotorcycleRepository) {}
 
-  public async execute(brand: string, model: string, year: number) {
+  public async execute(brand: string, model: string, year: number): Promise<MotorcycleEntity | Error> {
     const motorcycleBrand = Brand.from(brand);
 
     if (motorcycleBrand instanceof Error) {
@@ -22,9 +22,10 @@ export class CreateMotorcycleUsecase {
     const motorcycle = MotorcycleEntity.create(
       motorcycleBrand,
       motorcycleModel,
-      year
+      year,
     );
 
     await this.motorcycleRepository.save(motorcycle);
+    return motorcycle;
   }
 }

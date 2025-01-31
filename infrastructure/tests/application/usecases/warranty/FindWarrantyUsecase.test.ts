@@ -3,8 +3,8 @@ import { FindWarrantyUsecase } from "../../../../../application/usecases/warrant
 import { WarrantyRepositoryInMemory } from "../../../../adapters/repositories/WarrantyRepositoryInMemory.ts";
 import { WarrantyEntity } from "../../../../../domain/entities/WarrantyEntity.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { WarrantyNotFoundError } from "../../../../../domain/errors/WarrantyNotFoundError.ts";
 
 Deno.test("Should return a warranty when it exists", async () => {
@@ -26,7 +26,7 @@ Deno.test("Should return a warranty when it exists", async () => {
     new Date(2011, 1, 1),
     motorcycle,
     "Partial warranty",
-    "Terms and conditions"
+    "Terms and conditions",
   );
 
   const warrantyRepository = new WarrantyRepositoryInMemory([warranty]);

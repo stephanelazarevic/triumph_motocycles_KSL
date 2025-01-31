@@ -1,35 +1,28 @@
-import { Address } from "../types/Address.ts";
-import { EmailAddress } from "../types/EmailAddress.ts";
-import { PhoneNumber } from "../types/PhoneNumber.ts";
+import { IndustryType } from "../value-objects/IndustryType.ts";
+import { TaxNumber } from "../value-objects/TaxNumber.ts";
+import { Entity } from "./Entity.ts";
 import { UserEntity } from "./UserEntity.ts";
 
-
-export class EnterpriseEntity extends UserEntity {
-  constructor(
+export class EnterpriseEntity extends Entity {
+  private constructor(
     id: string,
-    firstname: string,
-    lastname: string,
-    hashedPassword: string,
-    emailAddress: EmailAddress,
-    phoneNumber: PhoneNumber,
-    address: Address,
-    isAdministrator: boolean,
-    createdAt: Date,
-    updatedAt: Date,
-    public readonly taxNumber: string,
-    public readonly industryType: string[]
+    public user: UserEntity,
+    public taxNumber: TaxNumber,
+    public industryType: IndustryType,
   ) {
-    super(
-      id,
-      firstname,
-      lastname,
-      hashedPassword,
-      emailAddress,
-      phoneNumber,
-      address,
-      isAdministrator,
-      createdAt,
-      updatedAt
+    super(id);
+  }
+
+  public static create(params: {
+    user: UserEntity;
+    taxNumber: TaxNumber;
+    industryType: IndustryType;
+  }): EnterpriseEntity {
+    return new EnterpriseEntity(
+      crypto.randomUUID(),
+      params.user,
+      params.taxNumber,
+      params.industryType,
     );
   }
 }

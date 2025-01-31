@@ -6,14 +6,14 @@ export class MaintenanceEntity {
     public readonly date: Date,
     public readonly description: string,
     public readonly motorcycle: MotorcycleEntity,
-    public readonly cost: number
+    public readonly cost: number,
   ) {}
 
   public static create(
     date: Date,
     description: string,
     motorcycle: MotorcycleEntity,
-    cost: number
+    cost: number,
   ) {
     const identifier = crypto.randomUUID();
 
@@ -22,7 +22,7 @@ export class MaintenanceEntity {
       date,
       description,
       motorcycle,
-      cost
+      cost,
     );
   }
 }

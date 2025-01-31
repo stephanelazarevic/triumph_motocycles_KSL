@@ -11,20 +11,26 @@ export class CreateIncidentUsecase {
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async execute(description: string, motorcycleId: string, type: IncidentType, reportDate: Date, resolutionDate: Date, status: string) {
-
+  public async execute(
+    description: string,
+    motorcycleId: string,
+    type: IncidentType,
+    reportDate: Date,
+    resolutionDate: Date,
+    status: string,
+  ): Promise<IncidentEntity | Error> {
     if (!(reportDate instanceof Date) || isNaN(reportDate.getTime())) {
-        throw new InvalidDateError("La date de signalement est invalide.");
+      throw new InvalidDateError("La date de signalement est invalide.");
     }
-  
+
     if (!(resolutionDate instanceof Date) || isNaN(resolutionDate.getTime())) {
-        throw new InvalidDateError("La date de résolution est invalide.");
+      throw new InvalidDateError("La date de résolution est invalide.");
     }
-  
+
     if (resolutionDate < reportDate) {
-        throw new InvalidDateError(
-          "La date de résolution doit être postérieure à la date de signalement.",
-        );
+      throw new InvalidDateError(
+        "La date de résolution doit être postérieure à la date de signalement.",
+      );
     }
 
     const motorcycle = await this.motorcycleRepository.findOneById(
@@ -32,7 +38,7 @@ export class CreateIncidentUsecase {
     );
 
     if (motorcycle instanceof MotorcycleNotFoundError) {
-      throw motorcycle; 
+      throw motorcycle;
     }
 
     const incident = IncidentEntity.create(
@@ -41,9 +47,10 @@ export class CreateIncidentUsecase {
       type,
       reportDate,
       resolutionDate,
-      status
+      status,
     );
 
     await this.incidentRepository.save(incident);
+    return incident;
   }
 }

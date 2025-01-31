@@ -3,8 +3,8 @@ import { FindAllMaintenancesUsecase } from "../../../../../application/usecases/
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MaintenanceEntity } from "../../../../../domain/entities/MaintenanceEntity.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 
 const brand = Brand.from("Triumph");
@@ -32,14 +32,14 @@ Deno.test("Should return all maintenances", async () => {
     date,
     description,
     motorcycle,
-    cost
+    cost,
   );
   const maintenanceRepository = new MaintenanceRepositoryInMemory([
     maintenance,
   ]);
 
   const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(
-    maintenanceRepository
+    maintenanceRepository,
   );
   const result = await findAllMaintenancesUsecase.execute();
 
@@ -55,11 +55,11 @@ Deno.test(
   async () => {
     const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
     const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(
-      maintenanceRepository
+      maintenanceRepository,
     );
 
     const result = await findAllMaintenancesUsecase.execute();
 
     expect(result).toStrictEqual([]);
-  }
+  },
 );

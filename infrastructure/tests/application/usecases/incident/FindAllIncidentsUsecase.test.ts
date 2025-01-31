@@ -4,8 +4,8 @@ import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/In
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 
 Deno.test("Should return an empty array when no incidents exist", async () => {
   const incidentRepository = new IncidentRepositoryInMemory([]);
@@ -37,7 +37,7 @@ Deno.test("Should return all incidents when they exist", async () => {
     IncidentType.BREAKDOWN,
     new Date(2010, 1, 1),
     new Date(2011, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const incident2 = IncidentEntity.create(
@@ -46,7 +46,7 @@ Deno.test("Should return all incidents when they exist", async () => {
     IncidentType.ACCIDENT,
     new Date(2015, 1, 1),
     new Date(2016, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const incidentRepository = new IncidentRepositoryInMemory([incident1, incident2]);

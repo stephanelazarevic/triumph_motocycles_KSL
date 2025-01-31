@@ -7,8 +7,8 @@ import { UpdateWarrantyUsecase } from "../../../../application/usecases/warranty
 import { DeleteWarrantyUsecase } from "../../../../application/usecases/warranty/DeleteWarrantyUsecase.ts";
 import { exhaustive } from "npm:exhaustive"
 import { createWarrantyRequestSchema } from "../schemas/createWarrantyRequestSchema.ts";
-import { WarrantyNotFoundError } from "../../../../domain/errors/WarrantyNotFoundError.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
+import { WarrantyEntity } from "../../../../domain/entities/WarrantyEntity.ts";
 
 export class WarrantyController implements EntityControllerInterface {
   public constructor(
@@ -45,11 +45,7 @@ export class WarrantyController implements EntityControllerInterface {
 
     const result = await findWarrantyUsecase.execute(id);
 
-    if (result instanceof WarrantyNotFoundError) {
-      return new Response("WarrantyNotFoundError", { status: 404 });
-    }
-
-    if (typeof result === "object" && result !== null) {
+    if (result instanceof WarrantyEntity) {
       return new Response(JSON.stringify(result), {
         status: 200,
         headers: {
@@ -58,7 +54,7 @@ export class WarrantyController implements EntityControllerInterface {
       });
     }
 
-    return exhaustive({
+    return exhaustive(result.name, {
       WarrantyNotFoundError: () => new Response("WarrantyNotFoundError", { status: 404 }),
     });
 
@@ -80,17 +76,17 @@ export class WarrantyController implements EntityControllerInterface {
       });
     }
 
-    const { startDate, endDate, warrantyType, motorcycle, terms } = validation.data;
+    const { startDate, endDate, warrantyType, motorcycleId, terms } = validation.data;
 
-    const result = await createWarrantyUsecase.execute(startDate, endDate, warrantyType, motorcycle, terms);
+    const result = await createWarrantyUsecase.execute(startDate, endDate, warrantyType, motorcycleId, terms);
 
-    if (result === undefined) {
+    if (result instanceof WarrantyEntity) {
       return new Response(null, {
         status: 201,
       });
     }
 
-    return exhaustive({
+    return exhaustive(result.name, {
       InvalidDateError: () => new Response("InvalidDateError", { status: 400 }),
       MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
     });
@@ -103,6 +99,7 @@ export class WarrantyController implements EntityControllerInterface {
 
     const body = await request.json();
 
+    // @TODO: use update request schema
     const validation = createWarrantyRequestSchema.safeParse(body);
 
     if (!validation.success) {
@@ -111,6 +108,7 @@ export class WarrantyController implements EntityControllerInterface {
       });
     }
 
+    // @TODO: validation.data doesn't match execute expected input
     const result = await updateWarrantyUsecase.execute(validation.data);
 
     if (result === undefined) {

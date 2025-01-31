@@ -2,7 +2,7 @@ import { MotorcycleRepository } from "../../../application/repositories/Motorcyc
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
 import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFoundError.ts";
 
-export class MotorcycleRepositoryInMemory implements MotorcycleRepository{
+export class MotorcycleRepositoryInMemory implements MotorcycleRepository {
   public constructor(private motorcycles: MotorcycleEntity[]) {}
 
   public save(motorcycle: MotorcycleEntity): Promise<void> {
@@ -25,7 +25,7 @@ export class MotorcycleRepositoryInMemory implements MotorcycleRepository{
 
   public delete(id: string): Promise<void> {
     this.motorcycles = this.motorcycles.filter(
-      (motorcycle) => motorcycle.identifier !== id
+      (motorcycle) => motorcycle.identifier !== id,
     );
     return Promise.resolve();
   }

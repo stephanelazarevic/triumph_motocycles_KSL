@@ -6,5 +6,5 @@ export interface IncidentRepository extends EntityRepositoryInterface<IncidentEn
   save(maintenance: IncidentEntity): Promise<void>;
   findAll(): Promise<IncidentEntity[]>;
   findOneById(id: string): Promise<IncidentEntity | IncidentNotFoundError>;
-  delete(id: string): Promise<void>;  
+  delete(id: string): Promise<void>;
 }

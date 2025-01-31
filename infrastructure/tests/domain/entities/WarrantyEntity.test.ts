@@ -1,6 +1,6 @@
 import { expect } from "jsr:@std/expect";
-import { Brand } from "../../../../domain/types/Brand.ts";
-import { Model } from "../../../../domain/types/Model.ts";
+import { Brand } from "../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../domain/value-objects/Model.ts";
 import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
 import { WarrantyEntity } from "../../../../domain/entities/WarrantyEntity.ts";
 
@@ -23,7 +23,7 @@ Deno.test("Shoud return a warranty entity", () => {
   const endDate = new Date(2030, 1, 1);
   const warrantyType = "Extended";
   const terms = "Terms and conditions";
-  
+
   const result = WarrantyEntity.create(startDate, endDate, motorcycle, warrantyType, terms);
 
   expect(result.startDate.toISOString()).toStrictEqual(new Date(2024, 1, 1).toISOString());
@@ -41,7 +41,7 @@ Deno.test("Should throw error for invalid warranty entity data", () => {
     throw new Error("Invalid brand");
   }
 
-  const model = Model.from(""); 
+  const model = Model.from("");
   if (!(model instanceof Error)) {
     throw new Error("Invalid model");
   }

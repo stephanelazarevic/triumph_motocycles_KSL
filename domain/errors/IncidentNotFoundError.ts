@@ -1,3 +1,3 @@
 export class IncidentNotFoundError extends Error {
-    public override readonly name = "IncidentNotFoundError";
-  }
+  public override readonly name = "IncidentNotFoundError";
+}

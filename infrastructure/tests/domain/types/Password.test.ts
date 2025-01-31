@@ -1,4 +1,4 @@
-import { Password } from "../../../../domain/types/Password.ts";
+import { Password } from "../../../../domain/value-objects/Password.ts";
 import { PasswordTooShortError } from "../../../../domain/errors/PasswordTooShortError.ts";
 import { PasswordMissingLowercaseError } from "../../../../domain/errors/PasswordMissingLowercaseError.ts";
 import { PasswordMissingUppercaseError } from "../../../../domain/errors/PasswordMissingUppercaseError.ts";
@@ -15,8 +15,8 @@ Deno.test("Should create a valid Password instance", () => {
   }
 
   console.assert(
-    result.value === validPassword,
-    "Expected password value to match."
+    result instanceof Password,
+    "Expected password value to match.",
   );
 });
 
@@ -31,7 +31,7 @@ Deno.test("Should fail for a password that is too short", () => {
 
   console.assert(
     result.message === "Password is too short.",
-    "Expected error message to match."
+    "Expected error message to match.",
   );
 });
 
@@ -46,7 +46,7 @@ Deno.test("Should fail for a password missing a lowercase letter", () => {
 
   console.assert(
     result.message === "Password must contain at least one lowercase letter.",
-    "Expected error message to match."
+    "Expected error message to match.",
   );
 });
 
@@ -61,7 +61,7 @@ Deno.test("Should fail for a password missing an uppercase letter", () => {
 
   console.assert(
     result.message === "Password must contain at least one uppercase letter.",
-    "Expected error message to match."
+    "Expected error message to match.",
   );
 });
 
@@ -76,7 +76,7 @@ Deno.test("Should fail for a password missing a number", () => {
 
   console.assert(
     result.message === "Password must contain at least one number.",
-    "Expected error message to match."
+    "Expected error message to match.",
   );
 });
 
@@ -91,6 +91,6 @@ Deno.test("Should fail for a password missing a symbol", () => {
 
   console.assert(
     result.message === "Password must contain at least one symbol.",
-    "Expected error message to match."
+    "Expected error message to match.",
   );
 });

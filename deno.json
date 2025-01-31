@@ -1,14 +1,16 @@
 {
   "workspace": ["./infrastructure/platforms/deno"],
   "tasks": {
-    "deno:dev": "deno run --watch --allow-net infrastructure/platforms/deno/index.ts",
-    "deno:start": "deno run --allow-net infrastructure/platforms/deno/index.ts"
+    "dev": "deno run --watch --allow-net infrastructure/platforms/deno/index.ts",
+    "start": "deno run --allow-net infrastructure/platforms/deno/index.ts",
+    "lint": "deno lint",
+    "format:fix": "deno fmt"
   },
   "compilerOptions": {
     "strict": true
   },
   "fmt": {
-    "lineWidth": 10000
+    "lineWidth": 120
   },
   "imports": {
     "prisma": "https://deno.land/x/prisma@2.30.0/mod.ts",
