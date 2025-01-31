@@ -2,8 +2,8 @@ import { expect } from "jsr:@std/expect";
 import { FindAllWarrantiesUsecase } from "../../../../../application/usecases/warranty/FindAllWarrantiesUsecase.ts";
 import { WarrantyRepositoryInMemory } from "../../../../adapters/repositories/WarrantyRepositoryInMemory.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { WarrantyEntity } from "../../../../../domain/entities/WarrantyEntity.ts";
 
 Deno.test("Should return an empty array when no warranties exist", async () => {
@@ -35,7 +35,7 @@ Deno.test("Should return all warranties when they exist", async () => {
     new Date(2011, 1, 1),
     motorcycle,
     "Partial warranty",
-    "Terms and conditions"
+    "Terms and conditions",
   );
 
   const warranty2 = WarrantyEntity.create(
@@ -43,7 +43,7 @@ Deno.test("Should return all warranties when they exist", async () => {
     new Date(2015, 1, 1),
     motorcycle,
     "Full warranty",
-    "Terms and conditions"
+    "Terms and conditions",
   );
 
   const warrantyRepository = new WarrantyRepositoryInMemory([warranty1, warranty2]);

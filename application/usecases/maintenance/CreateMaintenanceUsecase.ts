@@ -6,17 +6,17 @@ import type { MotorcycleRepository } from "../../repositories/MotorcycleReposito
 export class CreateMaintenanceUsecase {
   public constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
-    private readonly motorcycleRepository: MotorcycleRepository
+    private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
   public async execute(
     date: Date,
     description: string,
     motorcycleId: string,
-    cost: number
-  ) {
+    cost: number,
+  ): Promise<MaintenanceEntity | MotorcycleNotFoundError> {
     const motorcycle = await this.motorcycleRepository.findOneById(
-      motorcycleId
+      motorcycleId,
     );
 
     if (motorcycle instanceof MotorcycleNotFoundError) {
@@ -27,9 +27,10 @@ export class CreateMaintenanceUsecase {
       date,
       description,
       motorcycle,
-      cost
+      cost,
     );
 
     await this.maintenanceRepository.save(maintenance);
+    return maintenance;
   }
 }

@@ -1,6 +1,6 @@
 import { UserEntity } from "../../domain/entities/UserEntity.ts";
-import { EmailAddress } from "../../domain/types/EmailAddress.ts";
 import { UserNotFoundError } from "../../domain/errors/UserNotFoundError.ts";
+import { EmailAddress } from "../../domain/value-objects/EmailAddress.ts";
 import { EntityRepositoryInterface } from "./EntityRepositoryInterface.ts";
 
 export interface UserRepository extends EntityRepositoryInterface<UserEntity> {

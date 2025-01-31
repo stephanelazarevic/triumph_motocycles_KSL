@@ -5,8 +5,8 @@ import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts
 import { IncidentNotFoundError } from "../../../../../domain/errors/IncidentNotFoundError.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 
 const incidentRepository = new IncidentRepositoryInMemory([]);
@@ -39,7 +39,7 @@ const incident = IncidentEntity.create(
   type,
   reportDate,
   resolutionDate,
-  status
+  status,
 );
 
 incidentRepository.save(incident);

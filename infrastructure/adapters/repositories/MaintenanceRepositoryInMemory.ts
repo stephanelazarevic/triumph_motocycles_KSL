@@ -7,7 +7,7 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
 
   public save(maintenance: MaintenanceEntity): Promise<void> {
     const index = this.maintenances.findIndex(
-      (maintenance) => maintenance.identifier === maintenance.identifier
+      (maintenance) => maintenance.identifier === maintenance.identifier,
     );
     if (index === -1) {
       this.maintenances.push(maintenance);
@@ -31,7 +31,7 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
 
   public delete(id: string): Promise<void> {
     this.maintenances = this.maintenances.filter(
-      (maintenance) => maintenance.identifier !== id
+      (maintenance) => maintenance.identifier !== id,
     );
     return Promise.resolve();
   }

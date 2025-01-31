@@ -1,6 +1,6 @@
 import { expect } from "jsr:@std/expect";
-import { Brand } from "../../../../domain/types/Brand.ts";
-import { Model } from "../../../../domain/types/Model.ts";
+import { Brand } from "../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../domain/value-objects/Model.ts";
 import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
 
 Deno.test("Shoud return a motorcycle entity", () => {
@@ -31,7 +31,7 @@ Deno.test("Should throw error for invalid motorcycle entity data", () => {
     throw new Error("Invalid brand");
   }
 
-  const model = Model.from(""); 
+  const model = Model.from("");
   if (!(model instanceof Error)) {
     throw new Error("Invalid model");
   }

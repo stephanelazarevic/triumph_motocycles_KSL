@@ -1,4 +1,3 @@
 export class BadStatusError extends Error {
-    public override readonly name = "BadStatusError";
-  }
-  
+  public override readonly name = "BadStatusError";
+}

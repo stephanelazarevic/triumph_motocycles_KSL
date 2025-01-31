@@ -4,8 +4,8 @@ import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/In
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { IncidentNotFoundError } from "../../../../../domain/errors/IncidentNotFoundError.ts";
 
 Deno.test("Should return a incident when it exists", async () => {
@@ -28,7 +28,7 @@ Deno.test("Should return a incident when it exists", async () => {
     IncidentType.BREAKDOWN,
     new Date(2010, 1, 1),
     new Date(2011, 1, 1),
-    "resolved"
+    "resolved",
   );
 
   const incidentRepository = new IncidentRepositoryInMemory([incident]);

@@ -1,3 +1,3 @@
 export class NullCostError extends Error {
-    public override readonly name = "NullCostError";
-  }
+  public override readonly name = "NullCostError";
+}

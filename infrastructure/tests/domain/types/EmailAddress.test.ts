@@ -1,33 +1,31 @@
-import { EmailAddress } from "../../../../domain/types/EmailAddress.ts";
+import { EmailAddress } from "../../../../domain/value-objects/EmailAddress.ts";
 import { EmailAddressInvalidFormatError } from "../../../../domain/errors/EmailAddressInvalidFormatError.ts";
 
 Deno.test("Should create a valid EmailAddress instance", () => {
-  const validEmail = "John.Doe@Example.com";
+  const validEmail = EmailAddress.from("John.Doe@Example.com");
 
-  const result = EmailAddress.from(validEmail);
-
-  if (result instanceof Error) {
-    throw new Error(`Test failed: Unexpected error ${result.message}.`);
+  if (validEmail instanceof Error) {
+    throw new Error(`Test failed: Unexpected error ${validEmail.message}.`);
   }
 
   console.assert(
-    result.email === "john.doe@example.com",
-    "Expected email to be normalized to lowercase."
+    validEmail.getValue() === "john.doe@example.com",
+    "Expected email to be normalized to lowercase.",
   );
 });
 
 Deno.test("Should fail for an email with invalid format (missing @)", () => {
   const invalidEmail = "John.DoeExample.com";
 
-  const result = EmailAddress.from(invalidEmail);
+  const resultEmailAddress = EmailAddress.from(invalidEmail);
 
-  if (!(result instanceof EmailAddressInvalidFormatError)) {
+  if (!(resultEmailAddress instanceof EmailAddressInvalidFormatError)) {
     throw new Error("Test failed: Expected EmailAddressInvalidFormatError.");
   }
 
   console.assert(
-    result.message === "Email address has an invalid format.",
-    "Expected error message to match."
+    resultEmailAddress instanceof EmailAddress,
+    "Expected error message to match.",
   );
 });
 
@@ -36,17 +34,17 @@ Deno.test(
   () => {
     const invalidEmail = "John.Doe@";
 
-    const result = EmailAddress.from(invalidEmail);
+    const resultEmailAddress = EmailAddress.from(invalidEmail);
 
-    if (!(result instanceof EmailAddressInvalidFormatError)) {
+    if (!(resultEmailAddress instanceof EmailAddressInvalidFormatError)) {
       throw new Error("Test failed: Expected EmailAddressInvalidFormatError.");
     }
 
     console.assert(
-      result.message === "Email address has an invalid format.",
-      "Expected error message to match."
+      resultEmailAddress.message === "Email address has an invalid format.",
+      "Expected error message to match.",
     );
-  }
+  },
 );
 
 Deno.test(
@@ -54,45 +52,45 @@ Deno.test(
   () => {
     const invalidEmail = "@example.com";
 
-    const result = EmailAddress.from(invalidEmail);
+    const resultEmailAddress = EmailAddress.from(invalidEmail);
 
-    if (!(result instanceof EmailAddressInvalidFormatError)) {
+    if (!(resultEmailAddress instanceof EmailAddressInvalidFormatError)) {
       throw new Error("Test failed: Expected EmailAddressInvalidFormatError.");
     }
 
     console.assert(
-      result.message === "Email address has an invalid format.",
-      "Expected error message to match."
+      resultEmailAddress.message === "Email address has an invalid format.",
+      "Expected error message to match.",
     );
-  }
+  },
 );
 
 Deno.test("Should fail for an email with invalid format (missing TLD)", () => {
   const invalidEmail = "john.doe@example";
 
-  const result = EmailAddress.from(invalidEmail);
+  const resultEmailAddress = EmailAddress.from(invalidEmail);
 
-  if (!(result instanceof EmailAddressInvalidFormatError)) {
+  if (!(resultEmailAddress instanceof EmailAddressInvalidFormatError)) {
     throw new Error("Test failed: Expected EmailAddressInvalidFormatError.");
   }
 
   console.assert(
-    result.message === "Email address has an invalid format.",
-    "Expected error message to match."
+    resultEmailAddress.message === "Email address has an invalid format.",
+    "Expected error message to match.",
   );
 });
 
 Deno.test("Should normalize a valid email by trimming spaces", () => {
   const validEmailWithSpaces = "   John.Doe@Example.com   ";
 
-  const result = EmailAddress.from(validEmailWithSpaces);
+  const resultEmailAddress = EmailAddress.from(validEmailWithSpaces);
 
-  if (result instanceof Error) {
-    throw new Error(`Test failed: Unexpected error ${result.message}.`);
+  if (resultEmailAddress instanceof Error) {
+    throw new Error(`Test failed: Unexpected error ${resultEmailAddress.message}.`);
   }
 
   console.assert(
-    result.email === "john.doe@example.com",
-    "Expected email to be trimmed and normalized."
+    resultEmailAddress.getValue() === "john.doe@example.com",
+    "Expected email to be trimmed and normalized.",
   );
 });

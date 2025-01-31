@@ -1,5 +1,5 @@
-import { Brand } from "../types/Brand.ts";
-import { Model } from "../types/Model.ts";
+import { Brand } from "../value-objects/Brand.ts";
+import { Model } from "../value-objects/Model.ts";
 
 export class MotorcycleEntity {
   private constructor(
@@ -8,7 +8,7 @@ export class MotorcycleEntity {
     public readonly model: Model,
     public readonly year: number,
     public readonly createdAt: Date,
-    public readonly updatedAt: Date
+    public readonly updatedAt: Date,
   ) {}
 
   public static create(brand: Brand, model: Model, year: number) {
@@ -22,7 +22,7 @@ export class MotorcycleEntity {
       model,
       year,
       createdAt,
-      updatedAt
+      updatedAt,
     );
   }
 }

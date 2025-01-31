@@ -3,6 +3,7 @@ import { ListMotorcyclesUsecase } from "../../../../application/usecases/motorcy
 import { CreateMotorcycleUsecase } from "../../../../application/usecases/motorcycle/CreateMotorcycleUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
 import { createMotorcycleRequestSchema } from "../schemas/createMotorcycleRequestSchema.ts";
+import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
 
 export class MotorcycleController {
   public constructor(private readonly motorcycleRepository: MotorcycleRepository) {}
@@ -30,7 +31,7 @@ export class MotorcycleController {
     const { brand, model, year } = validation.data;
     const result = await createMotorcycleUsecase.execute(brand, model, year);
 
-    if (result === undefined) {
+    if (result instanceof MotorcycleEntity) {
       return new Response(null, { status: 201 });
     }
 

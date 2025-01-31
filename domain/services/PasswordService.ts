@@ -1,4 +1,4 @@
-import { Password } from "domain/types/Password.ts";
+import { Password } from "../value-objects/Password.ts";
 
 export interface PasswordService {
   /**
@@ -16,6 +16,6 @@ export interface PasswordService {
    */
   comparePassword(
     plainPassword: string,
-    hashedPassword: string
+    hashedPassword: string,
   ): Promise<boolean>;
 }

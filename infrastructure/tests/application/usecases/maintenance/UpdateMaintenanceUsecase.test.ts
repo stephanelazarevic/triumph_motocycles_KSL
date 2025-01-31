@@ -3,8 +3,8 @@ import { UpdateMaintenanceUsecase } from "../../../../../application/usecases/ma
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MaintenanceEntity } from "../../../../../domain/entities/MaintenanceEntity.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { MaintenanceNotFoundError } from "../../../../../domain/errors/MaintenanceNotFoundError.ts";
 
 Deno.test("Should update a maintenance successfully when it exists", async () => {
@@ -23,9 +23,9 @@ Deno.test("Should update a maintenance successfully when it exists", async () =>
 
   const existingMaintenance = MaintenanceEntity.create(
     new Date(2023, 6, 15),
-    "Changement d'huile moteur", 
+    "Changement d'huile moteur",
     motorcycle,
-    750
+    750,
   );
 
   const maintenanceRepository = new MaintenanceRepositoryInMemory([existingMaintenance]);
@@ -37,7 +37,7 @@ Deno.test("Should update a maintenance successfully when it exists", async () =>
 
   const maintenances = await maintenanceRepository.findAll();
 
-  expect(result).toBeUndefined(); 
+  expect(result).toBeUndefined();
   expect(maintenances.length).toStrictEqual(1);
   expect(maintenances[0].description).toStrictEqual("Description mise à jour");
 });
@@ -63,7 +63,7 @@ Deno.test("Should return an error when the maintenance does not exist", async ()
     new Date(2024, 5, 30),
     "Remplacement des plaquettes de frein",
     motorcycle,
-    1000
+    1000,
   );
 
   const result = await updateMaintenanceUsecase.execute(nonExistentMaintenance);

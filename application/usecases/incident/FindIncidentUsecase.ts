@@ -3,14 +3,13 @@ import { IncidentNotFoundError } from "../../../domain/errors/IncidentNotFoundEr
 import { IncidentRepository } from "../../repositories/IncidentRepository.ts";
 
 export class FindIncidentUsecase {
-    constructor(private incidentRepository: IncidentRepository) {}
-  
-    public async execute(id: string): Promise<IncidentEntity | IncidentNotFoundError> {
-      const existing = await this.incidentRepository.findOneById(id);
-      if (!existing) {
-        return new IncidentNotFoundError();
-      }
-      return existing
+  constructor(private incidentRepository: IncidentRepository) {}
+
+  public async execute(id: string): Promise<IncidentEntity | IncidentNotFoundError> {
+    const existing = await this.incidentRepository.findOneById(id);
+    if (!existing) {
+      return new IncidentNotFoundError();
     }
+    return existing;
   }
-  
+}

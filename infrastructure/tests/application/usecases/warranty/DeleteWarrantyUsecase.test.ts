@@ -2,8 +2,8 @@ import { expect } from "jsr:@std/expect";
 import { DeleteWarrantyUsecase } from "../../../../../application/usecases/warranty/DeleteWarrantyUsecase.ts";
 import { WarrantyRepositoryInMemory } from "../../../../adapters/repositories/WarrantyRepositoryInMemory.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { WarrantyEntity } from "../../../../../domain/entities/WarrantyEntity.ts";
 import { WarrantyNotFoundError } from "../../../../../domain/errors/WarrantyNotFoundError.ts";
@@ -36,7 +36,7 @@ const warranty = WarrantyEntity.create(
   endDate,
   motorcycle,
   warrantyType,
-  terms
+  terms,
 );
 
 warrantyRepository.save(warranty);

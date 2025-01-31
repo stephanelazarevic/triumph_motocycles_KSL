@@ -3,8 +3,8 @@ import { DeleteMaintenanceUsecase } from "../../../../../application/usecases/ma
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MaintenanceEntity } from "../../../../../domain/entities/MaintenanceEntity.ts";
 import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/types/Brand.ts";
-import { Model } from "../../../../../domain/types/Model.ts";
+import { Brand } from "../../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { MaintenanceNotFoundError } from "../../../../../domain/errors/MaintenanceNotFoundError.ts";
 
 Deno.test("Should delete a maintenance successfully when it exists", async () => {
@@ -22,10 +22,10 @@ Deno.test("Should delete a maintenance successfully when it exists", async () =>
   const motorcycle = MotorcycleEntity.create(brand, model, 2023);
 
   const maintenance = MaintenanceEntity.create(
-    new Date(2024, 1, 10), 
+    new Date(2024, 1, 10),
     "Change d'huile moteur",
     motorcycle,
-    110.0
+    110.0,
   );
 
   const maintenanceRepository = new MaintenanceRepositoryInMemory([maintenance]);
@@ -35,8 +35,8 @@ Deno.test("Should delete a maintenance successfully when it exists", async () =>
 
   const maintenances = await maintenanceRepository.findAll();
 
-  expect(result).toBeUndefined(); 
-  expect(maintenances.length).toStrictEqual(0); 
+  expect(result).toBeUndefined();
+  expect(maintenances.length).toStrictEqual(0);
 });
 
 Deno.test("Should return an error when the maintenance does not exist", async () => {

@@ -3,7 +3,7 @@ import type { MaintenanceRepository } from "../../repositories/MaintenanceReposi
 
 export class FindAllMaintenancesUsecase {
   public constructor(
-    private readonly maintenanceRepository: MaintenanceRepository
+    private readonly maintenanceRepository: MaintenanceRepository,
   ) {}
 
   public async execute(): Promise<MaintenanceEntity[]> {

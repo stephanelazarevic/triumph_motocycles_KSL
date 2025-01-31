@@ -1,3 +1,3 @@
 export class MaintenanceNotFoundError extends Error {
-    public override readonly name = "MaintenanceNotFoundError";
-  }
+  public override readonly name = "MaintenanceNotFoundError";
+}

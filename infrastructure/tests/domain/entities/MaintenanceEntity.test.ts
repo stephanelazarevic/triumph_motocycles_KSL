@@ -1,6 +1,6 @@
 import { expect } from "jsr:@std/expect";
-import { Brand } from "../../../../domain/types/Brand.ts";
-import { Model } from "../../../../domain/types/Model.ts";
+import { Brand } from "../../../../domain/value-objects/Brand.ts";
+import { Model } from "../../../../domain/value-objects/Model.ts";
 import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
 import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity.ts";
 import { InvalidDateError } from "../../../../domain/errors/InvalidDateError.ts";
@@ -32,7 +32,7 @@ Deno.test("Shoud return an appointment entity", () => {
   const result = MaintenanceEntity.create(date, description, motorcycle, cost);
 
   expect(result.date.toISOString()).toStrictEqual(
-    new Date(2030, 1, 1).toISOString()
+    new Date(2030, 1, 1).toISOString(),
   );
   expect(result.description).toStrictEqual("Maintenance description");
   expect(result.cost).toStrictEqual(100);
@@ -60,7 +60,7 @@ Deno.test("Should throw error for invalid maintenance entity data", () => {
   const motorcycle = MotorcycleEntity.create(
     brand as never,
     model as never,
-    2024
+    2024,
   );
 
   const description = "";

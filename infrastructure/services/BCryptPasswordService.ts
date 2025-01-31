@@ -1,6 +1,6 @@
 import bcrypt from "npm:bcryptjs";
 import { PasswordService } from "../../domain/services/PasswordService.ts";
-import { Password } from "../../domain/types/Password.ts";
+import { Password } from "../../domain/value-objects/Password.ts";
 
 export class BCryptPasswordService implements PasswordService {
   public async hashPassword(password: Password): Promise<string> {
@@ -10,7 +10,7 @@ export class BCryptPasswordService implements PasswordService {
 
   public comparePassword(
     plainPassword: string,
-    hashedPassword: string
+    hashedPassword: string,
   ): Promise<boolean> {
     return bcrypt.compare(plainPassword, hashedPassword);
   }

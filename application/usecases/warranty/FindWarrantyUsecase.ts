@@ -1,16 +1,15 @@
-import { WarrantyEntity } from "../../../domain/entities/WarrantyEntity";
-import { WarrantyNotFoundError } from "../../../domain/errors/WarrantyNotFoundError";
-import { WarrantyRepository } from "../../repositories/WarrantyRepository";
+import { WarrantyEntity } from "../../../domain/entities/WarrantyEntity.ts";
+import { WarrantyNotFoundError } from "../../../domain/errors/WarrantyNotFoundError.ts";
+import { WarrantyRepository } from "../../repositories/WarrantyRepository.ts";
 
 export class FindWarrantyUsecase {
-    constructor(private warrantyRepository: WarrantyRepository) {}
-  
-    public async execute(id: string): Promise<WarrantyEntity | WarrantyNotFoundError> {
-      const existing = await this.warrantyRepository.findOneById(id);
-      if (!existing) {
-        return new WarrantyNotFoundError();
-      }
-      return existing
+  constructor(private warrantyRepository: WarrantyRepository) {}
+
+  public async execute(id: string): Promise<WarrantyEntity | WarrantyNotFoundError> {
+    const existingWarranty = await this.warrantyRepository.findOneById(id);
+    if (!existingWarranty) {
+      return new WarrantyNotFoundError();
     }
+    return existingWarranty;
   }
-  
+}
