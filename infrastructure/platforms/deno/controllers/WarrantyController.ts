@@ -6,9 +6,9 @@ import { FindAllWarrantiesUsecase } from "../../../../application/usecases/warra
 import { UpdateWarrantyUsecase } from "../../../../application/usecases/warranty/UpdateWarrantyUsecase.ts";
 import { DeleteWarrantyUsecase } from "../../../../application/usecases/warranty/DeleteWarrantyUsecase.ts";
 import { exhaustive } from "npm:exhaustive"
-import { createWarrantyRequestSchema } from "../schemas/createWarrantyRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { WarrantyEntity } from "../../../../domain/entities/WarrantyEntity.ts";
+import { createWarrantyRequestSchema, updateWarrantyRequestSchema } from "../schemas/WarrantyRequestSchema.ts";
 
 export class WarrantyController implements EntityControllerInterface {
   public constructor(
@@ -99,8 +99,7 @@ export class WarrantyController implements EntityControllerInterface {
 
     const body = await request.json();
 
-    // @TODO: use update request schema
-    const validation = createWarrantyRequestSchema.safeParse(body);
+    const validation = updateWarrantyRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", {
@@ -108,7 +107,6 @@ export class WarrantyController implements EntityControllerInterface {
       });
     }
 
-    // @TODO: validation.data doesn't match execute expected input
     const result = await updateWarrantyUsecase.execute(validation.data);
 
     if (result === undefined) {

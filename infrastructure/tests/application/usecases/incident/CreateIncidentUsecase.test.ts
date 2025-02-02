@@ -2,29 +2,16 @@ import { expect } from "jsr:@std/expect";
 import { CreateIncidentUsecase } from "../../../../../application/usecases/incident/CreateIncidentUsecase.ts";
 import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/IncidentRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
-import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/value-objects/Brand.ts";
-import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { BadStatusError } from "../../../../../domain/errors/BadStatusError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
 import { IncidentInvalidTypeError } from "../../../../../domain/errors/IncidentInvalidTypeError.ts";
 import { EmptyDescriptionError } from "../../../../../domain/errors/EmptyDescriptionError.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
+import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 const incidentRepository = new IncidentRepositoryInMemory([]);
-const brand = Brand.from("Triumph");
-const model = Model.from("Street Triple");
 
-if (brand instanceof Error) {
-  throw new Error("Failed to initialize a new brand");
-}
-
-if (model instanceof Error) {
-  throw new Error("Failed to initialize a new model");
-}
-
-const motorcycle = MotorcycleEntity.create(brand, model, 2024);
 const description = "Breakdown description";
 const type = IncidentType.BREAKDOWN;
 const reportDate = new Date(2010, 1, 1);

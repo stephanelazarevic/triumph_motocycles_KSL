@@ -5,7 +5,7 @@ import { FindAllNotificationsUsecase } from "../../../../application/usecases/no
 import { UpdateNotificationUsecase } from "../../../../application/usecases/notification/UpdateNotificationUsecase.ts";
 import { DeleteNotificationUsecase } from "../../../../application/usecases/notification/DeleteNotificationUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createNotificationRequestSchema } from "../schemas/createNotificationRequestSchema.ts";
+import { createNotificationRequestSchema, updateNotificationRequestSchema } from "../schemas/notificationRequestSchema.ts";
 import { UserRepository } from "../../../../application/repositories/UserRepository.ts";
 import { NotificationNotFoundError } from "../../../../domain/errors/NotificationNotFoundError.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
@@ -101,7 +101,7 @@ export class NotificationController implements EntityControllerInterface{
 
     const body = await request.json();
 
-    const validation = createNotificationRequestSchema.safeParse(body);
+    const validation = updateNotificationRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", { status: 400 });

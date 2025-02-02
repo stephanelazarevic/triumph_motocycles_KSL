@@ -6,7 +6,7 @@ import { FindAllIncidentsUsecase } from "../../../../application/usecases/incide
 import { UpdateIncidentUsecase } from "../../../../application/usecases/incident/UpdateIncidentUsecase.ts";
 import { DeleteIncidentUsecase } from "../../../../application/usecases/incident/DeleteIncidentUsecase.ts";
 import { exhaustive } from "npm:exhaustive"
-import { createIncidentRequestSchema } from "../schemas/createIncidentRequestSchema.ts";
+import { createIncidentRequestSchema, updateIncidentRequestSchema } from "../schemas/incidentRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { IncidentEntity } from "../../../../domain/entities/IncidentEntity.ts";
 
@@ -99,8 +99,7 @@ export class IncidentController implements EntityControllerInterface{
 
     const body = await request.json();
 
-    // @TODO: use update request schema
-    const validation = createIncidentRequestSchema.safeParse(body);
+    const validation = updateIncidentRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", {
@@ -108,7 +107,6 @@ export class IncidentController implements EntityControllerInterface{
       });
     }
 
-    // @TODO: validation.data doesn't match execute expected input
     const result = await updateIncidentUsecase.execute(validation.data);
 
     if (result === undefined) {
