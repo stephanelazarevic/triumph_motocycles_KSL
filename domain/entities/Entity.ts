@@ -12,5 +12,6 @@ export abstract class Entity {
 
   public markAsDeleted(): void {
     this.deletedAt = new Date();
+    this.markAsUpdated();
   }
 }
