@@ -23,12 +23,12 @@ export class CreateMaintenanceUsecase {
       throw motorcycle;
     }
 
-    const maintenance = MaintenanceEntity.create(
+    const maintenance = MaintenanceEntity.create({
       date,
       description,
       motorcycle,
       cost,
-    );
+    });
 
     await this.maintenanceRepository.save(maintenance);
     return maintenance;

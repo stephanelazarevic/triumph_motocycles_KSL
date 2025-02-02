@@ -31,7 +31,7 @@ Deno.test("Should find a maintenance successfully when it exists", async () => {
   const maintenanceRepository = new MaintenanceRepositoryInMemory([maintenance]);
   const findMaintenanceUsecase = new FindMaintenanceUsecase(maintenanceRepository);
 
-  const result = await findMaintenanceUsecase.execute(maintenance.identifier);
+  const result = await findMaintenanceUsecase.execute(maintenance.id);
 
   expect(result).not.toBeInstanceOf(MaintenanceNotFoundError);
   expect(result).toStrictEqual(maintenance);

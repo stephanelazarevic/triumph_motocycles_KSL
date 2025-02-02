@@ -18,7 +18,11 @@ if (model instanceof Error) {
   throw new Error("Failed to initialize a new model");
 }
 
-const motorcycle = MotorcycleEntity.create(brand, model, 2024);
+const motorcycle = MotorcycleEntity.create({
+  brand,
+  model,
+  year: 2024
+});
 const date = new Date(2030, 1, 1);
 const description = "Maintenance description";
 const cost = 100;
@@ -28,12 +32,12 @@ if (date instanceof Error) {
 }
 
 Deno.test("Should return all maintenances", async () => {
-  const maintenance = MaintenanceEntity.create(
+  const maintenance = MaintenanceEntity.create({
     date,
     description,
     motorcycle,
     cost,
-  );
+  });
   const maintenanceRepository = new MaintenanceRepositoryInMemory([
     maintenance,
   ]);

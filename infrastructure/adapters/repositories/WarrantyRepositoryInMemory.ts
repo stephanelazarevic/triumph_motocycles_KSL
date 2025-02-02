@@ -7,7 +7,7 @@ export class WarrantyRepositoryInMemory implements WarrantyRepository {
 
   public save(warranty: WarrantyEntity): Promise<void> {
     const index = this.warranties.findIndex(
-      (warranty) => warranty.identifier === warranty.identifier,
+      (warranty) => warranty.id === warranty.id,
     );
     if (index === -1) {
       this.warranties.push(warranty);
@@ -25,7 +25,7 @@ export class WarrantyRepositoryInMemory implements WarrantyRepository {
     id: string,
   ): Promise<WarrantyEntity | WarrantyNotFoundError> {
     const foundWarranty = this.warranties.find((warranty) => {
-      return warranty.identifier === id;
+      return warranty.id === id;
     });
 
     return Promise.resolve(foundWarranty ?? new WarrantyNotFoundError());
@@ -33,7 +33,7 @@ export class WarrantyRepositoryInMemory implements WarrantyRepository {
 
   public delete(id: string): Promise<void> {
     this.warranties = this.warranties.filter(
-      (warranty) => warranty.identifier !== id,
+      (warranty) => warranty.id !== id,
     );
     return Promise.resolve();
   }

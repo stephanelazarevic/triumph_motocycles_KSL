@@ -20,16 +20,19 @@ Deno.test("Should update an incident successfully when it exists", async () => {
     throw new Error("Failed to initialize a new model");
   }
 
-  const motorcycle = MotorcycleEntity.create(brand, model, 2024);
-
-  const existingIncident = IncidentEntity.create(
-    "Description de l'incident",
+  const motorcycle = MotorcycleEntity.create({
+    brand,
+    model,
+    year: 2024
+  });
+  const existingIncident = IncidentEntity.create({
+    description:"Description de l'incident",
     motorcycle,
-    IncidentType.BREAKDOWN,
-    new Date(2010, 1, 1),
-    new Date(2011, 1, 1),
-    "résolue",
-  );
+    type: IncidentType.BREAKDOWN,
+    reportDate: new Date(2010, 1, 1),
+    resolutionDate: new Date(2011, 1, 1),
+    status: "résolue",
+  });
 
   const incidentRepository = new IncidentRepositoryInMemory([existingIncident]);
   const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository);
@@ -60,16 +63,16 @@ Deno.test("Should return an error when the incident does not exist", async () =>
     throw new Error("Failed to initialize a new model");
   }
 
-  const nonExistentIncident = IncidentEntity.create(
-    "Description de l'incident non existant",
-    MotorcycleEntity.create(brand, model, 2022),
-    IncidentType.ACCIDENT,
-    new Date(2020, 1, 1),
-    new Date(2021, 1, 1),
-    "résolue",
-  );
+  const nonExistingIncident = IncidentEntity.create({
+    description: "Description de l'incident",
+    motorcycle: MotorcycleEntity.create({brand, model, year:2022}),
+    type: IncidentType.ACCIDENT,
+    reportDate: new Date(2020, 1, 1),
+    resolutionDate: new Date(2021, 1, 1),
+    status: "résolue",
+  });
 
-  const result = await updateIncidentUsecase.execute(nonExistentIncident);
+  const result = await updateIncidentUsecase.execute(nonExistingIncident);
 
   expect(result).toBeInstanceOf(IncidentNotFoundError);
 });

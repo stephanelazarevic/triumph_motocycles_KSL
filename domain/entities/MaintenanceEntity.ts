@@ -1,28 +1,27 @@
+import { Entity } from "./Entity.ts";
 import { MotorcycleEntity } from "./MotorcycleEntity.ts";
 
-export class MaintenanceEntity {
+export class MaintenanceEntity extends Entity {
   private constructor(
-    public readonly identifier: string,
     public readonly date: Date,
     public readonly description: string,
     public readonly motorcycle: MotorcycleEntity,
     public readonly cost: number,
-  ) {}
-
-  public static create(
-    date: Date,
-    description: string,
-    motorcycle: MotorcycleEntity,
-    cost: number,
   ) {
-    const identifier = crypto.randomUUID();
+    super();
+  }
 
+  public static create( params: {
+    date: Date;
+    description: string;
+    motorcycle: MotorcycleEntity;
+    cost: number;
+  }) {
     return new MaintenanceEntity(
-      identifier,
-      date,
-      description,
-      motorcycle,
-      cost,
+      params.date,
+      params.description,
+      params.motorcycle,
+      params.cost,
     );
   }
 }

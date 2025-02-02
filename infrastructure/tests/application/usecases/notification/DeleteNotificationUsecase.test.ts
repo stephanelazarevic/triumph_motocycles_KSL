@@ -24,12 +24,12 @@ Deno.test("Should delete a notification successfully when it exists", async () =
   const notificationRepository = new NotificationRepositoryInMemory([notification]);
   const deleteNotificationUsecase = new DeleteNotificationUsecase(notificationRepository);
 
-  const result = await deleteNotificationUsecase.execute(notification.identifier);
+  const result = await deleteNotificationUsecase.execute(notification.id);
 
   const notifications = await notificationRepository.findAll();
 
-  expect(result).toBeUndefined(); 
-  expect(notifications.length).toStrictEqual(0); 
+  expect(result).toBeUndefined();
+  expect(notifications.length).toStrictEqual(0);
 });
 
 Deno.test("Should return an error when the notification does not exist", async () => {

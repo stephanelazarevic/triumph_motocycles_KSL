@@ -19,11 +19,11 @@ export class CreateMotorcycleUsecase {
       return motorcycleModel;
     }
 
-    const motorcycle = MotorcycleEntity.create(
-      motorcycleBrand,
-      motorcycleModel,
-      year,
-    );
+    const motorcycle = MotorcycleEntity.create({
+      brand: motorcycleBrand,
+      model: motorcycleModel,
+      year
+    });
 
     await this.motorcycleRepository.save(motorcycle);
     return motorcycle;

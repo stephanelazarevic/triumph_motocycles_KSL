@@ -24,7 +24,7 @@ if (model instanceof Error) {
   throw new Error("Failed to initialize a new model");
 }
 
-const motorcycle = MotorcycleEntity.create(brand, model, 2024);
+const motorcycle = MotorcycleEntity.create({brand, model, year: 2024});
 const description = "Breakdown description";
 const type = IncidentType.BREAKDOWN;
 const reportDate = new Date(2010, 1, 1);
@@ -43,7 +43,7 @@ Deno.test("Should return an error if the description is empty", async () => {
   const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);
   const result = await createIncidentUsecase.execute(
     "",
-    motorcycle.identifier,
+    motorcycle.id,
     type,
     reportDate,
     resolutionDate,
@@ -65,7 +65,7 @@ Deno.test("Should return an error if the type is invalid", async () => {
   const invalidIncidentType = "INVALID_TYPE" as unknown as IncidentType;
   const result = await createIncidentUsecase.execute(
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     invalidIncidentType,
     reportDate,
     resolutionDate,
@@ -80,7 +80,7 @@ Deno.test("Should return an error if the reportDate is invalid", async () => {
   const badReportDate = new Date(2005, 1, 1);
   const result = await createIncidentUsecase.execute(
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     type,
     badReportDate,
     resolutionDate,
@@ -95,7 +95,7 @@ Deno.test("Should return an error if the resolutionDate is invalid", async () =>
   const badResolutionDate = new Date(2005, 1, 1);
   const result = await createIncidentUsecase.execute(
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     type,
     reportDate,
     badResolutionDate,
@@ -111,7 +111,7 @@ Deno.test("Should return an error if the resolutionDate is before the reportDate
   const badResolutionDate = new Date(2005, 1, 1);
   const result = await createIncidentUsecase.execute(
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     type,
     badReportDate,
     badResolutionDate,
@@ -125,7 +125,7 @@ Deno.test("Should return an error if the status is invalid", async () => {
   const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);
   const result = await createIncidentUsecase.execute(
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     type,
     reportDate,
     resolutionDate,
@@ -139,7 +139,7 @@ Deno.test("Should succeed when creating a incident correctly", async () => {
   const createIncidentUsecase = new CreateIncidentUsecase(incidentRepository, motorcycleRepository);
   const result = await createIncidentUsecase.execute(
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     type,
     reportDate,
     resolutionDate,

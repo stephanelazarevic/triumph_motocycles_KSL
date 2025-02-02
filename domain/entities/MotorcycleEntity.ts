@@ -1,28 +1,25 @@
 import { Brand } from "../value-objects/Brand.ts";
 import { Model } from "../value-objects/Model.ts";
+import { Entity } from "./Entity.ts";
 
-export class MotorcycleEntity {
+export class MotorcycleEntity extends Entity{
   private constructor(
-    public readonly identifier: string,
     public readonly brand: Brand,
     public readonly model: Model,
     public readonly year: number,
-    public readonly createdAt: Date,
-    public readonly updatedAt: Date,
-  ) {}
+  ) {
+    super();
+  }
 
-  public static create(brand: Brand, model: Model, year: number) {
-    const identifier = crypto.randomUUID();
-    const createdAt = new Date();
-    const updatedAt = new Date();
-
+  public static create( params: {
+    brand: Brand;
+    model: Model;
+    year: number;
+  }) {
     return new MotorcycleEntity(
-      identifier,
-      brand,
-      model,
-      year,
-      createdAt,
-      updatedAt,
+      params.brand,
+      params.model,
+      params.year
     );
   }
 }

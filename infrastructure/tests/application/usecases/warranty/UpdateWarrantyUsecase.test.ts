@@ -19,15 +19,19 @@ Deno.test("Should update a warranty successfully when it exists", async () => {
     throw new Error("Failed to initialize a new model");
   }
 
-  const motorcycle = MotorcycleEntity.create(brand, model, 2024);
+  const motorcycle = MotorcycleEntity.create({
+    brand,
+    model,
+    year: 2024
+  });
 
-  const existingWarranty = WarrantyEntity.create(
-    new Date(2010, 1, 1),
-    new Date(2011, 1, 1),
+  const existingWarranty = WarrantyEntity.create({
+    startDate: new Date(2010, 1, 1),
+    endDate: new Date(2011, 1, 1),
     motorcycle,
-    "Partial warranty",
-    "Terms and conditions",
-  );
+    warrantyType: "Partial warranty",
+    terms: "Terms and conditions"
+  });
 
   const warrantyRepository = new WarrantyRepositoryInMemory([existingWarranty]);
   const updateWarrantyUsecase = new UpdateWarrantyUsecase(warrantyRepository);
@@ -58,13 +62,19 @@ Deno.test("Should return an error when the warranty does not exist", async () =>
     throw new Error("Failed to initialize a new model");
   }
 
-  const nonExistentWarranty = WarrantyEntity.create(
-    new Date(2012, 1, 1),
-    new Date(2013, 1, 1),
-    MotorcycleEntity.create(brand, model, 2024),
-    "Partial warranty (inexistent)",
-    "Terms and conditions (inexistent)",
-  );
+  const motorcycle = MotorcycleEntity.create({
+    brand,
+    model,
+    year: 2024
+  }),
+
+  const nonExistentWarranty = WarrantyEntity.create({
+    startDate: new Date(2012, 1, 1),
+    endDate: new Date(2013, 1, 1),
+    motorcycle,
+    warrantyType:  "Partial warranty (inexistent)",
+    terms: "Terms and conditions (inexistent)"
+  });
 
   const result = await updateWarrantyUsecase.execute(nonExistentWarranty);
 

@@ -1,32 +1,31 @@
 import { UserEntity } from "./UserEntity.ts";
 import { NotificationType, NotificationStatus } from "../enum/NotificationEnum.ts";
+import { Entity } from "./Entity.ts";
 
-export class NotificationEntity {
+export class NotificationEntity extends Entity {
   private constructor(
-    public readonly identifier: string,
     public readonly user: UserEntity,
     public readonly type: NotificationType,
     public readonly message: string,
     public readonly date: Date,
     public readonly status: NotificationStatus,
-  ) {}
-
-  public static create(
-    user: UserEntity,
-    type: NotificationType,
-    message: string,
-    date: Date,
-    status: NotificationStatus,
   ) {
-    const identifier = crypto.randomUUID();
+    super();
+  }
 
+  public static create( params: {
+    user: UserEntity;
+    type: NotificationType;
+    message: string;
+    date: Date;
+    status: NotificationStatus;
+  }) {
     return new NotificationEntity(
-      identifier,
-      user,
-      type,
-      message,
-      date,
-      status
+      params.user,
+      params.type,
+      params.message,
+      params.date,
+      params.status
     );
   }
 }

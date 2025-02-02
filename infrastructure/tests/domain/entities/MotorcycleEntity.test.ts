@@ -18,7 +18,7 @@ Deno.test("Shoud return a motorcycle entity", () => {
 
   const year = 2024;
 
-  const result = MotorcycleEntity.create(brand, model, year);
+  const result = MotorcycleEntity.create({ brand, model, year });
 
   expect(result.brand.value).toStrictEqual("Triumph");
   expect(result.model.value).toStrictEqual("Street Triple");
@@ -37,6 +37,10 @@ Deno.test("Should throw error for invalid motorcycle entity data", () => {
   }
 
   expect(() => {
-    MotorcycleEntity.create(brand as never, model as never, 2024);
+    MotorcycleEntity.create({
+      brand: brand as never,
+      model: model as never,
+      year: 2024
+    });
   }).toThrow();
 });

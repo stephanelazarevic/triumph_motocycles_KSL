@@ -20,13 +20,20 @@ Deno.test("Shoud return an incident entity", () => {
 
   const year = 2024;
   const description = "Incident description";
-  const motorcycle = MotorcycleEntity.create(brand, model, year);
+  const motorcycle = MotorcycleEntity.create({brand, model, year});
   const type = IncidentType.ACCIDENT;
   const reportDate = new Date(2019, 1, 1);
   const resolutionDate = new Date(2020, 2, 1);
   const status = "Resolved";
 
-  const result = IncidentEntity.create(description, motorcycle, type, reportDate, resolutionDate, status);
+  const result = IncidentEntity.create({
+    description,
+    motorcycle,
+    type,
+    reportDate,
+    resolutionDate,
+    status
+  });
 
   expect(result.description).toStrictEqual("Incident description");
   expect(result.motorcycle.brand.value).toStrictEqual("Triumph");
@@ -49,7 +56,11 @@ Deno.test("Should throw error for invalid incident entity data", () => {
     throw new Error("Invalid model");
   }
 
-  const motorcycle = MotorcycleEntity.create(brand as never, model as never, 2024);
+  const motorcycle = MotorcycleEntity.create({
+    brand: brand as never,
+    model: model as never,
+    year: 2024
+  });
 
   const description = "";
   const type = IncidentType.ACCIDENT;
@@ -58,6 +69,13 @@ Deno.test("Should throw error for invalid incident entity data", () => {
   const status = "";
 
   expect(() => {
-    IncidentEntity.create(description, motorcycle, type, reportDate as never, resolutionDate as never, status);
+    IncidentEntity.create({
+      description,
+      motorcycle,
+      type,
+      reportDate: reportDate as never,
+      resolutionDate: resolutionDate as never,
+      status
+    });
   }).toThrow();
 });

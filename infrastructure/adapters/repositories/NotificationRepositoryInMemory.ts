@@ -7,7 +7,7 @@ export class NotificationRepositoryInMemory implements NotificationRepository {
 
   public save(notification: NotificationEntity): Promise<void> {
     const index = this.notifications.findIndex(
-      (notification) => notification.identifier === notification.identifier
+      (notification) => notification.id === notification.id
     );
     if (index === -1) {
       this.notifications.push(notification);
@@ -23,7 +23,7 @@ export class NotificationRepositoryInMemory implements NotificationRepository {
 
   public findOneById(id: string): Promise<NotificationEntity | NotificationNotFoundError> {
     const foundNotification = this.notifications.find((notification) => {
-      return notification.identifier === id;
+      return notification.id === id;
     });
 
     return Promise.resolve(foundNotification ?? new NotificationNotFoundError());
@@ -31,7 +31,7 @@ export class NotificationRepositoryInMemory implements NotificationRepository {
 
   public delete(id: string): Promise<void> {
     this.notifications = this.notifications.filter(
-      (notification) => notification.identifier !== id
+      (notification) => notification.id !== id
     );
     return Promise.resolve();
   }

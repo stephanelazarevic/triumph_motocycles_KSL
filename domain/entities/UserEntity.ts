@@ -6,7 +6,6 @@ import { Entity } from "./Entity.ts";
 
 export class UserEntity extends Entity {
   private constructor(
-    id: string,
     public firstname: Name,
     public lastname: Name,
     public hashedPassword: string,
@@ -15,7 +14,7 @@ export class UserEntity extends Entity {
     public address: Address,
     public isAdministrator: boolean = false,
   ) {
-    super(id);
+    super();
   }
 
   public static create(params: {
@@ -27,7 +26,6 @@ export class UserEntity extends Entity {
     address: Address;
   }): UserEntity {
     return new UserEntity(
-      crypto.randomUUID(),
       params.firstname,
       params.lastname,
       params.hashedPassword,

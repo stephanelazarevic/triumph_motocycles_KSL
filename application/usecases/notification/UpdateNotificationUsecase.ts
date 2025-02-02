@@ -6,7 +6,7 @@ export class UpdateNotificationUsecase {
   constructor(private notificationRepository: NotificationRepository) {}
 
   public async execute(notification: NotificationEntity): Promise<NotificationNotFoundError | void> {
-    const existing = await this.notificationRepository.findOneById(notification.identifier);
+    const existing = await this.notificationRepository.findOneById(notification.id);
     if (!existing) {
       return new NotificationNotFoundError();
     }

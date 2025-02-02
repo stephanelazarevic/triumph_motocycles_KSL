@@ -22,7 +22,11 @@ if (model instanceof Error) {
   throw new Error("Failed to initialize a new model");
 }
 
-const motorcycle = MotorcycleEntity.create(brand, model, 2024);
+const motorcycle = MotorcycleEntity.create({
+  brand,
+  model,
+  year:2024
+});
 const description = "Incident description";
 const type = IncidentType.BREAKDOWN;
 const reportDate = new Date(2010, 1, 1);
@@ -33,14 +37,14 @@ if (reportDate || resolutionDate instanceof Error) {
   throw new InvalidDateError("Invalid date");
 }
 
-const incident = IncidentEntity.create(
+const incident = IncidentEntity.create({
   description,
   motorcycle,
   type,
   reportDate,
   resolutionDate,
   status,
-);
+});
 
 incidentRepository.save(incident);
 
@@ -50,7 +54,7 @@ Deno.test("Should delete an incident successfully", async () => {
   const incidentsBefore = await incidentRepository.findAll();
   expect(incidentsBefore.length).toStrictEqual(1);
 
-  await deleteIncidentUsecase.execute(incident.identifier);
+  await deleteIncidentUsecase.execute(incident.id);
 
   const incidentsAfter = await incidentRepository.findAll();
   expect(incidentsAfter.length).toStrictEqual(0);

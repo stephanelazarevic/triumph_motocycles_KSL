@@ -19,14 +19,14 @@ Deno.test("Should update a maintenance successfully when it exists", async () =>
     throw new Error("Failed to initialize a new model");
   }
 
-  const motorcycle = MotorcycleEntity.create(brand, model, 2023);
+  const motorcycle = MotorcycleEntity.create({brand, model, year: 2024});
 
-  const existingMaintenance = MaintenanceEntity.create(
-    new Date(2023, 6, 15),
-    "Changement d'huile moteur",
+  const existingMaintenance = MaintenanceEntity.create({
+    date: new Date(2023, 6, 15),
+    description: "Changement d'huile moteur",
     motorcycle,
-    750,
-  );
+    cost: 750
+  });
 
   const maintenanceRepository = new MaintenanceRepositoryInMemory([existingMaintenance]);
   const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(maintenanceRepository);
@@ -57,16 +57,16 @@ Deno.test("Should return an error when the maintenance does not exist", async ()
     throw new Error("Failed to initialize a new model");
   }
 
-  const motorcycle = MotorcycleEntity.create(brand, model, 2024);
+  const motorcycle = MotorcycleEntity.create({brand, model, year: 2024});
 
-  const nonExistentMaintenance = MaintenanceEntity.create(
-    new Date(2024, 5, 30),
-    "Remplacement des plaquettes de frein",
+  const nonExistingMaintenance = MaintenanceEntity.create({
+    date: new Date(2024, 5, 30),
+    description: "Remplacement des plaquettes de frein",
     motorcycle,
-    1000,
-  );
+    cost: 1000
+  });
 
-  const result = await updateMaintenanceUsecase.execute(nonExistentMaintenance);
+  const result = await updateMaintenanceUsecase.execute(nonExistingMaintenance);
 
   expect(result).toBeInstanceOf(MaintenanceNotFoundError);
 });

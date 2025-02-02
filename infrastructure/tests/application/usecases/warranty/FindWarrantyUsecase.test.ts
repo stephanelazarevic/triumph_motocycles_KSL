@@ -19,20 +19,24 @@ Deno.test("Should return a warranty when it exists", async () => {
     throw new Error("Failed to initialize a new model");
   }
 
-  const motorcycle = MotorcycleEntity.create(brand, model, 2024);
+  const motorcycle = MotorcycleEntity.create({
+    brand,
+    model,
+    year: 2024
+  });
 
-  const warranty = WarrantyEntity.create(
-    new Date(2010, 1, 1),
-    new Date(2011, 1, 1),
+  const warranty = WarrantyEntity.create({
+    startDate: new Date(2010, 1, 1),
+    endDate: new Date(2011, 1, 1),
     motorcycle,
-    "Partial warranty",
-    "Terms and conditions",
-  );
+    warrantyType: "Partial warranty",
+    terms: "Terms and conditions"
+  });
 
   const warrantyRepository = new WarrantyRepositoryInMemory([warranty]);
   const findWarrantyUsecase = new FindWarrantyUsecase(warrantyRepository);
 
-  const result = await findWarrantyUsecase.execute(warranty.identifier);
+  const result = await findWarrantyUsecase.execute(warranty.id);
 
   expect(result).toStrictEqual(warranty);
 });

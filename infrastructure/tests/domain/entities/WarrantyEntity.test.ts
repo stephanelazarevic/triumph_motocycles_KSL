@@ -18,13 +18,23 @@ Deno.test("Shoud return a warranty entity", () => {
   }
 
   const year = 2024;
-  const motorcycle = MotorcycleEntity.create(brand, model, year);
+  const motorcycle = MotorcycleEntity.create({
+    brand,
+    model,
+    year
+  });
   const startDate = new Date(2024, 1, 1);
   const endDate = new Date(2030, 1, 1);
   const warrantyType = "Extended";
   const terms = "Terms and conditions";
 
-  const result = WarrantyEntity.create(startDate, endDate, motorcycle, warrantyType, terms);
+  const result = WarrantyEntity.create({
+    startDate,
+    endDate,
+    motorcycle,
+    warrantyType,
+    terms
+  });
 
   expect(result.startDate.toISOString()).toStrictEqual(new Date(2024, 1, 1).toISOString());
   expect(result.endDate.toISOString()).toStrictEqual(new Date(2030, 1, 1).toISOString());
@@ -46,7 +56,11 @@ Deno.test("Should throw error for invalid warranty entity data", () => {
     throw new Error("Invalid model");
   }
 
-  const motorcycle = MotorcycleEntity.create(brand as never, model as never, 2024);
+  const motorcycle = MotorcycleEntity.create({
+    brand: brand as never,
+    model: model as never ,
+    year: 2024
+  });
 
   const startDate = new Date(2024, 1, 1);
   const endDate = new Date(2030, 1, 1);
@@ -54,6 +68,12 @@ Deno.test("Should throw error for invalid warranty entity data", () => {
   const terms = "";
 
   expect(() => {
-    WarrantyEntity.create(startDate as never, endDate as never, motorcycle, warrantyType, terms);
+    WarrantyEntity.create({
+      startDate: startDate as never,
+      endDate: endDate as never,
+      motorcycle,
+      warrantyType,
+      terms
+    });
   }).toThrow();
 });

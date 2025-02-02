@@ -20,21 +20,24 @@ Deno.test("Should return a incident when it exists", async () => {
     throw new Error("Failed to initialize a new model");
   }
 
-  const motorcycle = MotorcycleEntity.create(brand, model, 2024);
-
-  const incident = IncidentEntity.create(
-    "Incident description",
+  const motorcycle = MotorcycleEntity.create({
+    brand,
+    model,
+    year:2024
+  });
+  const incident = IncidentEntity.create({
+    description: "Incident description",
     motorcycle,
-    IncidentType.BREAKDOWN,
-    new Date(2010, 1, 1),
-    new Date(2011, 1, 1),
-    "resolved",
-  );
+    type: IncidentType.BREAKDOWN,
+    reportDate: new Date(2010, 1, 1),
+    resolutionDate: new Date(2011, 1, 1),
+    status: "resolved"
+  });
 
   const incidentRepository = new IncidentRepositoryInMemory([incident]);
   const findIncidentUsecase = new FindIncidentUsecase(incidentRepository);
 
-  const result = await findIncidentUsecase.execute(incident.identifier);
+  const result = await findIncidentUsecase.execute(incident.id);
 
   expect(result).toStrictEqual(incident);
 });

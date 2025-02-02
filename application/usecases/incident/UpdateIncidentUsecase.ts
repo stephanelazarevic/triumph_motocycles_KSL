@@ -6,7 +6,7 @@ export class UpdateIncidentUsecase {
   constructor(private incidentRepository: IncidentRepository) {}
 
   public async execute(incident: IncidentEntity): Promise<IncidentNotFoundError | void> {
-    const existing = await this.incidentRepository.findOneById(incident.identifier);
+    const existing = await this.incidentRepository.findOneById(incident.id);
     if (!existing) {
       return new IncidentNotFoundError();
     }

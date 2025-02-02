@@ -42,7 +42,7 @@ Deno.test("Should return an error if the date is invalid", async () => {
   const result = await createMaintenanceUsecase.execute(
     badDate,
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     cost,
   );
 
@@ -75,7 +75,7 @@ Deno.test("Should return an error if the cost is null", async () => {
   const result = await createMaintenanceUsecase.execute(
     date,
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     0,
   );
 
@@ -90,7 +90,7 @@ Deno.test("Should return an error if the description is empty", async () => {
   const result = await createMaintenanceUsecase.execute(
     date,
     "",
-    motorcycle.identifier,
+    motorcycle.id,
     cost,
   );
 
@@ -105,7 +105,7 @@ Deno.test("Should succeed when creating an appointment correctly", async () => {
   const result = await createMaintenanceUsecase.execute(
     date,
     description,
-    motorcycle.identifier,
+    motorcycle.id,
     cost,
   );
 

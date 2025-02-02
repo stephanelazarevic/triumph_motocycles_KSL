@@ -3,11 +3,10 @@ import { UserEntity } from "./UserEntity.ts";
 
 export class DealerEntity extends Entity {
   private constructor(
-    id: string,
     public user: UserEntity,
     public site: string,
   ) {
-    super(id);
+    super();
   }
 
   public static create(params: {
@@ -15,7 +14,6 @@ export class DealerEntity extends Entity {
     site: string;
   }): DealerEntity {
     return new DealerEntity(
-      crypto.randomUUID(),
       params.user,
       params.site,
     );

@@ -31,7 +31,7 @@ Deno.test("Should delete a maintenance successfully when it exists", async () =>
   const maintenanceRepository = new MaintenanceRepositoryInMemory([maintenance]);
   const deleteMaintenanceUsecase = new DeleteMaintenanceUsecase(maintenanceRepository);
 
-  const result = await deleteMaintenanceUsecase.execute(maintenance.identifier);
+  const result = await deleteMaintenanceUsecase.execute(maintenance.id);
 
   const maintenances = await maintenanceRepository.findAll();
 

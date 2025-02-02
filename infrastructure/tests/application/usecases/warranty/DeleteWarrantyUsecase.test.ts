@@ -21,7 +21,11 @@ if (model instanceof Error) {
   throw new Error("Failed to initialize a new model");
 }
 
-const motorcycle = MotorcycleEntity.create(brand, model, 2024);
+const motorcycle = MotorcycleEntity.create({
+  brand,
+  model,
+  year: 2024
+});
 const startDate = new Date(2010, 1, 1);
 const endDate = new Date(2011, 1, 1);
 const warrantyType = "Partial";
@@ -31,13 +35,13 @@ if (startDate || endDate instanceof Error) {
   throw new InvalidDateError("Invalid date");
 }
 
-const warranty = WarrantyEntity.create(
+const warranty = WarrantyEntity.create({
   startDate,
   endDate,
   motorcycle,
   warrantyType,
   terms,
-);
+});
 
 warrantyRepository.save(warranty);
 
@@ -47,7 +51,7 @@ Deno.test("Should delete a warranty successfully", async () => {
   const warrantiesBefore = await warrantyRepository.findAll();
   expect(warrantiesBefore.length).toStrictEqual(1);
 
-  await deleteWarrantyUsecase.execute(warranty.identifier);
+  await deleteWarrantyUsecase.execute(warranty.id);
 
   const warrantiesAfter = await warrantyRepository.findAll();
   expect(warrantiesAfter.length).toStrictEqual(0);

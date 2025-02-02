@@ -7,7 +7,7 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
 
   public save(maintenance: MaintenanceEntity): Promise<void> {
     const index = this.maintenances.findIndex(
-      (maintenance) => maintenance.identifier === maintenance.identifier,
+      (maintenance) => maintenance.id === maintenance.id,
     );
     if (index === -1) {
       this.maintenances.push(maintenance);
@@ -23,7 +23,7 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
 
   public findOneById(id: string): Promise<MaintenanceEntity | MaintenanceNotFoundError> {
     const foundMaintenance = this.maintenances.find((maintenance) => {
-      return maintenance.identifier === id;
+      return maintenance.id === id;
     });
 
     return Promise.resolve(foundMaintenance ?? new MaintenanceNotFoundError());
@@ -31,7 +31,7 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
 
   public delete(id: string): Promise<void> {
     this.maintenances = this.maintenances.filter(
-      (maintenance) => maintenance.identifier !== id,
+      (maintenance) => maintenance.id !== id,
     );
     return Promise.resolve();
   }

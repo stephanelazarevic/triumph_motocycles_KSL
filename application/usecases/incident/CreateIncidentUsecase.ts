@@ -41,14 +41,14 @@ export class CreateIncidentUsecase {
       throw motorcycle;
     }
 
-    const incident = IncidentEntity.create(
+    const incident = IncidentEntity.create({
       description,
       motorcycle,
       type,
       reportDate,
       resolutionDate,
       status,
-    );
+    });
 
     await this.incidentRepository.save(incident);
     return incident;

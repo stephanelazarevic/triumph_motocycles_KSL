@@ -9,17 +9,17 @@ import { NotificationNotFoundError } from "../../../../../domain/errors/Notifica
 
 Deno.test("Should find a notification successfully when it exists", async () => {
   const user = UserEntity.create("Pierre", "Robin", "pierre.robin@gmail.com", "123456", "0624252627", "street1", "75010", "19", true);
-  
+
   if(user instanceof Error) {
       throw new Error("Invalid user entity");
   }
-  
+
   const date = new Date(2025, 1, 1);
-  
+
   if (date instanceof Error) {
     throw new InvalidDateError("Invalid date");
   }
-  
+
   const type = NotificationType.ALERTE;
   const message = "Notification message";
   const status = NotificationStatus.UNREAD;
@@ -29,7 +29,7 @@ Deno.test("Should find a notification successfully when it exists", async () => 
   const notificationRepository = new NotificationRepositoryInMemory([notification]);
   const findNotificationUsecase = new FindNotificationUsecase(notificationRepository);
 
-  const result = await findNotificationUsecase.execute(notification.identifier);
+  const result = await findNotificationUsecase.execute(notification.id);
 
   expect(result).not.toBeInstanceOf(NotificationNotFoundError);
   expect(result).toStrictEqual(notification);

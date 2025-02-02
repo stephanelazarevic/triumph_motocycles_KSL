@@ -39,13 +39,13 @@ export class CreateWarrantyUsecase {
       throw motorcycle;
     }
 
-    const warranty = WarrantyEntity.create(
+    const warranty = WarrantyEntity.create( {
       startDate,
       endDate,
       motorcycle,
       warrantyType,
-      terms,
-    );
+      terms
+    });
 
     await this.warrantyRepository.save(warranty);
     return warranty;
