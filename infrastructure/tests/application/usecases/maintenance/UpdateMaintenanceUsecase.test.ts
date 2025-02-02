@@ -19,7 +19,7 @@ Deno.test("Should update a maintenance successfully when it exists", async () =>
 
   const updatedMaintenance = { ...existingMaintenance, description: "Description mise à jour" };
 
-  const result = await updateMaintenanceUsecase.execute(existingMaintenance.identifier, updatedMaintenance);
+  const result = await updateMaintenanceUsecase.execute(existingMaintenance.id, updatedMaintenance);
 
   const maintenances = await maintenanceRepository.findAll();
 

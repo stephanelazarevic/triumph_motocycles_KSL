@@ -5,10 +5,10 @@ import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.t
 import { MotorcycleStatus } from "../../../../domain/enum/MotorcycleEnum.ts";
 
 Deno.test("Shoud return a motorcycle entity", () => {
-  const dealerId = "dealer-identifier";
+  const dealerId = "dealer-id";
   const registrationNumber = 1234;
   const status = MotorcycleStatus.AVAILABLE;
-  const clientId = "client-identifier";
+  const clientId = "client-id";
 
   const brand = Brand.from("Triumph");
 
@@ -35,21 +35,21 @@ Deno.test("Shoud return a motorcycle entity", () => {
   });
 
   if(result instanceof MotorcycleEntity){
-    expect(result.dealerId).toStrictEqual("dealer-identifier");
+    expect(result.dealerId).toStrictEqual("dealer-id");
     expect(result.brand.value).toStrictEqual("Triumph");
     expect(result.model.value).toStrictEqual("Street Triple");
     expect(result.year).toStrictEqual(2024);
     expect(registrationNumber).toStrictEqual(1234);
     expect(result.status).toStrictEqual(MotorcycleStatus.AVAILABLE);
-    expect(result.clientId).toStrictEqual("client-identifier");
+    expect(result.clientId).toStrictEqual("client-id");
   }
 });
 
 Deno.test("Should throw error for invalid motorcycle entity data", () => {
-  const dealerId = "dealer-identifier";
+  const dealerId = "dealer-id";
   const registrationNumber = 1234;
   const status = MotorcycleStatus.AVAILABLE;
-  const clientId = "client-identifier";
+  const clientId = "client-id";
 
   const brand = Brand.from("");
   if (!(brand instanceof Error)) {

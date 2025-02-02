@@ -3,18 +3,18 @@ import { MotorcycleStatus } from "../../../domain/enum/MotorcycleEnum";
 import { Brand } from "../../../domain/value-objects/Brand";
 import { Model } from "../../../domain/value-objects/Model";
 
-const dealerIdentifier = "dealer-identifier";
+const dealerIdentifier = "dealer-id";
 const brand = Brand.from("Triumph");
 const model = Model.from("Street Triple");
 const year = 2024;
 const registrationNumber = 1234;
 const motorcycleStatus = MotorcycleStatus.AVAILABLE;
-const clientIdentifier = "client-identifier";
+const clientIdentifier = "client-id";
 
 if (brand instanceof Error) {
     throw new Error("Failed to initialize a new brand");
 }
-  
+
 if (model instanceof Error) {
     throw new Error("Failed to initialize a new model");
 }

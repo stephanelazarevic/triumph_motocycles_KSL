@@ -8,7 +8,7 @@ import { NotificationNotFoundError } from "../../../../../domain/errors/Notifica
 
 Deno.test("Should update a notification successfully when it exists", async () => {
   const user = UserEntity.create("Pierre", "Robin", "pierre.robin@gmail.com", "123456", "0624252627", "street1", "75010", "19", true);
-    
+
   if(user instanceof Error) {
       throw new Error("Invalid user entity");
   }
@@ -20,17 +20,17 @@ Deno.test("Should update a notification successfully when it exists", async () =
     new Date(2025, 1, 1),
     NotificationStatus.UNREAD
   );
-  
+
   const notificationRepository = new NotificationRepositoryInMemory([existingNotification]);
   const updateNotificationUsecase = new UpdateNotificationUsecase(notificationRepository);
 
   const updatedNotification = { ...existingNotification, message: "Message mise à jour" };
 
-  const result = await updateNotificationUsecase.execute(existingNotification.identifier, updatedNotification);
+  const result = await updateNotificationUsecase.execute(existingNotification.id, updatedNotification);
 
   const notifications = await notificationRepository.findAll();
 
-  expect(result).toBeUndefined(); 
+  expect(result).toBeUndefined();
   expect(notifications.length).toStrictEqual(1);
   expect(notifications[0].message).toStrictEqual("Message mise à jour");
 });
@@ -40,7 +40,7 @@ Deno.test("Should return an error when the notification does not exist", async (
   const updateNotificationUsecase = new UpdateNotificationUsecase(notificationRepository);
 
   const user = UserEntity.create("Pierre", "Robin", "pierre.robin@gmail.com", "123456", "0624252627", "street1", "75010", "19", true);
-    
+
   if(user instanceof Error) {
       throw new Error("Invalid user entity");
   }

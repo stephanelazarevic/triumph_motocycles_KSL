@@ -2,7 +2,7 @@ import { z } from "npm:zod";
 import { MotorcycleStatus } from "../../../../domain/enum/MotorcycleEnum.ts";
 
 export const createMotorcycleRequestSchema = z.object({
-  dealerIdentifier: z.string().min(1, "Dealer identifier is required"),
+  dealerIdentifier: z.string().min(1, "Dealer id is required"),
   brand: z.string().min(1, "Brand is required"),
   model: z.string().min(1, "Model is required"),
   year: z.number().int().min(1900, "Invalid year").max(new Date().getFullYear(), "Year cannot be in the future"),

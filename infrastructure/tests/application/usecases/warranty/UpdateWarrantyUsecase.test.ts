@@ -20,7 +20,7 @@ Deno.test("Should update a warranty successfully when it exists", async () => {
 
   const updatedWarranty = { ...existingWarranty, terms: "Termes mis à jour" };
 
-  const result = await updateWarrantyUsecase.execute(existingWarranty.identifier, updatedWarranty);
+  const result = await updateWarrantyUsecase.execute(existingWarranty.id, updatedWarranty);
 
   const warranties = await warrantyRepository.findAll();
 
