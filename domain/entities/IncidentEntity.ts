@@ -3,13 +3,13 @@ import type { IncidentType } from "../enum/IncidentEnum.ts";
 
 export class IncidentEntity {
   private constructor(
-    public readonly identifier: string,
-    public readonly description: string,
-    public readonly motorcycle: MotorcycleEntity,
-    public readonly type: IncidentType,
-    public readonly reportDate: Date,
-    public readonly resolutionDate: Date,
-    public readonly status: string,
+    public identifier: string,
+    public description: string,
+    public motorcycle: MotorcycleEntity,
+    public type: IncidentType,
+    public reportDate: Date,
+    public resolutionDate: Date,
+    public incidentStatus: string,
   ) {}
 
   public static create(

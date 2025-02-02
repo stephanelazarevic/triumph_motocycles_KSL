@@ -22,7 +22,7 @@ Deno.test("Should update an incident successfully when it exists", async () => {
 
   const updatedIncident = { ...existingIncident, description: "Description mise à jour" };
 
-  const result = await updateIncidentUsecase.execute(updatedIncident);
+  const result = await updateIncidentUsecase.execute(existingIncident.identifier, updatedIncident);
 
   const incidents = await incidentRepository.findAll();
 
@@ -44,7 +44,7 @@ Deno.test("Should return an error when the incident does not exist", async () =>
     "résolue",
   );
 
-  const result = await updateIncidentUsecase.execute(nonExistentIncident);
+  const result = await updateIncidentUsecase.execute("blabla", nonExistentIncident);
 
   expect(result).toBeInstanceOf(IncidentNotFoundError);
 });

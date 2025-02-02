@@ -2,12 +2,12 @@ import type { MotorcycleEntity } from "./MotorcycleEntity.ts";
 
 export class WarrantyEntity {
   private constructor(
-    public readonly identifier: string,
-    public readonly startDate: Date,
-    public readonly endDate: Date,
-    public readonly warrantyType: string,
-    public readonly motorcycle: MotorcycleEntity,
-    public readonly terms: string,
+    public identifier: string,
+    public startDate: Date,
+    public endDate: Date,
+    public warrantyType: string,
+    public motorcycle: MotorcycleEntity,
+    public terms: string,
   ) {}
 
   public static create(

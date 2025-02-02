@@ -19,7 +19,7 @@ Deno.test("Should update a maintenance successfully when it exists", async () =>
 
   const updatedMaintenance = { ...existingMaintenance, description: "Description mise à jour" };
 
-  const result = await updateMaintenanceUsecase.execute(updatedMaintenance);
+  const result = await updateMaintenanceUsecase.execute(existingMaintenance.identifier, updatedMaintenance);
 
   const maintenances = await maintenanceRepository.findAll();
 
@@ -39,7 +39,7 @@ Deno.test("Should return an error when the maintenance does not exist", async ()
     1000,
   );
 
-  const result = await updateMaintenanceUsecase.execute(nonExistentMaintenance);
+  const result = await updateMaintenanceUsecase.execute("blabla", nonExistentMaintenance);
 
   expect(result).toBeInstanceOf(MaintenanceNotFoundError);
 });

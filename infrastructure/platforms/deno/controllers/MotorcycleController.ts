@@ -76,21 +76,23 @@ export class MotorcycleController implements EntityControllerInterface {
   }
 
   public async update(request: Request): Promise<Response> {
-    const updateMotorcycleUsecase = new UpdateMotorcycleUsecase(
-      this.motorcycleRepository,
-    );
+    const url = new URL(request.url);
+    const motorcycleId = url.searchParams.get("id");
+
+    if (!motorcycleId) {
+      return new Response("Motorcycle ID is required", { status: 400 });
+    }
   
     const body = await request.json();
-  
     const validation = updateMotorcycleRequestSchema.safeParse(body);
-  
     if (!validation.success) {
       return new Response("Malformed request", {
         status: 400,
       });
     }
   
-    const result = await updateMotorcycleUsecase.execute(validation.data);
+    const updateMotorcycleUsecase = new UpdateMotorcycleUsecase(this.motorcycleRepository)
+    const result = await updateMotorcycleUsecase.execute(motorcycleId, validation.data);
 
     if (result === undefined) {
       return new Response(null, {

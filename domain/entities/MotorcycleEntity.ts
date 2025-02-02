@@ -4,15 +4,15 @@ import { Model } from "../value-objects/Model.ts";
 
 export class MotorcycleEntity {
   private constructor(
-    public readonly identifier: string,
-    public readonly dealerIdentifier: string,
-    public readonly brand: Brand,
-    public readonly model: Model,
-    public readonly year: number,
-    public readonly registrationNumber: number,
-    public readonly motorcycleStatus: MotorcycleStatus,
-    public readonly clientIdentifier?: string,
-    public readonly driverIdentifier?: string,
+    public identifier: string,
+    public dealerIdentifier: string,
+    public brand: Brand,
+    public model: Model,
+    public year: number,
+    public registrationNumber: number,
+    public motorcycleStatus: MotorcycleStatus,
+    public clientIdentifier?: string,
+    public driverIdentifier?: string,
   ) {}
 
   public static idVerification(clientIdentifier?: string, driverIdentifier?:string): void{

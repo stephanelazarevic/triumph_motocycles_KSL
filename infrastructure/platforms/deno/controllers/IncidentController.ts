@@ -93,21 +93,23 @@ export class IncidentController implements EntityControllerInterface{
   }
 
   public async update(request: Request): Promise<Response> {
-    const updateIncidentUsecase = new UpdateIncidentUsecase(
-      this.incidentRepository,
-    );
+    const url = new URL(request.url);
+    const incidentId = url.searchParams.get("id");
+
+    if (!incidentId) {
+      return new Response("Incident ID is required", { status: 400 });
+    }
 
     const body = await request.json();
-
     const validation = updateIncidentRequestSchema.safeParse(body);
-
     if (!validation.success) {
       return new Response("Malformed request", {
         status: 400,
       });
     }
 
-    const result = await updateIncidentUsecase.execute(validation.data);
+    const updateIncidentUsecase = new UpdateIncidentUsecase(this.incidentRepository);
+    const result = await updateIncidentUsecase.execute(incidentId, validation.data);
 
     if (result === undefined) {
       return new Response(null, {
@@ -115,7 +117,7 @@ export class IncidentController implements EntityControllerInterface{
       });
     }
 
-    return exhaustive(result.name, {
+    return exhaustive({
       IncidentNotFoundError: () => new Response("IncidentNotFoundError", { status: 404 }),
     });
   }

@@ -97,17 +97,21 @@ export class NotificationController implements EntityControllerInterface{
   }
 
   public async update(request: Request): Promise<Response> {
-    const updateNotificationUsecase = new UpdateNotificationUsecase(this.notificationRepository);
+    const url = new URL(request.url);
+    const notificationId = url.searchParams.get("id");
+
+    if (!notificationId) {
+      return new Response("Notification ID is required", { status: 400 });
+    }
 
     const body = await request.json();
-
     const validation = updateNotificationRequestSchema.safeParse(body);
-
     if (!validation.success) {
       return new Response("Malformed request", { status: 400 });
     }
 
-    const result = await updateNotificationUsecase.execute(validation.data);
+    const updateNotificationUsecase = new UpdateNotificationUsecase(this.notificationRepository);
+    const result = await updateNotificationUsecase.execute(notificationId, validation.data);
 
     if (result === undefined) {
       return new Response(null, { status: 201 });
