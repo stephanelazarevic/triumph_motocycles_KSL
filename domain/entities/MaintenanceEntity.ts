@@ -3,10 +3,10 @@ import { MotorcycleEntity } from "./MotorcycleEntity.ts";
 
 export class MaintenanceEntity extends Entity {
   private constructor(
-    public readonly date: Date,
-    public readonly description: string,
-    public readonly motorcycle: MotorcycleEntity,
-    public readonly cost: number,
+    public date: Date,
+    public description: string,
+    public motorcycle: MotorcycleEntity,
+    public cost: number,
   ) {
     super();
   }

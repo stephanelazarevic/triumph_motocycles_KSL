@@ -4,29 +4,11 @@ import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/In
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentNotFoundError } from "../../../../../domain/errors/IncidentNotFoundError.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
-import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/value-objects/Brand.ts";
-import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
+import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 const incidentRepository = new IncidentRepositoryInMemory([]);
 
-const brand = Brand.from("Triumph");
-const model = Model.from("Street Triple");
-
-if (brand instanceof Error) {
-  throw new Error("Failed to initialize a new brand");
-}
-
-if (model instanceof Error) {
-  throw new Error("Failed to initialize a new model");
-}
-
-const motorcycle = MotorcycleEntity.create({
-  brand,
-  model,
-  year:2024
-});
 const description = "Incident description";
 const type = IncidentType.BREAKDOWN;
 const reportDate = new Date(2010, 1, 1);

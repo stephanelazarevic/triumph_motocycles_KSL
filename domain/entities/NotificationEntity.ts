@@ -4,11 +4,11 @@ import { Entity } from "./Entity.ts";
 
 export class NotificationEntity extends Entity {
   private constructor(
-    public readonly user: UserEntity,
-    public readonly type: NotificationType,
-    public readonly message: string,
-    public readonly date: Date,
-    public readonly status: NotificationStatus,
+    public user: UserEntity,
+    public type: NotificationType,
+    public message: string,
+    public date: Date,
+    public status: NotificationStatus,
   ) {
     super();
   }

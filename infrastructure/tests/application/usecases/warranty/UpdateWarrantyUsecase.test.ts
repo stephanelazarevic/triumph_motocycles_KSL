@@ -2,28 +2,10 @@ import { expect } from "jsr:@std/expect";
 import { UpdateWarrantyUsecase } from "../../../../../application/usecases/warranty/UpdateWarrantyUsecase.ts";
 import { WarrantyRepositoryInMemory } from "../../../../adapters/repositories/WarrantyRepositoryInMemory.ts";
 import { WarrantyEntity } from "../../../../../domain/entities/WarrantyEntity.ts";
-import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/value-objects/Brand.ts";
-import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { WarrantyNotFoundError } from "../../../../../domain/errors/WarrantyNotFoundError.ts";
+import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 Deno.test("Should update a warranty successfully when it exists", async () => {
-  const brand = Brand.from("Triumph");
-  const model = Model.from("Street Triple");
-
-  if (brand instanceof Error) {
-    throw new Error("Failed to initialize a new brand");
-  }
-
-  if (model instanceof Error) {
-    throw new Error("Failed to initialize a new model");
-  }
-
-  const motorcycle = MotorcycleEntity.create({
-    brand,
-    model,
-    year: 2024
-  });
 
   const existingWarranty = WarrantyEntity.create({
     startDate: new Date(2010, 1, 1),
@@ -38,7 +20,7 @@ Deno.test("Should update a warranty successfully when it exists", async () => {
 
   const updatedWarranty = { ...existingWarranty, terms: "Termes mis à jour" };
 
-  const result = await updateWarrantyUsecase.execute(updatedWarranty);
+  const result = await updateWarrantyUsecase.execute(existingWarranty.identifier, updatedWarranty);
 
   const warranties = await warrantyRepository.findAll();
 
@@ -51,24 +33,7 @@ Deno.test("Should return an error when the warranty does not exist", async () =>
   const warrantyRepository = new WarrantyRepositoryInMemory([]);
   const updateWarrantyUsecase = new UpdateWarrantyUsecase(warrantyRepository);
 
-  const brand = Brand.from("Yamaha");
-  const model = Model.from("R1");
-
-  if (brand instanceof Error) {
-    throw new Error("Failed to initialize a new brand");
-  }
-
-  if (model instanceof Error) {
-    throw new Error("Failed to initialize a new model");
-  }
-
-  const motorcycle = MotorcycleEntity.create({
-    brand,
-    model,
-    year: 2024
-  }),
-
-  const nonExistentWarranty = WarrantyEntity.create({
+  const nonExistingWarranty = WarrantyEntity.create({
     startDate: new Date(2012, 1, 1),
     endDate: new Date(2013, 1, 1),
     motorcycle,
@@ -76,7 +41,7 @@ Deno.test("Should return an error when the warranty does not exist", async () =>
     terms: "Terms and conditions (inexistent)"
   });
 
-  const result = await updateWarrantyUsecase.execute(nonExistentWarranty);
+  const result = await updateWarrantyUsecase.execute("blabla", nonExistingWarranty);
 
   expect(result).toBeInstanceOf(WarrantyNotFoundError);
 });

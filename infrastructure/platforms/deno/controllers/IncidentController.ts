@@ -6,7 +6,7 @@ import { FindAllIncidentsUsecase } from "../../../../application/usecases/incide
 import { UpdateIncidentUsecase } from "../../../../application/usecases/incident/UpdateIncidentUsecase.ts";
 import { DeleteIncidentUsecase } from "../../../../application/usecases/incident/DeleteIncidentUsecase.ts";
 import { exhaustive } from "npm:exhaustive"
-import { createIncidentRequestSchema } from "../schemas/createIncidentRequestSchema.ts";
+import { createIncidentRequestSchema, updateIncidentRequestSchema } from "../schemas/incidentRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { IncidentEntity } from "../../../../domain/entities/IncidentEntity.ts";
 
@@ -93,23 +93,23 @@ export class IncidentController implements EntityControllerInterface{
   }
 
   public async update(request: Request): Promise<Response> {
-    const updateIncidentUsecase = new UpdateIncidentUsecase(
-      this.incidentRepository,
-    );
+    const url = new URL(request.url);
+    const incidentId = url.searchParams.get("id");
+
+    if (!incidentId) {
+      return new Response("Incident ID is required", { status: 400 });
+    }
 
     const body = await request.json();
-
-    // @TODO: use update request schema
-    const validation = createIncidentRequestSchema.safeParse(body);
-
+    const validation = updateIncidentRequestSchema.safeParse(body);
     if (!validation.success) {
       return new Response("Malformed request", {
         status: 400,
       });
     }
 
-    // @TODO: validation.data doesn't match execute expected input
-    const result = await updateIncidentUsecase.execute(validation.data);
+    const updateIncidentUsecase = new UpdateIncidentUsecase(this.incidentRepository);
+    const result = await updateIncidentUsecase.execute(incidentId, validation.data);
 
     if (result === undefined) {
       return new Response(null, {
@@ -117,7 +117,7 @@ export class IncidentController implements EntityControllerInterface{
       });
     }
 
-    return exhaustive(result.name, {
+    return exhaustive({
       IncidentNotFoundError: () => new Response("IncidentNotFoundError", { status: 404 }),
     });
   }

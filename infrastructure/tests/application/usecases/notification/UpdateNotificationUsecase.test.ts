@@ -26,7 +26,7 @@ Deno.test("Should update a notification successfully when it exists", async () =
 
   const updatedNotification = { ...existingNotification, message: "Message mise à jour" };
 
-  const result = await updateNotificationUsecase.execute(updatedNotification);
+  const result = await updateNotificationUsecase.execute(existingNotification.identifier, updatedNotification);
 
   const notifications = await notificationRepository.findAll();
 
@@ -53,7 +53,7 @@ Deno.test("Should return an error when the notification does not exist", async (
     NotificationStatus.READ
   );
 
-  const result = await updateNotificationUsecase.execute(nonExistentNotification);
+  const result = await updateNotificationUsecase.execute("blabla", nonExistentNotification);
 
   expect(result).toBeInstanceOf(NotificationNotFoundError);
 });

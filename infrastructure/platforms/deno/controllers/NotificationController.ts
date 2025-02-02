@@ -5,7 +5,7 @@ import { FindAllNotificationsUsecase } from "../../../../application/usecases/no
 import { UpdateNotificationUsecase } from "../../../../application/usecases/notification/UpdateNotificationUsecase.ts";
 import { DeleteNotificationUsecase } from "../../../../application/usecases/notification/DeleteNotificationUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createNotificationRequestSchema } from "../schemas/createNotificationRequestSchema.ts";
+import { createNotificationRequestSchema, updateNotificationRequestSchema } from "../schemas/notificationRequestSchema.ts";
 import { UserRepository } from "../../../../application/repositories/UserRepository.ts";
 import { NotificationNotFoundError } from "../../../../domain/errors/NotificationNotFoundError.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
@@ -97,17 +97,21 @@ export class NotificationController implements EntityControllerInterface{
   }
 
   public async update(request: Request): Promise<Response> {
-    const updateNotificationUsecase = new UpdateNotificationUsecase(this.notificationRepository);
+    const url = new URL(request.url);
+    const notificationId = url.searchParams.get("id");
+
+    if (!notificationId) {
+      return new Response("Notification ID is required", { status: 400 });
+    }
 
     const body = await request.json();
-
-    const validation = createNotificationRequestSchema.safeParse(body);
-
+    const validation = updateNotificationRequestSchema.safeParse(body);
     if (!validation.success) {
       return new Response("Malformed request", { status: 400 });
     }
 
-    const result = await updateNotificationUsecase.execute(validation.data);
+    const updateNotificationUsecase = new UpdateNotificationUsecase(this.notificationRepository);
+    const result = await updateNotificationUsecase.execute(notificationId, validation.data);
 
     if (result === undefined) {
       return new Response(null, { status: 201 });

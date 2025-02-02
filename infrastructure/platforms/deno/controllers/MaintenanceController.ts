@@ -6,7 +6,7 @@ import { FindAllMaintenancesUsecase } from "../../../../application/usecases/mai
 import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maintenance/UpdateMaintenanceUsecase.ts";
 import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createMaintenanceRequestSchema } from "../schemas/createMaintenanceRequestSchema.ts";
+import { createMaintenanceRequestSchema, updateMaitenanceRequestSchema } from "../schemas/maintenanceRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity.ts";
 
@@ -90,19 +90,21 @@ export class MaintenanceController implements EntityControllerInterface {
   }
 
   public async update(request: Request): Promise<Response> {
-    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
+    const url = new URL(request.url);
+    const maintenanceId = url.searchParams.get("id");
+
+    if (!maintenanceId) {
+      return new Response("Maintenance ID is required", { status: 400 });
+    }
 
     const body = await request.json();
-
-    // @TODO: use update request schema
-    const validation = createMaintenanceRequestSchema.safeParse(body);
-
+    const validation = updateMaitenanceRequestSchema.safeParse(body);
     if (!validation.success) {
       return new Response("Malformed request", { status: 400 });
     }
 
-    // @TODO: validation.data doesn't match execute expected input
-    const result = await updateMaintenanceUsecase.execute(validation.data);
+    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
+    const result = await updateMaintenanceUsecase.execute(maintenanceId, validation.data);
 
     if (result === undefined) {
       return new Response(null, { status: 201 });

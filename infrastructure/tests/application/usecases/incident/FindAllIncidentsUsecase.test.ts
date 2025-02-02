@@ -3,9 +3,7 @@ import { FindAllIncidentsUsecase } from "../../../../../application/usecases/inc
 import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/IncidentRepositoryInMemory.ts";
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
-import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/value-objects/Brand.ts";
-import { Model } from "../../../../../domain/value-objects/Model.ts";
+import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 Deno.test("Should return an empty array when no incidents exist", async () => {
   const incidentRepository = new IncidentRepositoryInMemory([]);
@@ -18,23 +16,6 @@ Deno.test("Should return an empty array when no incidents exist", async () => {
 });
 
 Deno.test("Should return all incidents when they exist", async () => {
-  const brand = Brand.from("Triumph");
-  const model = Model.from("Street Triple");
-
-  if (brand instanceof Error) {
-    throw new Error("Failed to initialize a new brand");
-  }
-
-  if (model instanceof Error) {
-    throw new Error("Failed to initialize a new model");
-  }
-
-  const motorcycle = MotorcycleEntity.create({
-    brand,
-    model,
-    year:2024
-  });
-
   const incident1 = IncidentEntity.create({
     description: "Incident 1 description",
     motorcycle,

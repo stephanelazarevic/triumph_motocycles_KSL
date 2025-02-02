@@ -1,31 +1,13 @@
 import { expect } from "jsr:@std/expect";
 import { DeleteWarrantyUsecase } from "../../../../../application/usecases/warranty/DeleteWarrantyUsecase.ts";
 import { WarrantyRepositoryInMemory } from "../../../../adapters/repositories/WarrantyRepositoryInMemory.ts";
-import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/value-objects/Brand.ts";
-import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { WarrantyEntity } from "../../../../../domain/entities/WarrantyEntity.ts";
 import { WarrantyNotFoundError } from "../../../../../domain/errors/WarrantyNotFoundError.ts";
+import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 const warrantyRepository = new WarrantyRepositoryInMemory([]);
 
-const brand = Brand.from("Triumph");
-const model = Model.from("Street Triple");
-
-if (brand instanceof Error) {
-  throw new Error("Failed to initialize a new brand");
-}
-
-if (model instanceof Error) {
-  throw new Error("Failed to initialize a new model");
-}
-
-const motorcycle = MotorcycleEntity.create({
-  brand,
-  model,
-  year: 2024
-});
 const startDate = new Date(2010, 1, 1);
 const endDate = new Date(2011, 1, 1);
 const warrantyType = "Partial";

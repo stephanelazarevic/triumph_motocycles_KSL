@@ -5,11 +5,18 @@ import { WarrantyNotFoundError } from "../../../domain/errors/WarrantyNotFoundEr
 export class UpdateWarrantyUsecase {
   constructor(private warrantyRepository: WarrantyRepository) {}
 
-  public async execute(warranty: WarrantyEntity): Promise<WarrantyNotFoundError | void> {
-    const existingWarranty = await this.warrantyRepository.findOneById(warranty.id);
-    if (!existingWarranty) {
-      return new WarrantyNotFoundError();
+  public async execute(warrantyId: string, updatedWarranty: WarrantyEntity): Promise<WarrantyNotFoundError | void> {
+    const warranty = await this.warrantyRepository.findOneById(warrantyId);
+    if (warranty instanceof Error) {
+      return warranty;
     }
+
+    warranty.startDate = updatedWarranty.startDate
+    warranty.endDate = updatedWarranty.endDate
+    warranty.warrantyType = updatedWarranty.warrantyType
+    warranty.motorcycle = updatedWarranty.motorcycle
+    warranty.terms = updatedWarranty.terms
+
     await this.warrantyRepository.save(warranty);
   }
 }

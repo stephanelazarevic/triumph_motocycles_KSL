@@ -4,12 +4,12 @@ import { Entity } from "./Entity.ts";
 
 export class IncidentEntity extends Entity {
   private constructor(
-    public readonly description: string,
-    public readonly motorcycle: MotorcycleEntity,
-    public readonly type: IncidentType,
-    public readonly reportDate: Date,
-    public readonly resolutionDate: Date,
-    public readonly status: string,
+    public description: string,
+    public motorcycle: MotorcycleEntity,
+    public type: IncidentType,
+    public reportDate: Date,
+    public resolutionDate: Date,
+    public status: string,
   ) {
     super();
   }
