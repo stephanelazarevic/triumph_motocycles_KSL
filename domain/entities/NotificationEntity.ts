@@ -5,10 +5,10 @@ export class NotificationEntity {
   private constructor(
     public identifier: string,
     public user: UserEntity,
-    public notificationType: NotificationType,
+    public type: NotificationType,
     public message: string,
     public date: Date,
-    public notificationStatus: NotificationStatus,
+    public status: NotificationStatus,
   ) {}
 
   public static create(

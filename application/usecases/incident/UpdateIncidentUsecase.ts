@@ -16,7 +16,7 @@ export class UpdateIncidentUsecase {
     incident.type = updatedIncident.type
     incident.reportDate = updatedIncident.reportDate,
     incident.resolutionDate = updatedIncident.resolutionDate,
-    incident.incidentStatus = updatedIncident.incidentStatus
+    incident.status = updatedIncident.status
 
     await this.incidentRepository.save(incident);
   }

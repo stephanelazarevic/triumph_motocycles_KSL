@@ -16,9 +16,9 @@ export class UpdateMotorcycleUsecase {
     motorcycle.model = updatedMotorcycle.model
     motorcycle.year = updatedMotorcycle.year
     motorcycle.registrationNumber = updatedMotorcycle.registrationNumber
-    motorcycle.motorcycleStatus = updatedMotorcycle.motorcycleStatus
-    motorcycle.clientIdentifier = updatedMotorcycle.clientIdentifier
-    motorcycle.driverIdentifier = updatedMotorcycle.driverIdentifier
+    motorcycle.status = updatedMotorcycle.status
+    motorcycle.clientId = updatedMotorcycle.clientId
+    motorcycle.driverId = updatedMotorcycle.driverId
 
     await this.motorcycleRepository.save(motorcycle);
   }
