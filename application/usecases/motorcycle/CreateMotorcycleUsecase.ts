@@ -7,7 +7,7 @@ import type { MotorcycleRepository } from "../../repositories/MotorcycleReposito
 export class CreateMotorcycleUsecase {
   public constructor(private readonly motorcycleRepository: MotorcycleRepository) {}
 
-  public async execute(dealerIdentifier: string, brand: string, model: string, year: number, registrationNumber: number, status: MotorcycleStatus, clientIdentifier?: string, driverIdentifier?: string): Promise<MotorcycleEntity | Error> {
+  public async execute(dealerId: string, brand: string, model: string, year: number, registrationNumber: number, status: MotorcycleStatus, clientId?: string, driverId?: string): Promise<MotorcycleEntity | Error> {
     const motorcycleBrand = Brand.from(brand);
 
     if (motorcycleBrand instanceof Error) {
@@ -21,14 +21,14 @@ export class CreateMotorcycleUsecase {
     }
 
     const motorcycle = MotorcycleEntity.create(
-      dealerIdentifier,
+      dealerId,
       motorcycleBrand,
       motorcycleModel,
       year,
       registrationNumber,
       status,
-      clientIdentifier,
-      driverIdentifier,
+      clientId,
+      driverId,
     );
 
     await this.motorcycleRepository.save(motorcycle);

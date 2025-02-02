@@ -4,29 +4,34 @@ import { Model } from "../value-objects/Model.ts";
 
 export class MotorcycleEntity {
   private constructor(
-    public identifier: string,
+    public id: string,
     public dealerIdentifier: string,
     public brand: Brand,
     public model: Model,
     public year: number,
     public registrationNumber: number,
-    public motorcycleStatus: MotorcycleStatus,
-    public clientIdentifier?: string,
-    public driverIdentifier?: string,
+    public status: MotorcycleStatus,
+    public clientId?: string,
+    public driverId?: string,
   ) {}
 
-  public static idVerification(clientIdentifier?: string, driverIdentifier?:string): void{
-    if(clientIdentifier && driverIdentifier){
-      throw new Error("Cannot assign a motorcycle to both a client and a driver");
+  public static isAssignedToClient(clientId?: string): boolean
+    {
+      return clientId !== null;
     }
+
+  public static isAssignedToDriver(driverId?: string): boolean
+  {
+    return driverId !== null;
   }
 
-  public static create(dealerIdentifier: string, brand: Brand, model: Model, year: number, registrationNumber: number, motorcycleStatus: MotorcycleStatus, clientIdentifier?: string, driverIdentifier?:string): MotorcycleEntity {
-    MotorcycleEntity.idVerification(clientIdentifier, driverIdentifier);
+  public static create(dealerIdentifier: string, brand: Brand, model: Model, year: number, registrationNumber: number, motorcycleStatus: MotorcycleStatus, clientId?: string, driverId?:string): MotorcycleEntity {
 
+    if(this.isAssignedToClient(clientId) && this.isAssignedToDriver(driverId)){
+      throw new Error("Cannot assign a motorcycle to both a client and a driver"); 
+    }
+  
     const identifier = crypto.randomUUID();
-    const createdAt = new Date();
-    const updatedAt = new Date();
 
     return new MotorcycleEntity(
       identifier,

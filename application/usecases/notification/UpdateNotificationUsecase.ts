@@ -12,10 +12,10 @@ export class UpdateNotificationUsecase {
     }
 
     notification.user = updatedNotification.user
-    notification.notificationType = updatedNotification.notificationType
+    notification.type = updatedNotification.type
     notification.message = updatedNotification.message
     notification.date = updatedNotification.date
-    notification.notificationStatus = updatedNotification.notificationStatus
+    notification.status = updatedNotification.status
 
     await this.notificationRepository.save(notification);
   }

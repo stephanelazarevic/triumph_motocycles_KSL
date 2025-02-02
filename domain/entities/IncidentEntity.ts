@@ -9,7 +9,7 @@ export class IncidentEntity {
     public type: IncidentType,
     public reportDate: Date,
     public resolutionDate: Date,
-    public incidentStatus: string,
+    public status: string,
   ) {}
 
   public static create(

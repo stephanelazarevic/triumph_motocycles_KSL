@@ -5,7 +5,7 @@ export class WarrantyEntity {
     public identifier: string,
     public startDate: Date,
     public endDate: Date,
-    public warrantyType: string,
+    public type: string,
     public motorcycle: MotorcycleEntity,
     public terms: string,
   ) {}
