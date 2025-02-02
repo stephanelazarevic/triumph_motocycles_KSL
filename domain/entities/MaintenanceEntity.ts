@@ -2,11 +2,11 @@ import { MotorcycleEntity } from "./MotorcycleEntity.ts";
 
 export class MaintenanceEntity {
   private constructor(
-    public readonly identifier: string,
-    public readonly date: Date,
-    public readonly description: string,
-    public readonly motorcycle: MotorcycleEntity,
-    public readonly cost: number,
+    public identifier: string,
+    public date: Date,
+    public description: string,
+    public motorcycle: MotorcycleEntity,
+    public cost: number,
   ) {}
 
   public static create(

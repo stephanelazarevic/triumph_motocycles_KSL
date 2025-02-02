@@ -5,11 +5,17 @@ import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotF
 export class UpdateMaintenanceUsecase {
   constructor(private maintenanceRepository: MaintenanceRepository) {}
 
-  public async execute(maintenance: MaintenanceEntity): Promise<MaintenanceNotFoundError | void> {
-    const existing = await this.maintenanceRepository.findOneById(maintenance.identifier);
-    if (!existing) {
-      return new MaintenanceNotFoundError();
+  public async execute(maitenanceId: string, updatedMaintenance: MaintenanceEntity): Promise<MaintenanceNotFoundError | void > {
+    const mainteance = await this.maintenanceRepository.findOneById(maitenanceId);
+    if (mainteance instanceof Error) {
+      return mainteance;
     }
-    await this.maintenanceRepository.save(maintenance);
+
+    mainteance.date = updatedMaintenance.date,
+    mainteance.description = updatedMaintenance.description
+    mainteance.motorcycle = updatedMaintenance.motorcycle
+    mainteance.cost = updatedMaintenance.cost
+    
+    await this.maintenanceRepository.save(mainteance);
   }
 }

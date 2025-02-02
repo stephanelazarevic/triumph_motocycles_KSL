@@ -5,11 +5,21 @@ import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFou
 export class UpdateMotorcycleUsecase {
   constructor(private motorcycleRepository: MotorcycleRepository) {}
 
-  public async execute(motorcycle: MotorcycleEntity): Promise<MotorcycleNotFoundError | void> {
-    const existing = await this.motorcycleRepository.findOneById(motorcycle.identifier);
-    if (!existing) {
-      return new MotorcycleNotFoundError();
+  public async execute(motorcycleId: string, updatedMotorcycle: MotorcycleEntity): Promise<MotorcycleNotFoundError | void> {
+    const motorcycle = await this.motorcycleRepository.findOneById(motorcycleId);
+    if (motorcycle instanceof Error) {
+      return motorcycle;
     }
+
+    motorcycle.dealerIdentifier = updatedMotorcycle.dealerIdentifier
+    motorcycle.brand = updatedMotorcycle.brand
+    motorcycle.model = updatedMotorcycle.model
+    motorcycle.year = updatedMotorcycle.year
+    motorcycle.registrationNumber = updatedMotorcycle.registrationNumber
+    motorcycle.motorcycleStatus = updatedMotorcycle.motorcycleStatus
+    motorcycle.clientIdentifier = updatedMotorcycle.clientIdentifier
+    motorcycle.driverIdentifier = updatedMotorcycle.driverIdentifier
+
     await this.motorcycleRepository.save(motorcycle);
   }
 }

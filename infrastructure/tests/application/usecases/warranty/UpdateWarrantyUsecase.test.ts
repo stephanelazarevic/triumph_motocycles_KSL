@@ -20,7 +20,7 @@ Deno.test("Should update a warranty successfully when it exists", async () => {
 
   const updatedWarranty = { ...existingWarranty, terms: "Termes mis à jour" };
 
-  const result = await updateWarrantyUsecase.execute(updatedWarranty);
+  const result = await updateWarrantyUsecase.execute(existingWarranty.identifier, updatedWarranty);
 
   const warranties = await warrantyRepository.findAll();
 
@@ -41,7 +41,7 @@ Deno.test("Should return an error when the warranty does not exist", async () =>
     "Terms and conditions (inexistent)",
   );
 
-  const result = await updateWarrantyUsecase.execute(nonExistentWarranty);
+  const result = await updateWarrantyUsecase.execute("blabla", nonExistentWarranty);
 
   expect(result).toBeInstanceOf(WarrantyNotFoundError);
 });

@@ -90,18 +90,21 @@ export class MaintenanceController implements EntityControllerInterface {
   }
 
   public async update(request: Request): Promise<Response> {
-    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
+    const url = new URL(request.url);
+    const maintenanceId = url.searchParams.get("id");
+
+    if (!maintenanceId) {
+      return new Response("Maintenance ID is required", { status: 400 });
+    }
 
     const body = await request.json();
-
-    // @TODO: use update request schema
     const validation = updateMaitenanceRequestSchema.safeParse(body);
-
     if (!validation.success) {
       return new Response("Malformed request", { status: 400 });
     }
 
-    const result = await updateMaintenanceUsecase.execute(validation.data);
+    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
+    const result = await updateMaintenanceUsecase.execute(maintenanceId, validation.data);
 
     if (result === undefined) {
       return new Response(null, { status: 201 });

@@ -93,21 +93,23 @@ export class WarrantyController implements EntityControllerInterface {
   }
 
   public async update(request: Request): Promise<Response> {
-    const updateWarrantyUsecase = new UpdateWarrantyUsecase(
-      this.warrantyRepository,
-    );
+    const url = new URL(request.url);
+    const warrantyId = url.searchParams.get("id");
+
+    if (!warrantyId) {
+      return new Response("Warranty ID is required", { status: 400 });
+    }
 
     const body = await request.json();
-
     const validation = updateWarrantyRequestSchema.safeParse(body);
-
     if (!validation.success) {
       return new Response("Malformed request", {
         status: 400,
       });
     }
 
-    const result = await updateWarrantyUsecase.execute(validation.data);
+    const updateWarrantyUsecase = new UpdateWarrantyUsecase(this.warrantyRepository);
+    const result = await updateWarrantyUsecase.execute(warrantyId, validation.data);
 
     if (result === undefined) {
       return new Response(null, {
