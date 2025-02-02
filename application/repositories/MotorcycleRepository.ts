@@ -6,4 +6,5 @@ export interface MotorcycleRepository extends EntityRepositoryInterface<Motorcyc
   save(motorcycle: MotorcycleEntity): Promise<void>;
   findAll(): Promise<MotorcycleEntity[]>;
   findOneById(id: string): Promise<MotorcycleEntity | MotorcycleNotFoundError>;
+  delete(id: string): Promise<void>;
 }

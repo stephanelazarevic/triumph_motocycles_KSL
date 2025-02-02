@@ -1,10 +1,8 @@
 import { expect } from "jsr:@std/expect";
 import { FindAllWarrantiesUsecase } from "../../../../../application/usecases/warranty/FindAllWarrantiesUsecase.ts";
 import { WarrantyRepositoryInMemory } from "../../../../adapters/repositories/WarrantyRepositoryInMemory.ts";
-import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/value-objects/Brand.ts";
-import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { WarrantyEntity } from "../../../../../domain/entities/WarrantyEntity.ts";
+import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 Deno.test("Should return an empty array when no warranties exist", async () => {
   const warrantyRepository = new WarrantyRepositoryInMemory([]);
@@ -17,18 +15,6 @@ Deno.test("Should return an empty array when no warranties exist", async () => {
 });
 
 Deno.test("Should return all warranties when they exist", async () => {
-  const brand = Brand.from("Triumph");
-  const model = Model.from("Street Triple");
-
-  if (brand instanceof Error) {
-    throw new Error("Failed to initialize a new brand");
-  }
-
-  if (model instanceof Error) {
-    throw new Error("Failed to initialize a new model");
-  }
-
-  const motorcycle = MotorcycleEntity.create(brand, model, 2024);
 
   const warranty1 = WarrantyEntity.create(
     new Date(2010, 1, 1),

@@ -2,27 +2,14 @@ import { expect } from "jsr:@std/expect";
 import { CreateMaintenanceUsecase } from "../../../../../application/usecases/maintenance/CreateMaintenanceUsecase.ts";
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
-import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/value-objects/Brand.ts";
-import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
 import { NullCostError } from "../../../../../domain/errors/NullCostError.ts";
 import { EmptyDescriptionError } from "../../../../../domain/errors/EmptyDescriptionError.ts";
+import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
-const brand = Brand.from("Triumph");
-const model = Model.from("Street Triple");
 
-if (brand instanceof Error) {
-  throw new Error("Failed to initialize a new brand");
-}
-
-if (model instanceof Error) {
-  throw new Error("Failed to initialize a new model");
-}
-
-const motorcycle = MotorcycleEntity.create(brand, model, 2024);
 const description = "Maintenance description";
 const cost = 100;
 const date = new Date(2005, 1, 1);

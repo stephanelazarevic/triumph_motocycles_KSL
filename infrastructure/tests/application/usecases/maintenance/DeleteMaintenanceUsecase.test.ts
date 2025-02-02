@@ -2,24 +2,10 @@ import { expect } from "jsr:@std/expect";
 import { DeleteMaintenanceUsecase } from "../../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MaintenanceEntity } from "../../../../../domain/entities/MaintenanceEntity.ts";
-import { MotorcycleEntity } from "../../../../../domain/entities/MotorcycleEntity.ts";
-import { Brand } from "../../../../../domain/value-objects/Brand.ts";
-import { Model } from "../../../../../domain/value-objects/Model.ts";
 import { MaintenanceNotFoundError } from "../../../../../domain/errors/MaintenanceNotFoundError.ts";
+import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 Deno.test("Should delete a maintenance successfully when it exists", async () => {
-  const brand = Brand.from("Honda");
-  const model = Model.from("CBR500R");
-
-  if (brand instanceof Error) {
-    throw new Error("Failed to initialize a new brand");
-  }
-
-  if (model instanceof Error) {
-    throw new Error("Failed to initialize a new model");
-  }
-
-  const motorcycle = MotorcycleEntity.create(brand, model, 2023);
 
   const maintenance = MaintenanceEntity.create(
     new Date(2024, 1, 10),

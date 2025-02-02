@@ -42,7 +42,7 @@ export const updateUserPasswordRequestSchema = z.object({
     .regex(/\d/, { message: "Password must contain at least one number" })
     .regex(/[^a-zA-Z0-9]/, { message: "Password must contain at least one symbol" }),
   confirmNewPassword: z.string(),
-}).refine((data) => data.newPassword === data.confirmNewPassword, {
+}).refine((data: { newPassword: string; confirmNewPassword: string; }) => data.newPassword === data.confirmNewPassword, {
   message: "Passwords don't match",
   path: ["confirmPassword"],
 });

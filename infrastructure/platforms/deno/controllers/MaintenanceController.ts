@@ -6,7 +6,7 @@ import { FindAllMaintenancesUsecase } from "../../../../application/usecases/mai
 import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maintenance/UpdateMaintenanceUsecase.ts";
 import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createMaintenanceRequestSchema } from "../schemas/createMaintenanceRequestSchema.ts";
+import { createMaintenanceRequestSchema, updateMaitenanceRequestSchema } from "../schemas/maintenanceRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity.ts";
 
@@ -95,13 +95,12 @@ export class MaintenanceController implements EntityControllerInterface {
     const body = await request.json();
 
     // @TODO: use update request schema
-    const validation = createMaintenanceRequestSchema.safeParse(body);
+    const validation = updateMaitenanceRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", { status: 400 });
     }
 
-    // @TODO: validation.data doesn't match execute expected input
     const result = await updateMaintenanceUsecase.execute(validation.data);
 
     if (result === undefined) {
