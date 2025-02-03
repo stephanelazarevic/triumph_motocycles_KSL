@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { FindAllNotificationsUsecase } from "../../../../../application/usecases/notification/FindAllNotificationsUsecase.ts";
+import { ListNotificationsUsecase } from "../../../../../application/usecases/notification/ListNotificationsUsecase.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { NotificationEntity } from "../../../../../domain/entities/NotificationEntity.ts";
 import { NotificationStatus, NotificationType } from "../../../../../domain/enum/NotificationEnum.ts";
@@ -28,10 +28,10 @@ Deno.test("Should return all notifications", async () => {
     notification,
   ]);
 
-  const findAllNotificationsUsecase = new FindAllNotificationsUsecase(
+  const listNotificationsUsecase = new ListNotificationsUsecase(
     notificationRepository
   );
-  const result = await findAllNotificationsUsecase.execute();
+  const result = await listNotificationsUsecase.execute();
 
   expect(result.length).toStrictEqual(1);
 
@@ -44,11 +44,11 @@ Deno.test(
   "Should return an empty list when no notifications exist",
   async () => {
     const notificationRepository = new NotificationRepositoryInMemory([]);
-    const findAllNotificationsUsecase = new FindAllNotificationsUsecase(
+    const listNotificationsUsecase = new ListNotificationsUsecase(
       notificationRepository
     );
 
-    const result = await findAllNotificationsUsecase.execute();
+    const result = await listNotificationsUsecase.execute();
 
     expect(result).toStrictEqual([]);
   }

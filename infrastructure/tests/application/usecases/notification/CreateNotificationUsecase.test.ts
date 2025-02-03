@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { CreateNotificationUsecase } from "../../../../../application/usecases/notification/CreateNotificationUsecase.ts";
+import { AddNotificationUsecase } from "../../../../../application/usecases/notification/AddNotificationUsecase.ts";
 import { NotificationRepositoryInMemory } from "../../../../adapters/repositories/NotificationRepositoryInMemory.ts";
 import { UserRepositoryInMemory } from "../../../../adapters/repositories/UserRepositoryInMemory.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
@@ -25,101 +25,101 @@ const status = NotificationStatus.UNREAD;
 const userRepository = new UserRepositoryInMemory([userJohnDoe]);
 
 Deno.test("Should return an error if the user does not exist", async () => {
-    const createNotificationUsecase = new CreateNotificationUsecase(
-        notificationRepository,
-        userRepository
+    const addNotificationUsecase = new AddNotificationUsecase(
+      notificationRepository,
+      userRepository
     );
-    const result = await createNotificationUsecase.execute(
-        "",
-        type,
-        message,
-        date,
-        status
-    );
+    const result = await addNotificationUsecase.execute({
+      userId: "",
+      type,
+      message,
+      date,
+      status
+    });
 
     expect(result).toBeInstanceOf(UserNotFoundError);
 });
 
 Deno.test("Should return an error if the type is invalid", async () => {
-    const createNotificationUsecase = new CreateNotificationUsecase(
+    const addNotificationUsecase = new AddNotificationUsecase(
     notificationRepository,
     userRepository
   );
   const invalidNotificationType = "INVALID_TYPE" as unknown as NotificationType;
-  const result = await createNotificationUsecase.execute(
-    userJohnDoe.id,
-    invalidNotificationType,
+  const result = await addNotificationUsecase.execute({
+    userId: userJohnDoe.id,
+    type: invalidNotificationType,
     message,
     date,
     status
-  );
+  });
 
   expect(result).toBeInstanceOf(NotificationInvalidTypeError);
 });
 
 Deno.test("Should return an error if the message is empty", async () => {
-    const createNotificationUsecase = new CreateNotificationUsecase(
+    const addNotificationUsecase = new AddNotificationUsecase(
       notificationRepository,
       userRepository
     );
-    const result = await createNotificationUsecase.execute(
-        userJohnDoe.id,
-        type,
-        "",
-        date,
-        status
-    );
+    const result = await addNotificationUsecase.execute({
+      userId: userJohnDoe.id,
+      type,
+      message: "",
+      date,
+      status
+    });
 
     expect(result).toBeInstanceOf(EmptyMessageError);
   }
 );
 
 Deno.test("Should return an error if the date is invalid", async () => {
-  const createNotificationUsecase = new CreateNotificationUsecase(
+  const addNotificationUsecase = new AddNotificationUsecase(
     notificationRepository,
     userRepository
   );
   const badReportDate = new Date(2005, 1, 1);
-  const result = await createNotificationUsecase.execute(
-    userJohnDoe.id,
+  const result = await addNotificationUsecase.execute({
+    userId: userJohnDoe.id,
     type,
     message,
-    badReportDate,
+    date: badReportDate,
     status
-  );
+  });
 
   expect(result).toBeInstanceOf(InvalidDateError);
 });
 
 Deno.test("Should return an error if the status is invalid", async () => {
-  const createNotificationUsecase = new CreateNotificationUsecase(
+  const addNotificationUsecase = new AddNotificationUsecase(
     notificationRepository,
     userRepository
   );
   const invalidNotificationStatus = "INVALID_STATUS" as unknown as NotificationStatus;
-  const result = await createNotificationUsecase.execute(
-    userJohnDoe.id,
+  const result = await addNotificationUsecase.execute({
+    userId: userJohnDoe.id,
     type,
     message,
     date,
-    invalidNotificationStatus
-  );
+    status: invalidNotificationStatus
+  });
 
   expect(result).toBeInstanceOf(NotificationInvalidStatusError);
 });
 
 Deno.test("Should succeed when creating a notification correctly", async () => {
-  const createNotificationUsecase = new CreateNotificationUsecase(
+  const addNotificationUsecase = new AddNotificationUsecase(
     notificationRepository,
     userRepository
   );
-  const result = await createNotificationUsecase.execute(
-    userJohnDoe.id,
+  const result = await addNotificationUsecase.execute({
+    userId: userJohnDoe.id,
     type,
     message,
     date,
     status
-  );
+  });
 
   const notifications = await notificationRepository.findAll();
 

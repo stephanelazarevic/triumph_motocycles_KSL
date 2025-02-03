@@ -1,22 +1,43 @@
-import { NotificationEntity } from "../../../domain/entities/NotificationEntity.ts";
 import { NotificationRepository } from "../../repositories/NotificationRepository.ts";
-import { NotificationNotFoundError } from "../../../domain/errors/NotificationNotFoundError.ts";
+import { UserRepository } from "../../repositories/UserRepository.ts";
+import { NotificationEntity } from "../../../domain/entities/NotificationEntity.ts";
+import { UpdateNotificationCommand } from "../../../domain/types/NotificationType.ts";
 
 export class UpdateNotificationUsecase {
-  constructor(private notificationRepository: NotificationRepository) {}
+ constructor(
+   private notificationRepository: NotificationRepository,
+   private userRepository: UserRepository
+ ) {}
 
-  public async execute(notificationId: string, updatedNotification: NotificationEntity): Promise<NotificationNotFoundError | void> {
-    const notification = await this.notificationRepository.findOneById(notificationId);
-    if (notification instanceof Error) {
-      return notification;
-    }
+ public async execute(notificationId: string, command: UpdateNotificationCommand): Promise<NotificationEntity | Error> {
+   const notification = await this.notificationRepository.findOneById(notificationId);
+   if (notification instanceof Error) {
+     return notification;
+   }
 
-    notification.user = updatedNotification.user
-    notification.type = updatedNotification.type
-    notification.message = updatedNotification.message
-    notification.date = updatedNotification.date
-    notification.status = updatedNotification.status
+   if (command.userId) {
+     const user = await this.userRepository.findOneById(command.userId);
+     if (user instanceof Error) {
+       return user;
+     }
+     notification.user = user;
+   }
 
-    await this.notificationRepository.save(notification);
-  }
+   if (command.type) {
+     notification.type = command.type;
+   }
+   if (command.message) {
+     notification.message = command.message;
+   }
+   if (command.date) {
+     notification.date = command.date;
+   }
+   if (command.status) {
+     notification.status = command.status;
+   }
+
+   notification.markAsUpdated();
+   await this.notificationRepository.save(notification);
+   return notification;
+ }
 }

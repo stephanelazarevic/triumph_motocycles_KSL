@@ -1,23 +1,23 @@
 import type { NotificationRepository } from "../../../../application/repositories/NotificationRepository.ts";
-import { CreateNotificationUsecase } from "../../../../application/usecases/notification/CreateNotificationUsecase.ts";
-import { FindNotificationUsecase } from "../../../../application/usecases/notification/FindNotificationUsecase.ts";
-import { FindAllNotificationsUsecase } from "../../../../application/usecases/notification/FindAllNotificationsUsecase.ts";
+import { AddNotificationUsecase } from "../../../../application/usecases/notification/AddNotificationUsecase.ts";
+import { GetNotificationUsecase } from "../../../../application/usecases/notification/GetNotificationUsecase.ts";
+import { ListNotificationsUsecase } from "../../../../application/usecases/notification/ListNotificationsUsecase.ts";
 import { UpdateNotificationUsecase } from "../../../../application/usecases/notification/UpdateNotificationUsecase.ts";
 import { DeleteNotificationUsecase } from "../../../../application/usecases/notification/DeleteNotificationUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createNotificationRequestSchema, updateNotificationRequestSchema } from "../schemas/notificationRequestSchema.ts";
+import { addNotificationRequestSchema, updateNotificationRequestSchema } from "../schemas/notificationRequestSchema.ts";
 import { UserRepository } from "../../../../application/repositories/UserRepository.ts";
-import { NotificationNotFoundError } from "../../../../domain/errors/NotificationNotFoundError.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
+import { NotificationEntity } from "../../../../domain/entities/NotificationEntity.ts";
 
 export class NotificationController implements EntityControllerInterface{
   public constructor(
-    private readonly notificationRepository: NotificationRepository, 
+    private readonly notificationRepository: NotificationRepository,
     private readonly userRepository: UserRepository
   ) {}
 
   public async getAll(): Promise<Response> {
-    const listNotificationsUsecase = new FindAllNotificationsUsecase(this.notificationRepository);
+    const listNotificationsUsecase = new ListNotificationsUsecase(this.notificationRepository);
 
     const result = await listNotificationsUsecase.execute();
 
@@ -37,15 +37,11 @@ export class NotificationController implements EntityControllerInterface{
       return new Response("Notification ID is required", { status: 400 });
     }
 
-    const findNotificationUsecase = new FindNotificationUsecase(this.notificationRepository);
+    const getNotificationUsecase = new GetNotificationUsecase(this.notificationRepository);
 
-    const result = await findNotificationUsecase.execute(id);
+    const result = await getNotificationUsecase.execute(id);
 
-    if (result instanceof NotificationNotFoundError) {
-      return new Response("NotificationNotFoundError", { status: 404 });
-    }
-
-    if (typeof result === "object" && result !== null) {
+    if (result instanceof NotificationEntity) {
       return new Response(JSON.stringify(result), {
         status: 200,
         headers: {
@@ -54,21 +50,21 @@ export class NotificationController implements EntityControllerInterface{
       });
     }
 
-    return exhaustive({
+    return exhaustive(result.name, {
       NotificationNotFoundError: () =>
         new Response("NotificationNotFoundError", { status: 404 }),
     });
   }
 
   public async create(request: Request): Promise<Response> {
-    const createNotificationUsecase = new CreateNotificationUsecase(
+    const addNotificationUsecase = new AddNotificationUsecase(
       this.notificationRepository,
       this.userRepository
     );
 
     const body = await request.json();
 
-    const validation = createNotificationRequestSchema.safeParse(body);
+    const validation = addNotificationRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", {
@@ -78,19 +74,19 @@ export class NotificationController implements EntityControllerInterface{
 
     const { userId, type, message, date, status } = validation.data;
 
-    const result = await createNotificationUsecase.execute(
+    const result = await addNotificationUsecase.execute({
       userId,
       type,
       message,
       date,
       status
-    );
+    });
 
-    if (result === undefined) {
+    if (result instanceof NotificationEntity) {
       return new Response(null, { status: 201 });
     }
 
-    return exhaustive({
+    return exhaustive(result.name, {
       UserNotFoundError: () =>
         new Response("UserNotFoundError", { status: 404 }),
     });
@@ -110,10 +106,10 @@ export class NotificationController implements EntityControllerInterface{
       return new Response("Malformed request", { status: 400 });
     }
 
-    const updateNotificationUsecase = new UpdateNotificationUsecase(this.notificationRepository);
+    const updateNotificationUsecase = new UpdateNotificationUsecase(this.notificationRepository, this.userRepository);
     const result = await updateNotificationUsecase.execute(notificationId, validation.data);
 
-    if (result === undefined) {
+    if (result instanceof NotificationEntity) {
       return new Response(null, { status: 201 });
     }
 

@@ -1,15 +1,16 @@
-import { NotificationRepository } from "../../repositories/NotificationRepository.ts";
+import { NotificationEntity } from "../../../domain/entities/NotificationEntity.ts";
 import { NotificationNotFoundError } from "../../../domain/errors/NotificationNotFoundError.ts";
+import { NotificationRepository } from "../../repositories/NotificationRepository.ts";
 
-export class DeleteNotificationUsecase {
+export class GetNotificationUsecase {
   constructor(private notificationRepository: NotificationRepository) {}
 
-  public async execute(id: string): Promise<NotificationNotFoundError | void> {
+  public async execute(id: string): Promise<NotificationEntity | NotificationNotFoundError> {
     const existingNotification = await this.notificationRepository.findOneById(id);
     if (!existingNotification) {
       return new NotificationNotFoundError();
     }
 
-    await this.notificationRepository.delete(id);
+    return existingNotification;
   }
 }
