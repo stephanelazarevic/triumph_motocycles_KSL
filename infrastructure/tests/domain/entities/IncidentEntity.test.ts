@@ -25,7 +25,7 @@ Deno.test("Shoud return an incident entity", () => {
   expect(result.motorcycle.year).toStrictEqual(2024);
   expect(result.reportDate.toISOString()).toStrictEqual(new Date(2019, 1, 1).toISOString());
   expect(result.type).toStrictEqual(IncidentType.ACCIDENT);
-  expect(result.resolutionDate.toISOString()).toStrictEqual(new Date(2020, 2, 1).toISOString());
+  expect(result.resolutionDate?.toISOString()).toStrictEqual(new Date(2020, 2, 1).toISOString());
   expect(result.status).toStrictEqual("Resolved");
 });
 

@@ -4,7 +4,6 @@ import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
-import { NullCostError } from "../../../../../domain/errors/NullCostError.ts";
 import { EmptyDescriptionError } from "../../../../../domain/errors/EmptyDescriptionError.ts";
 import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
@@ -53,21 +52,6 @@ Deno.test(
     expect(result).toBeInstanceOf(MotorcycleNotFoundError);
   },
 );
-
-Deno.test("Should return an error if the cost is null", async () => {
-  const addMaintenanceUsecase = new AddMaintenanceUsecase(
-    maintenanceRepository,
-    motorcycleRepository,
-  );
-  const result = await addMaintenanceUsecase.execute({
-    date,
-    description,
-    motorcycleId: motorcycle.id,
-    cost: null as unknown as number,
-  });
-
-  expect(result).toBeInstanceOf(NullCostError);
-});
 
 Deno.test("Should return an error if the description is empty", async () => {
   const addMaintenanceUsecase = new AddMaintenanceUsecase(

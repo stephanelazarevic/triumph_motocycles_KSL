@@ -2,7 +2,7 @@ import { WarrantyEntity } from "../../../domain/entities/WarrantyEntity.ts";
 import { WarrantyNotFoundError } from "../../../domain/errors/WarrantyNotFoundError.ts";
 import { WarrantyRepository } from "../../repositories/WarrantyRepository.ts";
 
-export class FindWarrantyUsecase {
+export class GetWarrantyUsecase {
   constructor(private warrantyRepository: WarrantyRepository) {}
 
   public async execute(id: string): Promise<WarrantyEntity | WarrantyNotFoundError> {
@@ -10,6 +10,7 @@ export class FindWarrantyUsecase {
     if (!existingWarranty) {
       return new WarrantyNotFoundError();
     }
+
     return existingWarranty;
   }
 }

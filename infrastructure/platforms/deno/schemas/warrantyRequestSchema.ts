@@ -1,11 +1,15 @@
-import { z } from "npm:zod";
+import { z } from "zod";
 
-export const createWarrantyRequestSchema = z.object({
-  startDate: z.date({ coerce: true }).min(1900, "Invalid year").max(new Date().getFullYear(), "Year cannot be in the future"),
-  endDate: z.date({ coerce: true }).min(1900, "Invalid year").max(new Date().getFullYear(), "Year cannot be in the future"),
-  warrantyType: z.string().min(1, "The type cannot be empty"),
-  motorcycleId: z.string().uuid().min(1, "Motorcycle id is required"),
-  terms: z.string().min(1, "The terms cannot be empty"),
-});
+export const addWarrantyRequestSchema = z.object({
+ startDate: z.coerce.date()
+   .min(new Date(1900, 0, 1), "Date must be after 1900")
+   .max(new Date(), "Date cannot be in the future"),
+ endDate: z.coerce.date()
+   .min(new Date(1900, 0, 1), "Date must be after 1900")
+   .max(new Date(), "Date cannot be in the future"),
+ type: z.string().min(1, "The type cannot be empty"),
+ motorcycleId: z.string().uuid("Invalid UUID format"),
+ terms: z.string().min(1, "The terms cannot be empty"),
+})
 
-export const updateWarrantyRequestSchema = createWarrantyRequestSchema.extend()
+export const updateWarrantyRequestSchema = addWarrantyRequestSchema.partial();

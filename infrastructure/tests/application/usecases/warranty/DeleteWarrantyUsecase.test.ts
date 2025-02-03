@@ -10,7 +10,7 @@ const warrantyRepository = new WarrantyRepositoryInMemory([]);
 
 const startDate = new Date(2010, 1, 1);
 const endDate = new Date(2011, 1, 1);
-const warrantyType = "Partial";
+const type = "Partial";
 const terms = "Terms and conditions";
 
 if (startDate || endDate instanceof Error) {
@@ -21,7 +21,7 @@ const warranty = WarrantyEntity.create({
   startDate,
   endDate,
   motorcycle,
-  warrantyType,
+  type,
   terms,
 });
 

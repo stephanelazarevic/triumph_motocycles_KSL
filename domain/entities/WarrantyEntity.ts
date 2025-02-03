@@ -5,7 +5,7 @@ export class WarrantyEntity extends Entity {
   private constructor(
     public startDate: Date,
     public endDate: Date,
-    public warrantyType: string,
+    public type: string,
     public motorcycle: MotorcycleEntity,
     public terms: string,
   ) {
@@ -16,13 +16,13 @@ export class WarrantyEntity extends Entity {
     startDate: Date;
     endDate: Date;
     motorcycle: MotorcycleEntity;
-    warrantyType: string;
+    type: string;
     terms: string;
   }) {
     return new WarrantyEntity(
       params.startDate,
       params.endDate,
-      params.warrantyType,
+      params.type,
       params.motorcycle,
       params.terms,
     );
