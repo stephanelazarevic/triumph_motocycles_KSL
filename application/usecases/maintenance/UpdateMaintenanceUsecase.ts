@@ -1,21 +1,40 @@
-import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
 import { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
-import { MaintenanceNotFoundError } from "../../../domain/errors/MaintenanceNotFoundError.ts";
+import { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
+import { UpdateMaintenanceCommand } from "../../../domain/types/MaintenanceType.ts";
+import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
 
 export class UpdateMaintenanceUsecase {
-  constructor(private maintenanceRepository: MaintenanceRepository) {}
+  constructor(
+    private maintenanceRepository: MaintenanceRepository,
+    private motorcycleRepository: MotorcycleRepository
+  ) {}
 
-  public async execute(maitenanceId: string, updatedMaintenance: MaintenanceEntity): Promise<MaintenanceNotFoundError | void > {
-    const mainteance = await this.maintenanceRepository.findOneById(maitenanceId);
-    if (mainteance instanceof Error) {
-      return mainteance;
+  public async execute(maintenanceId: string, command: UpdateMaintenanceCommand): Promise<MaintenanceEntity | Error> {
+    const maintenance = await this.maintenanceRepository.findOneById(maintenanceId);
+    if (maintenance instanceof Error) {
+      return maintenance;
     }
 
-    mainteance.date = updatedMaintenance.date,
-    mainteance.description = updatedMaintenance.description
-    mainteance.motorcycle = updatedMaintenance.motorcycle
-    mainteance.cost = updatedMaintenance.cost
+    if (command.motorcycleId) {
+      const motorcycle = await this.motorcycleRepository.findOneById(command.motorcycleId);
+      if (motorcycle instanceof Error) {
+        return motorcycle;
+      }
+      maintenance.motorcycle = motorcycle;
+    }
 
-    await this.maintenanceRepository.save(mainteance);
+    if (command.date) {
+      maintenance.date = command.date;
+    }
+    if (command.description) {
+      maintenance.description = command.description;
+    }
+    if (command.cost) {
+      maintenance.cost = command.cost;
+    }
+
+    maintenance.markAsUpdated();
+    await this.maintenanceRepository.save(maintenance);
+    return maintenance;
   }
 }

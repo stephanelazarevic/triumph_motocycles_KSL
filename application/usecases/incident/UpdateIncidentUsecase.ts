@@ -23,19 +23,19 @@ export class UpdateIncidentUsecase {
       incident.motorcycle = motorcycle;
     }
 
-    if (command.description !== undefined) {
+    if (command.description) {
       incident.description = command.description;
     }
-    if (command.type !== undefined) {
+    if (command.type) {
       incident.type = command.type;
     }
-    if (command.reportDate !== undefined) {
+    if (command.reportDate) {
       incident.reportDate = command.reportDate;
     }
-    if (command.resolutionDate !== undefined) {
+    if (command.resolutionDate) {
       incident.resolutionDate = command.resolutionDate;
     }
-    if (command.status !== undefined) {
+    if (command.status) {
       incident.status = command.status;
     }
 

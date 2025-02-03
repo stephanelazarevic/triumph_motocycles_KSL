@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { FindAllMaintenancesUsecase } from "../../../../../application/usecases/maintenance/FindAllMaintenancesUsecase.ts";
+import { ListMaintenancesUsecase } from "../../../../../application/usecases/maintenance/ListMaintenancesUsecase.ts";
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MaintenanceEntity } from "../../../../../domain/entities/MaintenanceEntity.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
@@ -24,10 +24,10 @@ Deno.test("Should return all maintenances", async () => {
     maintenance,
   ]);
 
-  const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(
+  const listMaintenancesUsecase = new ListMaintenancesUsecase(
     maintenanceRepository,
   );
-  const result = await findAllMaintenancesUsecase.execute();
+  const result = await listMaintenancesUsecase.execute();
 
   expect(result.length).toStrictEqual(1);
 
@@ -40,11 +40,11 @@ Deno.test(
   "Should return an empty list when no maintenances exist",
   async () => {
     const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
-    const findAllMaintenancesUsecase = new FindAllMaintenancesUsecase(
+    const listMaintenancesUsecase = new ListMaintenancesUsecase(
       maintenanceRepository,
     );
 
-    const result = await findAllMaintenancesUsecase.execute();
+    const result = await listMaintenancesUsecase.execute();
 
     expect(result).toStrictEqual([]);
   },

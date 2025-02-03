@@ -4,6 +4,7 @@ import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories
 import { MaintenanceEntity } from "../../../../../domain/entities/MaintenanceEntity.ts";
 import { MaintenanceNotFoundError } from "../../../../../domain/errors/MaintenanceNotFoundError.ts";
 import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
+import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 
 Deno.test("Should update a maintenance successfully when it exists", async () => {
   const existingMaintenance = MaintenanceEntity.create({
@@ -14,7 +15,8 @@ Deno.test("Should update a maintenance successfully when it exists", async () =>
   });
 
   const maintenanceRepository = new MaintenanceRepositoryInMemory([existingMaintenance]);
-  const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(maintenanceRepository);
+  const motorcycleRepository = new MotorcycleRepositoryInMemory([motorcycle]);
+  const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
 
   const updatedMaintenance = { ...existingMaintenance, description: "Description mise à jour" };
 
@@ -29,7 +31,8 @@ Deno.test("Should update a maintenance successfully when it exists", async () =>
 
 Deno.test("Should return an error when the maintenance does not exist", async () => {
   const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
-  const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(maintenanceRepository);
+  const motorcycleRepository = new MotorcycleRepositoryInMemory([]);
+  const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(maintenanceRepository, motorcycleRepository);
 
   const nonExistingMaintenance = MaintenanceEntity.create({
     date: new Date(2024, 5, 30),

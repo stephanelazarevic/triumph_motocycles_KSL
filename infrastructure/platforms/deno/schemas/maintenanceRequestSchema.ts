@@ -1,10 +1,12 @@
-import { z } from "npm:zod";
+import { z } from "zod";
 
-export const createMaintenanceRequestSchema = z.object({
-  date: z.date({ coerce: true }).min(1900, "Invalid year").max(new Date().getFullYear(), "Year cannot be in the future"),
+export const addMaintenanceRequestSchema = z.object({
+  date: z.coerce.date()
+    .min(new Date(1900, 0, 1), "Date must be after 1900")
+    .max(new Date(), "Date cannot be in the future"),
   description: z.string().min(1, "Description cannot be empty"),
-  motorcycleId: z.string().uuid().min(1, "Motorcycle id is required"),
-  cost: z.number().positive().min(1, "Cost must be greater than 0"),
+  motorcycleId: z.string().uuid("Invalid UUID format"),
+  cost: z.number().positive("Cost must be positive"),
 });
 
-export const updateMaitenanceRequestSchema = createMaintenanceRequestSchema.extend()
+export const updateMaintenanceRequestSchema = addMaintenanceRequestSchema.partial();

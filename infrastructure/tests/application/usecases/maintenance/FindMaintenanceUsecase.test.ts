@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { FindMaintenanceUsecase } from "../../../../../application/usecases/maintenance/FindMaintenanceUsecase.ts";
+import { GetMaintenanceUsecase } from "../../../../../application/usecases/maintenance/GetMaintenanceUsecase.ts";
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MaintenanceEntity } from "../../../../../domain/entities/MaintenanceEntity.ts";
 import { MaintenanceNotFoundError } from "../../../../../domain/errors/MaintenanceNotFoundError.ts";
@@ -14,9 +14,9 @@ Deno.test("Should find a maintenance successfully when it exists", async () => {
   });
 
   const maintenanceRepository = new MaintenanceRepositoryInMemory([maintenance]);
-  const findMaintenanceUsecase = new FindMaintenanceUsecase(maintenanceRepository);
+  const getMaintenanceUsecase = new GetMaintenanceUsecase(maintenanceRepository);
 
-  const result = await findMaintenanceUsecase.execute(maintenance.id);
+  const result = await getMaintenanceUsecase.execute(maintenance.id);
 
   expect(result).not.toBeInstanceOf(MaintenanceNotFoundError);
   expect(result).toStrictEqual(maintenance);
@@ -24,10 +24,10 @@ Deno.test("Should find a maintenance successfully when it exists", async () => {
 
 Deno.test("Should return an error when the maintenance does not exist", async () => {
   const maintenanceRepository = new MaintenanceRepositoryInMemory([]);
-  const findMaintenanceUsecase = new FindMaintenanceUsecase(maintenanceRepository);
+  const getMaintenanceUsecase = new GetMaintenanceUsecase(maintenanceRepository);
 
   const badId = "badId";
-  const result = await findMaintenanceUsecase.execute(badId);
+  const result = await getMaintenanceUsecase.execute(badId);
 
   expect(result).toBeInstanceOf(MaintenanceNotFoundError);
 });
