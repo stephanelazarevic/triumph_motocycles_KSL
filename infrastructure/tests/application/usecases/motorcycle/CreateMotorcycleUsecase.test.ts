@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { CreateMotorcycleUsecase } from "../../../../../application/usecases/motorcycle/CreateMotorcycleUsecase.ts";
+import { AddMotorcycleUsecase } from "../../../../../application/usecases/motorcycle/AddMotorcycleUsecase.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 import { BrandLengthTooShortError } from "../../../../../domain/errors/BrandLengthTooShortError.ts";
@@ -7,18 +7,18 @@ import { BrandLengthTooShortError } from "../../../../../domain/errors/BrandLeng
 const motorcycleRepository = new MotorcycleRepositoryInMemory([]);
 
 Deno.test("Should return an error if the brand is invalid", async () => {
-  const createMotorcycleUsecase = new CreateMotorcycleUsecase(
+  const addMotorcycleUsecase = new AddMotorcycleUsecase(
     motorcycleRepository,
   );
-  const result = await createMotorcycleUsecase.execute(
-    motorcycle.dealerId,
-    "U",
-    "Street Triple",
-    motorcycle.year,
-    motorcycle.registrationNumber,
-    motorcycle.status,
-    motorcycle.clientId
-  );
+  const result = await addMotorcycleUsecase.execute({
+    dealerId: motorcycle.dealerId,
+    brand: "U",
+    model: "Street Triple",
+    year: motorcycle.year,
+    registrationNumber: motorcycle.registrationNumber,
+    status: motorcycle.status,
+    clientId: motorcycle.clientId
+  });
 
   expect(result).toBeInstanceOf(BrandLengthTooShortError);
 });

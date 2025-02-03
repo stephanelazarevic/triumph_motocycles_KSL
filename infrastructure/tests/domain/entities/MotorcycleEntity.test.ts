@@ -6,7 +6,7 @@ import { MotorcycleStatus } from "../../../../domain/enum/MotorcycleEnum.ts";
 
 Deno.test("Shoud return a motorcycle entity", () => {
   const dealerId = "dealer-id";
-  const registrationNumber = 1234;
+  const registrationNumber = "1234ABC";
   const status = MotorcycleStatus.AVAILABLE;
   const clientId = "client-id";
 
@@ -47,7 +47,7 @@ Deno.test("Shoud return a motorcycle entity", () => {
 
 Deno.test("Should throw error for invalid motorcycle entity data", () => {
   const dealerId = "dealer-id";
-  const registrationNumber = 1234;
+  const registrationNumber = "1234ABC";
   const status = MotorcycleStatus.AVAILABLE;
   const clientId = "client-id";
 

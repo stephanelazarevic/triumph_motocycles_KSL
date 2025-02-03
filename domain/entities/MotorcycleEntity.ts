@@ -1,4 +1,5 @@
 import { MotorcycleStatus } from "../enum/MotorcycleEnum.ts";
+import { MotorcycleCannotAssignToBothClientAndDriverError } from "../errors/MotorcycleCannotAssignToBothClientAndDriverError.ts";
 import { Brand } from "../value-objects/Brand.ts";
 import { Model } from "../value-objects/Model.ts";
 import { Entity } from "./Entity.ts";
@@ -9,7 +10,7 @@ export class MotorcycleEntity extends Entity{
     public brand: Brand,
     public model: Model,
     public year: number,
-    public registrationNumber: number,
+    public registrationNumber: string,
     public status: MotorcycleStatus,
     public clientId?: string,
     public driverId?: string,
@@ -17,12 +18,12 @@ export class MotorcycleEntity extends Entity{
     super();
   }
 
-  public static isAssignedToClient(clientId?: string): boolean
+  public isAssignedToClient(clientId?: string): boolean
     {
       return clientId !== null;
     }
 
-  public static isAssignedToDriver(driverId?: string): boolean
+  public isAssignedToDriver(driverId?: string): boolean
   {
     return driverId !== null;
   }
@@ -32,15 +33,14 @@ export class MotorcycleEntity extends Entity{
     brand: Brand;
     model: Model;
     year: number;
-    registrationNumber: number;
+    registrationNumber: string;
     status: MotorcycleStatus;
     clientId?: string;
     driverId?: string;
   }): MotorcycleEntity | Error {
 
-    if(this.isAssignedToClient(params.clientId) && this.isAssignedToDriver(params.driverId)){
-      // @TODO create specific Error
-      throw new Error("Cannot assign a motorcycle to both a client and a driver");
+    if(params.clientId && params.driverId){
+      return new MotorcycleCannotAssignToBothClientAndDriverError()
     }
 
     return new MotorcycleEntity(
