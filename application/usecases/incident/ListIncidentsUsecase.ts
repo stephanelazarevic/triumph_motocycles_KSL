@@ -1,7 +1,7 @@
 import { IncidentEntity } from "../../../domain/entities/IncidentEntity.ts";
 import type { IncidentRepository } from "../../repositories/IncidentRepository.ts";
 
-export class FindAllIncidentsUsecase {
+export class ListIncidentsUsecase {
   public constructor(
     private readonly incidentRepository: IncidentRepository,
   ) {}

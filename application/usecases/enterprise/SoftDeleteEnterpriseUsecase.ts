@@ -17,7 +17,6 @@ export class SoftDeleteEnterpriseUsecase {
     await this.softDeleteUserUscase.execute(enterprise.user.id);
 
     enterprise.markAsDeleted();
-
     await this.enterpriseRepository.save(enterprise);
   }
 }

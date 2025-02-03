@@ -17,7 +17,6 @@ export class SoftDeleteDealerUsecase {
     await this.softDeleteUserUscase.execute(dealer.user.id);
 
     dealer.markAsDeleted();
-
     await this.dealerRepository.save(dealer);
   }
 }

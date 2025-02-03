@@ -1,15 +1,15 @@
 import { expect } from "jsr:@std/expect";
-import { FindAllIncidentsUsecase } from "../../../../../application/usecases/incident/FindAllIncidentsUsecase.ts";
+import { ListIncidentsUsecase } from "../../../../../application/usecases/incident/ListIncidentsUsecase.ts";
 import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/IncidentRepositoryInMemory.ts";
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
-import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
+import { motorcycle } from "../../../fixtures/MotorcycleFixtures.ts"
 
 Deno.test("Should return an empty array when no incidents exist", async () => {
   const incidentRepository = new IncidentRepositoryInMemory([]);
-  const findAllIncidentsUsecase = new FindAllIncidentsUsecase(incidentRepository);
+  const listIncidentUsecase = new ListIncidentsUsecase(incidentRepository);
 
-  const incidents = await findAllIncidentsUsecase.execute();
+  const incidents = await listIncidentUsecase.execute();
 
   expect(incidents.length).toStrictEqual(0);
   expect(incidents).toStrictEqual([]);
@@ -36,9 +36,9 @@ Deno.test("Should return all incidents when they exist", async () => {
   });
 
   const incidentRepository = new IncidentRepositoryInMemory([incident1, incident2]);
-  const findAllIncidentsUsecase = new FindAllIncidentsUsecase(incidentRepository);
+  const listIncidentUsecase = new ListIncidentsUsecase(incidentRepository);
 
-  const incidents = await findAllIncidentsUsecase.execute();
+  const incidents = await listIncidentUsecase.execute();
 
   expect(incidents.length).toStrictEqual(2);
   expect(incidents).toContainEqual(incident1);

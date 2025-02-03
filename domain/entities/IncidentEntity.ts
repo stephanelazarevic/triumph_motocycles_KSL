@@ -8,7 +8,7 @@ export class IncidentEntity extends Entity {
     public motorcycle: MotorcycleEntity,
     public type: IncidentType,
     public reportDate: Date,
-    public resolutionDate: Date,
+    public resolutionDate: Date | null,
     public status: string,
   ) {
     super();

@@ -2,7 +2,7 @@ import { IncidentEntity } from "../../../domain/entities/IncidentEntity.ts";
 import { IncidentNotFoundError } from "../../../domain/errors/IncidentNotFoundError.ts";
 import { IncidentRepository } from "../../repositories/IncidentRepository.ts";
 
-export class FindIncidentUsecase {
+export class GetIncidentUsecase {
   constructor(private incidentRepository: IncidentRepository) {}
 
   public async execute(id: string): Promise<IncidentEntity | IncidentNotFoundError> {

@@ -1,12 +1,12 @@
 import type { IncidentRepository } from "../../../../application/repositories/IncidentRepository.ts";
 import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
-import { CreateIncidentUsecase } from "../../../../application/usecases/incident/CreateIncidentUsecase.ts";
-import { FindIncidentUsecase } from "../../../../application/usecases/incident/FindIncidentUsecase.ts";
-import { FindAllIncidentsUsecase } from "../../../../application/usecases/incident/FindAllIncidentsUsecase.ts";
+import { AddIncidentUsecase } from "../../../../application/usecases/incident/AddIncidentUsecase.ts";
+import { GetIncidentUsecase } from "../../../../application/usecases/incident/GetIncidentUsecase.ts";
+import { ListIncidentsUsecase } from "../../../../application/usecases/incident/ListIncidentsUsecase.ts";
 import { UpdateIncidentUsecase } from "../../../../application/usecases/incident/UpdateIncidentUsecase.ts";
 import { DeleteIncidentUsecase } from "../../../../application/usecases/incident/DeleteIncidentUsecase.ts";
 import { exhaustive } from "npm:exhaustive"
-import { createIncidentRequestSchema, updateIncidentRequestSchema } from "../schemas/incidentRequestSchema.ts";
+import { addIncidentRequestSchema, updateIncidentRequestSchema } from "../schemas/incidentRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { IncidentEntity } from "../../../../domain/entities/IncidentEntity.ts";
 
@@ -17,7 +17,7 @@ export class IncidentController implements EntityControllerInterface{
   ) {}
 
   public async getAll(): Promise<Response> {
-    const listIncidentsUsecase = new FindAllIncidentsUsecase(
+    const listIncidentsUsecase = new ListIncidentsUsecase(
       this.incidentRepository,
     );
 
@@ -39,11 +39,9 @@ export class IncidentController implements EntityControllerInterface{
       return new Response("Incident ID is required", { status: 400 });
     }
 
-    const findIncidentUsecase = new FindIncidentUsecase(
-      this.incidentRepository,
-    );
+    const getIncidentUsecase = new GetIncidentUsecase(this.incidentRepository);
 
-    const result = await findIncidentUsecase.execute(id);
+    const result = await getIncidentUsecase.execute(id);
 
     if (result instanceof IncidentEntity) {
       return new Response(JSON.stringify(result), {
@@ -61,14 +59,14 @@ export class IncidentController implements EntityControllerInterface{
   }
 
   public async create(request: Request): Promise<Response> {
-    const createIncidentUsecase = new CreateIncidentUsecase(
+    const addIncidentUsecase = new AddIncidentUsecase(
       this.incidentRepository,
       this.motorcycleRepository,
     );
 
     const body = await request.json();
 
-    const validation = createIncidentRequestSchema.safeParse(body);
+    const validation = addIncidentRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", {
@@ -76,9 +74,7 @@ export class IncidentController implements EntityControllerInterface{
       });
     }
 
-    const { description, motorcycleId, type, reportDate, resolutionDate, status } = validation.data;
-
-    const result = await createIncidentUsecase.execute(description, motorcycleId, type, reportDate, resolutionDate, status);
+    const result = await addIncidentUsecase.execute(validation.data);
 
     if (result instanceof IncidentEntity) {
       return new Response(null, {
@@ -108,16 +104,16 @@ export class IncidentController implements EntityControllerInterface{
       });
     }
 
-    const updateIncidentUsecase = new UpdateIncidentUsecase(this.incidentRepository);
+    const updateIncidentUsecase = new UpdateIncidentUsecase(this.incidentRepository, this.motorcycleRepository);
     const result = await updateIncidentUsecase.execute(incidentId, validation.data);
 
-    if (result === undefined) {
+    if (result instanceof IncidentEntity) {
       return new Response(null, {
         status: 201,
       });
     }
 
-    return exhaustive({
+    return exhaustive(result.name, {
       IncidentNotFoundError: () => new Response("IncidentNotFoundError", { status: 404 }),
     });
   }

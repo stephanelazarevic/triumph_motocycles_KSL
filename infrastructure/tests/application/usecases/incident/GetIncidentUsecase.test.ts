@@ -1,10 +1,10 @@
 import { expect } from "jsr:@std/expect";
-import { FindIncidentUsecase } from "../../../../../application/usecases/incident/FindIncidentUsecase.ts";
+import { GetIncidentUsecase } from "../../../../../application/usecases/incident/GetIncidentUsecase.ts";
 import { IncidentRepositoryInMemory } from "../../../../adapters/repositories/IncidentRepositoryInMemory.ts";
 import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts";
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
 import { IncidentNotFoundError } from "../../../../../domain/errors/IncidentNotFoundError.ts";
-import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
+import { motorcycle } from "../../../fixtures/MotorcycleFixtures.ts"
 
 Deno.test("Should return a incident when it exists", async () => {
   const incident = IncidentEntity.create({
@@ -17,19 +17,19 @@ Deno.test("Should return a incident when it exists", async () => {
   });
 
   const incidentRepository = new IncidentRepositoryInMemory([incident]);
-  const findIncidentUsecase = new FindIncidentUsecase(incidentRepository);
+  const getIncidentUsecase = new GetIncidentUsecase(incidentRepository);
 
-  const result = await findIncidentUsecase.execute(incident.id);
+  const result = await getIncidentUsecase.execute(incident.id);
 
   expect(result).toStrictEqual(incident);
 });
 
 Deno.test("Should return an error when the incident does not exist", async () => {
   const incidentRepository = new IncidentRepositoryInMemory([]);
-  const findIncidentUsecase = new FindIncidentUsecase(incidentRepository);
+  const getIncidentUsecase = new GetIncidentUsecase(incidentRepository);
 
   const badId = "badId";
-  const result = await findIncidentUsecase.execute(badId);
+  const result = await getIncidentUsecase.execute(badId);
 
   expect(result).toBeInstanceOf(IncidentNotFoundError);
 });

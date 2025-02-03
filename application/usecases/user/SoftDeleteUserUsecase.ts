@@ -11,7 +11,6 @@ export class SoftDeleteUserUsecase {
     }
 
     user.markAsDeleted();
-
     await this.userRepository.save(user);
   }
 }

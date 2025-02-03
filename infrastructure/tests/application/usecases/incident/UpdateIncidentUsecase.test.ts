@@ -5,6 +5,7 @@ import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
 import { IncidentNotFoundError } from "../../../../../domain/errors/IncidentNotFoundError.ts";
 import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
+import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 
 Deno.test("Should update an incident successfully when it exists", async () => {
   const existingIncident = IncidentEntity.create({
@@ -16,10 +17,13 @@ Deno.test("Should update an incident successfully when it exists", async () => {
     status: "résolue",
   });
 
-  const incidentRepository = new IncidentRepositoryInMemory([existingIncident]);
-  const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository);
+  const updatedIncident = {
+    description: "Description mise à jour"
+  };
 
-  const updatedIncident = { ...existingIncident, description: "Description mise à jour" };
+  const incidentRepository = new IncidentRepositoryInMemory([existingIncident]);
+  const motorcycleRepository = new MotorcycleRepositoryInMemory([]);
+  const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository, motorcycleRepository);
 
   const result = await updateIncidentUsecase.execute(existingIncident.id, updatedIncident);
 
@@ -32,7 +36,8 @@ Deno.test("Should update an incident successfully when it exists", async () => {
 
 Deno.test("Should return an error when the incident does not exist", async () => {
   const incidentRepository = new IncidentRepositoryInMemory([]);
-  const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository);
+  const motorcycleRepository = new MotorcycleRepositoryInMemory([]);
+  const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository, motorcycleRepository);
 
   const nonExistingIncident = IncidentEntity.create({
     description: "Description de l'incident",
