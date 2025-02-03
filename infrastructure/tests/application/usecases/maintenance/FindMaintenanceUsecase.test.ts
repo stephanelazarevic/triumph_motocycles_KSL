@@ -6,13 +6,12 @@ import { MaintenanceNotFoundError } from "../../../../../domain/errors/Maintenan
 import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 Deno.test("Should find a maintenance successfully when it exists", async () => {
-
-  const maintenance = MaintenanceEntity.create(
-    new Date(2023, 5, 20),
-    "Remplacement des plaquettes de frein",
+  const maintenance = MaintenanceEntity.create({
+    date: new Date(2023, 4, 20),
+    description: "Remplacement des plaquettes de frein",
     motorcycle,
-    1000,
-  );
+    cost: 1000
+  });
 
   const maintenanceRepository = new MaintenanceRepositoryInMemory([maintenance]);
   const findMaintenanceUsecase = new FindMaintenanceUsecase(maintenanceRepository);

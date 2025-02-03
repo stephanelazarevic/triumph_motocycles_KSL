@@ -6,6 +6,7 @@ import { EmailAddress } from "../../../../domain/value-objects/EmailAddress.ts";
 import { Address } from "../../../../domain/value-objects/Address.ts";
 import { PhoneNumber } from "../../../../domain/value-objects/PhoneNumber.ts";
 import { Name } from "../../../../domain/value-objects/Name.ts";
+import { userJohnDoe } from "../../fixtures/UserFixtures.ts"
 
 Deno.test("Shoud return a notification entity", () => {
   const user = UserEntity.create({
@@ -48,23 +49,6 @@ Deno.test("Shoud return a notification entity", () => {
 });
 
 Deno.test("Should throw error for invalid notification entity data", () => {
-  const user = UserEntity.create({
-    firstname: "Pierre" as unknown as Name,
-    lastname: "Robin" as unknown as Name,
-    emailAddress: "pierre.robin@gmail.com" as unknown as EmailAddress,
-    hashedPassword: "poiujhgvtysd555555hj",
-    phoneNumber: "0624252627" as unknown as PhoneNumber,
-    address: {
-      street: "street",
-      postalCode: "123456",
-      countryCode: 'US',
-    } as Address,
-  });
-
-  if(user instanceof Error) {
-    throw new Error("Invalid user entity");
-  }
-
   const type = NotificationType.ALERTE;
   const message = "";
   const date = new Date(2020, 1, 1);
@@ -72,7 +56,7 @@ Deno.test("Should throw error for invalid notification entity data", () => {
 
   expect(() => {
     NotificationEntity.create({
-      user,
+      user: userJohnDoe,
       type,
       message,
       date: date as never,

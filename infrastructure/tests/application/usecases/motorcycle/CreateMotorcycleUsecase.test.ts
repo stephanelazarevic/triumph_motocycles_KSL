@@ -11,13 +11,13 @@ Deno.test("Should return an error if the brand is invalid", async () => {
     motorcycleRepository,
   );
   const result = await createMotorcycleUsecase.execute(
-    motorcycle.dealerIdentifier,
+    motorcycle.dealerId,
     "U",
     "Street Triple",
     motorcycle.year,
     motorcycle.registrationNumber,
-    motorcycle.motorcycleStatus,
-    motorcycle.clientIdentifier
+    motorcycle.status,
+    motorcycle.clientId
   );
 
   expect(result).toBeInstanceOf(BrandLengthTooShortError);

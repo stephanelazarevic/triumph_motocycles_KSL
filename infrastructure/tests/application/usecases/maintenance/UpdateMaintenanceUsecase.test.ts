@@ -6,7 +6,6 @@ import { MaintenanceNotFoundError } from "../../../../../domain/errors/Maintenan
 import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
 Deno.test("Should update a maintenance successfully when it exists", async () => {
-
   const existingMaintenance = MaintenanceEntity.create({
     date: new Date(2023, 6, 15),
     description: "Changement d'huile moteur",
