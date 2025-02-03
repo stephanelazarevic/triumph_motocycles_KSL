@@ -19,7 +19,7 @@ export class AddDriverUsecase {
     );
 
     if (enterprise instanceof EnterpriseNotFoundError) {
-        throw enterprise;
+        return enterprise;
       }
 
     const motorcycle = await this.motorcycleRepository.findOneById(

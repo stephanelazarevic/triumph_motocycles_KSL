@@ -8,8 +8,8 @@ export interface AddDriverCommand {
   firstname: Name,
   lastname: Name,
   licenseNumber: number,
-  phone: PhoneNumber,
-  email: EmailAddress
+  phoneNumber: PhoneNumber,
+  emailAddress: EmailAddress
 }
 
 export interface updateDriverCommand extends Partial<AddDriverCommand> {
