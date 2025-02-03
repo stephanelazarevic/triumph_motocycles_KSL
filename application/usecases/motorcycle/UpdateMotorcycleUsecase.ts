@@ -11,7 +11,7 @@ export class UpdateMotorcycleUsecase {
       return motorcycle;
     }
 
-    motorcycle.dealerIdentifier = updatedMotorcycle.dealerIdentifier
+    motorcycle.dealerId = updatedMotorcycle.dealerId
     motorcycle.brand = updatedMotorcycle.brand
     motorcycle.model = updatedMotorcycle.model
     motorcycle.year = updatedMotorcycle.year

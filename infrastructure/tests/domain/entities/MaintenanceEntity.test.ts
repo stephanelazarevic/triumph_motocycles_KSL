@@ -1,9 +1,9 @@
 import { expect } from "jsr:@std/expect";
 import { Brand } from "../../../../domain/value-objects/Brand.ts";
 import { Model } from "../../../../domain/value-objects/Model.ts";
-import { MotorcycleEntity } from "../../../../domain/entities/MotorcycleEntity.ts";
 import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity.ts";
 import { InvalidDateError } from "../../../../domain/errors/InvalidDateError.ts";
+import { motorcycle } from "../../fixtures/MotorcycleFixtures.ts";
 
 Deno.test("Shoud return an appointment entity", () => {
   const date = new Date(2030, 1, 1);
@@ -12,21 +12,7 @@ Deno.test("Shoud return an appointment entity", () => {
     throw date;
   }
 
-  const brand = Brand.from("Triumph");
-
-  if (brand instanceof Error) {
-    throw brand;
-  }
-
-  const model = Model.from("Street Triple");
-
-  if (model instanceof Error) {
-    throw model;
-  }
-
-  const year = 2024;
   const description = "Maintenance description";
-  const motorcycle = MotorcycleEntity.create({ brand, model, year });
   const cost = 100;
 
   const result = MaintenanceEntity.create({ date, description, motorcycle, cost });
@@ -56,12 +42,6 @@ Deno.test("Should throw error for invalid maintenance entity data", () => {
   if (!(model instanceof Error)) {
     throw new Error("Invalid model");
   }
-
-  const motorcycle = MotorcycleEntity.create( {
-    brand: brand as never,
-    model: model as never,
-    year: 2024,
-  });
 
   const description = "";
   const cost = -50;
