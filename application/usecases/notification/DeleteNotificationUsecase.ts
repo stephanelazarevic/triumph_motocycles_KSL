@@ -5,10 +5,11 @@ export class DeleteNotificationUsecase {
   constructor(private notificationRepository: NotificationRepository) {}
 
   public async execute(id: string): Promise<NotificationNotFoundError | void> {
-    const existing = await this.notificationRepository.findOneById(id);
-    if (!existing) {
+    const existingNotification = await this.notificationRepository.findOneById(id);
+    if (!existingNotification) {
       return new NotificationNotFoundError();
     }
+
     await this.notificationRepository.delete(id);
   }
 }

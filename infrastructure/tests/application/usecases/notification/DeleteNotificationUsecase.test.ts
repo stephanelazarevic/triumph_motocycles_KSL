@@ -3,33 +3,27 @@ import { DeleteNotificationUsecase } from "../../../../../application/usecases/n
 import { NotificationRepositoryInMemory } from "../../../../adapters/repositories/NotificationRepositoryInMemory.ts";
 import { NotificationEntity } from "../../../../../domain/entities/NotificationEntity.ts";
 import { NotificationStatus, NotificationType } from "../../../../../domain/enum/NotificationEnum.ts";
-import { UserEntity } from "../../../../../domain/entities/UserEntity.ts";
 import { NotificationNotFoundError } from "../../../../../domain/errors/NotificationNotFoundError.ts";
+import { userJohnDoe } from "../../../fixtures/UserFixtures.ts";
 
 Deno.test("Should delete a notification successfully when it exists", async () => {
-  const user = UserEntity.create("Pierre", "Robin", "pierre.robin@gmail.com", "123456", "0624252627", "street1", "75010", "19", true);
-
-  if(user instanceof Error) {
-    throw new Error("Invalid user entity");
-  }
-
-  const notification = NotificationEntity.create(
-    user,
-    NotificationType.ALERTE,
-    "message",
-    new Date(2025, 1, 1),
-    NotificationStatus.READ,
-  );
+  const notification = NotificationEntity.create({
+    user: userJohnDoe,
+    type: NotificationType.ALERTE,
+    message: "message",
+    date: new Date(2025, 1, 1),
+    status: NotificationStatus.READ,
+  });
 
   const notificationRepository = new NotificationRepositoryInMemory([notification]);
   const deleteNotificationUsecase = new DeleteNotificationUsecase(notificationRepository);
 
-  const result = await deleteNotificationUsecase.execute(notification.identifier);
+  const result = await deleteNotificationUsecase.execute(notification.id);
 
   const notifications = await notificationRepository.findAll();
 
-  expect(result).toBeUndefined(); 
-  expect(notifications.length).toStrictEqual(0); 
+  expect(result).toBeUndefined();
+  expect(notifications.length).toStrictEqual(0);
 });
 
 Deno.test("Should return an error when the notification does not exist", async () => {

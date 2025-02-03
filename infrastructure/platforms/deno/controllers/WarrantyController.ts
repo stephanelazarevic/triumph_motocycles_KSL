@@ -1,14 +1,14 @@
 import type { WarrantyRepository } from "../../../../application/repositories/WarrantyRepository.ts";
 import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
-import { CreateWarrantyUsecase } from "../../../../application/usecases/warranty/CreateWarrantyUsecase.ts";
-import { FindWarrantyUsecase } from "../../../../application/usecases/warranty/FindWarrantyUsecase.ts";
-import { FindAllWarrantiesUsecase } from "../../../../application/usecases/warranty/FindAllWarrantiesUsecase.ts";
+import { AddWarrantyUsecase } from "../../../../application/usecases/warranty/AddWarrantyUsecase.ts";
+import { GetWarrantyUsecase } from "../../../../application/usecases/warranty/GetWarrantyUsecase.ts";
+import { ListWarrantiesUsecase } from "../../../../application/usecases/warranty/ListWarrantiesUsecase.ts";
 import { UpdateWarrantyUsecase } from "../../../../application/usecases/warranty/UpdateWarrantyUsecase.ts";
 import { DeleteWarrantyUsecase } from "../../../../application/usecases/warranty/DeleteWarrantyUsecase.ts";
 import { exhaustive } from "npm:exhaustive"
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { WarrantyEntity } from "../../../../domain/entities/WarrantyEntity.ts";
-import { createWarrantyRequestSchema, updateWarrantyRequestSchema } from "../schemas/WarrantyRequestSchema.ts";
+import { addWarrantyRequestSchema, updateWarrantyRequestSchema } from "../schemas/warrantyRequestSchema.ts";
 
 export class WarrantyController implements EntityControllerInterface {
   public constructor(
@@ -17,7 +17,7 @@ export class WarrantyController implements EntityControllerInterface {
   ) {}
 
   public async getAll(): Promise<Response> {
-    const listWarrantiesUsecase = new FindAllWarrantiesUsecase(
+    const listWarrantiesUsecase = new ListWarrantiesUsecase(
       this.warrantyRepository,
     );
 
@@ -39,11 +39,11 @@ export class WarrantyController implements EntityControllerInterface {
       return new Response("Warranty ID is required", { status: 400 });
     }
 
-    const findWarrantyUsecase = new FindWarrantyUsecase(
+    const getWarrantyUsecase = new GetWarrantyUsecase(
       this.warrantyRepository,
     );
 
-    const result = await findWarrantyUsecase.execute(id);
+    const result = await getWarrantyUsecase.execute(id);
 
     if (result instanceof WarrantyEntity) {
       return new Response(JSON.stringify(result), {
@@ -61,14 +61,14 @@ export class WarrantyController implements EntityControllerInterface {
   }
 
   public async create(request: Request): Promise<Response> {
-    const createWarrantyUsecase = new CreateWarrantyUsecase(
+    const addWarrantyUsecase = new AddWarrantyUsecase(
       this.warrantyRepository,
       this.motorcycleRepository,
     );
 
     const body = await request.json();
 
-    const validation = createWarrantyRequestSchema.safeParse(body);
+    const validation = addWarrantyRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", {
@@ -76,9 +76,7 @@ export class WarrantyController implements EntityControllerInterface {
       });
     }
 
-    const { startDate, endDate, warrantyType, motorcycleId, terms } = validation.data;
-
-    const result = await createWarrantyUsecase.execute(startDate, endDate, warrantyType, motorcycleId, terms);
+    const result = await addWarrantyUsecase.execute(validation.data);
 
     if (result instanceof WarrantyEntity) {
       return new Response(null, {
@@ -108,10 +106,10 @@ export class WarrantyController implements EntityControllerInterface {
       });
     }
 
-    const updateWarrantyUsecase = new UpdateWarrantyUsecase(this.warrantyRepository);
+    const updateWarrantyUsecase = new UpdateWarrantyUsecase(this.warrantyRepository, this.motorcycleRepository);
     const result = await updateWarrantyUsecase.execute(warrantyId, validation.data);
 
-    if (result === undefined) {
+    if (result instanceof WarrantyEntity) {
       return new Response(null, {
         status: 201,
       });

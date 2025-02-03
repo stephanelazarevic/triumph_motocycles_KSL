@@ -1,5 +1,5 @@
 import { expect } from "jsr:@std/expect";
-import { CreateWarrantyUsecase } from "../../../../../application/usecases/warranty/CreateWarrantyUsecase.ts";
+import { AddWarrantyUsecase } from "../../../../../application/usecases/warranty/AddWarrantyUsecase.ts";
 import { WarrantyRepositoryInMemory } from "../../../../adapters/repositories/WarrantyRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
@@ -11,7 +11,7 @@ const warrantyRepository = new WarrantyRepositoryInMemory([]);
 
 const startDate = new Date(2019, 1, 1);
 const endDate = new Date(2024, 1, 1);
-const warrantyType = "Extended";
+const type = "Extended";
 const terms = "Terms and conditions";
 
 if (startDate || endDate instanceof Error) {
@@ -22,47 +22,79 @@ const motorcycleRepository = new MotorcycleRepositoryInMemory([
   motorcycle,
 ]);
 
-Deno.test("Should return an error if the warrantyType is empty", async () => {
-  const createWarrantyUsecase = new CreateWarrantyUsecase(warrantyRepository, motorcycleRepository);
-  const result = await createWarrantyUsecase.execute(startDate, endDate, motorcycle.identifier, "", terms);
+Deno.test("Should return an error if the type is empty", async () => {
+  const addWarrantyUsecase = new AddWarrantyUsecase(warrantyRepository, motorcycleRepository);
+  const result = await addWarrantyUsecase.execute({
+    startDate,
+    endDate,
+    motorcycleId: motorcycle.id,
+    type: "",
+    terms
+  });
 
   expect(result).toBeInstanceOf(EmptyDescriptionError);
 });
 
 Deno.test("Should return an error if the motorcycle does not exist", async () => {
-  const createWarrantyUsecase = new CreateWarrantyUsecase(warrantyRepository, motorcycleRepository);
-  const result = await createWarrantyUsecase.execute(startDate, endDate, "", warrantyType, terms);
+  const addWarrantyUsecase = new AddWarrantyUsecase(warrantyRepository, motorcycleRepository);
+  const result = await addWarrantyUsecase.execute({
+    startDate,
+    endDate,
+    motorcycleId: "",
+    type,
+    terms
+  });
 
   expect(result).toBeInstanceOf(MotorcycleNotFoundError);
 });
 
 Deno.test("Should return an error if the terms are null", async () => {
-  const createWarrantyUsecase = new CreateWarrantyUsecase(warrantyRepository, motorcycleRepository);
-  const result = await createWarrantyUsecase.execute(startDate, endDate, motorcycle.identifier, warrantyType, "");
-
+  const addWarrantyUsecase = new AddWarrantyUsecase(warrantyRepository, motorcycleRepository);
+  const result = await addWarrantyUsecase.execute({
+    startDate,
+    endDate,
+    motorcycleId: motorcycle.id,
+    type,
+    terms: ""
+  });
   expect(result).toBeInstanceOf(EmptyDescriptionError);
 });
 
 Deno.test("Should return an error if the startDate is invalid", async () => {
-  const createWarrantyUsecase = new CreateWarrantyUsecase(warrantyRepository, motorcycleRepository);
+  const addWarrantyUsecase = new AddWarrantyUsecase(warrantyRepository, motorcycleRepository);
   const badStartDate = new Date(2022, 1, 1);
-  const result = await createWarrantyUsecase.execute(badStartDate, endDate, motorcycle.identifier, warrantyType, terms);
-
+  const result = await addWarrantyUsecase.execute({
+    startDate: badStartDate,
+    endDate,
+    motorcycleId: motorcycle.id,
+    type,
+    terms
+  });
   expect(result).toBeInstanceOf(InvalidDateError);
 });
 
 Deno.test("Should return an error if the endDate is invalid", async () => {
-  const createWarrantyUsecase = new CreateWarrantyUsecase(warrantyRepository, motorcycleRepository);
+  const addWarrantyUsecase = new AddWarrantyUsecase(warrantyRepository, motorcycleRepository);
   const badEndDate = new Date(2022, 1, 1);
-  const result = await createWarrantyUsecase.execute(startDate, badEndDate, motorcycle.identifier, warrantyType, terms);
-
+  const result = await addWarrantyUsecase.execute({
+    startDate,
+    endDate: badEndDate,
+    motorcycleId: motorcycle.id,
+    type,
+    terms
+  });
   expect(result).toBeInstanceOf(InvalidDateError);
 });
 
 Deno.test("Should succeed when creating a warranty correctly", async () => {
-  const createWarrantyUsecase = new CreateWarrantyUsecase(warrantyRepository, motorcycleRepository);
-  const result = await createWarrantyUsecase.execute(startDate, endDate, motorcycle.identifier, warrantyType, terms);
-
+  const addWarrantyUsecase = new AddWarrantyUsecase(warrantyRepository, motorcycleRepository);
+  const result = await addWarrantyUsecase.execute({
+    startDate,
+    endDate,
+    motorcycleId: motorcycle.id,
+    type,
+    terms
+  });
   const maintenances = await warrantyRepository.findAll();
 
   expect(result).not.toBeInstanceOf(Error);
@@ -71,6 +103,6 @@ Deno.test("Should succeed when creating a warranty correctly", async () => {
   expect(maintenances[0].startDate).toStrictEqual(startDate);
   expect(maintenances[0].endDate).toStrictEqual(endDate);
   expect(maintenances[0].motorcycle).toStrictEqual(motorcycle);
-  expect(maintenances[0].warrantyType).toStrictEqual(warrantyType);
+  expect(maintenances[0].type).toStrictEqual(type);
   expect(maintenances[0].terms).toStrictEqual(terms);
 });

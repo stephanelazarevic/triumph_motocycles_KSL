@@ -1,12 +1,17 @@
 export abstract class Entity {
   constructor(
-    public readonly id: string,
+    public readonly id: string = crypto.randomUUID(),
     public readonly createdAt: Date = new Date(),
     protected updatedAt: Date = new Date(),
-    public deletedAt: Date | null = null,
+    protected deletedAt: Date | null = null,
   ) {}
 
   public markAsUpdated(): void {
     this.updatedAt = new Date();
+  }
+
+  public markAsDeleted(): void {
+    this.deletedAt = new Date();
+    this.markAsUpdated();
   }
 }

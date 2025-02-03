@@ -1,7 +1,7 @@
 import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
 import type { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
 
-export class FindAllMaintenancesUsecase {
+export class ListMaintenancesUsecase {
   public constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
   ) {}

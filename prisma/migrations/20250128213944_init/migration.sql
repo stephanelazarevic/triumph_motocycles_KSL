@@ -164,7 +164,7 @@ CREATE TABLE "WarrantyParts" (
 CREATE TABLE "Warranty" (
     "id" SERIAL NOT NULL,
     "idMoto" INTEGER NOT NULL,
-    "warrantyType" TEXT NOT NULL,
+    "type" TEXT NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "terms" TEXT,

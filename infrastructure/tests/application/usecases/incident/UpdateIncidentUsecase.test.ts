@@ -5,24 +5,27 @@ import { IncidentEntity } from "../../../../../domain/entities/IncidentEntity.ts
 import { IncidentType } from "../../../../../domain/enum/IncidentEnum.ts";
 import { IncidentNotFoundError } from "../../../../../domain/errors/IncidentNotFoundError.ts";
 import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
+import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 
 Deno.test("Should update an incident successfully when it exists", async () => {
-
-  const existingIncident = IncidentEntity.create(
-    "Description de l'incident",
+  const existingIncident = IncidentEntity.create({
+    description:"Description de l'incident",
     motorcycle,
-    IncidentType.BREAKDOWN,
-    new Date(2010, 1, 1),
-    new Date(2011, 1, 1),
-    "résolue",
-  );
+    type: IncidentType.BREAKDOWN,
+    reportDate: new Date(2010, 1, 1),
+    resolutionDate: new Date(2011, 1, 1),
+    status: "résolue",
+  });
+
+  const updatedIncident = {
+    description: "Description mise à jour"
+  };
 
   const incidentRepository = new IncidentRepositoryInMemory([existingIncident]);
-  const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository);
+  const motorcycleRepository = new MotorcycleRepositoryInMemory([]);
+  const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository, motorcycleRepository);
 
-  const updatedIncident = { ...existingIncident, description: "Description mise à jour" };
-
-  const result = await updateIncidentUsecase.execute(existingIncident.identifier, updatedIncident);
+  const result = await updateIncidentUsecase.execute(existingIncident.id, updatedIncident);
 
   const incidents = await incidentRepository.findAll();
 
@@ -33,18 +36,18 @@ Deno.test("Should update an incident successfully when it exists", async () => {
 
 Deno.test("Should return an error when the incident does not exist", async () => {
   const incidentRepository = new IncidentRepositoryInMemory([]);
-  const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository);
+  const motorcycleRepository = new MotorcycleRepositoryInMemory([]);
+  const updateIncidentUsecase = new UpdateIncidentUsecase(incidentRepository, motorcycleRepository);
 
-  const nonExistentIncident = IncidentEntity.create(
-    "Description de l'incident non existant",
+  const nonExistingIncident = IncidentEntity.create({
+    description: "Description de l'incident",
     motorcycle,
-    IncidentType.ACCIDENT,
-    new Date(2020, 1, 1),
-    new Date(2021, 1, 1),
-    "résolue",
-  );
-
-  const result = await updateIncidentUsecase.execute("blabla", nonExistentIncident);
+    type: IncidentType.ACCIDENT,
+    reportDate: new Date(2020, 1, 1),
+    resolutionDate: new Date(2021, 1, 1),
+    status: "résolue",
+  });
+  const result = await updateIncidentUsecase.execute("blabla", nonExistingIncident);
 
   expect(result).toBeInstanceOf(IncidentNotFoundError);
 });

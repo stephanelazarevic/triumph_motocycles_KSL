@@ -16,9 +16,7 @@ export class SoftDeleteDealerUsecase {
 
     await this.softDeleteUserUscase.execute(dealer.user.id);
 
-    dealer.deletedAt = new Date();
-    dealer.markAsUpdated();
-
+    dealer.markAsDeleted();
     await this.dealerRepository.save(dealer);
   }
 }

@@ -1,10 +1,9 @@
 import { expect } from "jsr:@std/expect";
-import { CreateMaintenanceUsecase } from "../../../../../application/usecases/maintenance/CreateMaintenanceUsecase.ts";
+import { AddMaintenanceUsecase } from "../../../../../application/usecases/maintenance/AddMaintenanceUsecase.ts";
 import { MaintenanceRepositoryInMemory } from "../../../../adapters/repositories/MaintenanceRepositoryInMemory.ts";
 import { MotorcycleRepositoryInMemory } from "../../../../adapters/repositories/MotorcycleRepositoryInMemory.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { MotorcycleNotFoundError } from "../../../../../domain/errors/MotorcycleNotFoundError.ts";
-import { NullCostError } from "../../../../../domain/errors/NullCostError.ts";
 import { EmptyDescriptionError } from "../../../../../domain/errors/EmptyDescriptionError.ts";
 import { motorcycle } from "../../../../../infrastructure/tests/fixtures/MotorcycleFixtures.ts"
 
@@ -21,17 +20,17 @@ if (date instanceof Error) {
 const motorcycleRepository = new MotorcycleRepositoryInMemory([motorcycle]);
 
 Deno.test("Should return an error if the date is invalid", async () => {
-  const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+  const addMaintenanceUsecase = new AddMaintenanceUsecase(
     maintenanceRepository,
     motorcycleRepository,
   );
   const badDate = new Date(2006, 1, 1);
-  const result = await createMaintenanceUsecase.execute(
-    badDate,
+  const result = await addMaintenanceUsecase.execute({
+    date: badDate,
     description,
-    motorcycle.identifier,
+    motorcycleId: motorcycle.id,
     cost,
-  );
+  });
 
   expect(result).toBeInstanceOf(InvalidDateError);
 });
@@ -39,62 +38,47 @@ Deno.test("Should return an error if the date is invalid", async () => {
 Deno.test(
   "Should return an error if the motorcycle does not exist",
   async () => {
-    const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+    const addMaintenanceUsecase = new AddMaintenanceUsecase(
       maintenanceRepository,
       motorcycleRepository,
     );
-    const result = await createMaintenanceUsecase.execute(
+    const result = await addMaintenanceUsecase.execute({
       date,
       description,
-      "",
-      cost,
-    );
+      motorcycleId: "",
+      cost
+    });
 
     expect(result).toBeInstanceOf(MotorcycleNotFoundError);
   },
 );
 
-Deno.test("Should return an error if the cost is null", async () => {
-  const createMaintenanceUsecase = new CreateMaintenanceUsecase(
-    maintenanceRepository,
-    motorcycleRepository,
-  );
-  const result = await createMaintenanceUsecase.execute(
-    date,
-    description,
-    motorcycle.identifier,
-    0,
-  );
-
-  expect(result).toBeInstanceOf(NullCostError);
-});
-
 Deno.test("Should return an error if the description is empty", async () => {
-  const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+  const addMaintenanceUsecase = new AddMaintenanceUsecase(
     maintenanceRepository,
     motorcycleRepository,
   );
-  const result = await createMaintenanceUsecase.execute(
+  const result = await addMaintenanceUsecase.execute({
     date,
-    "",
-    motorcycle.identifier,
+    description: "",
+    motorcycleId: motorcycle.id,
     cost,
-  );
+  });
 
   expect(result).toBeInstanceOf(EmptyDescriptionError);
 });
 
 Deno.test("Should succeed when creating an appointment correctly", async () => {
-  const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+  const addMaintenanceUsecase = new AddMaintenanceUsecase(
     maintenanceRepository,
     motorcycleRepository,
   );
-  const result = await createMaintenanceUsecase.execute(
+  const result = await addMaintenanceUsecase.execute({
     date,
     description,
-    motorcycle.identifier,
+    motorcycleId: motorcycle.id,
     cost,
-  );
+  });
 
   const maintenances = await maintenanceRepository.findAll();
 

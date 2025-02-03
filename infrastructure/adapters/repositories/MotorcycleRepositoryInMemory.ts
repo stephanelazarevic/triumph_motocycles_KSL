@@ -17,7 +17,7 @@ export class MotorcycleRepositoryInMemory implements MotorcycleRepository {
 
   public findOneById(id: string): Promise<MotorcycleEntity | MotorcycleNotFoundError> {
     const foundMotorcycle = this.motorcycles.find((motorcycle) => {
-      return motorcycle.identifier === id;
+      return motorcycle.id === id;
     });
 
     return Promise.resolve(foundMotorcycle ?? new MotorcycleNotFoundError());
@@ -25,7 +25,7 @@ export class MotorcycleRepositoryInMemory implements MotorcycleRepository {
 
   public delete(id: string): Promise<void> {
     this.motorcycles = this.motorcycles.filter(
-      (motorcycle) => motorcycle.identifier !== id,
+      (motorcycle) => motorcycle.id !== id,
     );
     return Promise.resolve();
   }

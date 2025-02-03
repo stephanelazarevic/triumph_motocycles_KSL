@@ -10,9 +10,7 @@ export class SoftDeleteUserUsecase {
       return new UserNotFoundError();
     }
 
-    user.deletedAt = new Date();
-    user.markAsUpdated();
-
+    user.markAsDeleted();
     await this.userRepository.save(user);
   }
 }

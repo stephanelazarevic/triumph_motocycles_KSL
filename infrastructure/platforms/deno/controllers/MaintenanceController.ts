@@ -1,12 +1,12 @@
 import type { MaintenanceRepository } from "../../../../application/repositories/MaintenanceRepository.ts";
 import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
-import { CreateMaintenanceUsecase } from "../../../../application/usecases/maintenance/CreateMaintenanceUsecase.ts";
-import { FindMaintenanceUsecase } from "../../../../application/usecases/maintenance/FindMaintenanceUsecase.ts";
-import { FindAllMaintenancesUsecase } from "../../../../application/usecases/maintenance/FindAllMaintenancesUsecase.ts";
+import { AddMaintenanceUsecase } from "../../../../application/usecases/maintenance/AddMaintenanceUsecase.ts";
+import { GetMaintenanceUsecase } from "../../../../application/usecases/maintenance/GetMaintenanceUsecase.ts";
+import { ListMaintenancesUsecase } from "../../../../application/usecases/maintenance/ListMaintenancesUsecase.ts";
 import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maintenance/UpdateMaintenanceUsecase.ts";
 import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
-import { createMaintenanceRequestSchema, updateMaitenanceRequestSchema } from "../schemas/maintenanceRequestSchema.ts";
+import { addMaintenanceRequestSchema, updateMaintenanceRequestSchema } from "../schemas/maintenanceRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity.ts";
 
@@ -17,7 +17,7 @@ export class MaintenanceController implements EntityControllerInterface {
   ) {}
 
   public async getAll(): Promise<Response> {
-    const listMaintenancesUsecase = new FindAllMaintenancesUsecase(this.maintenanceRepository);
+    const listMaintenancesUsecase = new ListMaintenancesUsecase(this.maintenanceRepository);
 
     const result = await listMaintenancesUsecase.execute();
 
@@ -37,9 +37,9 @@ export class MaintenanceController implements EntityControllerInterface {
       return new Response("Maintenance ID is required", { status: 400 });
     }
 
-    const findMaintenanceUsecase = new FindMaintenanceUsecase(this.maintenanceRepository);
+    const getMaintenanceUsecase = new GetMaintenanceUsecase(this.maintenanceRepository);
 
-    const result = await findMaintenanceUsecase.execute(id);
+    const result = await getMaintenanceUsecase.execute(id);
 
     if (result instanceof MaintenanceEntity) {
       return new Response(JSON.stringify(result), {
@@ -56,14 +56,14 @@ export class MaintenanceController implements EntityControllerInterface {
   }
 
   public async create(request: Request): Promise<Response> {
-    const createMaintenanceUsecase = new CreateMaintenanceUsecase(
+    const addMaintenanceUsecase = new AddMaintenanceUsecase(
       this.maintenanceRepository,
       this.motorcycleRepository,
     );
 
     const body = await request.json();
 
-    const validation = createMaintenanceRequestSchema.safeParse(body);
+    const validation = addMaintenanceRequestSchema.safeParse(body);
 
     if (!validation.success) {
       return new Response("Malformed request", {
@@ -73,12 +73,12 @@ export class MaintenanceController implements EntityControllerInterface {
 
     const { date, description, motorcycleId, cost } = validation.data;
 
-    const result = await createMaintenanceUsecase.execute(
+    const result = await addMaintenanceUsecase.execute({
       date,
       description,
       motorcycleId,
       cost,
-    );
+    });
 
     if (result instanceof MaintenanceEntity) {
       return new Response(null, { status: 201 });
@@ -98,15 +98,15 @@ export class MaintenanceController implements EntityControllerInterface {
     }
 
     const body = await request.json();
-    const validation = updateMaitenanceRequestSchema.safeParse(body);
+    const validation = updateMaintenanceRequestSchema.safeParse(body);
     if (!validation.success) {
       return new Response("Malformed request", { status: 400 });
     }
 
-    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
+    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository, this.motorcycleRepository);
     const result = await updateMaintenanceUsecase.execute(maintenanceId, validation.data);
 
-    if (result === undefined) {
+    if (result instanceof MaintenanceEntity) {
       return new Response(null, { status: 201 });
     }
 

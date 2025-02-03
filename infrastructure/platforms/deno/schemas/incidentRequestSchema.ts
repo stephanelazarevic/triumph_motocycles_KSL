@@ -1,13 +1,20 @@
 import { z } from "npm:zod";
 import { IncidentType } from "../../../../domain/enum/IncidentEnum.ts";
 
-export const createIncidentRequestSchema = z.object({
+export const addIncidentRequestSchema = z.object({
   description: z.string().min(1, "Description cannot be empty"),
-  motorcycleId: z.string().uuid().min(1, "Motorcycle id is required"),
-  type: z.nativeEnum(IncidentType, { errorMap: () => ({ message: "Invalid incident type" }) }).min(1, "Incident type is required"),
-  reportDate: z.date({ coerce: true }).min(1900, "Invalid year").max(new Date().getFullYear(), "Year cannot be in the future"),
-  resolutionDate: z.date({ coerce: true }).min(1900, "Invalid year").max(new Date().getFullYear(), "Year cannot be in the future"),
+  motorcycleId: z.string().uuid("Invalid UUID format"),
+  type: z.nativeEnum(IncidentType, {
+    errorMap: () => ({ message: "Invalid incident type" })
+  }),
+  reportDate: z.coerce.date()
+    .min(new Date(1900, 0, 1), "Date must be after 1900")
+    .max(new Date(), "Date cannot be in the future"),
+  resolutionDate: z.coerce.date()
+    .min(new Date(1900, 0, 1), "Date must be after 1900")
+    .max(new Date(), "Date cannot be in the future")
+    .optional(),
   status: z.string().min(1, "Status cannot be empty"),
 });
 
-export const updateIncidentRequestSchema = createIncidentRequestSchema.extend()
+export const updateIncidentRequestSchema = addIncidentRequestSchema.partial();

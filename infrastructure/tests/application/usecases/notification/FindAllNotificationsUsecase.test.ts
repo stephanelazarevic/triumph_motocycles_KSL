@@ -1,16 +1,10 @@
 import { expect } from "jsr:@std/expect";
-import { FindAllNotificationsUsecase } from "../../../../../application/usecases/notification/FindAllNotificationsUsecase.ts";
-import { UserEntity } from "../../../../../domain/entities/UserEntity.ts";
+import { ListNotificationsUsecase } from "../../../../../application/usecases/notification/ListNotificationsUsecase.ts";
 import { InvalidDateError } from "../../../../../domain/errors/InvalidDateError.ts";
 import { NotificationEntity } from "../../../../../domain/entities/NotificationEntity.ts";
 import { NotificationStatus, NotificationType } from "../../../../../domain/enum/NotificationEnum.ts";
 import { NotificationRepositoryInMemory } from "../../../../adapters/repositories/NotificationRepositoryInMemory.ts";
-
-const user = UserEntity.create("Pierre", "Robin", "pierre.robin@gmail.com", "123456", "0624252627", "street1", "75010", "19", true);
-
-if(user instanceof Error) {
-    throw new Error("Invalid user entity");
-}
+import { userJohnDoe } from "../../../fixtures/UserFixtures.ts";
 
 const date = new Date(2025, 1, 1);
 
@@ -23,21 +17,21 @@ const message = "Notification message";
 const status = NotificationStatus.UNREAD;
 
 Deno.test("Should return all notifications", async () => {
-  const notification = NotificationEntity.create(
-    user,
+  const notification = NotificationEntity.create({
+    user: userJohnDoe,
     type,
     message,
     date,
     status
-  );
+  });
   const notificationRepository = new NotificationRepositoryInMemory([
     notification,
   ]);
 
-  const findAllNotificationsUsecase = new FindAllNotificationsUsecase(
+  const listNotificationsUsecase = new ListNotificationsUsecase(
     notificationRepository
   );
-  const result = await findAllNotificationsUsecase.execute();
+  const result = await listNotificationsUsecase.execute();
 
   expect(result.length).toStrictEqual(1);
 
@@ -50,11 +44,11 @@ Deno.test(
   "Should return an empty list when no notifications exist",
   async () => {
     const notificationRepository = new NotificationRepositoryInMemory([]);
-    const findAllNotificationsUsecase = new FindAllNotificationsUsecase(
+    const listNotificationsUsecase = new ListNotificationsUsecase(
       notificationRepository
     );
 
-    const result = await findAllNotificationsUsecase.execute();
+    const result = await listNotificationsUsecase.execute();
 
     expect(result).toStrictEqual([]);
   }

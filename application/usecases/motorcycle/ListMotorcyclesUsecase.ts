@@ -1,7 +1,7 @@
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
 import type { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 
-export class FindAllMotorcyclesUsecase {
+export class ListMotorcyclesUsecase {
   public constructor(
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}

@@ -1,54 +1,47 @@
 import { IncidentEntity } from "../../../domain/entities/IncidentEntity.ts";
-import { IncidentType } from "../../../domain/enum/IncidentEnum.ts";
 import { InvalidDateError } from "../../../domain/errors/InvalidDateError.ts";
 import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFoundError.ts";
+import { AddIncidentCommand } from "../../../domain/types/IncidentType.ts";
 import type { IncidentRepository } from "../../repositories/IncidentRepository.ts";
 import type { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 
-export class CreateIncidentUsecase {
+export class AddIncidentUsecase {
   public constructor(
     private readonly incidentRepository: IncidentRepository,
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async execute(
-    description: string,
-    motorcycleId: string,
-    type: IncidentType,
-    reportDate: Date,
-    resolutionDate: Date,
-    status: string,
-  ): Promise<IncidentEntity | Error> {
-    if (!(reportDate instanceof Date) || isNaN(reportDate.getTime())) {
+  public async execute(command: AddIncidentCommand): Promise<IncidentEntity | Error> {
+    if (!(command.reportDate instanceof Date) || isNaN(command.reportDate.getTime())) {
       throw new InvalidDateError("La date de signalement est invalide.");
     }
 
-    if (!(resolutionDate instanceof Date) || isNaN(resolutionDate.getTime())) {
+    if (!(command.resolutionDate instanceof Date) || isNaN(command.resolutionDate.getTime())) {
       throw new InvalidDateError("La date de résolution est invalide.");
     }
 
-    if (resolutionDate < reportDate) {
+    if (command.resolutionDate < command.reportDate) {
       throw new InvalidDateError(
         "La date de résolution doit être postérieure à la date de signalement.",
       );
     }
 
     const motorcycle = await this.motorcycleRepository.findOneById(
-      motorcycleId,
+      command.motorcycleId,
     );
 
     if (motorcycle instanceof MotorcycleNotFoundError) {
       throw motorcycle;
     }
 
-    const incident = IncidentEntity.create(
-      description,
+    const incident = IncidentEntity.create({
+      description: command.description,
       motorcycle,
-      type,
-      reportDate,
-      resolutionDate,
-      status,
-    );
+      type: command.type,
+      reportDate: command.reportDate,
+      resolutionDate: command.resolutionDate,
+      status: command.status,
+    });
 
     await this.incidentRepository.save(incident);
     return incident;

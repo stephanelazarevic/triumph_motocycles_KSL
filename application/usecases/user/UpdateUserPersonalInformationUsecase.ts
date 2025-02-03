@@ -21,7 +21,6 @@ export class UpdateUserPersonalInformationUsecase {
         return validFirstname;
       }
       user.firstname = validFirstname;
-      user.markAsUpdated();
     }
 
     if (command.lastname !== undefined) {
@@ -30,7 +29,6 @@ export class UpdateUserPersonalInformationUsecase {
         return validLastname;
       }
       user.lastname = validLastname;
-      user.markAsUpdated();
     }
 
     if (command.address) {
@@ -44,9 +42,9 @@ export class UpdateUserPersonalInformationUsecase {
         return validAddress;
       }
       user.address = validAddress;
-      user.markAsUpdated();
     }
 
+    user.markAsUpdated();
     await this.userRepository.save(user);
     return user;
   }

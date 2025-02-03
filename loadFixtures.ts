@@ -134,7 +134,7 @@ async function loadFixtures() {
     const warranty = await prisma.warranty.create({
       data: {
         idMoto: moto1.id,
-        warrantyType: "Standard",
+        type: "Standard",
         startDate: new Date(),
         endDate: new Date(Date.now() + 365 * 24 * 60 * 60 * 1000), // 1 year from now
         terms: "Standard warranty terms",

@@ -1,22 +1,43 @@
 import { WarrantyRepository } from "../../repositories/WarrantyRepository.ts";
+import { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 import { WarrantyEntity } from "../../../domain/entities/WarrantyEntity.ts";
-import { WarrantyNotFoundError } from "../../../domain/errors/WarrantyNotFoundError.ts";
+import { UpdateWarrantyCommand } from "../../../domain/types/WarrantyType.ts";
 
 export class UpdateWarrantyUsecase {
-  constructor(private warrantyRepository: WarrantyRepository) {}
+ constructor(
+   private warrantyRepository: WarrantyRepository,
+   private motorcycleRepository: MotorcycleRepository
+ ) {}
 
-  public async execute(warrantyId: string, updatedWarranty: WarrantyEntity): Promise<WarrantyNotFoundError | void> {
-    const warranty = await this.warrantyRepository.findOneById(warrantyId);
-    if (warranty instanceof Error) {
-      return warranty;
-    }
+ public async execute(warrantyId: string, command: UpdateWarrantyCommand): Promise<WarrantyEntity | Error> {
+   const warranty = await this.warrantyRepository.findOneById(warrantyId);
+   if (warranty instanceof Error) {
+     return warranty;
+   }
 
-    warranty.startDate = updatedWarranty.startDate
-    warranty.endDate = updatedWarranty.endDate
-    warranty.warrantyType = updatedWarranty.warrantyType
-    warranty.motorcycle = updatedWarranty.motorcycle
-    warranty.terms = updatedWarranty.terms
+   if (command.motorcycleId) {
+     const motorcycle = await this.motorcycleRepository.findOneById(command.motorcycleId);
+     if (motorcycle instanceof Error) {
+       return motorcycle;
+     }
+     warranty.motorcycle = motorcycle;
+   }
 
-    await this.warrantyRepository.save(warranty);
-  }
+   if (command.startDate) {
+     warranty.startDate = command.startDate;
+   }
+   if (command.endDate) {
+     warranty.endDate = command.endDate;
+   }
+   if (command.type) {
+     warranty.type = command.type;
+   }
+   if (command.terms) {
+     warranty.terms = command.terms;
+   }
+
+   warranty.markAsUpdated();
+   await this.warrantyRepository.save(warranty);
+   return warranty;
+ }
 }

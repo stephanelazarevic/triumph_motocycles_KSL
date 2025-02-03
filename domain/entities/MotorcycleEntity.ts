@@ -1,46 +1,57 @@
 import { MotorcycleStatus } from "../enum/MotorcycleEnum.ts";
+import { MotorcycleCannotAssignToBothClientAndDriverError } from "../errors/MotorcycleCannotAssignToBothClientAndDriverError.ts";
 import { Brand } from "../value-objects/Brand.ts";
 import { Model } from "../value-objects/Model.ts";
+import { Entity } from "./Entity.ts";
 
-export class MotorcycleEntity {
+export class MotorcycleEntity extends Entity{
   private constructor(
-    public id: string,
-    public dealerIdentifier: string,
+    public dealerId: string,
     public brand: Brand,
     public model: Model,
     public year: number,
-    public registrationNumber: number,
+    public registrationNumber: string,
     public status: MotorcycleStatus,
     public clientId?: string,
     public driverId?: string,
-  ) {}
+  ) {
+    super();
+  }
 
-  public static isAssignedToClient(clientId?: string): boolean
+  public isAssignedToClient(clientId?: string): boolean
     {
       return clientId !== null;
     }
 
-  public static isAssignedToDriver(driverId?: string): boolean
+  public isAssignedToDriver(driverId?: string): boolean
   {
     return driverId !== null;
   }
 
-  public static create(dealerIdentifier: string, brand: Brand, model: Model, year: number, registrationNumber: number, motorcycleStatus: MotorcycleStatus, clientId?: string, driverId?:string): MotorcycleEntity {
+  public static create( params: {
+    dealerId: string;
+    brand: Brand;
+    model: Model;
+    year: number;
+    registrationNumber: string;
+    status: MotorcycleStatus;
+    clientId?: string;
+    driverId?: string;
+  }): MotorcycleEntity | Error {
 
-    if(this.isAssignedToClient(clientId) && this.isAssignedToDriver(driverId)){
-      throw new Error("Cannot assign a motorcycle to both a client and a driver"); 
+    if(params.clientId && params.driverId){
+      return new MotorcycleCannotAssignToBothClientAndDriverError()
     }
-  
-    const identifier = crypto.randomUUID();
 
     return new MotorcycleEntity(
-      identifier,
-      dealerIdentifier,
-      brand,
-      model,
-      year,
-      registrationNumber,
-      motorcycleStatus
+      params.dealerId,
+      params.brand,
+      params.model,
+      params.year,
+      params.registrationNumber,
+      params.status,
+      params.clientId,
+      params.driverId
     );
   }
 }

@@ -5,10 +5,11 @@ export class DeleteMotorcycleUsecase {
   constructor(private motorcycleRepository: MotorcycleRepository) {}
 
   public async execute(id: string): Promise<MotorcycleNotFoundError | void> {
-    const existing = await this.motorcycleRepository.findOneById(id);
-    if (!existing) {
+    const existingMotorcycle = await this.motorcycleRepository.findOneById(id);
+    if (!existingMotorcycle) {
       return new MotorcycleNotFoundError();
     }
+
     await this.motorcycleRepository.delete(id);
   }
 }
