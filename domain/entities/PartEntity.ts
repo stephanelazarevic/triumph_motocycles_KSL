@@ -1,6 +1,6 @@
 import { Entity } from "./Entity.ts";
 import type { DealerEntity } from "./DealerEntity.ts";
-import { InvalidStockQuantityError } from "../errors/InvalidStockQuantityError.ts"
+import { PartInvalidStockQuantityError } from "../errors/PartInvalidStockQuantityError.ts"
 
 export class PartEntity extends Entity {
 
@@ -23,7 +23,7 @@ export class PartEntity extends Entity {
 
   set stockQuantity(value: number) {
     if (!Number.isInteger(value) || value < 0) {
-      throw new InvalidStockQuantityError()
+      throw new PartInvalidStockQuantityError()
     }
     this._stockQuantity = value;
   }
