@@ -138,27 +138,27 @@ model MotoPart {
 model Part {
   id          Int      @id @default(autoincrement())
   idDealer   Int
-  idCommand   Int
+  idOrder   Int?
   reference   String
   type        String
   price       Float
   stockQuantity Int
-  command     Command  @relation(fields: [idCommand], references: [id])
+  order     Order?  @relation(fields: [idOrder], references: [id])
   dealer      Dealer  @relation(fields: [idDealer], references: [id])
   warranties  WarrantyParts[]
   motoPart MotoPart[]
 }
 
-model Command {
+model Order {
   id          Int      @id @default(autoincrement())
-  parts       Json
+  parts       OrderParts
   orderDate   DateTime
-  status      CommandStatus
+  status      OrderStatus
   totalAmount Float
   Part        Part[]
 }
 
-enum CommandStatus {
+enum OrderStatus {
   awaiting
   confirmed
   canceled

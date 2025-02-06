@@ -2,11 +2,13 @@ import { PartRepository } from "../../repositories/PartRepository.ts";
 import { DealerRepository } from "../../repositories/DealerRepository.ts";
 import { UpdatePartCommand } from "../../../domain/types/PartType.ts";
 import { PartEntity } from "../../../domain/entities/PartEntity.ts";
+import { OrderRepository } from "../../repositories/OrderRepository.ts";
 
 export class UpdatePartUsecase {
  constructor(
    private partRepository: PartRepository,
-   private dealerRepository: DealerRepository
+   private dealerRepository: DealerRepository,
+   private orderRepository: OrderRepository,
  ) {}
 
  public async execute(partId: string, command: UpdatePartCommand): Promise<PartEntity | Error> {
@@ -22,6 +24,14 @@ export class UpdatePartUsecase {
      }
      part.dealer = dealer;
    }
+
+   if (command.orderId) {
+    const order = await this.orderRepository.findOneById(command.orderId);
+    if (order instanceof Error) {
+      return order;
+    }
+    part.order = order;
+  }
 
    if (command.reference) {
      part.reference = command.reference;
