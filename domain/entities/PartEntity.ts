@@ -1,5 +1,6 @@
 import { Entity } from "./Entity.ts";
 import type { DealerEntity } from "./DealerEntity.ts";
+import type { OrderEntity } from "./OrderEntity.ts";
 import { PartInvalidStockQuantityError } from "../errors/PartInvalidStockQuantityError.ts"
 
 export class PartEntity extends Entity {
@@ -12,6 +13,7 @@ export class PartEntity extends Entity {
     public type: string,
     public price: number,
     stockQuantity: number,
+    public order?: OrderEntity,
   ) {
     super();
     this.stockQuantity = stockQuantity;
@@ -29,11 +31,12 @@ export class PartEntity extends Entity {
   }
 
   public static create( params: {
-    dealer: DealerEntity,
+    dealer: DealerEntity;
     reference: string;
     type: string;
     price: number;
     stockQuantity: number;
+    order?: OrderEntity;
   }) {
     return new PartEntity(
       params.dealer,
@@ -41,6 +44,7 @@ export class PartEntity extends Entity {
       params.type,
       params.price,
       params.stockQuantity,
+      params.order,
     );
   }
 }

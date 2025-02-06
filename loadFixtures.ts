@@ -99,8 +99,8 @@ async function loadFixtures() {
       },
     });
 
-    // Create command and parts
-    const command = await prisma.command.create({
+    // Create order and parts
+    const order = await prisma.order.create({
       data: {
         parts: JSON.stringify([{ name: "Part 1", quantity: 2 }]),
         orderDate: new Date(),
@@ -116,7 +116,7 @@ async function loadFixtures() {
         price: 750,
         stockQuantity: 5,
         idDealer: dealer.id,
-        idCommand: command.id,
+        idOrder: order.id,
       },
     });
 

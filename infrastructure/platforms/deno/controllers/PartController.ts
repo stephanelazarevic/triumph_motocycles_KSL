@@ -9,11 +9,13 @@ import { exhaustive } from "npm:exhaustive"
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { addPartRequestSchema, updatePartRequestSchema } from "../schemas/partRequestSchema.ts";
 import { PartEntity } from "../../../../domain/entities/PartEntity.ts";
+import { OrderRepository } from "../../../../application/repositories/OrderRepository.ts";
 
 export class PartController implements EntityControllerInterface {
   public constructor(
     private readonly partRepository: PartRepository,
     private readonly dealerRepository: DealerRepository,
+    private readonly orderRepository: OrderRepository,
   ) {}
 
   public async getAll(): Promise<Response> {
@@ -64,6 +66,7 @@ export class PartController implements EntityControllerInterface {
     const addPartUsecase = new AddPartUsecase(
       this.partRepository,
       this.dealerRepository,
+      this.orderRepository,
     );
 
     const body = await request.json();
@@ -86,6 +89,7 @@ export class PartController implements EntityControllerInterface {
 
     return exhaustive(result.name, {
       DealerNotFoundError: () => new Response("DealerNotFoundError", { status: 404 }),
+      OrderNotFoundError: () => new Response("OrderNotFoundError", { status: 404 }),
     });
   }
 
@@ -105,7 +109,7 @@ export class PartController implements EntityControllerInterface {
       });
     }
 
-    const updatePartUsecase = new UpdatePartUsecase(this.partRepository, this.dealerRepository);
+    const updatePartUsecase = new UpdatePartUsecase(this.partRepository, this.dealerRepository, this.orderRepository);
     const result = await updatePartUsecase.execute(partId, validation.data);
 
     if (result instanceof PartEntity) {
