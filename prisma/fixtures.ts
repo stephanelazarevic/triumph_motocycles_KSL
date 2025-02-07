@@ -183,7 +183,7 @@ async function cleanDatabase() {
   await prisma.breakdown.deleteMany({});
   await prisma.motoPart.deleteMany({});
   await prisma.part.deleteMany({});
-  await prisma.command.deleteMany({});
+  await prisma.order.deleteMany({});
   await prisma.rental.deleteMany({});
   await prisma.testRide.deleteMany({});
   await prisma.driver.deleteMany({});
