@@ -1,10 +1,10 @@
 import { Entity } from "./Entity.ts";
-import { OrderParts } from "../types/OrderType.ts";
+import { PartQuantityToOrder } from "../types/OrderType.ts";
 import { OrderStatus } from "../enum/OrderEnum.ts";
 
 export class OrderEntity extends Entity {
   private constructor(
-    public parts: OrderParts,
+    public parts: Array<PartQuantityToOrder>,
     public orderDate: Date,
     public status: OrderStatus,
     public totalAmount: number,
@@ -13,7 +13,7 @@ export class OrderEntity extends Entity {
   }
 
   public static create(params: {
-    parts: OrderParts,
+    parts: Array<PartQuantityToOrder>,
     orderDate: Date,
     status: OrderStatus,
     totalAmount: number,

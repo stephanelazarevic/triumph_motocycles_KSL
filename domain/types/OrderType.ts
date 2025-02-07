@@ -1,12 +1,12 @@
 import { OrderStatus } from "../enum/OrderEnum"
 
-export interface OrderParts {
+export interface PartQuantityToOrder {
     partId: string,
     quantity: number
   }
   
 export interface AddOrderCommand {
-  parts: OrderParts,
+  parts: Array<PartQuantityToOrder>,
   orderDate: Date,
   status: OrderStatus,
   totalAmount: number,

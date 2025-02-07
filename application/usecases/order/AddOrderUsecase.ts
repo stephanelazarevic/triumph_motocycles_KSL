@@ -11,16 +11,19 @@ export class AddOrderUsecase {
   ) {}
 
   public async execute(command: AddOrderCommand): Promise<OrderEntity | Error> {
-    const part = await this.partRepository.findOneById(
-        command.parts.partId,
-    );
 
-    if (part instanceof PartNotFoundError) {
+    const updatedParts: Array<{ partId: string; quantity: number }> = [];
+
+    for(const partToOrder of command.parts){
+      const part = await this.partRepository.findOneById(partToOrder.partId,);
+      if (part instanceof PartNotFoundError) {
         return part;
       }
+      updatedParts.push({ partId: part.id, quantity: partToOrder.quantity });
+    }
 
     const order = OrderEntity.create({
-      parts: command.parts,
+      parts: updatedParts,
       orderDate: command.orderDate,
       status: command.status,
       totalAmount: command.totalAmount,

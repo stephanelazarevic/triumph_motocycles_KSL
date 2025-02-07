@@ -20,7 +20,7 @@ export class AddPartUsecase {
       return dealer;
     }
 
-    const order = await this.orderRepository.findOneById(command.orderId);
+    const order = command.orderId ? await this.orderRepository.findOneById(command.orderId): undefined;
 
     if(order instanceof OrderNotFoundError){
       return order;
