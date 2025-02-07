@@ -19,7 +19,7 @@ export class AddWarrantyPartUsecase {
       );
   
       if (warranty instanceof WarrantyNotFoundError) {
-        throw warranty;
+        return warranty;
       }
 
     const part = await this.partRepository.findOneById(
@@ -27,7 +27,7 @@ export class AddWarrantyPartUsecase {
     );
 
     if (part instanceof PartNotFoundError) {
-      throw part;
+      return part;
     }
 
     const warrantyPart = WarrantyPartEntity.create( {

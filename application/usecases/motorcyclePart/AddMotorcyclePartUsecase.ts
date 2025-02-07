@@ -1,6 +1,5 @@
 import { MotorcyclePartEntity } from "../../../domain/entities/MotorcyclePartEntity.ts";
 import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFoundError.ts";
-import { MotorcyclePartNotFoundError } from "../../../domain/errors/MotorcyclePartNotFoundError.ts";
 import { PartNotFoundError } from "../../../domain/errors/PartNotFoundError.ts";
 import { AddMotorcyclePartCommand } from "../../../domain/types/MotorcyclePartType.ts";
 import type { MotorcyclePartRepository } from "../../repositories/MotorcyclePartRepository.ts";
@@ -14,13 +13,13 @@ export class AddMotorcyclePartUsecase {
     private readonly partRepository: PartRepository,
   ) {}
 
-  public async execute(command: AddMotorcyclePartCommand): Promise<MotorcyclePartEntity | MotorcyclePartNotFoundError> {
+  public async execute(command: AddMotorcyclePartCommand): Promise<MotorcyclePartEntity | Error> {
     const motorcycle = await this.motorcycleRepository.findOneById(
       command.motorcycleId,
     );
 
     if (motorcycle instanceof MotorcycleNotFoundError) {
-      throw motorcycle;
+      return motorcycle;
     }
 
     const part = await this.partRepository.findOneById(
@@ -28,7 +27,7 @@ export class AddMotorcyclePartUsecase {
     );
 
     if (part instanceof PartNotFoundError) {
-      throw motorcycle;
+      return part;
     }
 
     const motorcyclePart = MotorcyclePartEntity.create({

@@ -28,11 +28,11 @@ export class AddRentalUsecase {
     }
 
     if (!(command.startDate instanceof Date) || isNaN(command.startDate.getTime())) {
-        throw new InvalidDateError("La date est invalide.");
+      return new InvalidDateError("La date est invalide.");
     }
 
     if (!(command.endDate instanceof Date) || isNaN(command.startDate.getTime())) {
-        throw new InvalidDateError("La date est invalide.");
+      return new InvalidDateError("La date est invalide.");
     }
 
     const rental = RentalEntity.create({

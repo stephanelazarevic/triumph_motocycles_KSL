@@ -31,7 +31,7 @@ export class AddWarrantyUsecase {
     );
 
     if (motorcycle instanceof MotorcycleNotFoundError) {
-      throw motorcycle;
+      return motorcycle;
     }
 
     const warranty = WarrantyEntity.create( {

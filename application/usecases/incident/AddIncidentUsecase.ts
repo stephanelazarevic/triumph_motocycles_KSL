@@ -13,15 +13,15 @@ export class AddIncidentUsecase {
 
   public async execute(command: AddIncidentCommand): Promise<IncidentEntity | Error> {
     if (!(command.reportDate instanceof Date) || isNaN(command.reportDate.getTime())) {
-      throw new InvalidDateError("La date de signalement est invalide.");
+      return new InvalidDateError("La date de signalement est invalide.");
     }
 
     if (!(command.resolutionDate instanceof Date) || isNaN(command.resolutionDate.getTime())) {
-      throw new InvalidDateError("La date de résolution est invalide.");
+      return new InvalidDateError("La date de résolution est invalide.");
     }
 
     if (command.resolutionDate < command.reportDate) {
-      throw new InvalidDateError(
+      return new InvalidDateError(
         "La date de résolution doit être postérieure à la date de signalement.",
       );
     }
@@ -31,7 +31,7 @@ export class AddIncidentUsecase {
     );
 
     if (motorcycle instanceof MotorcycleNotFoundError) {
-      throw motorcycle;
+      return motorcycle;
     }
 
     const incident = IncidentEntity.create({
