@@ -1,6 +1,6 @@
 import { OrderRepository } from "../../repositories/OrderRepository.ts";
 import { PartRepository } from "../../repositories/PartRepository.ts";
-import { updateOrderCommand } from "../../../domain/types/OrderType.ts";
+import { updateOrderCommand, PartQuantityToOrder } from "../../../domain/types/OrderType.ts";
 import { OrderEntity } from "../../../domain/entities/OrderEntity.ts";
 
 export class UpdateOrderUsecase {
@@ -17,9 +17,9 @@ export class UpdateOrderUsecase {
 
     if (command.parts) {
 
-      const updatedParts: { partId: string; quantity: number }[] = [];
+      const updatedParts: Array<PartQuantityToOrder> = [];
 
-      for(const partToOrder of command.parts?){
+      for(const partToOrder of command.parts){
         const part = await this.partRepository.findOneById(partToOrder.partId);
         if (part instanceof Error) {
           return part;

@@ -1,6 +1,6 @@
 import { OrderEntity } from "../../../domain/entities/OrderEntity.ts";
 import { PartNotFoundError } from "../../../domain/errors/PartNotFoundError.ts";
-import { AddOrderCommand } from "../../../domain/types/OrderType.ts";
+import { AddOrderCommand, PartQuantityToOrder } from "../../../domain/types/OrderType.ts";
 import type { OrderRepository } from "../../repositories/OrderRepository.ts";
 import type { PartRepository } from "../../repositories/PartRepository.ts";
 
@@ -12,7 +12,7 @@ export class AddOrderUsecase {
 
   public async execute(command: AddOrderCommand): Promise<OrderEntity | Error> {
 
-    const updatedParts: Array<{ partId: string; quantity: number }> = [];
+    const updatedParts: Array<PartQuantityToOrder> = [];
 
     for(const partToOrder of command.parts){
       const part = await this.partRepository.findOneById(partToOrder.partId,);
