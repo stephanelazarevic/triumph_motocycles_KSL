@@ -52,8 +52,8 @@ model Dealer {
   location  String
   user      User     @relation(fields: [id], references: [id])
   clients   Client[]
-  motos     Moto[]   @relation("DealerMotos")  // Relation avec les motos
-  part Part[]
+  motos     Moto[]   @relation("DealerMotos")
+  part      Part[]
 }
 
 model Enterprise {
@@ -77,7 +77,7 @@ model Client {
   user      User     @relation(fields: [id], references: [id])
   rentals   Rental[]
   testRides TestRide[]
-  motos     Moto[]   @relation("ClientMotos")  // Relation avec les motos
+  motos     Moto[]   @relation("ClientMotos")
 }
 
 model TestRide {
@@ -118,7 +118,7 @@ model Moto {
   breakdowns      Breakdown[]
   warranties      Warranty[]
   parts           MotoPart[]
-  driver          Driver[]  // Relation avec Driver
+  driver          Driver[]
 }
 
 enum MotoStatus {
@@ -137,13 +137,13 @@ model MotoPart {
 
 model Part {
   id          Int      @id @default(autoincrement())
-  idDealer   Int
-  idOrder   Int?
+  idDealer    Int
+  idOrder     Int?
   reference   String
   type        String
   price       Float
   stockQuantity Int
-  order     Order?  @relation(fields: [idOrder], references: [id])
+  order       Order?  @relation(fields: [idOrder], references: [id])
   dealer      Dealer  @relation(fields: [idDealer], references: [id])
   warranties  WarrantyParts[]
   motoPart MotoPart[]
@@ -151,7 +151,7 @@ model Part {
 
 model Order {
   id          Int      @id @default(autoincrement())
-  parts       OrderParts
+  parts       Json
   orderDate   DateTime
   status      OrderStatus
   totalAmount Float
