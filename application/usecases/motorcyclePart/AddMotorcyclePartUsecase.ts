@@ -1,5 +1,6 @@
 import { MotorcyclePartEntity } from "../../../domain/entities/MotorcyclePartEntity.ts";
 import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFoundError.ts";
+import { EmptyStockError } from "../../../domain/errors/EmptyStockError.ts";
 import { PartNotFoundError } from "../../../domain/errors/PartNotFoundError.ts";
 import { AddMotorcyclePartCommand } from "../../../domain/types/MotorcyclePartType.ts";
 import type { MotorcyclePartRepository } from "../../repositories/MotorcyclePartRepository.ts";
@@ -29,13 +30,19 @@ export class AddMotorcyclePartUsecase {
     if (part instanceof PartNotFoundError) {
       return part;
     }
+    if (part.stockQuantity <= 0) {
+      return new EmptyStockError("Stock insuffisant pour cette pièce.")
+    }
 
     const motorcyclePart = MotorcyclePartEntity.create({
       motorcycle,
       part,
     });
 
+    part.stockQuantity -= 1;
+
     await this.motorcyclePartRepository.save(motorcyclePart);
+    await this.partRepository.save(part);
     return motorcyclePart;
   }
 }
