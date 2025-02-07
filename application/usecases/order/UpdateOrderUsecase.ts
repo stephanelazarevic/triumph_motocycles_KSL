@@ -15,17 +15,20 @@ export class UpdateOrderUsecase {
       return order;
     }
 
-    if (command.parts?.partId) {
-        const part = await this.partRepository.findOneById(command.parts.partId);
+    if (command.parts) {
+
+      const updatedParts: { partId: string; quantity: number }[] = [];
+
+      for(const partToOrder of command.parts?){
+        const part = await this.partRepository.findOneById(partToOrder.partId);
         if (part instanceof Error) {
           return part;
         }
-        order.parts.partId = part.id;
+        updatedParts.push({ partId: part.id, quantity: partToOrder.quantity });
       }
-
-    if (command.parts?.quantity) {
-      order.parts.quantity = command.parts.quantity;
+      order.parts = updatedParts;
     }
+
     if (command.orderDate) {
       order.orderDate = command.orderDate;
     }
