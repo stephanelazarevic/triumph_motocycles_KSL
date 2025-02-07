@@ -1,0 +1,22 @@
+import { Entity } from "./Entity.ts";
+import { MotorcycleEntity } from "./MotorcycleEntity.ts";
+import { PartEntity } from "./PartEntity.ts";
+
+export class MotorcyclePartEntity extends Entity {
+  private constructor(
+    public motorcycle: MotorcycleEntity,
+    public part: PartEntity,
+  ) {
+    super();
+  }
+
+  public static create(params: {
+    motorcycle: MotorcycleEntity;
+    part: PartEntity;
+  }): MotorcyclePartEntity {
+    return new MotorcyclePartEntity(
+      params.motorcycle,
+      params.part,
+    );
+  }
+}

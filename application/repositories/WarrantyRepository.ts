@@ -3,7 +3,7 @@ import { WarrantyNotFoundError } from "../../domain/errors/WarrantyNotFoundError
 import { EntityRepositoryInterface } from "./EntityRepositoryInterface.ts";
 
 export interface WarrantyRepository extends EntityRepositoryInterface<WarrantyEntity> {
-  save(maintenance: WarrantyEntity): Promise<void>;
+  save(warranty: WarrantyEntity): Promise<void>;
   findAll(): Promise<WarrantyEntity[]>;
   findOneById(id: string): Promise<WarrantyEntity | WarrantyNotFoundError>;
   delete(id: string): Promise<void>;
