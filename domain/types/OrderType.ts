@@ -1,10 +1,10 @@
-import { OrderStatus } from "../enum/OrderEnum"
+import { OrderStatus } from "../enum/OrderEnum.ts"
 
 export interface PartQuantityToOrder {
     partId: string,
     quantity: number
   }
-  
+
 export interface AddOrderCommand {
   parts: Array<PartQuantityToOrder>,
   orderDate: Date,
@@ -13,4 +13,4 @@ export interface AddOrderCommand {
 }
 
 export interface updateOrderCommand extends Partial<AddOrderCommand> {
-}  
+}
