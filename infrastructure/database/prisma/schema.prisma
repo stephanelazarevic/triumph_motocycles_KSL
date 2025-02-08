@@ -10,16 +10,9 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Dinosaur {
-  id          Int     @id @default(autoincrement())
-  name        String  @unique
-  description String
-}
-
 model Notification {
-  id        Int      @id @default(autoincrement())
-  idUser    Int
+  id        String      @id @default(uuid())
+  idUser    String
   type      NotificationType
   message   String
   date      DateTime
@@ -43,7 +36,7 @@ enum NotificationStatus {
 }
 
 model User {
-  id                  Int          @id @default(autoincrement())
+  id                  String          @id @default(uuid())
   firstname           String
   lastname            String
   hashedPassword      String
@@ -64,9 +57,9 @@ model User {
 }
 
 model Dealer {
-  id        Int      @id
+  id        String      @id @default(uuid())
   site      String
-  user      User     @relation(fields: [id], references: [id])
+  user      User        @relation(fields: [id], references: [id])
   clients   Client[]
   motorcycle Motorcycle[]   @relation("DealerMotorcycle")
   part      Part[]
@@ -78,7 +71,7 @@ model Dealer {
 }
 
 model Enterprise {
-  id           Int       @id
+  id           String    @id @default(uuid())
   taxNumber    String
   industryType IndustryType
   user         User      @relation(fields: [id], references: [id])
@@ -97,8 +90,8 @@ enum IndustryType {
 }
 
 model Client {
-  id        Int      @id
-  idDealer  Int
+  id        String      @id @default(uuid())
+  idDealer  String
   dealer    Dealer   @relation(fields: [idDealer], references: [id])
   user      User     @relation(fields: [id], references: [id])
   rentals   Rental[]
@@ -112,14 +105,14 @@ model Client {
 }
 
 model TestRide {
-  id              Int      @id @default(autoincrement())
-  idClient        Int
-  idMotorcycle    Int
+  id              String      @id @default(uuid())
+  idClient        String
+  idMotorcycle    String
   date            DateTime
   feedback        String?
   isCompleted     Boolean
-  client          Client   @relation(fields: [idClient], references: [id])
-  motorcycle      Motorcycle     @relation(fields: [idMotorcycle], references: [id])
+  client          Client      @relation(fields: [idClient], references: [id])
+  motorcycle      Motorcycle  @relation(fields: [idMotorcycle], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -128,9 +121,9 @@ model TestRide {
 }
 
 model Rental {
-  id              Int      @id @default(autoincrement())
-  idClient        Int
-  idMotorcycle    Int
+  id              String      @id @default(uuid())
+  idClient        String
+  idMotorcycle    String
   startDate       DateTime
   endDate         DateTime
   cost            Float
@@ -145,23 +138,26 @@ model Rental {
 }
 
 model Motorcycle {
-  id              Int      @id @default(autoincrement())
-  idClient        Int?
-  idDealer        Int
+  id              String      @id @default(uuid())
+  clientId        String?
+  dealerId        String
   brand           String
   model           String
-  year            String
+  year            Int
   registrationNumber String @unique
   status          MotorcycleStatus
-  client          Client?  @relation(fields: [idClient], references: [id], name: "ClientMotorcycle")
-  dealer          Dealer   @relation(fields: [idDealer], references: [id], name: "DealerMotorcycle")
+  client          Client?  @relation(fields: [clientId], references: [id], name: "ClientMotorcycle")
+  dealer          Dealer   @relation(fields: [dealerId], references: [id], name: "DealerMotorcycle")
   testRides       TestRide[]
   rentals         Rental[]
   maintenance     Maintenance[]
   breakdowns      Incident[]
   warranties      Warranty[]
   parts           MotorcyclePart[]
-  driver          Driver[]
+  drivers         Driver[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("motorcycles")
 }
@@ -173,19 +169,22 @@ enum MotorcycleStatus {
 }
 
 model MotorcyclePart {
-  idMotorcycle  Int
-  idPart        Int
+  idMotorcycle  String
+  idPart        String
   motorcycle    Motorcycle     @relation(fields: [idMotorcycle], references: [id])
   part          Part     @relation(fields: [idPart], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@id([idMotorcycle, idPart])
   @@map("motorcycle_parts")
 }
 
 model Part {
-  id          Int      @id @default(autoincrement())
-  idDealer    Int
-  idOrder     Int?
+  id          String      @id @default(uuid())
+  idDealer    String
+  idOrder     String?
   reference   String
   type        String
   price       Float
@@ -195,16 +194,22 @@ model Part {
   warranties  WarrantyParts[]
   motorcyclePart    MotorcyclePart[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("parts")
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
+  id          String      @id @default(uuid())
   parts       Json
   orderDate   DateTime
   status      OrderStatus
   totalAmount Float
   Part        Part[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("orders")
 }
@@ -216,8 +221,8 @@ enum OrderStatus {
 }
 
 model WarrantyParts {
-  idPart       Int
-  idWarranty   Int
+  idPart       String
+  idWarranty   String
   actionDate   DateTime
   actionType   ActionType
   status       WarrantyStatus
@@ -225,8 +230,11 @@ model WarrantyParts {
   remainingCost Float
   part         Part     @relation(fields: [idPart], references: [id])
   warranty     Warranty @relation(fields: [idWarranty], references: [id])
-  @@id([idPart, idWarranty])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@id([idPart, idWarranty])
   @@map("warranty_parts")
 }
 
@@ -242,8 +250,8 @@ enum WarrantyStatus {
 }
 
 model Warranty {
-  id            Int      @id @default(autoincrement())
-  idMotorcycle  Int
+  id            String      @id @default(uuid())
+  idMotorcycle  String
   type          String
   startDate     DateTime
   endDate       DateTime
@@ -251,29 +259,38 @@ model Warranty {
   motorcycle    Motorcycle     @relation(fields: [idMotorcycle], references: [id])
   warrantyParts WarrantyParts[]
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("warranties")
 }
 
 model Maintenance {
-  id              Int      @id @default(autoincrement())
-  idMotorcycle    Int
+  id              String      @id @default(uuid())
+  idMotorcycle    String
   date            DateTime
   description     String
   cost            Float
   motorcycle      Motorcycle     @relation(fields: [idMotorcycle], references: [id])
 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
   @@map("maintenancies")
 }
 
 model Incident {
-  id             Int      @id @default(autoincrement())
-  idMotorcycle   Int
+  id             String      @id @default(uuid())
+  idMotorcycle   String
   type           IncidentType
   description    String
   reportDate     DateTime
   resolutionDate DateTime?
   status         IncidentStatus
   motorcycle     Motorcycle     @relation(fields: [idMotorcycle], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("incidents")
 }
@@ -290,16 +307,19 @@ enum IncidentStatus {
 }
 
 model Driver {
-  id            Int      @id @default(autoincrement())
-  idEntreprise  Int
-  idMotorcycle  Int
+  id            String      @id @default(uuid())
+  idEnterprise  String
+  idMotorcycle  String
   firstname     String
   lastname      String
   licenseNumber String
-  phone         String?
-  email         String  @unique
-  entreprise    Enterprise @relation(fields: [idEntreprise], references: [id])
-  motorcycle    Motorcycle     @relation(fields: [idMotorcycle], references: [id])
+  phoneNumber   String
+  emailAddress  String  @unique
+  entreprise    Enterprise @relation(fields: [idEnterprise], references: [id])
+  motorcycle    Motorcycle @relation(fields: [idMotorcycle], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@map("drivers")
 }
