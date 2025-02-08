@@ -1,4 +1,7 @@
 {
   "deno.enable": true,
-  "prettier.printWidth": 600
+  "deno.enablePaths": [
+    "infrastructure/platforms/deno",
+    "infrastructure/database/prisma"
+  ],
 }
