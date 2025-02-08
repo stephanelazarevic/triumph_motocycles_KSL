@@ -1,7 +1,12 @@
 import { PrismaClient } from "../../../database/prisma/generated/client-deno/deno/edge.ts";
-import { withAccelerate } from '@prisma/extension-accelerate'
-import { load } from "https://deno.land/std/dotenv/mod.ts";
+import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
 
-await load({ export: true });
+const env = await load();
 
-export const prisma = new PrismaClient().$extends(withAccelerate())
+export const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: env.DATABASE_URL
+    }
+  }
+});

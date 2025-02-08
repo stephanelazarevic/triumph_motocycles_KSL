@@ -24,4 +24,8 @@ export class EmailAddress {
   public getValue(): string {
     return this.value;
   }
+
+  public static reconstitute (value: string){
+    return new EmailAddress(value);
+  }
 }

@@ -10,4 +10,12 @@ export class Brand {
 
     return new Brand(value);
   }
+
+  public getValue(): string {
+    return this.value;
+  }
+
+  public static reconstitute (value: string){
+    return new Brand(value);
+  }
 }

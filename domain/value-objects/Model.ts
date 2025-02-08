@@ -10,4 +10,12 @@ export class Model {
 
     return new Model(value);
   }
+
+  public getValue(): string {
+    return this.value;
+  }
+
+  public static reconstitute (value: string){
+    return new Model(value);
+  }
 }
