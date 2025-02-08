@@ -4,7 +4,7 @@
   "tasks": {
     "dev": "deno run --watch --allow-net --allow-env infrastructure/platforms/deno/main.ts",
     "start:api": "deno run --allow-net --allow-env --allow-read infrastructure/platforms/deno/main.ts",
-    "start:front": "npm run dev --prefix interface",
+    "start:front": "npm run dev --prefix infrastructure/client/next",
     "start:all": "deno task start:api & deno task start:front",
     "generate:prisma": "cd infrastructure/database/prisma && deno run -A npm:prisma@latest generate --no-engine",
     "seed": "deno run --allow-net --allow-env --allow-read infrastructure/database/prisma/seed.ts",
@@ -23,7 +23,6 @@
     "libphonenumber-js": "npm:libphonenumber-js@^1.11.17"
   },
   "exclude": [
-    "interface",
     "node_modules",
     ".next"
   ]
