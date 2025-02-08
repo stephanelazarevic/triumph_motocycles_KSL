@@ -9,24 +9,23 @@ export class RetryFailedNotificationsJob {
   ) {}
 
   public async execute(): Promise<void> {
-    console.log("🔄 Démarrage du job de retry des notifications échouées...");
+    console.log("🔄 Retry job starting...");
 
     const failedNotifications = await this.notificationRepository.findNotificationsByStatus(NotificationStatus.FAILED);
 
     if (failedNotifications.length === 0) {
-      console.log("✅ Aucune notification en échec à retenter.");
+      console.log("✅ No failed notifications.");
       return;
     }
 
     for (const notification of failedNotifications) {
       try {
-        console.log(`🔄 Retentative de la notification ID: ${notification.id}`);
 
         await this.sendNotificationUsecase.resend(notification);
 
-        console.log(`✅ Notification ID ${notification.id} envoyée avec succès !`);
+        console.log(`✅ Notification ${notification.id} send !`);
       } catch (error) {
-        console.error(`❌ Échec du retry pour la notification ID ${notification.id}:`, error.message);
+        console.error(`❌ Retry failed for notification ${notification.id}:`, error.message);
       }
     }
   }

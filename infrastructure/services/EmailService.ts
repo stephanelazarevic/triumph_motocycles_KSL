@@ -1,4 +1,10 @@
 import { EmailAddress } from "../../domain/value-objects/EmailAddress";
+import { EmailNotSentError } from "../../domain/errors/EmailNotSentError.ts"
+
+import { config } from "https://deno.land/std@0.203.0/dotenv/mod.ts";
+const env = config();
+const MAIL_API_KEY = env.MAIL_API_KEY;
+
 
 export interface EmailService {
     send(email: { to: EmailAddress; subject: string; body: string }): Promise<void>;
@@ -6,7 +12,7 @@ export interface EmailService {
   
   export class ResendEmailService implements EmailService {
 
-    private readonly apiKey = "re_DaL2Ey92_6wjMQRP18r4wfCGGrNLUZR5k";
+    private readonly apiKey = MAIL_API_KEY;
 
     async send(email: { to: EmailAddress; subject: string; body: string }): Promise<void> {
 
@@ -17,7 +23,7 @@ export interface EmailService {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          from: "stephanelazarevic042@gmail.com", 
+          from: "admin.ksl@gmail.com", 
           to: email,
           subject: email.subject,
           text: email.body,
@@ -25,11 +31,11 @@ export interface EmailService {
       });
   
       if (!response.ok) {
-        console.error("❌ Erreur lors de l'envoi de l'email:", await response.text());
-        throw new Error("Échec de l'envoi de l'email");
+        console.error("❌ Error while sending email:", await response.text());
+        throw new EmailNotSentError();
       }
   
-      console.log(`📧 Email envoyé à ${email.to} via Resend`);
+      console.log(`📧 Email sent to ${email.to} !`);
 
     }
   }

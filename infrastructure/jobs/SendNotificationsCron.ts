@@ -30,12 +30,11 @@ export class SendNotificationsCron {
     // Cron pour envoyer les notifications tous les jours à minuit
     const cronJob = new CronJob("0 0 * * *", async () => {
       try {
-        console.log("🔔 Envoi des notifications planifiées...");
+        console.log("🔔 Sending notifications...");
         await this.sendNotificationUsecase.execute();
 
         const toSendNotifications = await this.notificationRepository.findNotificationsByStatus(NotificationStatus.TO_SEND);
         for (const notification of toSendNotifications) {
-          console.log(`📤 Envoi manuel notification ID: ${notification.id}`);
           
           await this.sendNotificationUsecase.sendNotification(
             notification.user.id,
@@ -47,9 +46,9 @@ export class SendNotificationsCron {
           );
         }
 
-        console.log("✅ Notifications envoyées et statut mis à jour");
+        console.log("✅ Notifications send and status updated !");
       } catch (error) {
-        console.error("❌ Erreur lors de l'envoi des notifications : ", error);
+        console.error("❌ Error while sending notifications : ", error);
       }
     });
 
