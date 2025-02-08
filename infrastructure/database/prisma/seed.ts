@@ -1,19 +1,7 @@
 import bcrypt from "npm:bcryptjs";
 import { PrismaClient } from "./generated/client-deno/deno/edge.ts";
-import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
 
-const env = await load({
-  envPath: "./.env",
-  export: true,
-});
-
-const prisma = new PrismaClient({
-  datasources: {
-    db: {
-      url: env.DATABASE_URL
-    }
-  }
-});
+const prisma = new PrismaClient();
 
 async function seed() {
   try {

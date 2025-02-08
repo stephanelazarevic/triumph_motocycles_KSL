@@ -2,6 +2,7 @@ import { MotorcycleStatus } from "../enum/MotorcycleEnum.ts";
 import { MotorcycleCannotAssignToBothClientAndDriverError } from "../errors/MotorcycleCannotAssignToBothClientAndDriverError.ts";
 import { Brand } from "../value-objects/Brand.ts";
 import { Model } from "../value-objects/Model.ts";
+import { DriverEntity } from "./DriverEntity.ts";
 import { Entity } from "./Entity.ts";
 import { DealerEntity } from "./DealerEntity.ts";
 import { WarrantyEntity } from "./WarrantyEntity.ts";
@@ -15,8 +16,8 @@ export class MotorcycleEntity extends Entity{
     public year: number,
     public registrationNumber: string,
     public status: MotorcycleStatus,
-    public clientId?: string,
-    public driverId?: string,
+    public clientId: string | null,
+    public drivers: DriverEntity[] | null,
   ) {
     super();
   }
@@ -39,11 +40,11 @@ export class MotorcycleEntity extends Entity{
     year: number;
     registrationNumber: string;
     status: MotorcycleStatus;
-    clientId?: string;
-    driverId?: string;
+    clientId: string | null;
+    drivers: DriverEntity[] | null;
   }): MotorcycleEntity | Error {
 
-    if(params.clientId && params.driverId){
+    if(params.clientId && params.drivers){
       return new MotorcycleCannotAssignToBothClientAndDriverError()
     }
 
@@ -56,7 +57,30 @@ export class MotorcycleEntity extends Entity{
       params.registrationNumber,
       params.status,
       params.clientId,
-      params.driverId
+      params.drivers
+    );
+  }
+
+  static reconstitute(data: {
+    id: string;
+    dealerId: string;
+    brand: string;
+    model: string;
+    year: number;
+    registrationNumber: string;
+    status: string;
+    clientId: string | null;
+    drivers: DriverEntity[] | null;
+  }): MotorcycleEntity {
+    return new MotorcycleEntity(
+      data.dealerId,
+      Brand.reconstitute(data.brand),
+      Model.reconstitute(data.model),
+      data.year,
+      data.registrationNumber,
+      MotorcycleStatus[data.status.toLowerCase() as keyof typeof MotorcycleStatus],
+      data.clientId,
+      data.drivers
     );
   }
 }
