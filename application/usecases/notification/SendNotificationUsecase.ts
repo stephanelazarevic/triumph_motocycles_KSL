@@ -6,6 +6,7 @@ import { NotificationEntity } from "../../../domain/entities/NotificationEntity.
 import { NotificationType, NotificationStatus } from "../../../domain/enum/NotificationEnum.ts";
 import { EmailAddress } from "../../../domain/value-objects/EmailAddress.ts";
 import { UserRepository } from "../../repositories/UserRepository.ts";
+import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts"
 
 export class SendNotificationUsecase {
   public constructor(
@@ -23,27 +24,50 @@ export class SendNotificationUsecase {
     const scheduledMaintenances = await this.maintenanceRepository.findScheduledMaintenances(thirtyDaysLater);
 
     for (const maintenance of scheduledMaintenances) {
-      const message = `Votre moto ${maintenance.motorcycle.model} doit être entretenue avant le ${thirtyDaysLater} !`;
 
+      const message = `Votre moto ${maintenance.motorcycle.model} doit être entretenue avant le ${thirtyDaysLater} !`;
+      let userId: string;
+
+      if (MotorcycleEntity.isAssignedToClient(maintenance.motorcycle.clientId)) {
+          userId = maintenance.motorcycle.clientId ?? "adminId";
+      } else if (MotorcycleEntity.isAssignedToDriver(maintenance.motorcycle.driverId)) {
+        userId = maintenance.motorcycle.driverId ?? "adminId";
+      } else {
+        userId = "adminId";
+      }
+
+      const user = await this.userRepository.findOneById(userId);
+      if (user instanceof Error) {
+        throw new Error("Aucun user trouvé avec cet ID");
+      }
+ 
       await this.sendNotification(
-        maintenance.motorcycle.dealer.user.id, 
+        userId, 
         NotificationType.MAINTENANCE_REMINDER,
         message,
-        maintenance.motorcycle.dealer.user.emailAddress, 
+        user.emailAddress, 
         "Entretien Moto Requis",
         `Bonjour, il est temps de faire l'entretien de votre moto ${maintenance.motorcycle.model}. Rendez-vous à votre garage habituel.`
       );
     }
 
+    const stockManagerId = "stockManagerId";
+    const user = await this.userRepository.findOneById(stockManagerId);
+      if (user instanceof Error) {
+        throw new Error("Aucun user trouvé avec cet ID");
+      }
+
     const lowStockParts = await this.partRepository.findPartsBelowStock(5);
+
     for (const part of lowStockParts) {
+
       const message = `Attention ! Le stock de ${part.reference} est bas, (${part.stockQuantity} restant !)`;
       
       await this.sendNotification(
-        part.dealer.user.id, 
+        stockManagerId, 
         NotificationType.LOW_STOCK_ALERT,
         message,
-        part.dealer.user.emailAddress, 
+        user.emailAddress, 
         "Alerte Stock Faible",
         `Le stock de ${part.reference} est critique (${part.stockQuantity} restant !). Merci de passer commande rapidement.`
       );
