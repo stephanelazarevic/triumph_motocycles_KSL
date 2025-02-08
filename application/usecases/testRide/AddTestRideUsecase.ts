@@ -16,7 +16,7 @@ export class AddTestRideUsecase {
 
   public async execute(command: AddTestRideCommand): Promise<TestRideEntity | Error> {
     if (!(command.date instanceof Date) || isNaN(command.date.getTime())) {
-      throw new InvalidDateError("La date est invalide.");
+      return new InvalidDateError("La date est invalide.");
     }
 
     const client = await this.clientRepository.findOneById(

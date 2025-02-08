@@ -2,6 +2,7 @@ import { MotorcycleStatus } from "../enum/MotorcycleEnum.ts";
 
 export interface AddMotorcycleCommand {
   dealerId: string,
+  warrantyId: string,
   brand: string,
   model: string,
   year: number,

@@ -27,7 +27,7 @@ export class AddDriverUsecase {
     );
 
     if (motorcycle instanceof MotorcycleNotFoundError) {
-      throw motorcycle;
+      return motorcycle;
     }
 
     const driver = DriverEntity.create({
@@ -36,8 +36,8 @@ export class AddDriverUsecase {
       firstname: command.firstname,
       lastname: command.lastname,
       licenseNumber: command.licenseNumber,
-      phone: command.phone,
-      email: command.email
+      phone: command.phoneNumber,
+      email: command.emailAddress,
     });
 
     await this.driverRepository.save(driver);

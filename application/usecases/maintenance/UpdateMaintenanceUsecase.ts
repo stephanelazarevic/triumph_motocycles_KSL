@@ -32,6 +32,12 @@ export class UpdateMaintenanceUsecase {
     if (command.cost) {
       maintenance.cost = command.cost;
     }
+    if (command.type) {
+      maintenance.type = command.type;
+    }
+    if (command.status) {
+      maintenance.status = command.status;
+    }
 
     maintenance.markAsUpdated();
     await this.maintenanceRepository.save(maintenance);

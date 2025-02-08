@@ -1,5 +1,6 @@
 import { Entity } from "./Entity.ts";
 import { MotorcycleEntity } from "./MotorcycleEntity.ts";
+import { MaintenanceType, MaintenanceStatus } from "../enum/MaintenanceEnum.ts";
 
 export class MaintenanceEntity extends Entity {
   private constructor(
@@ -7,6 +8,8 @@ export class MaintenanceEntity extends Entity {
     public description: string,
     public motorcycle: MotorcycleEntity,
     public cost: number,
+    public type: MaintenanceType,
+    public status: MaintenanceStatus,
   ) {
     super();
   }
@@ -16,12 +19,16 @@ export class MaintenanceEntity extends Entity {
     description: string;
     motorcycle: MotorcycleEntity;
     cost: number;
+    type: MaintenanceType;
+    status: MaintenanceStatus;
   }) {
     return new MaintenanceEntity(
       params.date,
       params.description,
       params.motorcycle,
       params.cost,
+      params.type,
+      params.status
     );
   }
 }

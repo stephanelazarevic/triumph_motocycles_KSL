@@ -42,11 +42,11 @@ export class UpdateDriverUsecase {
     if (command.licenseNumber) {
       driver.licenseNumber = command.licenseNumber;
     }
-    if (command.phone) {
-      driver.phone = command.phone;
+    if (command.phoneNumber) {
+      driver.phoneNumber = command.phoneNumber;
     }
-    if (command.email) {
-      driver.email = command.email;
+    if (command.emailAddress) {
+      driver.emailAddress = command.emailAddress;
     }
 
     driver.markAsUpdated();

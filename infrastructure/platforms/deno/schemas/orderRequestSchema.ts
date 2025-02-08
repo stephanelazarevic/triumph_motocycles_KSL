@@ -2,7 +2,7 @@ import { z } from "npm:zod";
 import { OrderStatus } from "../../../../domain/enum/OrderEnum";
 
 export const orderPartSchema = z.object({
-    partId: z.string(),
+    partId: z.string().uuid("Invalid part UUID"),
     quantity: z.number().int().positive(),
   });
 

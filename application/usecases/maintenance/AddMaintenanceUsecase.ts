@@ -10,13 +10,13 @@ export class AddMaintenanceUsecase {
     private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
-  public async execute(command: AddMaintenanceCommand): Promise<MaintenanceEntity | MotorcycleNotFoundError> {
+  public async execute(command: AddMaintenanceCommand): Promise<MaintenanceEntity | Error> {
     const motorcycle = await this.motorcycleRepository.findOneById(
       command.motorcycleId,
     );
 
     if (motorcycle instanceof MotorcycleNotFoundError) {
-      throw motorcycle;
+      return motorcycle;
     }
 
     const maintenance = MaintenanceEntity.create({
@@ -24,6 +24,8 @@ export class AddMaintenanceUsecase {
       description: command.description,
       motorcycle,
       cost: command.cost,
+      type: command.type,
+      status: command.status,
     });
 
     await this.maintenanceRepository.save(maintenance);

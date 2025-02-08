@@ -71,13 +71,15 @@ export class MaintenanceController implements EntityControllerInterface {
       });
     }
 
-    const { date, description, motorcycleId, cost } = validation.data;
+    const { date, description, motorcycleId, cost, type, status } = validation.data;
 
     const result = await addMaintenanceUsecase.execute({
       date,
       description,
       motorcycleId,
       cost,
+      type, 
+      status,
     });
 
     if (result instanceof MaintenanceEntity) {
