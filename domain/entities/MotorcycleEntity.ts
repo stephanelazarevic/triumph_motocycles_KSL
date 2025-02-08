@@ -4,13 +4,10 @@ import { Brand } from "../value-objects/Brand.ts";
 import { Model } from "../value-objects/Model.ts";
 import { DriverEntity } from "./DriverEntity.ts";
 import { Entity } from "./Entity.ts";
-import { DealerEntity } from "./DealerEntity.ts";
-import { WarrantyEntity } from "./WarrantyEntity.ts";
 
 export class MotorcycleEntity extends Entity{
   private constructor(
-    public dealer: DealerEntity,
-    public warranty: WarrantyEntity,
+    public dealerId: string,
     public brand: Brand,
     public model: Model,
     public year: number,
@@ -33,8 +30,7 @@ export class MotorcycleEntity extends Entity{
   }
 
   public static create( params: {
-    dealer: DealerEntity;
-    warranty: WarrantyEntity,
+    dealerId: string;
     brand: Brand;
     model: Model;
     year: number;
@@ -49,8 +45,7 @@ export class MotorcycleEntity extends Entity{
     }
 
     return new MotorcycleEntity(
-      params.dealer,
-      params.warranty,
+      params.dealerId,
       params.brand,
       params.model,
       params.year,
