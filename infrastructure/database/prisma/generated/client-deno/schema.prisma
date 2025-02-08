@@ -1,0 +1,304 @@
+generator client_deno {
+  provider        = "prisma-client-js"
+  previewFeatures = ["deno"]
+  output          = "./generated/client-deno"
+  engineType      = "library"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Dinosaur {
+  id          Int    @id @default(autoincrement())
+  name        String @unique
+  description String
+}
+
+model Notification {
+  id      Int                @id @default(autoincrement())
+  idUser  Int
+  type    NotificationType
+  message String
+  date    DateTime
+  user    User               @relation(fields: [idUser], references: [id])
+  status  NotificationStatus
+
+  createdAt DateTime @default(now())
+
+  @@map("notifications")
+}
+
+enum NotificationType {
+  info
+  alerte
+  erreur
+}
+
+enum NotificationStatus {
+  read
+  unread
+}
+
+model User {
+  id              Int     @id @default(autoincrement())
+  firstname       String
+  lastname        String
+  hashedPassword  String
+  emailAddress    String  @unique
+  phoneNumber     String?
+  address         Json
+  isAdministrator Boolean
+
+  dealer        Dealer?
+  enterprise    Enterprise?
+  client        Client?
+  notifications Notification[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Dealer {
+  id         Int          @id
+  site       String
+  user       User         @relation(fields: [id], references: [id])
+  clients    Client[]
+  motorcycle Motorcycle[] @relation("DealerMotorcycle")
+  part       Part[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("dealers")
+}
+
+model Enterprise {
+  id           Int          @id
+  taxNumber    String
+  industryType IndustryType
+  user         User         @relation(fields: [id], references: [id])
+  drivers      Driver[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("enterprises")
+}
+
+enum IndustryType {
+  restaurant
+  coursier
+  divertissement
+}
+
+model Client {
+  id         Int          @id
+  idDealer   Int
+  dealer     Dealer       @relation(fields: [idDealer], references: [id])
+  user       User         @relation(fields: [id], references: [id])
+  rentals    Rental[]
+  testRides  TestRide[]
+  motorcycle Motorcycle[] @relation("ClientMotorcycle")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("clients")
+}
+
+model TestRide {
+  id           Int        @id @default(autoincrement())
+  idClient     Int
+  idMotorcycle Int
+  date         DateTime
+  feedback     String?
+  isCompleted  Boolean
+  client       Client     @relation(fields: [idClient], references: [id])
+  motorcycle   Motorcycle @relation(fields: [idMotorcycle], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("test_rides")
+}
+
+model Rental {
+  id           Int        @id @default(autoincrement())
+  idClient     Int
+  idMotorcycle Int
+  startDate    DateTime
+  endDate      DateTime
+  cost         Float
+  isCompleted  Boolean
+  client       Client     @relation(fields: [idClient], references: [id])
+  motorcycle   Motorcycle @relation(fields: [idMotorcycle], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("rentals")
+}
+
+model Motorcycle {
+  id                 Int              @id @default(autoincrement())
+  idClient           Int?
+  idDealer           Int
+  brand              String
+  model              String
+  year               String
+  registrationNumber String           @unique
+  status             MotorcycleStatus
+  client             Client?          @relation(fields: [idClient], references: [id], name: "ClientMotorcycle")
+  dealer             Dealer           @relation(fields: [idDealer], references: [id], name: "DealerMotorcycle")
+  testRides          TestRide[]
+  rentals            Rental[]
+  maintenance        Maintenance[]
+  breakdowns         Incident[]
+  warranties         Warranty[]
+  parts              MotorcyclePart[]
+  driver             Driver[]
+
+  @@map("motorcycles")
+}
+
+enum MotorcycleStatus {
+  available
+  rented
+  in_maintenance
+}
+
+model MotorcyclePart {
+  idMotorcycle Int
+  idPart       Int
+  motorcycle   Motorcycle @relation(fields: [idMotorcycle], references: [id])
+  part         Part       @relation(fields: [idPart], references: [id])
+
+  @@id([idMotorcycle, idPart])
+  @@map("motorcycle_parts")
+}
+
+model Part {
+  id             Int              @id @default(autoincrement())
+  idDealer       Int
+  idOrder        Int?
+  reference      String
+  type           String
+  price          Float
+  stockQuantity  Int
+  order          Order?           @relation(fields: [idOrder], references: [id])
+  dealer         Dealer           @relation(fields: [idDealer], references: [id])
+  warranties     WarrantyParts[]
+  motorcyclePart MotorcyclePart[]
+
+  @@map("parts")
+}
+
+model Order {
+  id          Int         @id @default(autoincrement())
+  parts       Json
+  orderDate   DateTime
+  status      OrderStatus
+  totalAmount Float
+  Part        Part[]
+
+  @@map("orders")
+}
+
+enum OrderStatus {
+  awaiting
+  confirmed
+  canceled
+}
+
+model WarrantyParts {
+  idPart        Int
+  idWarranty    Int
+  actionDate    DateTime
+  actionType    ActionType
+  status        WarrantyStatus
+  coveredCost   Float
+  remainingCost Float
+  part          Part           @relation(fields: [idPart], references: [id])
+  warranty      Warranty       @relation(fields: [idWarranty], references: [id])
+
+  @@id([idPart, idWarranty])
+  @@map("warranty_parts")
+}
+
+enum ActionType {
+  repaired
+  replaced
+}
+
+enum WarrantyStatus {
+  in_progress
+  done
+  canceled
+}
+
+model Warranty {
+  id            Int             @id @default(autoincrement())
+  idMotorcycle  Int
+  type          String
+  startDate     DateTime
+  endDate       DateTime
+  terms         String?
+  motorcycle    Motorcycle      @relation(fields: [idMotorcycle], references: [id])
+  warrantyParts WarrantyParts[]
+
+  @@map("warranties")
+}
+
+model Maintenance {
+  id           Int        @id @default(autoincrement())
+  idMotorcycle Int
+  date         DateTime
+  description  String
+  cost         Float
+  motorcycle   Motorcycle @relation(fields: [idMotorcycle], references: [id])
+
+  @@map("maintenancies")
+}
+
+model Incident {
+  id             Int            @id @default(autoincrement())
+  idMotorcycle   Int
+  type           IncidentType
+  description    String
+  reportDate     DateTime
+  resolutionDate DateTime?
+  status         IncidentStatus
+  motorcycle     Motorcycle     @relation(fields: [idMotorcycle], references: [id])
+
+  @@map("incidents")
+}
+
+enum IncidentType {
+  panne
+  accident
+}
+
+enum IncidentStatus {
+  pending
+  resolved
+  in_progress
+}
+
+model Driver {
+  id            Int        @id @default(autoincrement())
+  idEntreprise  Int
+  idMotorcycle  Int
+  firstname     String
+  lastname      String
+  licenseNumber String
+  phone         String?
+  email         String     @unique
+  entreprise    Enterprise @relation(fields: [idEntreprise], references: [id])
+  motorcycle    Motorcycle @relation(fields: [idMotorcycle], references: [id])
+
+  @@map("drivers")
+}
