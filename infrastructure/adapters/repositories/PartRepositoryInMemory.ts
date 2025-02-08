@@ -35,4 +35,8 @@ export class PartRepositoryInMemory implements PartRepository {
     );
     return Promise.resolve();
   }
+
+  public findPartsBelowStock(threshold: number): Promise<PartEntity[]> {
+    return Promise.resolve(this.parts.filter((part) => part.stockQuantity < threshold));
+  }
 }

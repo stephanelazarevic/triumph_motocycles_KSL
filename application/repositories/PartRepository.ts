@@ -7,4 +7,5 @@ export interface PartRepository extends EntityRepositoryInterface<PartEntity> {
   findAll(): Promise<PartEntity[]>;
   findOneById(id: string): Promise<PartEntity | PartNotFoundError>;
   delete(id: string): Promise<void>;
+  findPartsBelowStock(threshold: number): Promise<PartEntity[]>;
 }

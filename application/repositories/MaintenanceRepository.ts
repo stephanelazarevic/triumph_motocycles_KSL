@@ -7,4 +7,5 @@ export interface MaintenanceRepository extends EntityRepositoryInterface<Mainten
   findAll(): Promise<MaintenanceEntity[]>;
   findOneById(id: string): Promise<MaintenanceEntity | MaintenanceNotFoundError>;
   delete(id: string): Promise<void>;
+  findScheduledMaintenances(date: Date): Promise<MaintenanceEntity[]>;
 }

@@ -9,10 +9,12 @@ import { GetMotorcycleUsecase } from "../../../../application/usecases/motorcycl
 import { UpdateMotorcycleUsecase } from "../../../../application/usecases/motorcycle/UpdateMotorcycleUsecase.ts";
 import { DeleteMotorcycleUsecase } from "../../../../application/usecases/motorcycle/DeleteMotorcycleUsecase.ts";
 import { WarrantyRepository } from "../../../../application/repositories/WarrantyRepository.ts";
+import { DealerRepository } from "../../../../application/repositories/DealerRepository.ts";
 
 export class MotorcycleController implements EntityControllerInterface {
   public constructor(
     private readonly motorcycleRepository: MotorcycleRepository,
+    private readonly dealerRepository: DealerRepository,
     private readonly warrantyRepository: WarrantyRepository,
   ) {}
 
@@ -58,7 +60,7 @@ export class MotorcycleController implements EntityControllerInterface {
   }
 
   public async create(request: Request): Promise<Response> {
-    const addMotorcycleUsecase = new AddMotorcycleUsecase(this.motorcycleRepository, this.warrantyRepository);
+    const addMotorcycleUsecase = new AddMotorcycleUsecase(this.motorcycleRepository, this.dealerRepository, this.warrantyRepository);
     const body = await request.json();
     const validation = addMotorcycleRequestSchema.safeParse(body);
 
@@ -75,6 +77,8 @@ export class MotorcycleController implements EntityControllerInterface {
     return exhaustive(result.name, {
       BrandLengthTooShortError: () => new Response("BrandLengthTooShortError", { status: 400 }),
       ModelLengthTooShortError: () => new Response("ModelLengthTooShortError", { status: 400 }),
+      DealerNotFoundError: () => new Response("DealerNotFoundError", { status: 404 }),
+      WarrantyNotFoundError: () => new Response("WarrantyNotFoundError", { status: 404 }),
     });
   }
 
@@ -94,7 +98,7 @@ export class MotorcycleController implements EntityControllerInterface {
       });
     }
 
-    const updateMotorcycleUsecase = new UpdateMotorcycleUsecase(this.motorcycleRepository, this.warrantyRepository)
+    const updateMotorcycleUsecase = new UpdateMotorcycleUsecase(this.motorcycleRepository, this.dealerRepository, this.warrantyRepository)
     const result = await updateMotorcycleUsecase.execute(motorcycleId, validation.data);
 
     if (result instanceof MotorcycleEntity) {
@@ -105,6 +109,8 @@ export class MotorcycleController implements EntityControllerInterface {
 
     return exhaustive(result.name, {
       MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
+      DealerNotFoundError: () => new Response("DealerNotFoundError", { status: 404 }),
+      WarrantyNotFoundError: () => new Response("WarrantyNotFoundError", { status: 404 }),
     });
   }
 

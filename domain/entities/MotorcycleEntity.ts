@@ -3,11 +3,12 @@ import { MotorcycleCannotAssignToBothClientAndDriverError } from "../errors/Moto
 import { Brand } from "../value-objects/Brand.ts";
 import { Model } from "../value-objects/Model.ts";
 import { Entity } from "./Entity.ts";
+import { DealerEntity } from "./DealerEntity.ts";
 import { WarrantyEntity } from "./WarrantyEntity.ts";
 
 export class MotorcycleEntity extends Entity{
   private constructor(
-    public dealerId: string,
+    public dealer: DealerEntity,
     public warranty: WarrantyEntity,
     public brand: Brand,
     public model: Model,
@@ -31,7 +32,7 @@ export class MotorcycleEntity extends Entity{
   }
 
   public static create( params: {
-    dealerId: string;
+    dealer: DealerEntity;
     warranty: WarrantyEntity,
     brand: Brand;
     model: Model;
@@ -47,7 +48,7 @@ export class MotorcycleEntity extends Entity{
     }
 
     return new MotorcycleEntity(
-      params.dealerId,
+      params.dealer,
       params.warranty,
       params.brand,
       params.model,
