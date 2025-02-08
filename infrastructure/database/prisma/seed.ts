@@ -18,45 +18,20 @@ const prisma = new PrismaClient({
 async function seed() {
   try {
     await prisma.$connect();
-    console.log('Database connection successful');
+    console.log('✅ Database connection successful');
 
     await loadFixtures();
   } catch (error) {
-    console.error('Database connection error:', error);
+    console.error('❌ Database connection error:', error);
     throw error;
   }
 }
 
 seed()
-  .then(() => console.log("Seeding completed"))
-  .catch((e) => console.error("Error while seeding:", e))
+  .then(() => console.log("🌱 Seeding completed !"))
+  .catch((e) => console.error("❌ Error while seeding:", e))
   .finally(async () => await prisma.$disconnect());
 
-const loadDinausors = async() => {
-  await prisma.dinosaur.deleteMany({});
-
-  const dinosaurData = [
-    {
-      name: "Aardonyx",
-      description: "An early stage in the evolution of sauropods.",
-    },
-    {
-      name: "Abelisaurus",
-      description: "Abel's lizard has been reconstructed from a single skull.",
-    },
-    {
-      name: "Acanthopholis",
-      description: "No, it's not a city in Greece.",
-    },
-  ];
-
-  for (const u of dinosaurData) {
-    const dinosaur = await prisma.dinosaur.create({
-      data: u,
-    });
-    console.log(`Created dinosaur with id: ${dinosaur.id}`);
-  }
-}
 async function loadFixtures() {
   // Clean the database
   await cleanDatabase();
@@ -136,10 +111,10 @@ async function loadFixtures() {
     data: {
       model: "Model X",
       brand: "Brand X",
-      year: "2002",
+      year: 2002,
       registrationNumber: "ABC123",
       status: "available",
-      idDealer: dealer.id,
+      dealerId: dealer.id
     },
   });
 
@@ -147,10 +122,10 @@ async function loadFixtures() {
     data: {
       model: "Model Y",
       brand: "Brand Y",
-      year: "2003",
+      year: 2003,
       registrationNumber: "DEF456",
       status: "available",
-      idDealer: dealer.id,
+      dealerId: dealer.id
     },
   });
 
@@ -160,9 +135,9 @@ async function loadFixtures() {
       firstname: "John",
       lastname: "Doe",
       licenseNumber: "LICENSE123",
-      email: "driver@example.com",
-      phone: "+33123456789",
-      idEntreprise: enterprise.id,
+      emailAddress: "driver@example.com",
+      phoneNumber: "+33123456789",
+      idEnterprise: enterprise.id,
       idMotorcycle: motorcycle1.id,
     },
   });

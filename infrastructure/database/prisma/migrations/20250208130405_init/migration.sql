@@ -27,8 +27,8 @@ CREATE TYPE "IncidentStatus" AS ENUM ('pending', 'resolved', 'in_progress');
 
 -- CreateTable
 CREATE TABLE "notifications" (
-    "id" SERIAL NOT NULL,
-    "idUser" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idUser" TEXT NOT NULL,
     "type" "NotificationType" NOT NULL,
     "message" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
@@ -40,7 +40,7 @@ CREATE TABLE "notifications" (
 
 -- CreateTable
 CREATE TABLE "users" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "hashedPassword" TEXT NOT NULL,
@@ -56,7 +56,7 @@ CREATE TABLE "users" (
 
 -- CreateTable
 CREATE TABLE "dealers" (
-    "id" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
     "site" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE "dealers" (
 
 -- CreateTable
 CREATE TABLE "enterprises" (
-    "id" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
     "taxNumber" TEXT NOT NULL,
     "industryType" "IndustryType" NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -77,8 +77,8 @@ CREATE TABLE "enterprises" (
 
 -- CreateTable
 CREATE TABLE "clients" (
-    "id" INTEGER NOT NULL,
-    "idDealer" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idDealer" TEXT NOT NULL,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
 
@@ -87,9 +87,9 @@ CREATE TABLE "clients" (
 
 -- CreateTable
 CREATE TABLE "test_rides" (
-    "id" SERIAL NOT NULL,
-    "idClient" INTEGER NOT NULL,
-    "idMotorcycle" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idClient" TEXT NOT NULL,
+    "idMotorcycle" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "feedback" TEXT,
     "isCompleted" BOOLEAN NOT NULL,
@@ -101,9 +101,9 @@ CREATE TABLE "test_rides" (
 
 -- CreateTable
 CREATE TABLE "rentals" (
-    "id" SERIAL NOT NULL,
-    "idClient" INTEGER NOT NULL,
-    "idMotorcycle" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idClient" TEXT NOT NULL,
+    "idMotorcycle" TEXT NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "cost" DOUBLE PRECISION NOT NULL,
@@ -116,109 +116,127 @@ CREATE TABLE "rentals" (
 
 -- CreateTable
 CREATE TABLE "motorcycles" (
-    "id" SERIAL NOT NULL,
-    "idClient" INTEGER,
-    "idDealer" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "clientId" TEXT,
+    "dealerId" TEXT NOT NULL,
     "brand" TEXT NOT NULL,
     "model" TEXT NOT NULL,
-    "year" TEXT NOT NULL,
+    "year" INTEGER NOT NULL,
     "registrationNumber" TEXT NOT NULL,
     "status" "MotorcycleStatus" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "motorcycles_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "motorcycle_parts" (
-    "idMotorcycle" INTEGER NOT NULL,
-    "idPart" INTEGER NOT NULL,
+    "idMotorcycle" TEXT NOT NULL,
+    "idPart" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "motorcycle_parts_pkey" PRIMARY KEY ("idMotorcycle","idPart")
 );
 
 -- CreateTable
 CREATE TABLE "parts" (
-    "id" SERIAL NOT NULL,
-    "idDealer" INTEGER NOT NULL,
-    "idOrder" INTEGER,
+    "id" TEXT NOT NULL,
+    "idDealer" TEXT NOT NULL,
+    "idOrder" TEXT,
     "reference" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "price" DOUBLE PRECISION NOT NULL,
     "stockQuantity" INTEGER NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "parts_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "orders" (
-    "id" SERIAL NOT NULL,
+    "id" TEXT NOT NULL,
     "parts" JSONB NOT NULL,
     "orderDate" TIMESTAMP(3) NOT NULL,
     "status" "OrderStatus" NOT NULL,
     "totalAmount" DOUBLE PRECISION NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "orders_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "warranty_parts" (
-    "idPart" INTEGER NOT NULL,
-    "idWarranty" INTEGER NOT NULL,
+    "idPart" TEXT NOT NULL,
+    "idWarranty" TEXT NOT NULL,
     "actionDate" TIMESTAMP(3) NOT NULL,
     "actionType" "ActionType" NOT NULL,
     "status" "WarrantyStatus" NOT NULL,
     "coveredCost" DOUBLE PRECISION NOT NULL,
     "remainingCost" DOUBLE PRECISION NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "warranty_parts_pkey" PRIMARY KEY ("idPart","idWarranty")
 );
 
 -- CreateTable
 CREATE TABLE "warranties" (
-    "id" SERIAL NOT NULL,
-    "idMotorcycle" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idMotorcycle" TEXT NOT NULL,
     "type" TEXT NOT NULL,
     "startDate" TIMESTAMP(3) NOT NULL,
     "endDate" TIMESTAMP(3) NOT NULL,
     "terms" TEXT,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "warranties_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "maintenancies" (
-    "id" SERIAL NOT NULL,
-    "idMotorcycle" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idMotorcycle" TEXT NOT NULL,
     "date" TIMESTAMP(3) NOT NULL,
     "description" TEXT NOT NULL,
     "cost" DOUBLE PRECISION NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "maintenancies_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "incidents" (
-    "id" SERIAL NOT NULL,
-    "idMotorcycle" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idMotorcycle" TEXT NOT NULL,
     "type" "IncidentType" NOT NULL,
     "description" TEXT NOT NULL,
     "reportDate" TIMESTAMP(3) NOT NULL,
     "resolutionDate" TIMESTAMP(3),
     "status" "IncidentStatus" NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "incidents_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
 CREATE TABLE "drivers" (
-    "id" SERIAL NOT NULL,
-    "idEntreprise" INTEGER NOT NULL,
-    "idMotorcycle" INTEGER NOT NULL,
+    "id" TEXT NOT NULL,
+    "idEnterprise" TEXT NOT NULL,
+    "idMotorcycle" TEXT NOT NULL,
     "firstname" TEXT NOT NULL,
     "lastname" TEXT NOT NULL,
     "licenseNumber" TEXT NOT NULL,
-    "phone" TEXT,
-    "email" TEXT NOT NULL,
+    "phoneNumber" TEXT NOT NULL,
+    "emailAddress" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "drivers_pkey" PRIMARY KEY ("id")
 );
@@ -230,7 +248,7 @@ CREATE UNIQUE INDEX "users_emailAddress_key" ON "users"("emailAddress");
 CREATE UNIQUE INDEX "motorcycles_registrationNumber_key" ON "motorcycles"("registrationNumber");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "drivers_email_key" ON "drivers"("email");
+CREATE UNIQUE INDEX "drivers_emailAddress_key" ON "drivers"("emailAddress");
 
 -- AddForeignKey
 ALTER TABLE "notifications" ADD CONSTRAINT "notifications_idUser_fkey" FOREIGN KEY ("idUser") REFERENCES "users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -260,10 +278,10 @@ ALTER TABLE "rentals" ADD CONSTRAINT "rentals_idClient_fkey" FOREIGN KEY ("idCli
 ALTER TABLE "rentals" ADD CONSTRAINT "rentals_idMotorcycle_fkey" FOREIGN KEY ("idMotorcycle") REFERENCES "motorcycles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "motorcycles" ADD CONSTRAINT "motorcycles_idClient_fkey" FOREIGN KEY ("idClient") REFERENCES "clients"("id") ON DELETE SET NULL ON UPDATE CASCADE;
+ALTER TABLE "motorcycles" ADD CONSTRAINT "motorcycles_clientId_fkey" FOREIGN KEY ("clientId") REFERENCES "clients"("id") ON DELETE SET NULL ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "motorcycles" ADD CONSTRAINT "motorcycles_idDealer_fkey" FOREIGN KEY ("idDealer") REFERENCES "dealers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "motorcycles" ADD CONSTRAINT "motorcycles_dealerId_fkey" FOREIGN KEY ("dealerId") REFERENCES "dealers"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "motorcycle_parts" ADD CONSTRAINT "motorcycle_parts_idMotorcycle_fkey" FOREIGN KEY ("idMotorcycle") REFERENCES "motorcycles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
@@ -293,7 +311,7 @@ ALTER TABLE "maintenancies" ADD CONSTRAINT "maintenancies_idMotorcycle_fkey" FOR
 ALTER TABLE "incidents" ADD CONSTRAINT "incidents_idMotorcycle_fkey" FOREIGN KEY ("idMotorcycle") REFERENCES "motorcycles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
-ALTER TABLE "drivers" ADD CONSTRAINT "drivers_idEntreprise_fkey" FOREIGN KEY ("idEntreprise") REFERENCES "enterprises"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE "drivers" ADD CONSTRAINT "drivers_idEnterprise_fkey" FOREIGN KEY ("idEnterprise") REFERENCES "enterprises"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "drivers" ADD CONSTRAINT "drivers_idMotorcycle_fkey" FOREIGN KEY ("idMotorcycle") REFERENCES "motorcycles"("id") ON DELETE RESTRICT ON UPDATE CASCADE;

@@ -117,12 +117,6 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-exports.Prisma.DinosaurScalarFieldEnum = {
-  id: 'id',
-  name: 'name',
-  description: 'description'
-};
-
 exports.Prisma.NotificationScalarFieldEnum = {
   id: 'id',
   idUser: 'idUser',
@@ -193,18 +187,22 @@ exports.Prisma.RentalScalarFieldEnum = {
 
 exports.Prisma.MotorcycleScalarFieldEnum = {
   id: 'id',
-  idClient: 'idClient',
-  idDealer: 'idDealer',
+  clientId: 'clientId',
+  dealerId: 'dealerId',
   brand: 'brand',
   model: 'model',
   year: 'year',
   registrationNumber: 'registrationNumber',
-  status: 'status'
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.MotorcyclePartScalarFieldEnum = {
   idMotorcycle: 'idMotorcycle',
-  idPart: 'idPart'
+  idPart: 'idPart',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.PartScalarFieldEnum = {
@@ -214,7 +212,9 @@ exports.Prisma.PartScalarFieldEnum = {
   reference: 'reference',
   type: 'type',
   price: 'price',
-  stockQuantity: 'stockQuantity'
+  stockQuantity: 'stockQuantity',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.OrderScalarFieldEnum = {
@@ -222,7 +222,9 @@ exports.Prisma.OrderScalarFieldEnum = {
   parts: 'parts',
   orderDate: 'orderDate',
   status: 'status',
-  totalAmount: 'totalAmount'
+  totalAmount: 'totalAmount',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.WarrantyPartsScalarFieldEnum = {
@@ -232,7 +234,9 @@ exports.Prisma.WarrantyPartsScalarFieldEnum = {
   actionType: 'actionType',
   status: 'status',
   coveredCost: 'coveredCost',
-  remainingCost: 'remainingCost'
+  remainingCost: 'remainingCost',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.WarrantyScalarFieldEnum = {
@@ -241,7 +245,9 @@ exports.Prisma.WarrantyScalarFieldEnum = {
   type: 'type',
   startDate: 'startDate',
   endDate: 'endDate',
-  terms: 'terms'
+  terms: 'terms',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.MaintenanceScalarFieldEnum = {
@@ -249,7 +255,9 @@ exports.Prisma.MaintenanceScalarFieldEnum = {
   idMotorcycle: 'idMotorcycle',
   date: 'date',
   description: 'description',
-  cost: 'cost'
+  cost: 'cost',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.IncidentScalarFieldEnum = {
@@ -259,18 +267,22 @@ exports.Prisma.IncidentScalarFieldEnum = {
   description: 'description',
   reportDate: 'reportDate',
   resolutionDate: 'resolutionDate',
-  status: 'status'
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.DriverScalarFieldEnum = {
   id: 'id',
-  idEntreprise: 'idEntreprise',
+  idEnterprise: 'idEnterprise',
   idMotorcycle: 'idMotorcycle',
   firstname: 'firstname',
   lastname: 'lastname',
   licenseNumber: 'licenseNumber',
-  phone: 'phone',
-  email: 'email'
+  phoneNumber: 'phoneNumber',
+  emailAddress: 'emailAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
 };
 
 exports.Prisma.SortOrder = {
@@ -349,7 +361,6 @@ exports.IncidentStatus = exports.$Enums.IncidentStatus = {
 };
 
 exports.Prisma.ModelName = {
-  Dinosaur: 'Dinosaur',
   Notification: 'Notification',
   User: 'User',
   Dealer: 'Dealer',
