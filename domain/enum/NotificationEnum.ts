@@ -1,11 +1,11 @@
 export enum NotificationType {
-    MAINTENANCE_REMINDER = "RAPPEL DE MAINTENANCE",
-    LOW_STOCK_ALERT = "ALERTE DE STOCK FAIBLE",
+    MAINTENANCE_REMINDER = "MAINTENANCE REMINDER",
+    LOW_STOCK_ALERT = "LOW STOCK ALERT",
 }
 
 export enum NotificationStatus {
-    TO_SEND = "A ENVOYER",
-    PENDING = "EN ATTENTE",
-    SENT = "ENVOYÉ",
-    FAILED = "ECHEC"
+    TO_SEND = "TO SEND",
+    PENDING = "PENDING",
+    SENT = "SENT",
+    FAILED = "FAILED"
 }
