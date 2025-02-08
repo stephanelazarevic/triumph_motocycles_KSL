@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Navbar from "./components/navbar.tsx";
+import Navbar from "../components/navbar.tsx";
 
 export const metadata: Metadata = {
   title: "Triumph KSL",
