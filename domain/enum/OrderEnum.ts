@@ -1,6 +1,6 @@
 export enum OrderStatus {
-    AWAITING = "en attente",
-    CONFIRMED = "confirmée",
-    CANCELED = "annulée",
+    AWAITING = "AWAITING",
+    CONFIRMED = "CONFIRMED",
+    CANCELED = "CANCELED",
   }
   

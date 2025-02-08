@@ -1,10 +1,11 @@
 export enum NotificationType {
-    INFO = "info",
-    ALERTE = "alerte",
-    ERREUR = "erreur",
+    MAINTENANCE_REMINDER = "MAINTENANCE REMINDER",
+    LOW_STOCK_ALERT = "LOW STOCK ALERT",
 }
 
 export enum NotificationStatus {
-    READ = "read",
-    UNREAD = "unread",
+    TO_SEND = "TO SEND",
+    PENDING = "PENDING",
+    SENT = "SENT",
+    FAILED = "FAILED"
 }

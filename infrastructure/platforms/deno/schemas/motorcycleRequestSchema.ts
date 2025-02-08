@@ -2,7 +2,8 @@ import { z } from "zod";
 import { MotorcycleStatus } from "../../../../domain/enum/MotorcycleEnum.ts";
 
 const motorcycleSchema = z.object({
-  dealerId: z.string().min(1, "Dealer id is required"),
+  dealerId: z.string().uuid("Invalid dealer UUID"),
+  warrantyId: z.string().uuid("Invalid warranty UUID"),
   brand: z.string().min(1, "Brand is required"),
   model: z.string().min(1, "Model is required"),
   year: z.number().int()

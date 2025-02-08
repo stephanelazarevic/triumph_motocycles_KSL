@@ -1,5 +1,6 @@
 import { NotificationRepository } from "../../../application/repositories/NotificationRepository.ts";
 import { NotificationEntity } from "../../../domain/entities/NotificationEntity.ts";
+import { NotificationStatus, NotificationType } from "../../../domain/enum/NotificationEnum.ts";
 import { NotificationNotFoundError } from "../../../domain/errors/NotificationNotFoundError.ts";
 
 export class NotificationRepositoryInMemory implements NotificationRepository {
@@ -34,5 +35,26 @@ export class NotificationRepositoryInMemory implements NotificationRepository {
       (notification) => notification.id !== id
     );
     return Promise.resolve();
+  }
+
+  public findRecentNotification(userId: string, type: NotificationType): Promise<NotificationEntity | NotificationNotFoundError> {
+    const recentNotifications = this.notifications.filter(
+      (notification) => notification.user.id === userId && notification.type === type
+    );
+  
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+
+    const foundNotification = recentNotifications.find((notification) => notification.date >= oneWeekAgo);
+  
+    return foundNotification ? Promise.resolve(foundNotification) : Promise.resolve(new NotificationNotFoundError());
+  }
+
+  public findNotificationsByStatus(status: NotificationStatus): Promise<NotificationEntity[]>{
+    const statusNotifications = this.notifications.filter(
+      (notification) => notification.status === status
+    );
+
+    return Promise.resolve(statusNotifications)
   }
 }

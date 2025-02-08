@@ -1,4 +1,6 @@
 import { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
+import { DealerRepository } from "../../repositories/DealerRepository.ts";
+import { WarrantyRepository } from "../../repositories/WarrantyRepository.ts";
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
 import { UpdateMotorcycleCommand } from "../../../domain/types/MotorcycleType.ts";
 import { Brand } from "../../../domain/value-objects/Brand.ts";
@@ -7,7 +9,11 @@ import { MotorcycleCannotAssignClientToAlreadyAssignedDriverError } from '../../
 import { MotorcycleCannotAssignDriverToAlreadyAssignedClientError } from '../../../domain/errors/MotorcycleCannotAssignDriverToAlreadyAssignedClientError.ts'
 
 export class UpdateMotorcycleUsecase {
- constructor(private motorcycleRepository: MotorcycleRepository) {}
+ constructor(
+  private motorcycleRepository: MotorcycleRepository,
+  private dealerRepository: DealerRepository,
+  private warrantyRepository: WarrantyRepository,
+) {}
 
  public async execute(motorcycleId: string, command: UpdateMotorcycleCommand): Promise<MotorcycleEntity | Error> {
    const motorcycle = await this.motorcycleRepository.findOneById(motorcycleId);
@@ -16,8 +22,19 @@ export class UpdateMotorcycleUsecase {
    }
 
    if (command.dealerId) {
-     motorcycle.dealerId = command.dealerId;
-   }
+    const dealer = await this.dealerRepository.findOneById(command.dealerId);
+    if (dealer instanceof Error) {
+      return dealer;
+    }
+    motorcycle.dealer = dealer;
+  }
+   if (command.warrantyId) {
+    const warranty = await this.warrantyRepository.findOneById(command.warrantyId);
+    if (warranty instanceof Error) {
+      return warranty;
+    }
+    motorcycle.warranty = warranty;
+  }
    if (command.brand) {
     const brand = Brand.from(command.brand);
     if(brand instanceof Error){

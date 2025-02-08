@@ -35,4 +35,10 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
     );
     return Promise.resolve();
   }
+
+  public findScheduledMaintenances(date: Date): Promise<MaintenanceEntity[]> {
+    return Promise.resolve(this.maintenances.filter(
+      (maintenance) => maintenance.nextMaintenanceDate <= date
+    ));
+  }
 }
