@@ -10,6 +10,7 @@ export class MaintenanceEntity extends Entity {
     public cost: number,
     public type: MaintenanceType,
     public status: MaintenanceStatus,
+    public nextMaintenanceDate: Date,
   ) {
     super();
   }
@@ -21,6 +22,7 @@ export class MaintenanceEntity extends Entity {
     cost: number;
     type: MaintenanceType;
     status: MaintenanceStatus;
+    nextMaintenanceDate: Date,
   }) {
     return new MaintenanceEntity(
       params.date,
@@ -28,7 +30,8 @@ export class MaintenanceEntity extends Entity {
       params.motorcycle,
       params.cost,
       params.type,
-      params.status
+      params.status,
+      params.date
     );
   }
 }

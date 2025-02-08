@@ -26,6 +26,7 @@ export class AddMaintenanceUsecase {
       cost: command.cost,
       type: command.type,
       status: command.status,
+      nextMaintenanceDate: command.nextMaintenanceDate,
     });
 
     await this.maintenanceRepository.save(maintenance);

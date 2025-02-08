@@ -7,6 +7,7 @@ export interface AddMaintenanceCommand {
   cost: number,
   type: MaintenanceType,
   status: MaintenanceStatus,
+  nextMaintenanceDate: Date,
 }
 
 export interface UpdateMaintenanceCommand extends Partial<AddMaintenanceCommand>{}

@@ -1,19 +1,26 @@
 import type { NotificationRepository } from "../../../../application/repositories/NotificationRepository.ts";
+import { UserRepository } from "../../../../application/repositories/UserRepository.ts";
 import { AddNotificationUsecase } from "../../../../application/usecases/notification/AddNotificationUsecase.ts";
 import { GetNotificationUsecase } from "../../../../application/usecases/notification/GetNotificationUsecase.ts";
 import { ListNotificationsUsecase } from "../../../../application/usecases/notification/ListNotificationsUsecase.ts";
 import { UpdateNotificationUsecase } from "../../../../application/usecases/notification/UpdateNotificationUsecase.ts";
 import { DeleteNotificationUsecase } from "../../../../application/usecases/notification/DeleteNotificationUsecase.ts";
+import { SendNotificationUsecase } from "../../../../application/usecases/notification/SendNotificationUsecase.ts";
 import { exhaustive } from "npm:exhaustive";
 import { addNotificationRequestSchema, updateNotificationRequestSchema } from "../schemas/notificationRequestSchema.ts";
-import { UserRepository } from "../../../../application/repositories/UserRepository.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { NotificationEntity } from "../../../../domain/entities/NotificationEntity.ts";
+import { PartRepository } from "../../../../application/repositories/PartRepository.ts";
+import { EmailService } from "../../../services/EmailService.ts";
+import { MaintenanceRepository } from "../../../../application/repositories/MaintenanceRepository.ts";
 
 export class NotificationController implements EntityControllerInterface{
   public constructor(
+    private readonly maintenanceRepository: MaintenanceRepository,
+    private readonly partRepository: PartRepository,
     private readonly notificationRepository: NotificationRepository,
-    private readonly userRepository: UserRepository
+    private readonly userRepository: UserRepository,
+    private readonly emailService: EmailService,
   ) {}
 
   public async getAll(): Promise<Response> {
@@ -141,5 +148,43 @@ export class NotificationController implements EntityControllerInterface{
       NotificationNotFoundError: () =>
         new Response("NotificationNotFoundError", { status: 404 }),
     });
+  }
+
+  public async sendNotification(request: Request): Promise<Response> {
+    const url = new URL(request.url);
+    const notificationId = url.searchParams.get("id");
+
+    if (!notificationId) {
+      return new Response("Notification ID is required", { status: 400 });
+    }
+
+    const notification = await this.notificationRepository.findOneById(notificationId);
+    if (notification instanceof Error) {
+        return new Response("Notification not found", { status: 404 });
+    }
+
+    const sendNotificationUsecase = new SendNotificationUsecase(
+      this.maintenanceRepository,
+      this.partRepository,
+      this.userRepository,
+      this.notificationRepository,
+      this.emailService,
+    );
+
+    try {
+      await sendNotificationUsecase.sendNotification(
+          notification.user.id,
+          notification.type,
+          notification.message,
+          notification.user.emailAddress,
+          `Notification: ${notification.type}`,
+          notification.message
+      );
+
+        return new Response("Notification sent successfully", { status: 200 });
+    } catch (error) {
+        console.error("❌ Error sending notification:", error);
+        return new Response("Failed to send notification", { status: 500 });
+    }
   }
 }

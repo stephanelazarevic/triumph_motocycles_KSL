@@ -7,6 +7,7 @@ export const addMaintenanceRequestSchema = z.object({
   description: z.string().min(1, "Description cannot be empty"),
   motorcycleId: z.string().uuid("Invalid UUID format"),
   cost: z.number().positive("Cost must be positive"),
+  nextMaintenanceDate: z.coerce.date(),
 });
 
 export const updateMaintenanceRequestSchema = addMaintenanceRequestSchema.partial();

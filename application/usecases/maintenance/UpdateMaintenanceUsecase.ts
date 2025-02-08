@@ -38,6 +38,9 @@ export class UpdateMaintenanceUsecase {
     if (command.status) {
       maintenance.status = command.status;
     }
+    if (command.nextMaintenanceDate) {
+      maintenance.nextMaintenanceDate = command.nextMaintenanceDate;
+    }
 
     maintenance.markAsUpdated();
     await this.maintenanceRepository.save(maintenance);
