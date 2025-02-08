@@ -7,6 +7,15 @@ import { NotificationType, NotificationStatus } from "../../../domain/enum/Notif
 import { EmailAddress } from "../../../domain/value-objects/EmailAddress.ts";
 import { UserRepository } from "../../repositories/UserRepository.ts";
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts"
+import { getSecret } from "../../../infrastructure/vaultClient.ts";
+import { config } from "https://deno.land/std@0.203.0/dotenv/mod.ts";
+import { AdminIdNotFoundError } from "../../../domain/errors/AdminIdNotFoundError.ts";
+import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
+import { NotificationSentRecentlyError } from "../../../domain/errors/NotificationSentRecentlyError.ts";
+import { NotificationNotSentError } from "../../../domain/errors/NotificationNotSentError.ts";
+
+const env = config();
+const adminSecretPath = env.ADMIN_SECRET_PATH; 
 
 export class SendNotificationUsecase {
   public constructor(
@@ -18,6 +27,15 @@ export class SendNotificationUsecase {
   ) {}
 
   public async execute(): Promise<void> {
+
+    let adminId: string;
+    try {
+      const secretData = await getSecret(adminSecretPath);
+      adminId = secretData.adminId;
+    } catch (error) {
+      throw new AdminIdNotFoundError();
+    }
+
     const thirtyDaysLater = new Date();
     thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
 
@@ -25,20 +43,20 @@ export class SendNotificationUsecase {
 
     for (const maintenance of scheduledMaintenances) {
 
-      const message = `Votre moto ${maintenance.motorcycle.model} doit être entretenue avant le ${thirtyDaysLater} !`;
+      const message = `Votre moto ${maintenance.motorcycle.model} doit passer un entretien de contrôle avant le ${thirtyDaysLater} !`;
       let userId: string;
 
       if (MotorcycleEntity.isAssignedToClient(maintenance.motorcycle.clientId)) {
-          userId = maintenance.motorcycle.clientId ?? "adminId";
+          userId = maintenance.motorcycle.clientId ?? adminId;
       } else if (MotorcycleEntity.isAssignedToDriver(maintenance.motorcycle.driverId)) {
-        userId = maintenance.motorcycle.driverId ?? "adminId";
+        userId = maintenance.motorcycle.driverId ?? adminId;
       } else {
-        userId = "adminId";
+        userId = adminId;
       }
 
       const user = await this.userRepository.findOneById(userId);
       if (user instanceof Error) {
-        throw new Error("Aucun user trouvé avec cet ID");
+        throw new UserNotFoundError();
       }
  
       await this.sendNotification(
@@ -51,10 +69,9 @@ export class SendNotificationUsecase {
       );
     }
 
-    const stockManagerId = "stockManagerId";
-    const user = await this.userRepository.findOneById(stockManagerId);
+    const user = await this.userRepository.findOneById(adminId);
       if (user instanceof Error) {
-        throw new Error("Aucun user trouvé avec cet ID");
+        throw new UserNotFoundError();
       }
 
     const lowStockParts = await this.partRepository.findPartsBelowStock(5);
@@ -64,7 +81,7 @@ export class SendNotificationUsecase {
       const message = `Attention ! Le stock de ${part.reference} est bas, (${part.stockQuantity} restant !)`;
       
       await this.sendNotification(
-        stockManagerId, 
+        adminId, 
         NotificationType.LOW_STOCK_ALERT,
         message,
         user.emailAddress, 
@@ -85,13 +102,12 @@ export class SendNotificationUsecase {
 
     const existingNotification = await this.notificationRepository.findRecentNotification(userId, type);
     if (existingNotification) {
-      console.log(`⏳ Notification déjà envoyée il y a moins d'une semaine pour ${type} !`);
-      throw new Error("Notification déjà envoyée récemment !");
+      throw new NotificationSentRecentlyError();
     }
 
     const user = await this.userRepository.findOneById(userId);
     if (user instanceof Error) {
-      throw Error("Cet utilisateur n'existe pas/plus !");
+      throw new UserNotFoundError();
     }
 
     const notification = NotificationEntity.create({
@@ -114,15 +130,12 @@ export class SendNotificationUsecase {
       notification.status = NotificationStatus.SENT;
       await this.notificationRepository.save(notification);
   
-      console.log(`✅ Notification envoyée à ${user.firstname} ${user.lastname} et mise à jour !`);
     } catch (error) {
-      console.error(`❌ Échec de l'envoi de la notification à ${user.firstname} ${user.lastname} !`);
-      
       notification.status = NotificationStatus.FAILED;
       await this.notificationRepository.save(notification);
-    }
 
-    console.log(`📨 Notification envoyée : ${message}`);
+      throw new NotificationNotSentError();
+    }
   }
 
   public async resend(notification: NotificationEntity): Promise<void> {
@@ -136,9 +149,9 @@ export class SendNotificationUsecase {
       notification.status = NotificationStatus.SENT;
       await this.notificationRepository.save(notification);
   
-      console.log(`✅ Retry réussi pour la notification ID: ${notification.id}`);
+      console.log(`✅ Retry success for notification ID: ${notification.id}`);
     } catch (error) {
-      console.error(`❌ Échec du retry pour notification ID: ${notification.id}`, error.message);
+      console.error(`❌ Retry failed for notification ID: ${notification.id}`, error.message);
     }
   }
 }

@@ -1,10 +1,10 @@
 export enum MaintenanceType {
-    CHECK = "contrôle",
-    REPAIR = "réparation",
+    CHECK = "check",
+    REPAIR = "repair",
 }
 
 export enum MaintenanceStatus {
-    IN_PROGRESS = "en cours",
-    DONE = "effectuée",
-    CANCELED = "annulée",
+    IN_PROGRESS = "in progress",
+    DONE = "done",
+    CANCELED = "canceled",
 }
