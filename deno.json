@@ -1,8 +1,16 @@
 {
-  "workspace": ["./infrastructure/platforms/deno"],
+  "workspace": [
+    "./infrastructure/platforms/deno",
+    "./infrastructure/database/prisma"
+  ],
+  "nodeModulesDir": "auto",
   "tasks": {
-    "dev": "deno run --watch --allow-net infrastructure/platforms/deno/index.ts",
-    "start": "deno run --allow-net infrastructure/platforms/deno/index.ts",
+    "dev": "deno run --watch --allow-net --allow-env infrastructure/platforms/deno/main.ts",
+    "start:api": "deno run --allow-net --allow-env infrastructure/platforms/deno/main.ts",
+    "start:front": "npm run dev --prefix interface",
+    "start:all": "deno task start:api & deno task start:front",
+    "generate:prisma": "cd infrastructure/database/prisma && deno run -A npm:prisma@latest generate --no-engine",
+    "seed": "deno run --allow-net --allow-env --allow-read infrastructure/database/prisma/seed.ts",
     "lint": "deno lint",
     "format:fix": "deno fmt"
   },
@@ -13,7 +21,6 @@
     "lineWidth": 120
   },
   "imports": {
-    "prisma": "https://deno.land/x/prisma@2.30.0/mod.ts",
     "bcryptjs": "npm:bcryptjs@^2.4.3",
     "i18n-iso-countries": "npm:i18n-iso-countries@^7.13.0",
     "libphonenumber-js": "npm:libphonenumber-js@^1.11.17"

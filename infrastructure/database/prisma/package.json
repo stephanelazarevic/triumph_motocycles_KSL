@@ -1,0 +1,10 @@
+{
+  "name": "prisma-setup",
+  "type": "module",
+  "dependencies": {
+    "@prisma/client": "^6.3.1"
+  },
+  "devDependencies": {
+    "prisma": "^6.3.1"
+  }
+}

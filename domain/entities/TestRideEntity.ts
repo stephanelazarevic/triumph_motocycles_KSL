@@ -7,7 +7,7 @@ export class TestRideEntity extends Entity {
     public client: ClientEntity,
     public motorcycle: MotorcycleEntity,
     public date: Date,
-    public feedback: String,
+    public feedback: string,
     public isCompleted: boolean,
   ) {
     super();
@@ -17,7 +17,7 @@ export class TestRideEntity extends Entity {
     client: ClientEntity;
     motorcycle: MotorcycleEntity;
     date: Date;
-    feedback: String;
+    feedback: string;
     isCompleted: boolean;
   }) {
     return new TestRideEntity(
