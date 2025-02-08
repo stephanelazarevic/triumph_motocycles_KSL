@@ -21,12 +21,12 @@ export class MotorcycleEntity extends Entity{
     super();
   }
 
-  public isAssignedToClient(clientId?: string): boolean
+  public static isAssignedToClient(clientId?: string): boolean
     {
       return clientId !== null;
     }
 
-  public isAssignedToDriver(driverId?: string): boolean
+  public static isAssignedToDriver(driverId?: string): boolean
   {
     return driverId !== null;
   }
