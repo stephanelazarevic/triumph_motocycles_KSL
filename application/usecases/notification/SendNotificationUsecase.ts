@@ -8,14 +8,14 @@ import { EmailAddress } from "../../../domain/value-objects/EmailAddress.ts";
 import { UserRepository } from "../../repositories/UserRepository.ts";
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts"
 import { getSecret } from "../../../infrastructure/vaultClient.ts";
-import { config } from "https://deno.land/std@0.203.0/dotenv/mod.ts";
+import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
 import { AdminIdNotFoundError } from "../../../domain/errors/AdminIdNotFoundError.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 import { NotificationSentRecentlyError } from "../../../domain/errors/NotificationSentRecentlyError.ts";
 import { NotificationNotSentError } from "../../../domain/errors/NotificationNotSentError.ts";
 
-const env = config();
-const adminSecretPath = env.ADMIN_SECRET_PATH; 
+const env = await load();
+const adminSecretPath = env.ADMIN_SECRET_PATH;
 
 export class SendNotificationUsecase {
   public constructor(
@@ -58,12 +58,12 @@ export class SendNotificationUsecase {
       if (user instanceof Error) {
         throw new UserNotFoundError();
       }
- 
+
       await this.sendNotification(
-        userId, 
+        userId,
         NotificationType.MAINTENANCE_REMINDER,
         message,
-        user.emailAddress, 
+        user.emailAddress,
         "Entretien Moto Requis",
         `Bonjour, il est temps de faire l'entretien de votre moto ${maintenance.motorcycle.model}. Rendez-vous à votre garage habituel.`
       );
@@ -79,12 +79,12 @@ export class SendNotificationUsecase {
     for (const part of lowStockParts) {
 
       const message = `Attention ! Le stock de ${part.reference} est bas, (${part.stockQuantity} restant !)`;
-      
+
       await this.sendNotification(
-        adminId, 
+        adminId,
         NotificationType.LOW_STOCK_ALERT,
         message,
-        user.emailAddress, 
+        user.emailAddress,
         "Alerte Stock Faible",
         `Le stock de ${part.reference} est critique (${part.stockQuantity} restant !). Merci de passer commande rapidement.`
       );
@@ -111,7 +111,7 @@ export class SendNotificationUsecase {
     }
 
     const notification = NotificationEntity.create({
-      user, 
+      user,
       type,
       message,
       date: new Date(),
@@ -126,10 +126,10 @@ export class SendNotificationUsecase {
         subject: emailSubject,
         body: emailBody,
       });
-  
+
       notification.status = NotificationStatus.SENT;
       await this.notificationRepository.save(notification);
-  
+
     } catch (error) {
       notification.status = NotificationStatus.FAILED;
       await this.notificationRepository.save(notification);
@@ -142,13 +142,13 @@ export class SendNotificationUsecase {
     try {
       await this.emailService.send({
         to: notification.user.emailAddress,
-        subject: `Re: ${notification.message}`, 
+        subject: `Re: ${notification.message}`,
         body: notification.message,
       });
-  
+
       notification.status = NotificationStatus.SENT;
       await this.notificationRepository.save(notification);
-  
+
       console.log(`✅ Retry success for notification ID: ${notification.id}`);
     } catch (error) {
       console.error(`❌ Retry failed for notification ID: ${notification.id}`, error.message);

@@ -1,17 +1,13 @@
-import { createApp } from 'vue'
+import { createApp } from 'vue';
+import App from './App.vue';
+import { vuetify } from './modules/vuetify';
+import { persistedPinia } from './modules/pinia';
+import { router } from './router/router';
 
-// Vuetify
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
+const app = createApp(App);
 
-// Components
-import App from './App.vue'
+app.use(router)
+app.use(persistedPinia)
+app.use(vuetify);
 
-const vuetify = createVuetify({
-  components,
-  directives,
-})
-
-createApp(App).use(vuetify).mount('#app')
+app.mount('#app')
