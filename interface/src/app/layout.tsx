@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "../app/globals.css";
-import Navbar from "../components/navbar.tsx"; // Importation du composant
+import Navbar from "../components/navbar"; // Importation du composant
 
 export const metadata: Metadata = {
   title: "Triumph KSL",
@@ -12,7 +12,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="fr">
       <body>
         <Navbar />
-        <main className="container mx-auto p-4">{children}</main>
+        <main className="max-w-9xl mx-auto p-6 bg-white shadow-lg rounded-lg">{children}</main>
       </body>
     </html>
   );
