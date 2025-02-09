@@ -1,9 +1,8 @@
 import { Application } from "https://deno.land/x/oak@v11.1.0/mod.ts";
-import motorcycleRouter from "./routes/motorcycleRouter.ts";
 import apiRouter from "./routes/apiRouter.ts";
 import { prisma } from "./config/prisma.db.ts";
 import authenticationRouter from "./routes/authenticationRouter.ts";
-import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 
 const app = new Application();
 
@@ -18,27 +17,10 @@ try {
   await prisma.$disconnect();
 }
 
-const handler = async (request: Request): Promise<Response> => {
-  // Préparation de la réponse
-  const response = new Response("Hello from Deno!", {
-    headers: new Headers({
-      "Access-Control-Allow-Origin": "http://localhost:8080", // URL du frontend
-      "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
-      "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Allow-Credentials": "true",
-    }),
-  });
-
-  // Gérer les requêtes OPTIONS (pré-requêtes)
-  if (request.method === "OPTIONS") {
-    return new Response(null, {
-      status: 204,
-      headers: response.headers,
-    });
-  }
-
-  return response;
-};
+app.use(oakCors({
+  origin: "http://localhost:8080",
+  credentials: true,
+}));
 
 // routes
 app
@@ -60,4 +42,4 @@ app.addEventListener("listen", ({ hostname, port, secure }) => {
   );
 });
 
-await serve(handler, { port: 8000 });
+await app.listen({ port: 8000 });

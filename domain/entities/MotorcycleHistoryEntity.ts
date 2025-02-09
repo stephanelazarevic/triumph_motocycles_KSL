@@ -1,10 +1,10 @@
-import { DriverEntity } from "./DriverEntity";
-import { IncidentEntity } from "./IncidentEntity";
-import { MaintenanceEntity } from "./MaintenanceEntity";
-import { Entity } from "./Entity";
-import { MotorcycleCannotAssignToBothClientAndDriverError } from "../errors/MotorcycleCannotAssignToBothClientAndDriverError";
-import { MotorcycleCannotAssignToBothClientAndEnterpriseError } from "../errors/MotorcycleCannotAssignToBothClientAndEnterpriseError";
-import { MotorcycleMustHaveEnterpriseIfDriverError } from "../errors/MotorcycleMustHaveEnterpriseIfDriverError";
+import { DriverEntity } from "./DriverEntity.ts";
+import { IncidentEntity } from "./IncidentEntity.ts";
+import { MaintenanceEntity } from "./MaintenanceEntity.ts";
+import { Entity } from "./Entity.ts";
+import { MotorcycleCannotAssignToBothClientAndDriverError } from "../errors/MotorcycleCannotAssignToBothClientAndDriverError.ts";
+import { MotorcycleCannotAssignToBothClientAndEnterpriseError } from "../errors/MotorcycleCannotAssignToBothClientAndEnterpriseError.ts";
+import { MotorcycleMustHaveEnterpriseIfDriverError } from "../errors/MotorcycleMustHaveEnterpriseIfDriverError.ts";
 
 export class MotorcycleHistoryEntity extends Entity{
   private constructor(
