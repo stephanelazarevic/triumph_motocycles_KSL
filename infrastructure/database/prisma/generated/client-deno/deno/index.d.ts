@@ -10846,7 +10846,7 @@ export namespace Prisma {
     id: string
     clientId: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId: string | null
     brand: string
     model: string
     year: number
@@ -10889,7 +10889,7 @@ export namespace Prisma {
     updatedAt?: boolean
     client?: boolean | Motorcycle$clientArgs<ExtArgs>
     dealer?: boolean | DealerDefaultArgs<ExtArgs>
-    enterprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
+    enterprise?: boolean | Motorcycle$enterpriseArgs<ExtArgs>
     testRides?: boolean | Motorcycle$testRidesArgs<ExtArgs>
     rentals?: boolean | Motorcycle$rentalsArgs<ExtArgs>
     maintenance?: boolean | Motorcycle$maintenanceArgs<ExtArgs>
@@ -10914,7 +10914,7 @@ export namespace Prisma {
     updatedAt?: boolean
     client?: boolean | Motorcycle$clientArgs<ExtArgs>
     dealer?: boolean | DealerDefaultArgs<ExtArgs>
-    enterprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
+    enterprise?: boolean | Motorcycle$enterpriseArgs<ExtArgs>
   }, ExtArgs["result"]["motorcycle"]>
 
   export type MotorcycleSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -10931,7 +10931,7 @@ export namespace Prisma {
     updatedAt?: boolean
     client?: boolean | Motorcycle$clientArgs<ExtArgs>
     dealer?: boolean | DealerDefaultArgs<ExtArgs>
-    enterprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
+    enterprise?: boolean | Motorcycle$enterpriseArgs<ExtArgs>
   }, ExtArgs["result"]["motorcycle"]>
 
   export type MotorcycleSelectScalar = {
@@ -10952,7 +10952,7 @@ export namespace Prisma {
   export type MotorcycleInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | Motorcycle$clientArgs<ExtArgs>
     dealer?: boolean | DealerDefaultArgs<ExtArgs>
-    enterprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
+    enterprise?: boolean | Motorcycle$enterpriseArgs<ExtArgs>
     testRides?: boolean | Motorcycle$testRidesArgs<ExtArgs>
     rentals?: boolean | Motorcycle$rentalsArgs<ExtArgs>
     maintenance?: boolean | Motorcycle$maintenanceArgs<ExtArgs>
@@ -10965,12 +10965,12 @@ export namespace Prisma {
   export type MotorcycleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | Motorcycle$clientArgs<ExtArgs>
     dealer?: boolean | DealerDefaultArgs<ExtArgs>
-    enterprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
+    enterprise?: boolean | Motorcycle$enterpriseArgs<ExtArgs>
   }
   export type MotorcycleIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     client?: boolean | Motorcycle$clientArgs<ExtArgs>
     dealer?: boolean | DealerDefaultArgs<ExtArgs>
-    enterprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
+    enterprise?: boolean | Motorcycle$enterpriseArgs<ExtArgs>
   }
 
   export type $MotorcyclePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10978,7 +10978,7 @@ export namespace Prisma {
     objects: {
       client: Prisma.$ClientPayload<ExtArgs> | null
       dealer: Prisma.$DealerPayload<ExtArgs>
-      enterprise: Prisma.$EnterprisePayload<ExtArgs>
+      enterprise: Prisma.$EnterprisePayload<ExtArgs> | null
       testRides: Prisma.$TestRidePayload<ExtArgs>[]
       rentals: Prisma.$RentalPayload<ExtArgs>[]
       maintenance: Prisma.$MaintenancePayload<ExtArgs>[]
@@ -10991,7 +10991,7 @@ export namespace Prisma {
       id: string
       clientId: string | null
       dealerId: string
-      enterpriseId: string
+      enterpriseId: string | null
       brand: string
       model: string
       year: number
@@ -11395,7 +11395,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     client<T extends Motorcycle$clientArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     dealer<T extends DealerDefaultArgs<ExtArgs> = {}>(args?: Subset<T, DealerDefaultArgs<ExtArgs>>): Prisma__DealerClient<$Result.GetResult<Prisma.$DealerPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
-    enterprise<T extends EnterpriseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EnterpriseDefaultArgs<ExtArgs>>): Prisma__EnterpriseClient<$Result.GetResult<Prisma.$EnterprisePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    enterprise<T extends Motorcycle$enterpriseArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$enterpriseArgs<ExtArgs>>): Prisma__EnterpriseClient<$Result.GetResult<Prisma.$EnterprisePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     testRides<T extends Motorcycle$testRidesArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$testRidesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestRidePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     rentals<T extends Motorcycle$rentalsArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$rentalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     maintenance<T extends Motorcycle$maintenanceArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$maintenanceArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenancePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
@@ -11855,6 +11855,25 @@ export namespace Prisma {
      */
     include?: ClientInclude<ExtArgs> | null
     where?: ClientWhereInput
+  }
+
+  /**
+   * Motorcycle.enterprise
+   */
+  export type Motorcycle$enterpriseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Enterprise
+     */
+    select?: EnterpriseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Enterprise
+     */
+    omit?: EnterpriseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnterpriseInclude<ExtArgs> | null
+    where?: EnterpriseWhereInput
   }
 
   /**
@@ -19979,8 +19998,8 @@ export namespace Prisma {
 
   export type DriverMinAggregateOutputType = {
     id: string | null
-    idEnterprise: string | null
-    idMotorcycle: string | null
+    enterpriseId: string | null
+    motorcycleId: string | null
     firstname: string | null
     lastname: string | null
     licenseNumber: string | null
@@ -19991,8 +20010,8 @@ export namespace Prisma {
 
   export type DriverMaxAggregateOutputType = {
     id: string | null
-    idEnterprise: string | null
-    idMotorcycle: string | null
+    enterpriseId: string | null
+    motorcycleId: string | null
     firstname: string | null
     lastname: string | null
     licenseNumber: string | null
@@ -20003,8 +20022,8 @@ export namespace Prisma {
 
   export type DriverCountAggregateOutputType = {
     id: number
-    idEnterprise: number
-    idMotorcycle: number
+    enterpriseId: number
+    motorcycleId: number
     firstname: number
     lastname: number
     licenseNumber: number
@@ -20018,8 +20037,8 @@ export namespace Prisma {
 
   export type DriverMinAggregateInputType = {
     id?: true
-    idEnterprise?: true
-    idMotorcycle?: true
+    enterpriseId?: true
+    motorcycleId?: true
     firstname?: true
     lastname?: true
     licenseNumber?: true
@@ -20030,8 +20049,8 @@ export namespace Prisma {
 
   export type DriverMaxAggregateInputType = {
     id?: true
-    idEnterprise?: true
-    idMotorcycle?: true
+    enterpriseId?: true
+    motorcycleId?: true
     firstname?: true
     lastname?: true
     licenseNumber?: true
@@ -20042,8 +20061,8 @@ export namespace Prisma {
 
   export type DriverCountAggregateInputType = {
     id?: true
-    idEnterprise?: true
-    idMotorcycle?: true
+    enterpriseId?: true
+    motorcycleId?: true
     firstname?: true
     lastname?: true
     licenseNumber?: true
@@ -20128,8 +20147,8 @@ export namespace Prisma {
 
   export type DriverGroupByOutputType = {
     id: string
-    idEnterprise: string
-    idMotorcycle: string
+    enterpriseId: string
+    motorcycleId: string
     firstname: string
     lastname: string
     licenseNumber: string
@@ -20158,8 +20177,8 @@ export namespace Prisma {
 
   export type DriverSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    idEnterprise?: boolean
-    idMotorcycle?: boolean
+    enterpriseId?: boolean
+    motorcycleId?: boolean
     firstname?: boolean
     lastname?: boolean
     licenseNumber?: boolean
@@ -20173,8 +20192,8 @@ export namespace Prisma {
 
   export type DriverSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    idEnterprise?: boolean
-    idMotorcycle?: boolean
+    enterpriseId?: boolean
+    motorcycleId?: boolean
     firstname?: boolean
     lastname?: boolean
     licenseNumber?: boolean
@@ -20188,8 +20207,8 @@ export namespace Prisma {
 
   export type DriverSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
     id?: boolean
-    idEnterprise?: boolean
-    idMotorcycle?: boolean
+    enterpriseId?: boolean
+    motorcycleId?: boolean
     firstname?: boolean
     lastname?: boolean
     licenseNumber?: boolean
@@ -20203,8 +20222,8 @@ export namespace Prisma {
 
   export type DriverSelectScalar = {
     id?: boolean
-    idEnterprise?: boolean
-    idMotorcycle?: boolean
+    enterpriseId?: boolean
+    motorcycleId?: boolean
     firstname?: boolean
     lastname?: boolean
     licenseNumber?: boolean
@@ -20214,7 +20233,7 @@ export namespace Prisma {
     updatedAt?: boolean
   }
 
-  export type DriverOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idEnterprise" | "idMotorcycle" | "firstname" | "lastname" | "licenseNumber" | "phoneNumber" | "emailAddress" | "createdAt" | "updatedAt", ExtArgs["result"]["driver"]>
+  export type DriverOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "enterpriseId" | "motorcycleId" | "firstname" | "lastname" | "licenseNumber" | "phoneNumber" | "emailAddress" | "createdAt" | "updatedAt", ExtArgs["result"]["driver"]>
   export type DriverInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     entreprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
@@ -20236,8 +20255,8 @@ export namespace Prisma {
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
-      idEnterprise: string
-      idMotorcycle: string
+      enterpriseId: string
+      motorcycleId: string
       firstname: string
       lastname: string
       licenseNumber: string
@@ -20671,8 +20690,8 @@ export namespace Prisma {
    */ 
   interface DriverFieldRefs {
     readonly id: FieldRef<"Driver", 'String'>
-    readonly idEnterprise: FieldRef<"Driver", 'String'>
-    readonly idMotorcycle: FieldRef<"Driver", 'String'>
+    readonly enterpriseId: FieldRef<"Driver", 'String'>
+    readonly motorcycleId: FieldRef<"Driver", 'String'>
     readonly firstname: FieldRef<"Driver", 'String'>
     readonly lastname: FieldRef<"Driver", 'String'>
     readonly licenseNumber: FieldRef<"Driver", 'String'>
@@ -21312,8 +21331,8 @@ export namespace Prisma {
 
   export const DriverScalarFieldEnum: {
     id: 'id',
-    idEnterprise: 'idEnterprise',
-    idMotorcycle: 'idMotorcycle',
+    enterpriseId: 'enterpriseId',
+    motorcycleId: 'motorcycleId',
     firstname: 'firstname',
     lastname: 'lastname',
     licenseNumber: 'licenseNumber',
@@ -22079,7 +22098,7 @@ export namespace Prisma {
     id?: StringFilter<"Motorcycle"> | string
     clientId?: StringNullableFilter<"Motorcycle"> | string | null
     dealerId?: StringFilter<"Motorcycle"> | string
-    enterpriseId?: StringFilter<"Motorcycle"> | string
+    enterpriseId?: StringNullableFilter<"Motorcycle"> | string | null
     brand?: StringFilter<"Motorcycle"> | string
     model?: StringFilter<"Motorcycle"> | string
     year?: IntFilter<"Motorcycle"> | number
@@ -22089,7 +22108,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Motorcycle"> | Date | string
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     dealer?: XOR<DealerScalarRelationFilter, DealerWhereInput>
-    enterprise?: XOR<EnterpriseScalarRelationFilter, EnterpriseWhereInput>
+    enterprise?: XOR<EnterpriseNullableScalarRelationFilter, EnterpriseWhereInput> | null
     testRides?: TestRideListRelationFilter
     rentals?: RentalListRelationFilter
     maintenance?: MaintenanceListRelationFilter
@@ -22103,7 +22122,7 @@ export namespace Prisma {
     id?: SortOrder
     clientId?: SortOrderInput | SortOrder
     dealerId?: SortOrder
-    enterpriseId?: SortOrder
+    enterpriseId?: SortOrderInput | SortOrder
     brand?: SortOrder
     model?: SortOrder
     year?: SortOrder
@@ -22131,7 +22150,7 @@ export namespace Prisma {
     NOT?: MotorcycleWhereInput | MotorcycleWhereInput[]
     clientId?: StringNullableFilter<"Motorcycle"> | string | null
     dealerId?: StringFilter<"Motorcycle"> | string
-    enterpriseId?: StringFilter<"Motorcycle"> | string
+    enterpriseId?: StringNullableFilter<"Motorcycle"> | string | null
     brand?: StringFilter<"Motorcycle"> | string
     model?: StringFilter<"Motorcycle"> | string
     year?: IntFilter<"Motorcycle"> | number
@@ -22140,7 +22159,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Motorcycle"> | Date | string
     client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
     dealer?: XOR<DealerScalarRelationFilter, DealerWhereInput>
-    enterprise?: XOR<EnterpriseScalarRelationFilter, EnterpriseWhereInput>
+    enterprise?: XOR<EnterpriseNullableScalarRelationFilter, EnterpriseWhereInput> | null
     testRides?: TestRideListRelationFilter
     rentals?: RentalListRelationFilter
     maintenance?: MaintenanceListRelationFilter
@@ -22154,7 +22173,7 @@ export namespace Prisma {
     id?: SortOrder
     clientId?: SortOrderInput | SortOrder
     dealerId?: SortOrder
-    enterpriseId?: SortOrder
+    enterpriseId?: SortOrderInput | SortOrder
     brand?: SortOrder
     model?: SortOrder
     year?: SortOrder
@@ -22176,7 +22195,7 @@ export namespace Prisma {
     id?: StringWithAggregatesFilter<"Motorcycle"> | string
     clientId?: StringNullableWithAggregatesFilter<"Motorcycle"> | string | null
     dealerId?: StringWithAggregatesFilter<"Motorcycle"> | string
-    enterpriseId?: StringWithAggregatesFilter<"Motorcycle"> | string
+    enterpriseId?: StringNullableWithAggregatesFilter<"Motorcycle"> | string | null
     brand?: StringWithAggregatesFilter<"Motorcycle"> | string
     model?: StringWithAggregatesFilter<"Motorcycle"> | string
     year?: IntWithAggregatesFilter<"Motorcycle"> | number
@@ -22694,8 +22713,8 @@ export namespace Prisma {
     OR?: DriverWhereInput[]
     NOT?: DriverWhereInput | DriverWhereInput[]
     id?: StringFilter<"Driver"> | string
-    idEnterprise?: StringFilter<"Driver"> | string
-    idMotorcycle?: StringFilter<"Driver"> | string
+    enterpriseId?: StringFilter<"Driver"> | string
+    motorcycleId?: StringFilter<"Driver"> | string
     firstname?: StringFilter<"Driver"> | string
     lastname?: StringFilter<"Driver"> | string
     licenseNumber?: StringFilter<"Driver"> | string
@@ -22709,8 +22728,8 @@ export namespace Prisma {
 
   export type DriverOrderByWithRelationInput = {
     id?: SortOrder
-    idEnterprise?: SortOrder
-    idMotorcycle?: SortOrder
+    enterpriseId?: SortOrder
+    motorcycleId?: SortOrder
     firstname?: SortOrder
     lastname?: SortOrder
     licenseNumber?: SortOrder
@@ -22728,8 +22747,8 @@ export namespace Prisma {
     AND?: DriverWhereInput | DriverWhereInput[]
     OR?: DriverWhereInput[]
     NOT?: DriverWhereInput | DriverWhereInput[]
-    idEnterprise?: StringFilter<"Driver"> | string
-    idMotorcycle?: StringFilter<"Driver"> | string
+    enterpriseId?: StringFilter<"Driver"> | string
+    motorcycleId?: StringFilter<"Driver"> | string
     firstname?: StringFilter<"Driver"> | string
     lastname?: StringFilter<"Driver"> | string
     licenseNumber?: StringFilter<"Driver"> | string
@@ -22742,8 +22761,8 @@ export namespace Prisma {
 
   export type DriverOrderByWithAggregationInput = {
     id?: SortOrder
-    idEnterprise?: SortOrder
-    idMotorcycle?: SortOrder
+    enterpriseId?: SortOrder
+    motorcycleId?: SortOrder
     firstname?: SortOrder
     lastname?: SortOrder
     licenseNumber?: SortOrder
@@ -22761,8 +22780,8 @@ export namespace Prisma {
     OR?: DriverScalarWhereWithAggregatesInput[]
     NOT?: DriverScalarWhereWithAggregatesInput | DriverScalarWhereWithAggregatesInput[]
     id?: StringWithAggregatesFilter<"Driver"> | string
-    idEnterprise?: StringWithAggregatesFilter<"Driver"> | string
-    idMotorcycle?: StringWithAggregatesFilter<"Driver"> | string
+    enterpriseId?: StringWithAggregatesFilter<"Driver"> | string
+    motorcycleId?: StringWithAggregatesFilter<"Driver"> | string
     firstname?: StringWithAggregatesFilter<"Driver"> | string
     lastname?: StringWithAggregatesFilter<"Driver"> | string
     licenseNumber?: StringWithAggregatesFilter<"Driver"> | string
@@ -23305,7 +23324,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
@@ -23319,7 +23338,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -23347,7 +23366,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
@@ -23361,7 +23380,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -23382,7 +23401,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -23407,7 +23426,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -23957,8 +23976,8 @@ export namespace Prisma {
 
   export type DriverUncheckedCreateInput = {
     id?: string
-    idEnterprise: string
-    idMotorcycle: string
+    enterpriseId: string
+    motorcycleId: string
     firstname: string
     lastname: string
     licenseNumber: string
@@ -23983,8 +24002,8 @@ export namespace Prisma {
 
   export type DriverUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
-    idEnterprise?: StringFieldUpdateOperationsInput | string
-    idMotorcycle?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
@@ -23996,8 +24015,8 @@ export namespace Prisma {
 
   export type DriverCreateManyInput = {
     id?: string
-    idEnterprise: string
-    idMotorcycle: string
+    enterpriseId: string
+    motorcycleId: string
     firstname: string
     lastname: string
     licenseNumber: string
@@ -24020,8 +24039,8 @@ export namespace Prisma {
 
   export type DriverUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
-    idEnterprise?: StringFieldUpdateOperationsInput | string
-    idMotorcycle?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
@@ -24646,11 +24665,6 @@ export namespace Prisma {
     not?: NestedEnumMotorcycleStatusFilter<$PrismaModel> | $Enums.MotorcycleStatus
   }
 
-  export type EnterpriseScalarRelationFilter = {
-    is?: EnterpriseWhereInput
-    isNot?: EnterpriseWhereInput
-  }
-
   export type MaintenanceListRelationFilter = {
     every?: MaintenanceWhereInput
     some?: MaintenanceWhereInput
@@ -25168,10 +25182,15 @@ export namespace Prisma {
     _max?: NestedEnumIncidentStatusFilter<$PrismaModel>
   }
 
+  export type EnterpriseScalarRelationFilter = {
+    is?: EnterpriseWhereInput
+    isNot?: EnterpriseWhereInput
+  }
+
   export type DriverCountOrderByAggregateInput = {
     id?: SortOrder
-    idEnterprise?: SortOrder
-    idMotorcycle?: SortOrder
+    enterpriseId?: SortOrder
+    motorcycleId?: SortOrder
     firstname?: SortOrder
     lastname?: SortOrder
     licenseNumber?: SortOrder
@@ -25183,8 +25202,8 @@ export namespace Prisma {
 
   export type DriverMaxOrderByAggregateInput = {
     id?: SortOrder
-    idEnterprise?: SortOrder
-    idMotorcycle?: SortOrder
+    enterpriseId?: SortOrder
+    motorcycleId?: SortOrder
     firstname?: SortOrder
     lastname?: SortOrder
     licenseNumber?: SortOrder
@@ -25195,8 +25214,8 @@ export namespace Prisma {
 
   export type DriverMinOrderByAggregateInput = {
     id?: SortOrder
-    idEnterprise?: SortOrder
-    idMotorcycle?: SortOrder
+    enterpriseId?: SortOrder
+    motorcycleId?: SortOrder
     firstname?: SortOrder
     lastname?: SortOrder
     licenseNumber?: SortOrder
@@ -25987,10 +26006,12 @@ export namespace Prisma {
     update?: XOR<XOR<DealerUpdateToOneWithWhereWithoutMotorcycleInput, DealerUpdateWithoutMotorcycleInput>, DealerUncheckedUpdateWithoutMotorcycleInput>
   }
 
-  export type EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput = {
+  export type EnterpriseUpdateOneWithoutMotorcycleNestedInput = {
     create?: XOR<EnterpriseCreateWithoutMotorcycleInput, EnterpriseUncheckedCreateWithoutMotorcycleInput>
     connectOrCreate?: EnterpriseCreateOrConnectWithoutMotorcycleInput
     upsert?: EnterpriseUpsertWithoutMotorcycleInput
+    disconnect?: EnterpriseWhereInput | boolean
+    delete?: EnterpriseWhereInput | boolean
     connect?: EnterpriseWhereUniqueInput
     update?: XOR<XOR<EnterpriseUpdateToOneWithWhereWithoutMotorcycleInput, EnterpriseUpdateWithoutMotorcycleInput>, EnterpriseUncheckedUpdateWithoutMotorcycleInput>
   }
@@ -27300,7 +27321,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
@@ -27313,7 +27334,7 @@ export namespace Prisma {
   export type MotorcycleUncheckedCreateWithoutDealerInput = {
     id?: string
     clientId?: string | null
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -27470,7 +27491,7 @@ export namespace Prisma {
     id?: StringFilter<"Motorcycle"> | string
     clientId?: StringNullableFilter<"Motorcycle"> | string | null
     dealerId?: StringFilter<"Motorcycle"> | string
-    enterpriseId?: StringFilter<"Motorcycle"> | string
+    enterpriseId?: StringNullableFilter<"Motorcycle"> | string | null
     brand?: StringFilter<"Motorcycle"> | string
     model?: StringFilter<"Motorcycle"> | string
     year?: IntFilter<"Motorcycle"> | number
@@ -27564,7 +27585,7 @@ export namespace Prisma {
 
   export type DriverUncheckedCreateWithoutEntrepriseInput = {
     id?: string
-    idMotorcycle: string
+    motorcycleId: string
     firstname: string
     lastname: string
     licenseNumber: string
@@ -27700,8 +27721,8 @@ export namespace Prisma {
     OR?: DriverScalarWhereInput[]
     NOT?: DriverScalarWhereInput | DriverScalarWhereInput[]
     id?: StringFilter<"Driver"> | string
-    idEnterprise?: StringFilter<"Driver"> | string
-    idMotorcycle?: StringFilter<"Driver"> | string
+    enterpriseId?: StringFilter<"Driver"> | string
+    motorcycleId?: StringFilter<"Driver"> | string
     firstname?: StringFilter<"Driver"> | string
     lastname?: StringFilter<"Driver"> | string
     licenseNumber?: StringFilter<"Driver"> | string
@@ -27861,7 +27882,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
@@ -27874,7 +27895,7 @@ export namespace Prisma {
   export type MotorcycleUncheckedCreateWithoutClientInput = {
     id?: string
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -28086,7 +28107,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
     breakdowns?: IncidentCreateNestedManyWithoutMotorcycleInput
@@ -28099,7 +28120,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -28171,7 +28192,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
     breakdowns?: IncidentUpdateManyWithoutMotorcycleNestedInput
@@ -28184,7 +28205,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -28234,7 +28255,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
     breakdowns?: IncidentCreateNestedManyWithoutMotorcycleInput
@@ -28247,7 +28268,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -28319,7 +28340,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
     breakdowns?: IncidentUpdateManyWithoutMotorcycleNestedInput
@@ -28332,7 +28353,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -28607,7 +28628,7 @@ export namespace Prisma {
 
   export type DriverUncheckedCreateWithoutMotorcycleInput = {
     id?: string
-    idEnterprise: string
+    enterpriseId: string
     firstname: string
     lastname: string
     licenseNumber: string
@@ -28889,7 +28910,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
@@ -28902,7 +28923,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -28976,7 +28997,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
@@ -28989,7 +29010,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -29442,7 +29463,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
@@ -29455,7 +29476,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -29530,7 +29551,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
@@ -29543,7 +29564,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -29586,7 +29607,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     breakdowns?: IncidentCreateNestedManyWithoutMotorcycleInput
@@ -29599,7 +29620,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -29642,7 +29663,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     breakdowns?: IncidentUpdateManyWithoutMotorcycleNestedInput
@@ -29655,7 +29676,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -29682,7 +29703,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
@@ -29695,7 +29716,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -29738,7 +29759,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
@@ -29751,7 +29772,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -29801,7 +29822,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     client?: ClientCreateNestedOneWithoutMotorcycleInput
     dealer: DealerCreateNestedOneWithoutMotorcycleInput
-    enterprise: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
     testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
     rentals?: RentalCreateNestedManyWithoutMotorcycleInput
     maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
@@ -29814,7 +29835,7 @@ export namespace Prisma {
     id?: string
     clientId?: string | null
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -29886,7 +29907,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
@@ -29899,7 +29920,7 @@ export namespace Prisma {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -29960,7 +29981,7 @@ export namespace Prisma {
   export type MotorcycleCreateManyDealerInput = {
     id?: string
     clientId?: string | null
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -30015,7 +30036,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     client?: ClientUpdateOneWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
@@ -30028,7 +30049,7 @@ export namespace Prisma {
   export type MotorcycleUncheckedUpdateWithoutDealerInput = {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -30048,7 +30069,7 @@ export namespace Prisma {
   export type MotorcycleUncheckedUpdateManyWithoutDealerInput = {
     id?: StringFieldUpdateOperationsInput | string
     clientId?: NullableStringFieldUpdateOperationsInput | string | null
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -30097,7 +30118,7 @@ export namespace Prisma {
 
   export type DriverCreateManyEntrepriseInput = {
     id?: string
-    idMotorcycle: string
+    motorcycleId: string
     firstname: string
     lastname: string
     licenseNumber: string
@@ -30134,7 +30155,7 @@ export namespace Prisma {
 
   export type DriverUncheckedUpdateWithoutEntrepriseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    idMotorcycle?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
@@ -30146,7 +30167,7 @@ export namespace Prisma {
 
   export type DriverUncheckedUpdateManyWithoutEntrepriseInput = {
     id?: StringFieldUpdateOperationsInput | string
-    idMotorcycle?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
@@ -30233,7 +30254,7 @@ export namespace Prisma {
   export type MotorcycleCreateManyClientInput = {
     id?: string
     dealerId: string
-    enterpriseId: string
+    enterpriseId?: string | null
     brand: string
     model: string
     year: number
@@ -30316,7 +30337,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
-    enterprise?: EnterpriseUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
     testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
     rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
     maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
@@ -30329,7 +30350,7 @@ export namespace Prisma {
   export type MotorcycleUncheckedUpdateWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -30349,7 +30370,7 @@ export namespace Prisma {
   export type MotorcycleUncheckedUpdateManyWithoutClientInput = {
     id?: StringFieldUpdateOperationsInput | string
     dealerId?: StringFieldUpdateOperationsInput | string
-    enterpriseId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     brand?: StringFieldUpdateOperationsInput | string
     model?: StringFieldUpdateOperationsInput | string
     year?: IntFieldUpdateOperationsInput | number
@@ -30418,7 +30439,7 @@ export namespace Prisma {
 
   export type DriverCreateManyMotorcycleInput = {
     id?: string
-    idEnterprise: string
+    enterpriseId: string
     firstname: string
     lastname: string
     licenseNumber: string
@@ -30615,7 +30636,7 @@ export namespace Prisma {
 
   export type DriverUncheckedUpdateWithoutMotorcycleInput = {
     id?: StringFieldUpdateOperationsInput | string
-    idEnterprise?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: StringFieldUpdateOperationsInput | string
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
@@ -30627,7 +30648,7 @@ export namespace Prisma {
 
   export type DriverUncheckedUpdateManyWithoutMotorcycleInput = {
     id?: StringFieldUpdateOperationsInput | string
-    idEnterprise?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: StringFieldUpdateOperationsInput | string
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string

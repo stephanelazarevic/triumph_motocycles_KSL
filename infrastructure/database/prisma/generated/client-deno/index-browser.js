@@ -276,8 +276,8 @@ exports.Prisma.IncidentScalarFieldEnum = {
 
 exports.Prisma.DriverScalarFieldEnum = {
   id: 'id',
-  idEnterprise: 'idEnterprise',
-  idMotorcycle: 'idMotorcycle',
+  enterpriseId: 'enterpriseId',
+  motorcycleId: 'motorcycleId',
   firstname: 'firstname',
   lastname: 'lastname',
   licenseNumber: 'licenseNumber',
