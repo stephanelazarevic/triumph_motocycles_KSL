@@ -13,8 +13,9 @@ export class UserEntity extends Entity {
     public phoneNumber: PhoneNumber,
     public address: Address,
     public isAdministrator: boolean = false,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create(params: {

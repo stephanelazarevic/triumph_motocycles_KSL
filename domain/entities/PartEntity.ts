@@ -11,8 +11,9 @@ export class PartEntity extends Entity {
     public price: number,
     private _stockQuantity: number,
     public order?: OrderEntity,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   get stockQuantity(): number {

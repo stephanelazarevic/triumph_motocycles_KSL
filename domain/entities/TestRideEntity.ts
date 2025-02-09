@@ -9,8 +9,9 @@ export class TestRideEntity extends Entity {
     public date: Date,
     public feedback: string,
     public isCompleted: boolean,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {

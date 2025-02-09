@@ -9,8 +9,9 @@ export class NotificationEntity extends Entity {
     public message: string,
     public date: Date,
     public status: NotificationStatus,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {

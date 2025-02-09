@@ -8,8 +8,9 @@ export class EnterpriseEntity extends Entity {
     public user: UserEntity,
     public taxNumber: TaxNumber,
     public industryType: IndustryType,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create(params: {

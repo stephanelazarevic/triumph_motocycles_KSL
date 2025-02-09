@@ -10,8 +10,9 @@ export class IncidentEntity extends Entity {
     public reportDate: Date,
     public resolutionDate: Date | null,
     public status: string,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {
