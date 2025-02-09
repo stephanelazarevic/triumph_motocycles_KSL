@@ -10,8 +10,9 @@ export class MaintenanceEntity extends Entity {
     public type: MaintenanceType,
     public status: MaintenanceStatus,
     public nextMaintenanceDate: Date,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {

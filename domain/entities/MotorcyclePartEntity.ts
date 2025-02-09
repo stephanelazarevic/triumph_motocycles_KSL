@@ -6,8 +6,9 @@ export class MotorcyclePartEntity extends Entity {
   private constructor(
     public motorcycle: MotorcycleEntity,
     public part: PartEntity,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create(params: {

@@ -1,6 +1,6 @@
 import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserRepository } from "../../repositories/UserRepository.ts";
-import { PasswordService } from "../../../domain/services/PasswordService.ts";
+import { PasswordService } from "../../services/PasswordService.ts";
 import { Password } from "../../../domain/value-objects/Password.ts";
 import { UserEmailAddressAlreadyUsedError } from "../../../domain/errors/UserEmailAddressAlreadyUsedError.ts";
 import { Address } from "../../../domain/value-objects/Address.ts";
@@ -37,11 +37,7 @@ export class AddUserUsecase {
       return validEmailAddress;
     }
 
-    const validAddress = Address.from(
-      command.address.street,
-      command.address.postalCode,
-      command.address.countryCode,
-    );
+    const validAddress = Address.from(command.address);
     if (validAddress instanceof Error) {
       return validAddress;
     }

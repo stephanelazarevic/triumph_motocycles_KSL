@@ -18,8 +18,9 @@ export class MotorcycleEntity extends Entity{
     public clientId: string | null,
     public drivers: DriverEntity[] | null,
     public enterpriseId: string | null,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static isAssignedToClient(clientId: string | null | undefined): boolean{
@@ -32,7 +33,7 @@ export class MotorcycleEntity extends Entity{
 
   public static isAssignedToEntreprise(entrepriseId: string | null | undefined): boolean{
       return entrepriseId !== null;
-    } 
+    }
 
   public static create( params: {
     dealerId: string;
@@ -92,7 +93,8 @@ export class MotorcycleEntity extends Entity{
       MotorcycleStatus[data.status.toLowerCase() as keyof typeof MotorcycleStatus],
       data.clientId,
       data.drivers,
-      data.enterpriseId
+      data.enterpriseId,
+      data.id
     );
   }
 }

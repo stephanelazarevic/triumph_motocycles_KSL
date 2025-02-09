@@ -8,8 +8,9 @@ export class WarrantyEntity extends Entity {
     public type: string,
     public motorcycle: MotorcycleEntity,
     public terms: string,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {

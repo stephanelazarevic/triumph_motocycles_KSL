@@ -10,7 +10,11 @@ const lastname = Name.from("Doe", NameType.LASTNAME) as Name;
 const emailAddress = EmailAddress.from( "pierre.robin@gmail.com") as EmailAddress;
 const hashedPassword = "poiujhgvtysd555555hj";
 const phoneNumber = PhoneNumber.from("0624252627") as PhoneNumber;
-const address = Address.from("1st street", "12345", "US") as Address;
+const address = Address.from({
+  street: "1st street",
+  postalCode: "12345",
+  countryCode: "US"
+}) as Address;
 
 export const userJohnDoe = UserEntity.create({
   firstname,

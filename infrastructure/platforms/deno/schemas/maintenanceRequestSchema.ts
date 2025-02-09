@@ -1,4 +1,5 @@
-import { z } from "npm:zod";
+import { z } from 'npm:zod';
+import { MaintenanceStatus, MaintenanceType } from '../../../../domain/enum/MaintenanceEnum.ts';
 
 export const addMaintenanceRequestSchema = z.object({
   date: z.coerce.date()
@@ -6,6 +7,10 @@ export const addMaintenanceRequestSchema = z.object({
     .max(new Date(), "Date cannot be in the future"),
   description: z.string().min(1, "Description cannot be empty"),
   motorcycleId: z.string().uuid("Invalid UUID format"),
+  type: z.nativeEnum(MaintenanceType, {
+    errorMap: () => ({ message: "Invalid maintenance type" })
+  }),
+  status: z.nativeEnum(MaintenanceStatus),
   cost: z.number().positive("Cost must be positive"),
   nextMaintenanceDate: z.coerce.date(),
 });

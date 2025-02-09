@@ -5,11 +5,11 @@ import { PhoneNumber } from "../value-objects/PhoneNumber.ts";
 export interface AddDriverCommand {
   enterpriseId: string,
   motorcycleId: string,
-  firstname: Name,
-  lastname: Name,
+  firstname: string,
+  lastname: string,
   licenseNumber: string,
-  phoneNumber: PhoneNumber,
-  emailAddress: EmailAddress
+  phoneNumber: string,
+  emailAddress: string
 }
 
 export interface updateDriverCommand extends Partial<AddDriverCommand> {

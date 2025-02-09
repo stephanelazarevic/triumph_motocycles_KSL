@@ -41,9 +41,10 @@ model User {
   lastname            String
   hashedPassword      String
   emailAddress        String       @unique
-  phoneNumber         String?
+  phoneNumber         Json?
   address             Json
   isAdministrator     Boolean
+  token               String?
 
   dealer              Dealer?
   enterprise          Enterprise?
@@ -76,6 +77,7 @@ model Enterprise {
   industryType IndustryType
   user         User      @relation(fields: [id], references: [id])
   drivers      Driver[]
+  motorcycle   Motorcycle[] @relation("EnterpriseMotorcycle")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -141,13 +143,15 @@ model Motorcycle {
   id              String      @id @default(uuid())
   clientId        String?
   dealerId        String
+  enterpriseId    String
   brand           String
   model           String
   year            Int
   registrationNumber String @unique
   status          MotorcycleStatus
-  client          Client?  @relation(fields: [clientId], references: [id], name: "ClientMotorcycle")
-  dealer          Dealer   @relation(fields: [dealerId], references: [id], name: "DealerMotorcycle")
+  client          Client?     @relation(fields: [clientId], references: [id], name: "ClientMotorcycle")
+  dealer          Dealer      @relation(fields: [dealerId], references: [id], name: "DealerMotorcycle")
+  enterprise      Enterprise  @relation(fields: [enterpriseId], references: [id], name: "EnterpriseMotorcycle")
   testRides       TestRide[]
   rentals         Rental[]
   maintenance     Maintenance[]
@@ -313,7 +317,7 @@ model Driver {
   firstname     String
   lastname      String
   licenseNumber String
-  phoneNumber   String
+  phoneNumber   Json
   emailAddress  String  @unique
   entreprise    Enterprise @relation(fields: [idEnterprise], references: [id])
   motorcycle    Motorcycle @relation(fields: [idMotorcycle], references: [id])

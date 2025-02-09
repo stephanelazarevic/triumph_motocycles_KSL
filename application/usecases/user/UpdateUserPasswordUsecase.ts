@@ -2,7 +2,7 @@ import { UserEntity } from "../../../domain/entities/UserEntity.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 import { UserPasswordsDoNotMatchError } from "../../../domain/errors/UserPasswordsDoNotMatchError.ts";
 import { UserSamePasswordError } from "../../../domain/errors/UserSamePasswordError.ts";
-import { PasswordService } from "../../../domain/services/PasswordService.ts";
+import { PasswordService } from "../../services/PasswordService.ts";
 import { UpdateUserPasswordCommand } from "../../../domain/types/UserType.ts";
 import { Password } from "../../../domain/value-objects/Password.ts";
 import { UserRepository } from "../../repositories/UserRepository.ts";

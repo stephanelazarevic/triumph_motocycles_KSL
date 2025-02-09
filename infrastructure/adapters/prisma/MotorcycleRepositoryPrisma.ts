@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../database/prisma/generated/client-deno/deno/edge.ts";
+import { PrismaClient } from "../../../infrastructure/database/prisma/generated/client-deno/deno/edge.ts";
 import { MotorcycleRepository } from "../../../application/repositories/MotorcycleRepository.ts";
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
 import { DriverEntity } from "../../../domain/entities/DriverEntity.ts";
@@ -55,6 +55,7 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
         year: motorcycle.year,
         registrationNumber: motorcycle.registrationNumber,
         status: motorcycle.status,
+        enterpriseId: motorcycle.enterpriseId
       })
     );
   }
@@ -92,6 +93,7 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
       year: motorcycle.year,
       registrationNumber: motorcycle.registrationNumber,
       status: motorcycle.status,
+      enterpriseId: motorcycle.entrepriseId
     });
   }
 

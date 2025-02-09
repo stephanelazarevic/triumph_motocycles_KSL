@@ -1,13 +1,18 @@
+import './styles/main.scss';
 import { createApp } from 'vue';
 import App from './App.vue';
-import { vuetify } from './modules/vuetify';
 import { persistedPinia } from './modules/pinia';
+import { vuetify } from './modules/vuetify';
 import { router } from './router/router';
+import axios from 'axios';
+
+axios.defaults.baseURL = 'http://localhost:8000';
 
 const app = createApp(App);
 
-app.use(router)
-app.use(persistedPinia)
+app.use(router);
+app.use(persistedPinia);
 app.use(vuetify);
 
-app.mount('#app')
+
+app.mount('#app');

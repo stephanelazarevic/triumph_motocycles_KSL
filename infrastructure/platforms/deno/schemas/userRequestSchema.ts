@@ -1,4 +1,4 @@
-import { z } from "npm:zod";
+import { z } from 'npm:zod';
 
 export const createUserRequestSchema = z.object({
   firstname: z.string().min(2),

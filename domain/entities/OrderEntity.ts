@@ -8,8 +8,9 @@ export class OrderEntity extends Entity {
     public orderDate: Date,
     public status: OrderStatus,
     public totalAmount: number,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create(params: {

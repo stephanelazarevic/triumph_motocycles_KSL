@@ -1,4 +1,4 @@
-import { z } from "npm:zod";
+import { z } from 'npm:zod';
 
 export const addMotorcyclePartRequestSchema = z.object({
   motorcycleId: z.string().uuid("Invalid UUID format"),

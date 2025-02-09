@@ -1,5 +1,6 @@
 import { PhoneNumberInvalidError } from "../errors/PhoneNumberInvalidError.ts";
-import { PhoneNumberService } from "../services/PhoneNumberService.ts";
+import { PhoneNumberService } from "../../application/services/PhoneNumberService.ts";
+import { PhoneNumberData } from "../types/PhoneNumberType.ts";
 
 export class PhoneNumber {
   private static phoneNumberService: PhoneNumberService;
@@ -19,23 +20,33 @@ export class PhoneNumber {
     return PhoneNumber.phoneNumberService.isValid(formattedPhone);
   }
 
-  public getValue(): string {
-    return this.value;
+  public getValue(): PhoneNumberData {
+    return {
+      countryCode: this.countryCode,
+      nationalNumber: this.nationalNumber
+    };
+  }
+
+  public getPhoneNumber(): string {
+    return this.countryCode + this.nationalNumber;
   }
 
   public getInternational(): string {
-    return PhoneNumber.phoneNumberService.formatInternational(this.getValue());
+    return PhoneNumber.phoneNumberService.formatInternational(this.getPhoneNumber());
   }
 
   public getNational(): string {
-    return PhoneNumber.phoneNumberService.formatNational(this.getValue());
+    return PhoneNumber.phoneNumberService.formatNational(this.getPhoneNumber());
   }
 
   public equals(phoneNumber: PhoneNumber): boolean {
     return this.getInternational() === phoneNumber.getInternational();
   }
 
-  public static reconstitute (value: string){
-    return new PhoneNumber(value);
+  public static reconstitute(data: PhoneNumberData): PhoneNumber {
+    return new PhoneNumber(
+      data.countryCode,
+      data.nationalNumber
+    );
   }
 }

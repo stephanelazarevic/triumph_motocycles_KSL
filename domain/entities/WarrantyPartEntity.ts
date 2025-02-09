@@ -8,8 +8,9 @@ export class WarrantyPartEntity extends Entity {
     public warranty: WarrantyEntity,
     public coveredCost: number,
     public remainingCost: number,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {

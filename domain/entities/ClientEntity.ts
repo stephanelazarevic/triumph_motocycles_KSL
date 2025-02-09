@@ -5,8 +5,9 @@ export class ClientEntity extends Entity {
   private constructor(
     public user: UserEntity,
     public dealerId: string,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create(params: {
