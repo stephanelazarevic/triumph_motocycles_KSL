@@ -1,5 +1,5 @@
 {
-  "workspace": ["./infrastructure/platforms/deno"],
+  "workspace": ["./interface/api/deno"],
   "nodeModulesDir": "auto",
   "tasks": {
     "dev": "deno run --watch --allow-net --allow-env interface/api/deno/main.ts",
