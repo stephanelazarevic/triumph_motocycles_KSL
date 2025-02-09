@@ -16,11 +16,7 @@ export class UpdateMaintenanceUsecase {
     }
 
     if (command.motorcycleId) {
-      const motorcycle = await this.motorcycleRepository.findOneById(command.motorcycleId);
-      if (motorcycle instanceof Error) {
-        return motorcycle;
-      }
-      maintenance.motorcycle = motorcycle;
+      maintenance.motorcycleId = command.motorcycleId;
     }
 
     if (command.date) {

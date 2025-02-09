@@ -41,4 +41,14 @@ export class MaintenanceRepositoryInMemory implements MaintenanceRepository {
       (maintenance) => maintenance.nextMaintenanceDate <= date
     ));
   }
+
+  public findByMotorcycleIdAndPeriod(motorcycleId: string, startDate: Date, endDate: Date | null): Promise<MaintenanceEntity[]> {
+    const foundMaintenances = this.maintenances.filter((maintenance) => {
+      return maintenance.motorcycleId === motorcycleId &&
+        maintenance.date >= startDate &&
+        (!endDate || maintenance.date <= endDate);
+    });
+
+    return Promise.resolve(foundMaintenances);
+  }
 }

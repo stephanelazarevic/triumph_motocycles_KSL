@@ -5,8 +5,8 @@ import { EmailAddress } from "../value-objects/EmailAddress.ts";
 
 export class DriverEntity extends Entity {
   private constructor(
-    public idEnterprise: string,
-    public idMotorcycle: string,
+    public enterpriseId: string,
+    public motorcycleId: string,
     public firstname: Name,
     public lastname: Name,
     public licenseNumber: string,
@@ -17,8 +17,8 @@ export class DriverEntity extends Entity {
   }
 
   public static create( params: {
-    idEnterprise: string;
-    idMotorcycle: string;
+    enterpriseId: string;
+    motorcycleId: string;
     firstname: Name;
     lastname: Name;
     licenseNumber: string;
@@ -26,8 +26,8 @@ export class DriverEntity extends Entity {
     email: EmailAddress;
   }) {
     return new DriverEntity(
-      params.idEnterprise,
-      params.idMotorcycle,
+      params.enterpriseId,
+      params.motorcycleId,
       params.firstname,
       params.lastname,
       params.licenseNumber,
@@ -38,8 +38,8 @@ export class DriverEntity extends Entity {
 
   public static reconstitute(data: {
     id: string;
-    idEnterprise: string;
-    idMotorcycle: string;
+    enterpriseId: string;
+    motorcycleId: string;
     firstname: string;
     lastname: string;
     licenseNumber: string;
@@ -47,8 +47,8 @@ export class DriverEntity extends Entity {
     emailAddress: string;
   }): DriverEntity {
     return new DriverEntity(
-      data.idEnterprise,
-      data.idMotorcycle,
+      data.enterpriseId,
+      data.motorcycleId,
       Name.reconstitute(data.firstname),
       Name.reconstitute(data.lastname),
       data.licenseNumber,

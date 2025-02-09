@@ -2,6 +2,8 @@ import { OrderRepository } from "../../repositories/OrderRepository.ts";
 import { PartRepository } from "../../repositories/PartRepository.ts";
 import { updateOrderCommand, PartQuantityToOrder } from "../../../domain/types/OrderType.ts";
 import { OrderEntity } from "../../../domain/entities/OrderEntity.ts";
+import { NotEnoughPartsInStockError } from "../../../domain/errors/NotEnoughPartsInStockError.ts";
+import { PartNotFoundError } from "../../../domain/errors/PartNotFoundError.ts";
 
 export class UpdateOrderUsecase {
   constructor(
@@ -15,15 +17,25 @@ export class UpdateOrderUsecase {
       return order;
     }
 
-    if (command.parts) {
+    const updatedParts: Array<PartQuantityToOrder> = [];
 
-      const updatedParts: Array<PartQuantityToOrder> = [];
+    if (command.parts) {
 
       for(const partToOrder of command.parts){
         const part = await this.partRepository.findOneById(partToOrder.partId);
         if (part instanceof Error) {
           return part;
         }
+
+        const previousPart = order.parts.find(p => p.partId === part.id);
+        if (previousPart) {
+          part.stockQuantity += previousPart.quantity;
+        }
+
+        if (part.stockQuantity < partToOrder.quantity) {
+          return new NotEnoughPartsInStockError();
+        }
+
         updatedParts.push({ partId: part.id, quantity: partToOrder.quantity });
       }
       order.parts = updatedParts;
@@ -41,6 +53,16 @@ export class UpdateOrderUsecase {
 
     order.markAsUpdated();
     await this.orderRepository.save(order);
+
+    if (command.parts) {
+      for (const partUsedToOrder of updatedParts) { 
+        const part = await this.partRepository.findOneById(partUsedToOrder.partId);
+        if (!(part instanceof PartNotFoundError)) {
+          part.stockQuantity -= partUsedToOrder.quantity;
+          await this.partRepository.save(part);
+        }
+      }
+    }
 
     return order;
   }

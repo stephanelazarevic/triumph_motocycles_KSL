@@ -7,7 +7,7 @@ export interface AddDriverCommand {
   motorcycleId: string,
   firstname: Name,
   lastname: Name,
-  licenseNumber: number,
+  licenseNumber: string,
   phoneNumber: PhoneNumber,
   emailAddress: EmailAddress
 }
