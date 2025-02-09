@@ -13,6 +13,8 @@ import { NotificationEntity } from "../../../../domain/entities/NotificationEnti
 import { PartRepository } from "../../../../application/repositories/PartRepository.ts";
 import { EmailService } from "../../../services/EmailService.ts";
 import { MaintenanceRepository } from "../../../../application/repositories/MaintenanceRepository.ts";
+import { ClientRepository } from "../../../../application/repositories/ClientRepository.ts";
+import { EnterpriseRepository } from "../../../../application/repositories/EnterpriseRepository.ts";
 
 export class NotificationController implements EntityControllerInterface{
   public constructor(
@@ -20,6 +22,8 @@ export class NotificationController implements EntityControllerInterface{
     private readonly partRepository: PartRepository,
     private readonly notificationRepository: NotificationRepository,
     private readonly userRepository: UserRepository,
+    private readonly clientRepository: ClientRepository,
+    private readonly enterpriseRepository: EnterpriseRepository,
     private readonly emailService: EmailService,
   ) {}
 
@@ -167,6 +171,8 @@ export class NotificationController implements EntityControllerInterface{
       this.maintenanceRepository,
       this.partRepository,
       this.userRepository,
+      this.clientRepository,
+      this.enterpriseRepository,
       this.notificationRepository,
       this.emailService,
     );

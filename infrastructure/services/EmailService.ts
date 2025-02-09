@@ -24,7 +24,7 @@ export interface EmailService {
         },
         body: JSON.stringify({
           from: "admin.ksl@gmail.com", 
-          to: email,
+          to: email.to,
           subject: email.subject,
           text: email.body,
         }),

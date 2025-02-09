@@ -1,18 +1,16 @@
 import { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
-import { DealerRepository } from "../../repositories/DealerRepository.ts";
-import { WarrantyRepository } from "../../repositories/WarrantyRepository.ts";
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
 import { UpdateMotorcycleCommand } from "../../../domain/types/MotorcycleType.ts";
 import { Brand } from "../../../domain/value-objects/Brand.ts";
 import { Model } from "../../../domain/value-objects/Model.ts";
 import { MotorcycleCannotAssignClientToAlreadyAssignedDriverError } from '../../../domain/errors/MotorcycleCannotAssignClientToAlreadyAssignedDriverError.ts'
 import { MotorcycleCannotAssignDriverToAlreadyAssignedClientError } from '../../../domain/errors/MotorcycleCannotAssignDriverToAlreadyAssignedClientError.ts'
+import { MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError } from '../../../domain/errors/MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError.ts'
+import { MotorcycleWithDriversMustBeAssignedToEnterpriseError } from '../../../domain/errors/MotorcycleWithDriversMustBeAssignedToEnterpriseError.ts'
 
 export class UpdateMotorcycleUsecase {
  constructor(
   private motorcycleRepository: MotorcycleRepository,
-  private dealerRepository: DealerRepository,
-  private warrantyRepository: WarrantyRepository,
 ) {}
 
  public async execute(motorcycleId: string, command: UpdateMotorcycleCommand): Promise<MotorcycleEntity | Error> {
@@ -22,22 +20,11 @@ export class UpdateMotorcycleUsecase {
    }
 
    if (command.dealerId) {
-    const dealer = await this.dealerRepository.findOneById(command.dealerId);
-    if (dealer instanceof Error) {
-      return dealer;
+    motorcycle.dealerId = command.dealerId;
     }
-    motorcycle.dealer = dealer;
-  }
-   if (command.warrantyId) {
-    const warranty = await this.warrantyRepository.findOneById(command.warrantyId);
-    if (warranty instanceof Error) {
-      return warranty;
-    }
-    motorcycle.warranty = warranty;
-  }
    if (command.brand) {
     const brand = Brand.from(command.brand);
-    if(brand instanceof Error){
+   if(brand instanceof Error){
       return brand;
     }
      motorcycle.brand = brand;
@@ -59,16 +46,24 @@ export class UpdateMotorcycleUsecase {
      motorcycle.status = command.status;
    }
    if (command.clientId) {
-    if(motorcycle.isAssignedToDriver()){
+    if (motorcycle.drivers && motorcycle.drivers.length > 0) {
       return new MotorcycleCannotAssignClientToAlreadyAssignedDriverError();
     }
-     motorcycle.clientId = command.clientId;
+    motorcycle.clientId = command.clientId;
    }
-   if (command.driverId) {
-    if(motorcycle.isAssignedToClient()){
+   if (command.drivers) {
+   if (motorcycle.clientId) {
       return new MotorcycleCannotAssignDriverToAlreadyAssignedClientError();
+    } else if (motorcycle.enterpriseId !== null) {
+        return new MotorcycleWithDriversMustBeAssignedToEnterpriseError();
     }
-     motorcycle.driverId = command.driverId;
+      motorcycle.drivers = command.drivers;
+   }
+   if (command.enterpriseId) {
+    if (motorcycle.clientId) {
+      return new MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError();
+    }
+    motorcycle.enterpriseId = command.enterpriseId;
    }
 
    motorcycle.markAsUpdated();

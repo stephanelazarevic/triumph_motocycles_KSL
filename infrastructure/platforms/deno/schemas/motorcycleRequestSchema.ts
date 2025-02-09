@@ -16,20 +16,36 @@ const motorcycleSchema = z.object({
     .default(MotorcycleStatus.AVAILABLE),
   clientId: z.string().uuid("Invalid client UUID format").optional(),
   driverId: z.string().uuid("Invalid driver UUID format").optional(),
+  enterpriseId: z.string().uuid("Invalid enterprise UUID format").optional(),
 });
 
-export const addMotorcycleRequestSchema = motorcycleSchema.refine(
-  data => !(data.clientId && data.driverId),
+export const addMotorcycleRequestSchema = motorcycleSchema
+.refine(data => !(data.clientId && data.driverId),
   {
     message: "Cannot assign a motorcycle to both a client and a driver",
     path: ["clientId", "driverId"],
-  }
-);
+  })
+.refine(data => !(data.clientId && data.enterpriseId), {
+  message: "A motorcycle cannot have both a client and an enterprise assigned",
+  path: ["clientId", "enterpriseId"],
+})
+.refine(data => !data.drivers || (data.drivers.length === 0 || data.enterpriseId), {
+  message: "A motorcycle with drivers must have an enterprise assigned",
+  path: ["drivers"],
+});
 
-export const updateMotorcycleRequestSchema = motorcycleSchema.partial().refine(
-  data => !(data.clientId && data.driverId),
+export const updateMotorcycleRequestSchema = motorcycleSchema.partial()
+.refine(data => !(data.clientId && data.driverId),
   {
     message: "Cannot assign a motorcycle to both a client and a driver",
     path: ["clientId", "driverId"],
   }
-);
+)
+.refine(data => !(data.clientId && data.enterpriseId), {
+  message: "A motorcycle cannot have both a client and an enterprise assigned",
+  path: ["clientId", "enterpriseId"],
+})
+.refine(data => !data.drivers || (data.drivers.length === 0 || data.enterpriseId), {
+  message: "A motorcycle with drivers must have an enterprise assigned",
+  path: ["drivers"],
+});
