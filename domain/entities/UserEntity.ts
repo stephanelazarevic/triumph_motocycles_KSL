@@ -17,7 +17,7 @@ export class UserEntity extends Entity {
     public address: Address,
     public isAdministrator: boolean = false,
     private _token?: string,
-    id?: string,
+    id?: string
   ) {
     super(id);
   }

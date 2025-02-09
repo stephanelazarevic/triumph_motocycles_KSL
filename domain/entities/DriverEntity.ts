@@ -14,7 +14,7 @@ export class DriverEntity extends Entity {
     public licenseNumber: string,
     public phoneNumber: PhoneNumber,
     public emailAddress: EmailAddress,
-    id?: string,
+    id?: string
   ) {
     super(id);
   }

@@ -10,8 +10,9 @@ export class RentalEntity extends Entity {
     public endDate: Date,
     public cost: number,
     public isCompleted: boolean,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {
