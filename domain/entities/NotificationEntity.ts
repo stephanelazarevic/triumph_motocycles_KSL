@@ -28,4 +28,22 @@ export class NotificationEntity extends Entity {
       params.status
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    user: UserEntity;
+    type: string;
+    message: string;
+    date: Date;
+    status: string;
+  }): NotificationEntity {
+    return new NotificationEntity(
+      data.user,
+      NotificationType[data.type],
+      data.message,
+      data.date,
+      NotificationStatus[data.status],
+      data.id
+    );
+  }
 }

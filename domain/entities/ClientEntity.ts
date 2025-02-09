@@ -18,4 +18,16 @@ export class ClientEntity extends Entity {
       params.dealerId,
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    dealerId: string;
+    user: UserEntity;
+  }): ClientEntity {
+    return new ClientEntity(
+      data.user,
+      data.dealerId,
+      data.id
+    );
+  }
 }

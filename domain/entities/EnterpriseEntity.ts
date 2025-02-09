@@ -23,4 +23,18 @@ export class EnterpriseEntity extends Entity {
       params.industryType,
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    user: UserEntity;
+    taxNumber: string;
+    industryType: string;
+  }): EnterpriseEntity {
+    return new EnterpriseEntity(
+      data.user,
+      TaxNumber.reconstitute(data.taxNumber),
+      IndustryType.reconstitute(data.taxNumber),
+      data.id
+    );
+  }
 }

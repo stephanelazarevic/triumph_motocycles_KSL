@@ -10,8 +10,9 @@ export class RentalEntity extends Entity {
     public endDate: Date,
     public cost: number,
     public isCompleted: boolean,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {
@@ -29,6 +30,26 @@ export class RentalEntity extends Entity {
       params.endDate,
       params.cost,
       params.isCompleted,
+    );
+  }
+
+  static reconstitute(data: {
+    id: string;
+    client: ClientEntity;
+    motorcycle: MotorcycleEntity;
+    startDate: Date;
+    endDate: Date;
+    cost: number;
+    isCompleted: boolean;
+  }): RentalEntity {
+    return new RentalEntity(
+      data.client,
+      data.motorcycle,
+      data.startDate,
+      data.endDate,
+      data.cost,
+      data.isCompleted,
+      data.id
     );
   }
 }

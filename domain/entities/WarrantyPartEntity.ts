@@ -8,8 +8,9 @@ export class WarrantyPartEntity extends Entity {
     public warranty: WarrantyEntity,
     public coveredCost: number,
     public remainingCost: number,
+    id?: string
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {
@@ -23,6 +24,22 @@ export class WarrantyPartEntity extends Entity {
       params.warranty,
       params.coveredCost,
       params.remainingCost,
+    );
+  }
+
+  static reconstitute(data: {
+    id: string;
+    part: PartEntity;
+    warranty: WarrantyEntity;
+    coveredCost: number;
+    remainingCost: number;
+  }): WarrantyPartEntity {
+    return new WarrantyPartEntity(
+      data.part,
+      data.warranty,
+      data.coveredCost,
+      data.remainingCost,
+      data.id
     );
   }
 }

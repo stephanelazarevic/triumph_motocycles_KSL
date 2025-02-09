@@ -18,4 +18,16 @@ export class DealerEntity extends Entity {
       params.site,
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    user: UserEntity;
+    site: string;
+  }): DealerEntity {
+    return new DealerEntity(
+      data.user,
+      data.site,
+      data.id
+    );
+  }
 }

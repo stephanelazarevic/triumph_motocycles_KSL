@@ -1,5 +1,5 @@
 import type { MotorcycleEntity } from "./MotorcycleEntity.ts";
-import type { IncidentType } from "../enum/IncidentEnum.ts";
+import { IncidentType } from "../enum/IncidentEnum.ts";
 import { Entity } from "./Entity.ts";
 
 export class IncidentEntity extends Entity {
@@ -29,6 +29,26 @@ export class IncidentEntity extends Entity {
       params.reportDate,
       params.resolutionDate,
       params.status,
+    );
+  }
+
+  static reconstitute(data: {
+    id: string;
+    description: string;
+    motorcycle: MotorcycleEntity;
+    type: string;
+    reportDate: Date;
+    resolutionDate: Date;
+    status: string;
+  }): IncidentEntity {
+    return new IncidentEntity(
+      data.description,
+      data.motorcycle,
+      IncidentType[data.type],
+      data.reportDate,
+      data.resolutionDate,
+      data.status,
+      data.id
     );
   }
 }

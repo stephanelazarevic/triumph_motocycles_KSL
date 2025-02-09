@@ -28,19 +28,19 @@ export class WarrantyEntity extends Entity {
     );
   }
 
-   static reconstitute(data: {
-      startDate: Date;
-      endDate: Date;
-      type: string;
-      motorcycle: MotorcycleEntity;
-      terms: string;
-    }): WarrantyEntity {
-      return new WarrantyEntity(
-        data.startDate,
-        data.endDate,
-        data.type,
-        data.motorcycle,
-        data.terms,
-      );
-    }
+  static reconstitute(data: {
+    startDate: Date;
+    endDate: Date;
+    type: string;
+    motorcycle: MotorcycleEntity;
+    terms: string;
+  }): WarrantyEntity {
+    return new WarrantyEntity(
+      data.startDate,
+      data.endDate,
+      data.type,
+      data.motorcycle,
+      data.terms,
+    );
+  }
 }
