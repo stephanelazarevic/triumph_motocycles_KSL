@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "npm:zod";
 import { addIncidentRequestSchema } from "./incidentRequestSchema.ts";
 import { addMaintenanceRequestSchema } from "./maintenanceRequestSchema.ts";
 

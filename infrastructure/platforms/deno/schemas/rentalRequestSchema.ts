@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "npm:zod";
 
 export const addRentalRequestSchema = z.object({
  clientId: z.string().uuid("Invalid UUID format"),
