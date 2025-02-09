@@ -7,6 +7,7 @@ import { MotorcycleCannotAssignClientToAlreadyAssignedDriverError } from '../../
 import { MotorcycleCannotAssignDriverToAlreadyAssignedClientError } from '../../../domain/errors/MotorcycleCannotAssignDriverToAlreadyAssignedClientError.ts'
 import { MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError } from '../../../domain/errors/MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError.ts'
 import { MotorcycleWithDriversMustBeAssignedToEnterpriseError } from '../../../domain/errors/MotorcycleWithDriversMustBeAssignedToEnterpriseError.ts'
+import { MotorcycleCannotAssignClientToAlreadyAssignedEnterpriseError } from '../../../domain/errors/MotorcycleCannotAssignClientToAlreadyAssignedEnterpriseError.ts'
 
 export class UpdateMotorcycleUsecase {
  constructor(
@@ -46,25 +47,29 @@ export class UpdateMotorcycleUsecase {
      motorcycle.status = command.status;
    }
    if (command.clientId) {
-    if (motorcycle.drivers && motorcycle.drivers.length > 0) {
+    if (MotorcycleEntity.isAssignedToDrivers(motorcycle.drivers)) {
       return new MotorcycleCannotAssignClientToAlreadyAssignedDriverError();
+    }
+    if (MotorcycleEntity.isAssignedToEntreprise(motorcycle.enterpriseId)) {
+      return new MotorcycleCannotAssignClientToAlreadyAssignedEnterpriseError();
     }
     motorcycle.clientId = command.clientId;
    }
    if (command.drivers) {
-   if (motorcycle.clientId) {
+    if (MotorcycleEntity.isAssignedToClient(motorcycle.clientId)) {
       return new MotorcycleCannotAssignDriverToAlreadyAssignedClientError();
-    } else if (motorcycle.enterpriseId !== null) {
-        return new MotorcycleWithDriversMustBeAssignedToEnterpriseError();
     }
-      motorcycle.drivers = command.drivers;
+    if (!MotorcycleEntity.isAssignedToEntreprise(motorcycle.enterpriseId)) {
+      return new MotorcycleWithDriversMustBeAssignedToEnterpriseError();
+    }
+    motorcycle.drivers = command.drivers;
    }
    if (command.enterpriseId) {
-    if (motorcycle.clientId) {
+    if (MotorcycleEntity.isAssignedToClient(motorcycle.clientId)) {
       return new MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError();
     }
     motorcycle.enterpriseId = command.enterpriseId;
-   }
+  }
 
    motorcycle.markAsUpdated();
    await this.motorcycleRepository.save(motorcycle);

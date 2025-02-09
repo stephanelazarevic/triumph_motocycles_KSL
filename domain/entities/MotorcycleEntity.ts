@@ -20,30 +20,17 @@ export class MotorcycleEntity extends Entity{
     public enterpriseId: string | null,
   ) {
     super();
-    dealerId = dealerId;
-    brand = brand;
-    model = model;
-    year = year;
-    registrationNumber = registrationNumber;
-    status = status;
-    clientId = clientId;
-    drivers = drivers;
-    enterpriseId = enterpriseId;
-    super();
   }
 
-  public static isAssignedToClient(clientId: string | null | undefined): boolean
-    {
+  public static isAssignedToClient(clientId: string | null | undefined): boolean{
       return clientId !== null;
     }
 
-  public static isAssignedToDriver(driverId: string | null | undefined): boolean
-    {
-      return driverId !== null;
+    public static isAssignedToDrivers(drivers?: DriverEntity[] | null): boolean {
+      return !!drivers && drivers.length > 0;
     }
 
-  public static isAssignedToEntreprise(entrepriseId: string | null | undefined): boolean
-    {
+  public static isAssignedToEntreprise(entrepriseId: string | null | undefined): boolean{
       return entrepriseId !== null;
     } 
 
