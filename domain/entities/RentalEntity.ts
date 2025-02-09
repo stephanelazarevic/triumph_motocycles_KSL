@@ -32,4 +32,24 @@ export class RentalEntity extends Entity {
       params.isCompleted,
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    client: ClientEntity;
+    motorcycle: MotorcycleEntity;
+    startDate: Date;
+    endDate: Date;
+    cost: number;
+    isCompleted: boolean;
+  }): RentalEntity {
+    return new RentalEntity(
+      data.client,
+      data.motorcycle,
+      data.startDate,
+      data.endDate,
+      data.cost,
+      data.isCompleted,
+      data.id
+    );
+  }
 }

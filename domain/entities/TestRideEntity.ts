@@ -29,4 +29,22 @@ export class TestRideEntity extends Entity {
       params.isCompleted,
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    client: ClientEntity;
+    motorcycle: MotorcycleEntity;
+    date: Date;
+    feedback: string;
+    isCompleted: boolean;
+  }): TestRideEntity {
+    return new TestRideEntity(
+      data.client,
+      data.motorcycle,
+      data.date,
+      data.feedback,
+      data.isCompleted,
+      data.id
+    );
+  }
 }

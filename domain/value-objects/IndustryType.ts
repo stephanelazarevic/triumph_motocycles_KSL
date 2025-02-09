@@ -23,4 +23,8 @@ export class IndustryType {
   public equals(industryType: IndustryType): boolean {
     return this.value === industryType.value;
   }
+
+  public static reconstitute (value: string){
+    return new IndustryType(value);
+  }
 }
