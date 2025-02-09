@@ -6,7 +6,7 @@ import { PasswordService } from '../../../../application/services/PasswordServic
 import { TokenGeneratorService } from '../../../../application/services/TokenGeneratorService.ts'
 
 export class AuthenticationController {
-public constructor(
+  public constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordService: PasswordService,
     private readonly tokenGenerator: TokenGeneratorService,
@@ -31,6 +31,7 @@ public constructor(
 
     const result = await signinUsecase.execute(validation.data);
 
+    console.warn('LOGIN RESULT', result);
     if ('token' in result) {
       return new Response(JSON.stringify(result), {
         status: 200,

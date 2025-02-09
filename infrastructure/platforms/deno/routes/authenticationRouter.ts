@@ -9,6 +9,6 @@ const authenticationRouter = new Router();
 
 const authenticationController = new AuthenticationController(userRepository, passwordService, tokenGeneratorService);
 
-authenticationRouter.get("/api/signin", handleRequest(authenticationController.signIn.bind(authenticationController)));
+authenticationRouter.post("/api/signin", handleRequest(authenticationController.signIn.bind(authenticationController)));
 
 export default authenticationRouter;
