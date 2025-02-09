@@ -22,7 +22,8 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
         status: mapMotorcycleStatusToPrismaMotorcycleStatus(motorcycle.status),
         drivers: {
           connect: motorcycle.drivers?.map(driver => ({ id: driver.id })) || []
-        }
+        },
+        enterpriseId: motorcycle.enterpriseId
       }
     });
   }
