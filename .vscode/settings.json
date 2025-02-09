@@ -1,7 +1,7 @@
 {
   "deno.enable": true,
   "deno.enablePaths": [
-    "infrastructure/platforms/deno",
+    "interface/api/deno",
     "infrastructure/adapters",
     "infrastructure/database/prisma",
     "infrastructure/services",

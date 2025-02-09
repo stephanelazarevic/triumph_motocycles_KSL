@@ -3,8 +3,8 @@ import { UserRepository } from '../../../../application/repositories/UserReposit
 // import { DealerRepository } from '../../../../application/repositories/DealerRepository.ts';
 // import { WarrantyRepository } from '../../../../application/repositories/WarrantyRepository.ts';
 
-import { MotorcycleRepositoryPrisma } from '../../../adapters/prisma/MotorcycleRepositoryPrisma.ts';
-import { UserRepositoryPrisma } from '../../../adapters/prisma/UserRepositoryPrisma.ts';
+import { MotorcycleRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/MotorcycleRepositoryPrisma.ts';
+import { UserRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/UserRepositoryPrisma.ts';
 // import { DealerRepositoryPrisma } from '../../../adapters/prisma/DealerRepositoryPrisma.ts';
 // import { WarrantyRepositoryPrisma } from '../../../adapters/prisma/WarrantyRepositoryPrisma.ts';
 
