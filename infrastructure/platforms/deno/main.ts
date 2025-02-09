@@ -2,6 +2,7 @@ import { Application } from "https://deno.land/x/oak@v11.1.0/mod.ts";
 import motorcycleRouter from "./routes/motorcycleRouter.ts";
 import apiRouter from "./routes/apiRouter.ts";
 import { prisma } from "./config/prisma.db.ts";
+import authenticationRouter from "./routes/authenticationRouter.ts";
 
 const app = new Application();
 
@@ -17,12 +18,16 @@ try {
 }
 
 // routes
-app.use(apiRouter.routes());
-app.use(motorcycleRouter.routes());
+app
+  .use(apiRouter.routes())
+  .use(authenticationRouter.routes())
+  .use(motorcycleRouter.routes());
 
 // allowedMethods
-app.use(apiRouter.allowedMethods());
-app.use(motorcycleRouter.allowedMethods());
+app
+  .use(apiRouter.allowedMethods())
+  .use(authenticationRouter.allowedMethods())
+  .use(motorcycleRouter.allowedMethods());
 
 app.addEventListener("listen", ({ hostname, port, secure }) => {
   console.log(

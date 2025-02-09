@@ -1,12 +1,25 @@
 import { exhaustive } from "npm:exhaustive";
 import { signInRequestSchema } from '../schemas/authentificationRequestSchema.ts'
 import { SignInUseCase } from "../../../../application/usecases/authentification/SignInUsecase.ts";
+import { UserRepository } from '../../../../application/repositories/UserRepository.ts'
+import { PasswordService } from '../../../../application/services/PasswordService.ts'
+import { TokenGeneratorService } from '../../../../application/services/TokenGeneratorService.ts'
 
-export class AuthController {
-  constructor(private readonly signInUseCase: SignInUseCase) {}
+export class AuthenticationController {
+public constructor(
+    private readonly userRepository: UserRepository,
+    private readonly passwordService: PasswordService,
+    private readonly tokenGenerator: TokenGeneratorService,
+  ) {}
 
   async signIn(request: Request) {
     const body = await request.json();
+
+    const signinUsecase = new SignInUseCase(
+      this.userRepository,
+      this.passwordService,
+      this.tokenGenerator
+    );
 
     const validation = signInRequestSchema.safeParse(body);
 
@@ -16,7 +29,7 @@ export class AuthController {
       });
     }
 
-    const result = await this.signInUseCase.execute(validation.data);
+    const result = await signinUsecase.execute(validation.data);
 
     if ('token' in result) {
       return new Response(JSON.stringify(result), {

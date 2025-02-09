@@ -136,6 +136,7 @@ exports.Prisma.UserScalarFieldEnum = {
   phoneNumber: 'phoneNumber',
   address: 'address',
   isAdministrator: 'isAdministrator',
+  token: 'token',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -288,6 +289,11 @@ exports.Prisma.DriverScalarFieldEnum = {
 exports.Prisma.SortOrder = {
   asc: 'asc',
   desc: 'desc'
+};
+
+exports.Prisma.NullableJsonNullValueInput = {
+  DbNull: Prisma.DbNull,
+  JsonNull: Prisma.JsonNull
 };
 
 exports.Prisma.JsonNullValueInput = {

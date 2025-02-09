@@ -1,5 +1,5 @@
 import bcrypt from "npm:bcryptjs";
-import { PasswordService } from "../../domain/services/PasswordService.ts";
+import { PasswordService } from "../../application/services/PasswordService.ts";
 import { Password } from "../../domain/value-objects/Password.ts";
 
 export class BCryptPasswordService implements PasswordService {

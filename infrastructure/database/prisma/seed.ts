@@ -1,7 +1,16 @@
 import bcrypt from "npm:bcryptjs";
 import { PrismaClient } from "./generated/client-deno/deno/edge.ts";
+import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
-const prisma = new PrismaClient();
+const env = config();
+
+export const prisma = new PrismaClient({
+  datasources: {
+    db: {
+      url: env.DATABASE_URL
+    }
+  }
+});
 
 async function seed() {
   try {
@@ -33,8 +42,15 @@ async function loadFixtures() {
       lastname: "TOTO",
       hashedPassword: adminPassword,
       emailAddress: "admin@example.com",
-      phoneNumber: "0600000000",
-      address: {},
+      phoneNumber: {
+        countryCode: "+33",
+        nationalNumber: "600000000"
+      },
+      address: {
+        street: "1st street",
+        postalCode: "75017",
+        countryCode: "FR"
+      },
       isAdministrator: true,
     },
   });
@@ -46,8 +62,15 @@ async function loadFixtures() {
       lastname: "One",
       hashedPassword: bcrypt.hashSync("dealer123", salt),
       emailAddress: "dealer@example.com",
-      phoneNumber: "0600000000",
-      address: {},
+      phoneNumber: {
+        countryCode: "+33",
+        nationalNumber: "600000000"
+      },
+      address: {
+        street: "1st street",
+        postalCode: "75017",
+        countryCode: "FR"
+      },
       isAdministrator: false,
       dealer: {
         create: {
@@ -64,8 +87,15 @@ async function loadFixtures() {
       lastname: "One",
       hashedPassword: bcrypt.hashSync("enterprise123", salt),
       emailAddress: "enterprise@example.com",
-      phoneNumber: "0600000000",
-      address: {},
+      phoneNumber: {
+        countryCode: "+33",
+        nationalNumber: "600000000"
+      },
+      address: {
+        street: "1st street",
+        postalCode: "75017",
+        countryCode: "FR"
+      },
       isAdministrator: false,
       enterprise: {
         create: {
@@ -83,8 +113,15 @@ async function loadFixtures() {
       lastname: "One",
       hashedPassword: bcrypt.hashSync("client123", salt),
       emailAddress: "client@example.com",
-      phoneNumber: "0600000000",
-      address: {},
+      phoneNumber: {
+        countryCode: "+33",
+        nationalNumber: "600000000"
+      },
+      address: {
+        street: "1st street",
+        postalCode: "75017",
+        countryCode: "FR"
+      },
       isAdministrator: false,
       client: {
         create: {
@@ -124,7 +161,10 @@ async function loadFixtures() {
       lastname: "Doe",
       licenseNumber: "LICENSE123",
       emailAddress: "driver@example.com",
-      phoneNumber: "+33123456789",
+      phoneNumber: {
+        countryCode: "FR",
+        nationalNumber: "600000000"
+      },
       idEnterprise: enterprise.id,
       idMotorcycle: motorcycle1.id,
     },

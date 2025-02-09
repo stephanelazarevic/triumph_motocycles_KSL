@@ -1,8 +1,11 @@
+import { JsonValue } from "@prisma/client/runtime/library";
 import { Address } from "../value-objects/Address.ts";
 import { EmailAddress } from "../value-objects/EmailAddress.ts";
 import { Name } from "../value-objects/Name.ts";
 import { PhoneNumber } from "../value-objects/PhoneNumber.ts";
 import { Entity } from "./Entity.ts";
+import { PhoneNumberData } from "../types/PhoneNumberType.ts";
+import { AddressData } from "../types/AddressType.ts";
 
 export class UserEntity extends Entity {
   private constructor(
@@ -10,7 +13,7 @@ export class UserEntity extends Entity {
     public lastname: Name,
     public hashedPassword: string,
     public emailAddress: EmailAddress,
-    public phoneNumber: PhoneNumber,
+    public phoneNumber: PhoneNumber | null,
     public address: Address,
     public isAdministrator: boolean = false,
     private _token?: string,
@@ -24,7 +27,7 @@ export class UserEntity extends Entity {
     lastname: Name;
     emailAddress: EmailAddress;
     hashedPassword: string;
-    phoneNumber: PhoneNumber;
+    phoneNumber: PhoneNumber | null;
     address: Address;
   }): UserEntity {
     return new UserEntity(
@@ -59,12 +62,8 @@ export class UserEntity extends Entity {
     lastname: string;
     hashedPassword: string;
     emailAddress: string;
-    phoneNumber: string;
-    address: {
-      street: string;
-      postalCode: string;
-      countryCode: string;
-    };
+    phoneNumber: JsonValue;
+    address: JsonValue;
     isAdministrator?: boolean;
     token?: string;
   }): UserEntity {
@@ -73,8 +72,8 @@ export class UserEntity extends Entity {
       Name.reconstitute(data.lastname),
       data.hashedPassword,
       EmailAddress.reconstitute(data.emailAddress),
-      PhoneNumber.reconstitute(data.phoneNumber),
-      Address.reconstitute(data.address),
+      PhoneNumber.reconstitute(data.phoneNumber as PhoneNumberData),
+      Address.reconstitute(data.address as AddressData),
       data.isAdministrator || false,
       data.token,
       data.id

@@ -41,10 +41,10 @@ model User {
   lastname            String
   hashedPassword      String
   emailAddress        String       @unique
-  phoneNumber         String?
-  token               String?
+  phoneNumber         Json?
   address             Json
   isAdministrator     Boolean
+  token               String?
 
   dealer              Dealer?
   enterprise          Enterprise?
@@ -314,7 +314,7 @@ model Driver {
   firstname     String
   lastname      String
   licenseNumber String
-  phoneNumber   String
+  phoneNumber   Json
   emailAddress  String  @unique
   entreprise    Enterprise @relation(fields: [idEnterprise], references: [id])
   motorcycle    Motorcycle @relation(fields: [idMotorcycle], references: [id])

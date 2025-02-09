@@ -2,6 +2,8 @@ import { Entity } from "./Entity.ts";
 import { Name } from "../value-objects/Name.ts";
 import { PhoneNumber } from "../value-objects/PhoneNumber.ts";
 import { EmailAddress } from "../value-objects/EmailAddress.ts";
+import { JsonValue } from "@prisma/client/runtime/library";
+import { PhoneNumberData } from "../types/PhoneNumberType.ts";
 
 export class DriverEntity extends Entity {
   private constructor(
@@ -11,9 +13,10 @@ export class DriverEntity extends Entity {
     public lastname: Name,
     public licenseNumber: string,
     public phoneNumber: PhoneNumber,
-    public emailAddress: EmailAddress
+    public emailAddress: EmailAddress,
+    id?: string,
   ) {
-    super();
+    super(id);
   }
 
   public static create( params: {
@@ -43,7 +46,7 @@ export class DriverEntity extends Entity {
     firstname: string;
     lastname: string;
     licenseNumber: string;
-    phoneNumber: string;
+    phoneNumber: JsonValue
     emailAddress: string;
   }): DriverEntity {
     return new DriverEntity(
@@ -52,8 +55,9 @@ export class DriverEntity extends Entity {
       Name.reconstitute(data.firstname),
       Name.reconstitute(data.lastname),
       data.licenseNumber,
-      PhoneNumber.reconstitute(data.phoneNumber),
-      EmailAddress.reconstitute(data.emailAddress)
+      PhoneNumber.reconstitute(data.phoneNumber as PhoneNumberData),
+      EmailAddress.reconstitute(data.emailAddress),
+      data.id,
     );
   }
 }

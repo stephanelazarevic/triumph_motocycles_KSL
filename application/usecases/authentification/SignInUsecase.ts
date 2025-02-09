@@ -1,11 +1,11 @@
 import { UserEntity } from "../../../domain/entities/UserEntity.ts";
-import { AuthentificationInvalidCredentialsError } from "../../../domain/errors/AuthentificationInvalidCredentialsError.ts";
+import { AuthenticationInvalidCredentialsError } from "../../../domain/errors/AuthenticationInvalidCredentialsError.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
-import { SignInCommand } from "../../../domain/types/AuthentificationType.ts";
+import { SignInCommand } from "../../../domain/types/AuthenticationType.ts";
 import { UserRepository } from '../../repositories/UserRepository.ts';
-import { PasswordService } from "../../../domain/services/PasswordService.ts";
+import { PasswordService } from "../../services/PasswordService.ts";
 import { EmailAddress } from "../../../domain/value-objects/EmailAddress.ts";
-import { TokenGeneratorService } from "../../../domain/services/TokenGeneratorService.ts";
+import { TokenGeneratorService } from "../../services/TokenGeneratorService.ts";
 
 export class SignInUseCase {
   constructor(
@@ -32,7 +32,7 @@ export class SignInUseCase {
     );
 
     if (!isPasswordValid) {
-      return new AuthentificationInvalidCredentialsError();
+      return new AuthenticationInvalidCredentialsError();
     }
 
     const token = await this.tokenGenerator.generate(user);

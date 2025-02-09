@@ -62,10 +62,6 @@ export class UpdateUserPersonalInformationUsecase {
     postalCode: string;
     countryCode: string;
   }): Address | Error {
-    return Address.from(
-      address.street,
-      address.postalCode,
-      address.countryCode,
-    );
+    return Address.from(address);
   }
 }

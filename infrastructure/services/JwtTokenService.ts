@@ -1,5 +1,5 @@
 import * as jwt from "npm:jsonwebtoken";
-import { TokenGeneratorService } from "../../domain/services/TokenGeneratorService.ts";
+import { TokenGeneratorService } from "../../application/services/TokenGeneratorService.ts";
 import { UserEntity } from "../../domain/entities/UserEntity.ts";
 
 export class JwtTokenService implements TokenGeneratorService {

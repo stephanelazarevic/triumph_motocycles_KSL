@@ -8,5 +8,8 @@ export interface UserRepository extends EntityRepositoryInterface<UserEntity> {
   findAll(): Promise<UserEntity[]>;
   findOneById(id: string): Promise<UserEntity | UserNotFoundError>;
   findByEmail(email: EmailAddress): Promise<UserEntity | UserNotFoundError>;
+  updateToken(id: string, token: string): Promise<void>;
+  findByToken(token: string): Promise<UserEntity | UserNotFoundError>;
+  removeToken(id: string):  Promise<void>;
   delete(id: string): Promise<void>;
 }

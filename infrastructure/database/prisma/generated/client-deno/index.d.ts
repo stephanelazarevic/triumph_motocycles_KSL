@@ -3796,8 +3796,8 @@ export namespace Prisma {
     lastname: string | null
     hashedPassword: string | null
     emailAddress: string | null
-    phoneNumber: string | null
     isAdministrator: boolean | null
+    token: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3808,8 +3808,8 @@ export namespace Prisma {
     lastname: string | null
     hashedPassword: string | null
     emailAddress: string | null
-    phoneNumber: string | null
     isAdministrator: boolean | null
+    token: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -3823,6 +3823,7 @@ export namespace Prisma {
     phoneNumber: number
     address: number
     isAdministrator: number
+    token: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -3835,8 +3836,8 @@ export namespace Prisma {
     lastname?: true
     hashedPassword?: true
     emailAddress?: true
-    phoneNumber?: true
     isAdministrator?: true
+    token?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3847,8 +3848,8 @@ export namespace Prisma {
     lastname?: true
     hashedPassword?: true
     emailAddress?: true
-    phoneNumber?: true
     isAdministrator?: true
+    token?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -3862,6 +3863,7 @@ export namespace Prisma {
     phoneNumber?: true
     address?: true
     isAdministrator?: true
+    token?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -3945,9 +3947,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber: string | null
+    phoneNumber: JsonValue | null
     address: JsonValue
     isAdministrator: boolean
+    token: string | null
     createdAt: Date
     updatedAt: Date
     _count: UserCountAggregateOutputType | null
@@ -3978,6 +3981,7 @@ export namespace Prisma {
     phoneNumber?: boolean
     address?: boolean
     isAdministrator?: boolean
+    token?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     dealer?: boolean | User$dealerArgs<ExtArgs>
@@ -3996,6 +4000,7 @@ export namespace Prisma {
     phoneNumber?: boolean
     address?: boolean
     isAdministrator?: boolean
+    token?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -4009,6 +4014,7 @@ export namespace Prisma {
     phoneNumber?: boolean
     address?: boolean
     isAdministrator?: boolean
+    token?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }, ExtArgs["result"]["user"]>
@@ -4022,11 +4028,12 @@ export namespace Prisma {
     phoneNumber?: boolean
     address?: boolean
     isAdministrator?: boolean
+    token?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstname" | "lastname" | "hashedPassword" | "emailAddress" | "phoneNumber" | "address" | "isAdministrator" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
+  export type UserOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "firstname" | "lastname" | "hashedPassword" | "emailAddress" | "phoneNumber" | "address" | "isAdministrator" | "token" | "createdAt" | "updatedAt", ExtArgs["result"]["user"]>
   export type UserInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     dealer?: boolean | User$dealerArgs<ExtArgs>
     enterprise?: boolean | User$enterpriseArgs<ExtArgs>
@@ -4051,9 +4058,10 @@ export namespace Prisma {
       lastname: string
       hashedPassword: string
       emailAddress: string
-      phoneNumber: string | null
+      phoneNumber: Prisma.JsonValue | null
       address: Prisma.JsonValue
       isAdministrator: boolean
+      token: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["user"]>
@@ -4488,9 +4496,10 @@ export namespace Prisma {
     readonly lastname: FieldRef<"User", 'String'>
     readonly hashedPassword: FieldRef<"User", 'String'>
     readonly emailAddress: FieldRef<"User", 'String'>
-    readonly phoneNumber: FieldRef<"User", 'String'>
+    readonly phoneNumber: FieldRef<"User", 'Json'>
     readonly address: FieldRef<"User", 'Json'>
     readonly isAdministrator: FieldRef<"User", 'Boolean'>
+    readonly token: FieldRef<"User", 'String'>
     readonly createdAt: FieldRef<"User", 'DateTime'>
     readonly updatedAt: FieldRef<"User", 'DateTime'>
   }
@@ -19917,7 +19926,6 @@ export namespace Prisma {
     firstname: string | null
     lastname: string | null
     licenseNumber: string | null
-    phoneNumber: string | null
     emailAddress: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -19930,7 +19938,6 @@ export namespace Prisma {
     firstname: string | null
     lastname: string | null
     licenseNumber: string | null
-    phoneNumber: string | null
     emailAddress: string | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -19958,7 +19965,6 @@ export namespace Prisma {
     firstname?: true
     lastname?: true
     licenseNumber?: true
-    phoneNumber?: true
     emailAddress?: true
     createdAt?: true
     updatedAt?: true
@@ -19971,7 +19977,6 @@ export namespace Prisma {
     firstname?: true
     lastname?: true
     licenseNumber?: true
-    phoneNumber?: true
     emailAddress?: true
     createdAt?: true
     updatedAt?: true
@@ -20070,7 +20075,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonValue
     emailAddress: string
     createdAt: Date
     updatedAt: Date
@@ -20178,7 +20183,7 @@ export namespace Prisma {
       firstname: string
       lastname: string
       licenseNumber: string
-      phoneNumber: string
+      phoneNumber: Prisma.JsonValue
       emailAddress: string
       createdAt: Date
       updatedAt: Date
@@ -20613,7 +20618,7 @@ export namespace Prisma {
     readonly firstname: FieldRef<"Driver", 'String'>
     readonly lastname: FieldRef<"Driver", 'String'>
     readonly licenseNumber: FieldRef<"Driver", 'String'>
-    readonly phoneNumber: FieldRef<"Driver", 'String'>
+    readonly phoneNumber: FieldRef<"Driver", 'Json'>
     readonly emailAddress: FieldRef<"Driver", 'String'>
     readonly createdAt: FieldRef<"Driver", 'DateTime'>
     readonly updatedAt: FieldRef<"Driver", 'DateTime'>
@@ -21067,6 +21072,7 @@ export namespace Prisma {
     phoneNumber: 'phoneNumber',
     address: 'address',
     isAdministrator: 'isAdministrator',
+    token: 'token',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -21267,6 +21273,14 @@ export namespace Prisma {
   };
 
   export type SortOrder = (typeof SortOrder)[keyof typeof SortOrder]
+
+
+  export const NullableJsonNullValueInput: {
+    DbNull: typeof DbNull,
+    JsonNull: typeof JsonNull
+  };
+
+  export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
   export const JsonNullValueInput: {
@@ -21579,9 +21593,10 @@ export namespace Prisma {
     lastname?: StringFilter<"User"> | string
     hashedPassword?: StringFilter<"User"> | string
     emailAddress?: StringFilter<"User"> | string
-    phoneNumber?: StringNullableFilter<"User"> | string | null
+    phoneNumber?: JsonNullableFilter<"User">
     address?: JsonFilter<"User">
     isAdministrator?: BoolFilter<"User"> | boolean
+    token?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     dealer?: XOR<DealerNullableScalarRelationFilter, DealerWhereInput> | null
@@ -21599,6 +21614,7 @@ export namespace Prisma {
     phoneNumber?: SortOrderInput | SortOrder
     address?: SortOrder
     isAdministrator?: SortOrder
+    token?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     dealer?: DealerOrderByWithRelationInput
@@ -21616,9 +21632,10 @@ export namespace Prisma {
     firstname?: StringFilter<"User"> | string
     lastname?: StringFilter<"User"> | string
     hashedPassword?: StringFilter<"User"> | string
-    phoneNumber?: StringNullableFilter<"User"> | string | null
+    phoneNumber?: JsonNullableFilter<"User">
     address?: JsonFilter<"User">
     isAdministrator?: BoolFilter<"User"> | boolean
+    token?: StringNullableFilter<"User"> | string | null
     createdAt?: DateTimeFilter<"User"> | Date | string
     updatedAt?: DateTimeFilter<"User"> | Date | string
     dealer?: XOR<DealerNullableScalarRelationFilter, DealerWhereInput> | null
@@ -21636,6 +21653,7 @@ export namespace Prisma {
     phoneNumber?: SortOrderInput | SortOrder
     address?: SortOrder
     isAdministrator?: SortOrder
+    token?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: UserCountOrderByAggregateInput
@@ -21652,9 +21670,10 @@ export namespace Prisma {
     lastname?: StringWithAggregatesFilter<"User"> | string
     hashedPassword?: StringWithAggregatesFilter<"User"> | string
     emailAddress?: StringWithAggregatesFilter<"User"> | string
-    phoneNumber?: StringNullableWithAggregatesFilter<"User"> | string | null
+    phoneNumber?: JsonNullableWithAggregatesFilter<"User">
     address?: JsonWithAggregatesFilter<"User">
     isAdministrator?: BoolWithAggregatesFilter<"User"> | boolean
+    token?: StringNullableWithAggregatesFilter<"User"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"User"> | Date | string
   }
@@ -22610,7 +22629,7 @@ export namespace Prisma {
     firstname?: StringFilter<"Driver"> | string
     lastname?: StringFilter<"Driver"> | string
     licenseNumber?: StringFilter<"Driver"> | string
-    phoneNumber?: StringFilter<"Driver"> | string
+    phoneNumber?: JsonFilter<"Driver">
     emailAddress?: StringFilter<"Driver"> | string
     createdAt?: DateTimeFilter<"Driver"> | Date | string
     updatedAt?: DateTimeFilter<"Driver"> | Date | string
@@ -22644,7 +22663,7 @@ export namespace Prisma {
     firstname?: StringFilter<"Driver"> | string
     lastname?: StringFilter<"Driver"> | string
     licenseNumber?: StringFilter<"Driver"> | string
-    phoneNumber?: StringFilter<"Driver"> | string
+    phoneNumber?: JsonFilter<"Driver">
     createdAt?: DateTimeFilter<"Driver"> | Date | string
     updatedAt?: DateTimeFilter<"Driver"> | Date | string
     entreprise?: XOR<EnterpriseScalarRelationFilter, EnterpriseWhereInput>
@@ -22677,7 +22696,7 @@ export namespace Prisma {
     firstname?: StringWithAggregatesFilter<"Driver"> | string
     lastname?: StringWithAggregatesFilter<"Driver"> | string
     licenseNumber?: StringWithAggregatesFilter<"Driver"> | string
-    phoneNumber?: StringWithAggregatesFilter<"Driver"> | string
+    phoneNumber?: JsonWithAggregatesFilter<"Driver">
     emailAddress?: StringWithAggregatesFilter<"Driver"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Driver"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Driver"> | Date | string
@@ -22758,9 +22777,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer?: DealerCreateNestedOneWithoutUserInput
@@ -22775,9 +22795,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer?: DealerUncheckedCreateNestedOneWithoutUserInput
@@ -22792,9 +22813,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUpdateOneWithoutUserNestedInput
@@ -22809,9 +22831,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUncheckedUpdateOneWithoutUserNestedInput
@@ -22826,9 +22849,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -22839,9 +22863,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -22852,9 +22877,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23841,7 +23867,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23856,7 +23882,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23867,7 +23893,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23882,7 +23908,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23895,7 +23921,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23906,7 +23932,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23919,7 +23945,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -24051,20 +24077,27 @@ export namespace Prisma {
     _min?: NestedEnumNotificationStatusFilter<$PrismaModel>
     _max?: NestedEnumNotificationStatusFilter<$PrismaModel>
   }
+  export type JsonNullableFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableFilterBase<$PrismaModel>>, 'path'>>
 
-  export type StringNullableFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableFilter<$PrismaModel> | string | null
+  export type JsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
   export type JsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -24092,6 +24125,21 @@ export namespace Prisma {
   export type BoolFilter<$PrismaModel = never> = {
     equals?: boolean | BooleanFieldRefInput<$PrismaModel>
     not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
+  export type StringNullableFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
   export type DealerNullableScalarRelationFilter = {
@@ -24133,6 +24181,7 @@ export namespace Prisma {
     phoneNumber?: SortOrder
     address?: SortOrder
     isAdministrator?: SortOrder
+    token?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24143,8 +24192,8 @@ export namespace Prisma {
     lastname?: SortOrder
     hashedPassword?: SortOrder
     emailAddress?: SortOrder
-    phoneNumber?: SortOrder
     isAdministrator?: SortOrder
+    token?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -24155,28 +24204,35 @@ export namespace Prisma {
     lastname?: SortOrder
     hashedPassword?: SortOrder
     emailAddress?: SortOrder
-    phoneNumber?: SortOrder
     isAdministrator?: SortOrder
+    token?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
+  export type JsonNullableWithAggregatesFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase<$PrismaModel>>, 'path'>>
 
-  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    mode?: QueryMode
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+  export type JsonNullableWithAggregatesFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
     _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
+    _min?: NestedJsonNullableFilter<$PrismaModel>
+    _max?: NestedJsonNullableFilter<$PrismaModel>
   }
   export type JsonWithAggregatesFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -24210,6 +24266,24 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type StringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    mode?: QueryMode
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type ClientListRelationFilter = {
@@ -25031,7 +25105,6 @@ export namespace Prisma {
     firstname?: SortOrder
     lastname?: SortOrder
     licenseNumber?: SortOrder
-    phoneNumber?: SortOrder
     emailAddress?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25044,7 +25117,6 @@ export namespace Prisma {
     firstname?: SortOrder
     lastname?: SortOrder
     licenseNumber?: SortOrder
-    phoneNumber?: SortOrder
     emailAddress?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25130,12 +25202,12 @@ export namespace Prisma {
     connect?: NotificationWhereUniqueInput | NotificationWhereUniqueInput[]
   }
 
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
-  }
-
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type DealerUpdateOneWithoutUserNestedInput = {
@@ -26429,6 +26501,11 @@ export namespace Prisma {
     _max?: NestedEnumNotificationStatusFilter<$PrismaModel>
   }
 
+  export type NestedBoolFilter<$PrismaModel = never> = {
+    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
+    not?: NestedBoolFilter<$PrismaModel> | boolean
+  }
+
   export type NestedStringNullableFilter<$PrismaModel = never> = {
     equals?: string | StringFieldRefInput<$PrismaModel> | null
     in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
@@ -26443,28 +26520,6 @@ export namespace Prisma {
     not?: NestedStringNullableFilter<$PrismaModel> | string | null
   }
 
-  export type NestedBoolFilter<$PrismaModel = never> = {
-    equals?: boolean | BooleanFieldRefInput<$PrismaModel>
-    not?: NestedBoolFilter<$PrismaModel> | boolean
-  }
-
-  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
-    equals?: string | StringFieldRefInput<$PrismaModel> | null
-    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
-    lt?: string | StringFieldRefInput<$PrismaModel>
-    lte?: string | StringFieldRefInput<$PrismaModel>
-    gt?: string | StringFieldRefInput<$PrismaModel>
-    gte?: string | StringFieldRefInput<$PrismaModel>
-    contains?: string | StringFieldRefInput<$PrismaModel>
-    startsWith?: string | StringFieldRefInput<$PrismaModel>
-    endsWith?: string | StringFieldRefInput<$PrismaModel>
-    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
-    _count?: NestedIntNullableFilter<$PrismaModel>
-    _min?: NestedStringNullableFilter<$PrismaModel>
-    _max?: NestedStringNullableFilter<$PrismaModel>
-  }
-
   export type NestedIntNullableFilter<$PrismaModel = never> = {
     equals?: number | IntFieldRefInput<$PrismaModel> | null
     in?: number[] | ListIntFieldRefInput<$PrismaModel> | null
@@ -26474,6 +26529,28 @@ export namespace Prisma {
     gt?: number | IntFieldRefInput<$PrismaModel>
     gte?: number | IntFieldRefInput<$PrismaModel>
     not?: NestedIntNullableFilter<$PrismaModel> | number | null
+  }
+  export type NestedJsonNullableFilter<$PrismaModel = never> = 
+    | PatchUndefined<
+        Either<Required<NestedJsonNullableFilterBase<$PrismaModel>>, Exclude<keyof Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>,
+        Required<NestedJsonNullableFilterBase<$PrismaModel>>
+      >
+    | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase<$PrismaModel>>, 'path'>>
+
+  export type NestedJsonNullableFilterBase<$PrismaModel = never> = {
+    equals?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
+    path?: string[]
+    string_contains?: string | StringFieldRefInput<$PrismaModel>
+    string_starts_with?: string | StringFieldRefInput<$PrismaModel>
+    string_ends_with?: string | StringFieldRefInput<$PrismaModel>
+    array_starts_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_ends_with?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    array_contains?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | null
+    lt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    lte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gt?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    gte?: InputJsonValue | JsonFieldRefInput<$PrismaModel>
+    not?: InputJsonValue | JsonFieldRefInput<$PrismaModel> | JsonNullValueFilter
   }
   export type NestedJsonFilter<$PrismaModel = never> = 
     | PatchUndefined<
@@ -26504,6 +26581,23 @@ export namespace Prisma {
     _count?: NestedIntFilter<$PrismaModel>
     _min?: NestedBoolFilter<$PrismaModel>
     _max?: NestedBoolFilter<$PrismaModel>
+  }
+
+  export type NestedStringNullableWithAggregatesFilter<$PrismaModel = never> = {
+    equals?: string | StringFieldRefInput<$PrismaModel> | null
+    in?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    notIn?: string[] | ListStringFieldRefInput<$PrismaModel> | null
+    lt?: string | StringFieldRefInput<$PrismaModel>
+    lte?: string | StringFieldRefInput<$PrismaModel>
+    gt?: string | StringFieldRefInput<$PrismaModel>
+    gte?: string | StringFieldRefInput<$PrismaModel>
+    contains?: string | StringFieldRefInput<$PrismaModel>
+    startsWith?: string | StringFieldRefInput<$PrismaModel>
+    endsWith?: string | StringFieldRefInput<$PrismaModel>
+    not?: NestedStringNullableWithAggregatesFilter<$PrismaModel> | string | null
+    _count?: NestedIntNullableFilter<$PrismaModel>
+    _min?: NestedStringNullableFilter<$PrismaModel>
+    _max?: NestedStringNullableFilter<$PrismaModel>
   }
 
   export type NestedEnumIndustryTypeFilter<$PrismaModel = never> = {
@@ -26699,9 +26793,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer?: DealerCreateNestedOneWithoutUserInput
@@ -26715,9 +26810,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer?: DealerUncheckedCreateNestedOneWithoutUserInput
@@ -26747,9 +26843,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUpdateOneWithoutUserNestedInput
@@ -26763,9 +26860,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUncheckedUpdateOneWithoutUserNestedInput
@@ -26988,9 +27086,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enterprise?: EnterpriseCreateNestedOneWithoutUserInput
@@ -27004,9 +27103,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     enterprise?: EnterpriseUncheckedCreateNestedOneWithoutUserInput
@@ -27148,9 +27248,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enterprise?: EnterpriseUpdateOneWithoutUserNestedInput
@@ -27164,9 +27265,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     enterprise?: EnterpriseUncheckedUpdateOneWithoutUserNestedInput
@@ -27269,9 +27371,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer?: DealerCreateNestedOneWithoutUserInput
@@ -27285,9 +27388,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer?: DealerUncheckedCreateNestedOneWithoutUserInput
@@ -27305,7 +27409,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27318,7 +27422,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -27351,9 +27455,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUpdateOneWithoutUserNestedInput
@@ -27367,9 +27472,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUncheckedUpdateOneWithoutUserNestedInput
@@ -27403,7 +27509,7 @@ export namespace Prisma {
     firstname?: StringFilter<"Driver"> | string
     lastname?: StringFilter<"Driver"> | string
     licenseNumber?: StringFilter<"Driver"> | string
-    phoneNumber?: StringFilter<"Driver"> | string
+    phoneNumber?: JsonFilter<"Driver">
     emailAddress?: StringFilter<"Driver"> | string
     createdAt?: DateTimeFilter<"Driver"> | Date | string
     updatedAt?: DateTimeFilter<"Driver"> | Date | string
@@ -27438,9 +27544,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer?: DealerCreateNestedOneWithoutUserInput
@@ -27454,9 +27561,10 @@ export namespace Prisma {
     lastname: string
     hashedPassword: string
     emailAddress: string
-    phoneNumber?: string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address: JsonNullValueInput | InputJsonValue
     isAdministrator: boolean
+    token?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
     dealer?: DealerUncheckedCreateNestedOneWithoutUserInput
@@ -27625,9 +27733,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUpdateOneWithoutUserNestedInput
@@ -27641,9 +27750,10 @@ export namespace Prisma {
     lastname?: StringFieldUpdateOperationsInput | string
     hashedPassword?: StringFieldUpdateOperationsInput | string
     emailAddress?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    phoneNumber?: NullableJsonNullValueInput | InputJsonValue
     address?: JsonNullValueInput | InputJsonValue
     isAdministrator?: BoolFieldUpdateOperationsInput | boolean
+    token?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     dealer?: DealerUncheckedUpdateOneWithoutUserNestedInput
@@ -28243,7 +28353,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28256,7 +28366,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29689,7 +29799,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -29700,7 +29810,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29713,7 +29823,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29725,7 +29835,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -29940,7 +30050,7 @@ export namespace Prisma {
     firstname: string
     lastname: string
     licenseNumber: string
-    phoneNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30124,7 +30234,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30137,7 +30247,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30149,7 +30259,7 @@ export namespace Prisma {
     firstname?: StringFieldUpdateOperationsInput | string
     lastname?: StringFieldUpdateOperationsInput | string
     licenseNumber?: StringFieldUpdateOperationsInput | string
-    phoneNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string

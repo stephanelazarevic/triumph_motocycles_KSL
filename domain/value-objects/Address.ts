@@ -1,7 +1,8 @@
 import { AddressInvalidCountryError } from "../errors/AddressInvalidCountryError.ts";
 import { AddressInvalidPostalCodeError } from "../errors/AddressInvalidPostalCodeError.ts";
 import { AddressTooShortError } from "../errors/AddressTooShortError.ts";
-import { CountryService } from "../services/CountryService.ts";
+import { CountryService } from "../../application/services/CountryService.ts";
+import { AddressData } from "../types/AddressType.ts";
 
 export class Address {
   private static countryService: CountryService;
@@ -12,24 +13,28 @@ export class Address {
     public readonly countryCode: string,
   ) {}
 
-  public static from(
-    street: string,
-    postalCode: string,
-    countryCode: string,
-  ): Address | Error {
-    if (!Address.isValidStreet(street)) {
+  public static from(address: AddressData): Address | Error {
+    if (!Address.isValidStreet(address.street)) {
       return new AddressTooShortError();
     }
 
-    if (!Address.isValidPostalCode(postalCode)) {
+    if (!Address.isValidPostalCode(address.postalCode)) {
       return new AddressInvalidPostalCodeError();
     }
 
-    if (!Address.isValidCountryCode(countryCode)) {
+    if (!Address.isValidCountryCode(address.countryCode)) {
       return new AddressInvalidCountryError();
     }
 
-    return new Address(street, postalCode, countryCode);
+    return new Address(address.street, address.postalCode, address.countryCode);
+  }
+
+  public getValue(): AddressData {
+    return {
+      street: this.street,
+      postalCode: this.postalCode,
+      countryCode: this.countryCode
+    };
   }
 
   private static isValidStreet(street: string): boolean {
@@ -59,11 +64,7 @@ export class Address {
       this.countryCode === address.countryCode;
   }
 
-  public static reconstitute(data: {
-    street: string;
-    postalCode: string;
-    countryCode: string;
-  }): Address {
+  public static reconstitute(data: AddressData): Address {
     return new Address(
       data.street,
       data.postalCode,

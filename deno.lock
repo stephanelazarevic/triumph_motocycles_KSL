@@ -5,6 +5,7 @@
     "jsr:@std/expect@*": "1.0.8",
     "jsr:@std/expect@^1.0.8": "1.0.8",
     "jsr:@std/internal@^1.0.5": "1.0.5",
+    "npm:@prisma/client@^6.3.0": "6.3.1_prisma@6.3.0",
     "npm:bcryptjs@*": "2.4.3",
     "npm:bcryptjs@^2.4.3": "2.4.3",
     "npm:exhaustive@*": "1.1.2",
@@ -37,6 +38,12 @@
     }
   },
   "npm": {
+    "@prisma/client@6.3.1_prisma@6.3.0": {
+      "integrity": "sha512-ARAJaPs+eBkemdky/XU3cvGRl+mIPHCN2lCXsl5Vlb0E2gV+R6IN7aCI8CisRGszEZondwIsW9Iz8EJkTdykyA==",
+      "dependencies": [
+        "prisma"
+      ]
+    },
     "@prisma/debug@6.3.0": {
       "integrity": "sha512-m1lQv//0Rc5RG8TBpNUuLCxC35Ghi5XfpPmL83Gh04/GICHD2J5H2ndMlaljrUNaQDF9dOxIuFAYP1rE9wkXkg=="
     },
@@ -356,6 +363,11 @@
       "npm:jsonwebtoken@9.0.2",
       "npm:libphonenumber-js@^1.11.17"
     ],
+    "packageJson": {
+      "dependencies": [
+        "npm:@prisma/client@^6.3.0"
+      ]
+    },
     "members": {
       "infrastructure/platforms/deno": {
         "dependencies": [

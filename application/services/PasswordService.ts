@@ -1,4 +1,4 @@
-import { Password } from "../value-objects/Password.ts";
+import { Password } from "../../domain/value-objects/Password.ts";
 
 export interface PasswordService {
   /**
