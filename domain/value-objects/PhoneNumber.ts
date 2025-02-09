@@ -5,20 +5,14 @@ import { PhoneNumberData } from "../types/PhoneNumberType.ts";
 export class PhoneNumber {
   private static phoneNumberService: PhoneNumberService;
 
-  private constructor(
-    private readonly countryCode: string,
-    private readonly nationalNumber: string,
-  ) {}
+  private constructor(private readonly value: string) {}
 
   public static from(phoneNumberValue: string): PhoneNumber | Error {
     if (!PhoneNumber.isValidPhoneNumber(phoneNumberValue)) {
       return new PhoneNumberInvalidError();
     }
 
-    const countryCode = PhoneNumber.phoneNumberService.extractCountryCode(phoneNumberValue);
-    const nationalNumber = PhoneNumber.phoneNumberService.extractNumber(phoneNumberValue);
-
-    return new PhoneNumber(countryCode, nationalNumber);
+    return new PhoneNumber(phoneNumberValue);
   }
 
   private static isValidPhoneNumber(phoneNumber: string): boolean {

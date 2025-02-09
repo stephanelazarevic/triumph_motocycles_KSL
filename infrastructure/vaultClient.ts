@@ -1,13 +1,13 @@
-import { config } from "https://deno.land/std@0.203.0/dotenv/mod.ts";
-const env = config();
+import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
+const env = await load();
 
 const VAULT_URL = env.VAULT_URL;
-const VAULT_TOKEN = env.VAULT_TOKEN; 
+const VAULT_TOKEN = env.VAULT_TOKEN;
 
 export async function getSecret(secretPath: string): Promise<any> {
   const url = `${VAULT_URL}/v1/${secretPath}`;
 
-  const response = await fetch(url, {  
+  const response = await fetch(url, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${VAULT_TOKEN}`,

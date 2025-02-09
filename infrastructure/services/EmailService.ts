@@ -1,9 +1,10 @@
 import { EmailAddress } from "../../domain/value-objects/EmailAddress.ts";
 import { EmailNotSentError } from "../../domain/errors/EmailNotSentError.ts"
-import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
+import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
 
-const env = config();
+const env = await load();
 const MAIL_API_KEY = env.MAIL_API_KEY;
+
 
 export interface EmailService {
     send(email: { to: EmailAddress; subject: string; body: string }): Promise<void>;
@@ -23,7 +24,7 @@ export interface EmailService {
         },
         body: JSON.stringify({
           from: "admin.ksl@gmail.com",
-          to: email,
+          to: email.to,
           subject: email.subject,
           text: email.body,
         }),
@@ -38,3 +39,4 @@ export interface EmailService {
 
     }
   }
+

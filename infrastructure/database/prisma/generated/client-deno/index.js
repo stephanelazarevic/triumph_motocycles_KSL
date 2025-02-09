@@ -419,7 +419,7 @@ if (!fs.existsSync(path.join(__dirname, 'schema.prisma'))) {
     "generated/client-deno",
     "client-deno",
   ]
-  
+
   const alternativePath = alternativePaths.find((altPath) => {
     return fs.existsSync(path.join(process.cwd(), altPath, 'schema.prisma'))
   }) ?? alternativePaths[0]
