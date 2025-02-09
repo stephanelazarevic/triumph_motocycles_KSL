@@ -26,4 +26,20 @@ export class WarrantyPartEntity extends Entity {
       params.remainingCost,
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    part: PartEntity;
+    warranty: WarrantyEntity;
+    coveredCost: number;
+    remainingCost: number;
+  }): WarrantyPartEntity {
+    return new WarrantyPartEntity(
+      data.part,
+      data.warranty,
+      data.coveredCost,
+      data.remainingCost,
+      data.id
+    );
+  }
 }

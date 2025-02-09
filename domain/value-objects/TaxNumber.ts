@@ -23,4 +23,8 @@ export class TaxNumber {
   public equals(otherTaxNumber: TaxNumber): boolean {
     return this.value === otherTaxNumber.value;
   }
+
+  public static reconstitute (value: string){
+    return new TaxNumber(value);
+  }
 }

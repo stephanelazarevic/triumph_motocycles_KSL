@@ -44,4 +44,24 @@ export class PartEntity extends Entity {
       params.order,
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    dealer: DealerEntity;
+    reference: string;
+    type: string;
+    price: number;
+    stockQuantity: number;
+    order?: OrderEntity;
+  }): PartEntity {
+    return new PartEntity(
+      data.dealer,
+      data.reference,
+      data.type,
+      data.price,
+      data.stockQuantity,
+      data.order,
+      data.id
+    );
+  }
 }
