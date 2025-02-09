@@ -143,7 +143,7 @@ model Motorcycle {
   id                 String           @id @default(uuid())
   clientId           String?
   dealerId           String
-  enterpriseId       String
+  enterpriseId       String?
   brand              String
   model              String
   year               Int
@@ -151,7 +151,7 @@ model Motorcycle {
   status             MotorcycleStatus
   client             Client?          @relation(fields: [clientId], references: [id], name: "ClientMotorcycle")
   dealer             Dealer           @relation(fields: [dealerId], references: [id], name: "DealerMotorcycle")
-  enterprise         Enterprise       @relation(fields: [enterpriseId], references: [id], name: "EnterpriseMotorcycle")
+  enterprise         Enterprise?      @relation(fields: [enterpriseId], references: [id], name: "EnterpriseMotorcycle")
   testRides          TestRide[]
   rentals            Rental[]
   maintenance        Maintenance[]
@@ -312,15 +312,15 @@ enum IncidentStatus {
 
 model Driver {
   id            String     @id @default(uuid())
-  idEnterprise  String
-  idMotorcycle  String
+  enterpriseId  String
+  motorcycleId  String
   firstname     String
   lastname      String
   licenseNumber String
   phoneNumber   Json
   emailAddress  String     @unique
-  entreprise    Enterprise @relation(fields: [idEnterprise], references: [id])
-  motorcycle    Motorcycle @relation(fields: [idMotorcycle], references: [id])
+  entreprise    Enterprise @relation(fields: [enterpriseId], references: [id])
+  motorcycle    Motorcycle @relation(fields: [motorcycleId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
