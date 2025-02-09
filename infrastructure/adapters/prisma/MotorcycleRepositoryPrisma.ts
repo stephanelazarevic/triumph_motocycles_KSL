@@ -13,6 +13,7 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
       data: {
         id: motorcycle.id,
         dealerId: motorcycle.dealerId,
+        enterpriseId: motorcycle.enterpriseId,
         clientId: motorcycle.clientId,
         brand: motorcycle.brand.value,
         model: motorcycle.model.value,
@@ -41,8 +42,8 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
         drivers: motorcycle.drivers ? motorcycle.drivers.map(driver =>
           DriverEntity.reconstitute({
             id: driver.id,
-            idEnterprise: driver.idEnterprise,
-            idMotorcycle: driver.idMotorcycle,
+            enterpriseId: driver.enterpriseId,
+            motorcycleId: driver.motorcycleId,
             firstname: driver.firstname,
             lastname: driver.lastname,
             licenseNumber: driver.licenseNumber,
@@ -79,8 +80,8 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
       drivers: motorcycle.drivers ? motorcycle.drivers.map(driver =>
         DriverEntity.reconstitute({
           id: driver.id,
-          idEnterprise: driver.idEnterprise,
-          idMotorcycle: driver.idMotorcycle,
+          enterpriseId: driver.enterpriseId,
+          motorcycleId: driver.motorcycleId,
           firstname: driver.firstname,
           lastname: driver.lastname,
           licenseNumber: driver.licenseNumber,
@@ -93,7 +94,7 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
       year: motorcycle.year,
       registrationNumber: motorcycle.registrationNumber,
       status: motorcycle.status,
-      enterpriseId: motorcycle.entrepriseId
+      enterpriseId: motorcycle.enterpriseId
     });
   }
 
