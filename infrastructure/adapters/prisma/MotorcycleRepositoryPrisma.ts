@@ -55,7 +55,7 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
         year: motorcycle.year,
         registrationNumber: motorcycle.registrationNumber,
         status: motorcycle.status,
-        enterpriseId: motorcycle.entrepriseId
+        enterpriseId: motorcycle.enterpriseId
       })
     );
   }

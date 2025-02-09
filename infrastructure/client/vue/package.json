@@ -15,6 +15,7 @@
     "@fortawesome/fontawesome-free": "^6.7.2",
     "@mdi/font": "7.4.47",
     "@vee-validate/zod": "^4.15.0",
+    "axios": "^1.7.9",
     "core-js": "^3.37.1",
     "pinia-plugin-persistedstate": "^4.2.0",
     "roboto-fontface": "*",

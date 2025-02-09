@@ -77,6 +77,7 @@ model Enterprise {
   industryType IndustryType
   user         User         @relation(fields: [id], references: [id])
   drivers      Driver[]
+  motorcycle   Motorcycle[] @relation("EnterpriseMotorcycle")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -142,6 +143,7 @@ model Motorcycle {
   id                 String           @id @default(uuid())
   clientId           String?
   dealerId           String
+  enterpriseId       String
   brand              String
   model              String
   year               Int
@@ -149,6 +151,7 @@ model Motorcycle {
   status             MotorcycleStatus
   client             Client?          @relation(fields: [clientId], references: [id], name: "ClientMotorcycle")
   dealer             Dealer           @relation(fields: [dealerId], references: [id], name: "DealerMotorcycle")
+  enterprise         Enterprise       @relation(fields: [enterpriseId], references: [id], name: "EnterpriseMotorcycle")
   testRides          TestRide[]
   rentals            Rental[]
   maintenance        Maintenance[]
