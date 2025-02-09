@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "npm:zod";
 import { MotorcycleStatus } from "../../../../domain/enum/MotorcycleEnum.ts";
 
 const motorcycleSchema = z.object({

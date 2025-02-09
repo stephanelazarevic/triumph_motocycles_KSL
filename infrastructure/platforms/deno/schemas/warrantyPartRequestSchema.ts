@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from "npm:zod";
 
 export const addWarrantyPartRequestSchema = z.object({
  warrantyId: z.string().uuid("Invalid warranty UUID"),
