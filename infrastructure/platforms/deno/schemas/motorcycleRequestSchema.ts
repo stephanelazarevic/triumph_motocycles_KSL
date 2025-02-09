@@ -14,38 +14,36 @@ const motorcycleSchema = z.object({
     .regex(/^[A-Z0-9-]+$/, "Invalid registration number format"),
   status: z.nativeEnum(MotorcycleStatus)
     .default(MotorcycleStatus.AVAILABLE),
+  drivers: z.string().array().optional(),
   clientId: z.string().uuid("Invalid client UUID format").optional(),
-  driverId: z.string().uuid("Invalid driver UUID format").optional(),
   enterpriseId: z.string().uuid("Invalid enterprise UUID format").optional(),
 });
 
 export const addMotorcycleRequestSchema = motorcycleSchema
-.refine(data => !(data.clientId && data.driverId),
-  {
+  .refine(data => !(data.clientId && data.drivers), {
     message: "Cannot assign a motorcycle to both a client and a driver",
-    path: ["clientId", "driverId"],
+    path: ["clientId", "drivers"],
   })
-.refine(data => !(data.clientId && data.enterpriseId), {
-  message: "A motorcycle cannot have both a client and an enterprise assigned",
-  path: ["clientId", "enterpriseId"],
-})
-.refine(data => !data.drivers || (data.drivers.length === 0 || data.enterpriseId), {
-  message: "A motorcycle with drivers must have an enterprise assigned",
-  path: ["drivers"],
-});
+  .refine(data => !(data.clientId && data.enterpriseId), {
+    message: "A motorcycle cannot have both a client and an enterprise assigned",
+    path: ["clientId", "enterpriseId"],
+  })
+  .refine(data => !data.drivers || (data.drivers.length === 0 || data.enterpriseId), {
+    message: "A motorcycle with drivers must have an enterprise assigned",
+    path: ["drivers"],
+  });
 
 export const updateMotorcycleRequestSchema = motorcycleSchema.partial()
-.refine(data => !(data.clientId && data.driverId),
-  {
+  .refine(data => !(data.clientId && data.drivers), {
     message: "Cannot assign a motorcycle to both a client and a driver",
-    path: ["clientId", "driverId"],
+    path: ["clientId", "drivers"],
   }
-)
-.refine(data => !(data.clientId && data.enterpriseId), {
-  message: "A motorcycle cannot have both a client and an enterprise assigned",
-  path: ["clientId", "enterpriseId"],
-})
-.refine(data => !data.drivers || (data.drivers.length === 0 || data.enterpriseId), {
-  message: "A motorcycle with drivers must have an enterprise assigned",
-  path: ["drivers"],
-});
+  )
+  .refine(data => !(data.clientId && data.enterpriseId), {
+    message: "A motorcycle cannot have both a client and an enterprise assigned",
+    path: ["clientId", "enterpriseId"],
+  })
+  .refine(data => !data.drivers || (data.drivers.length === 0 || data.enterpriseId), {
+    message: "A motorcycle with drivers must have an enterprise assigned",
+    path: ["drivers"],
+  });

@@ -8,10 +8,14 @@ import { MotorcycleCannotAssignDriverToAlreadyAssignedClientError } from '../../
 import { MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError } from '../../../domain/errors/MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError.ts'
 import { MotorcycleWithDriversMustBeAssignedToEnterpriseError } from '../../../domain/errors/MotorcycleWithDriversMustBeAssignedToEnterpriseError.ts'
 import { MotorcycleCannotAssignClientToAlreadyAssignedEnterpriseError } from '../../../domain/errors/MotorcycleCannotAssignClientToAlreadyAssignedEnterpriseError.ts'
+import { MotorcycleHistoryRepository } from "../../repositories/MotorcycleHistoryRepository.ts";
+import { AddMotorcycleHistoryUsecase } from "../motorcycleHistory/AddMotorcycleHistoryUsecase.ts";
 
 export class UpdateMotorcycleUsecase {
  constructor(
   private motorcycleRepository: MotorcycleRepository,
+  private motorcycleHistoryRepository: MotorcycleHistoryRepository,
+  private addMotorcycleHistoryUsecase: AddMotorcycleHistoryUsecase
 ) {}
 
  public async execute(motorcycleId: string, command: UpdateMotorcycleCommand): Promise<MotorcycleEntity | Error> {
@@ -73,6 +77,28 @@ export class UpdateMotorcycleUsecase {
 
    motorcycle.markAsUpdated();
    await this.motorcycleRepository.save(motorcycle);
+
+   const lastHistory = await this.motorcycleHistoryRepository.findLastByMotorcycleId(motorcycleId);
+   if (lastHistory instanceof Error) {
+     return lastHistory;
+   } else if (lastHistory && lastHistory.endDate === null) {
+     lastHistory.endDate = new Date(); 
+     await this.motorcycleHistoryRepository.save(lastHistory);
+   }
+
+   const historyCommand = {
+    motorcycleId: motorcycle.id,
+    startDate: new Date(), 
+    endDate: null,
+    incidents: [],
+    maintenances: [],
+    clientId: command.clientId ?? null,
+    drivers: command.drivers ?? null,
+    enterpriseId: command.enterpriseId ?? null
+  };
+
+  await this.addMotorcycleHistoryUsecase.execute(historyCommand);
+
    return motorcycle;
  }
 }

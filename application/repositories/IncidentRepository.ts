@@ -7,4 +7,5 @@ export interface IncidentRepository extends EntityRepositoryInterface<IncidentEn
   findAll(): Promise<IncidentEntity[]>;
   findOneById(id: string): Promise<IncidentEntity | IncidentNotFoundError>;
   delete(id: string): Promise<void>;
+  findByMotorcycleIdAndPeriod(motorcycleId: string, startDate: Date, endDate: Date | null): Promise<IncidentEntity[]>;
 }

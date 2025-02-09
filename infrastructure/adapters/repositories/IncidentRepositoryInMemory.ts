@@ -31,4 +31,14 @@ export class IncidentRepositoryInMemory implements IncidentRepository {
     this.incidents = this.incidents.filter((incident) => incident.id !== id);
     return Promise.resolve();
   }
+
+  findByMotorcycleIdAndPeriod(motorcycleId: string, startDate: Date, endDate: Date | null): Promise<IncidentEntity[]> {
+    const foundIncidents = this.incidents.filter((incident) => {
+      return incident.motorcycle.id === motorcycleId &&
+        incident.reportDate >= startDate &&
+        (!endDate || incident.reportDate <= endDate);
+    });
+
+    return Promise.resolve(foundIncidents);
+  }
 }

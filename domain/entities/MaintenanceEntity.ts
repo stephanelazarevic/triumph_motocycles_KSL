@@ -1,12 +1,11 @@
 import { Entity } from "./Entity.ts";
-import { MotorcycleEntity } from "./MotorcycleEntity.ts";
 import { MaintenanceType, MaintenanceStatus } from "../enum/MaintenanceEnum.ts";
 
 export class MaintenanceEntity extends Entity {
   private constructor(
     public date: Date,
     public description: string,
-    public motorcycle: MotorcycleEntity,
+    public motorcycleId: string,
     public cost: number,
     public type: MaintenanceType,
     public status: MaintenanceStatus,
@@ -19,7 +18,7 @@ export class MaintenanceEntity extends Entity {
   public static create( params: {
     date: Date;
     description: string;
-    motorcycle: MotorcycleEntity;
+    motorcycleId: string;
     cost: number;
     type: MaintenanceType;
     status: MaintenanceStatus;
@@ -28,7 +27,7 @@ export class MaintenanceEntity extends Entity {
     return new MaintenanceEntity(
       params.date,
       params.description,
-      params.motorcycle,
+      params.motorcycleId,
       params.cost,
       params.type,
       params.status,

@@ -63,7 +63,6 @@ export class DriverController implements EntityControllerInterface{
   public async create(request: Request): Promise<Response> {
     const addDriverUsecase = new AddDriverUsecase(
       this.driverRepository,
-      this.enterpriseRepository,
       this.motorcycleRepository,
     );
 
@@ -107,7 +106,7 @@ export class DriverController implements EntityControllerInterface{
       });
     }
 
-    const updateDriverUsecase = new UpdateDriverUsecase(this.driverRepository, this.enterpriseRepository, this.motorcycleRepository);
+    const updateDriverUsecase = new UpdateDriverUsecase(this.driverRepository);
     const result = await updateDriverUsecase.execute(driverId, validation.data);
 
     if (result instanceof DriverEntity) {
