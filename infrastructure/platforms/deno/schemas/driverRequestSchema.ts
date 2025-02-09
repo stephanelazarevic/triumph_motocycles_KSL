@@ -5,7 +5,7 @@ export const addDriverRequestSchema = z.object({
   motorcycleId: z.string().uuid("Invalid UUID format"),
   firstname: z.string().min(2),
   lastname: z.string().min(2),
-  licenseNumber: z.number().int(),
+  licenseNumber: z.string(),
   phoneNumber: z.string().min(8).max(15),
   emailAddress: z.string().email(),
 });

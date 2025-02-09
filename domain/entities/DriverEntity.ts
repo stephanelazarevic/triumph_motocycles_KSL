@@ -25,8 +25,8 @@ export class DriverEntity extends Entity {
     firstname: Name;
     lastname: Name;
     licenseNumber: string;
-    phone: PhoneNumber;
-    email: EmailAddress;
+    phoneNumber: PhoneNumber;
+    emailAddress: EmailAddress;
   }) {
     return new DriverEntity(
       params.enterpriseId,
@@ -34,8 +34,8 @@ export class DriverEntity extends Entity {
       params.firstname,
       params.lastname,
       params.licenseNumber,
-      params.phone,
-      params.email
+      params.phoneNumber,
+      params.emailAddress
     );
   }
 
