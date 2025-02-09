@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'npm:zod';
 
 export const addPartRequestSchema = z.object({
  dealerId: z.string().uuid("Invalid UUID format"),

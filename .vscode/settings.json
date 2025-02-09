@@ -2,6 +2,9 @@
   "deno.enable": true,
   "deno.enablePaths": [
     "infrastructure/platforms/deno",
-    "infrastructure/database/prisma"
+    "infrastructure/adapters",
+    "infrastructure/database/prisma",
+    "infrastructure/services",
+    "application"
   ],
 }

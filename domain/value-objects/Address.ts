@@ -58,4 +58,16 @@ export class Address {
       this.postalCode === address.postalCode &&
       this.countryCode === address.countryCode;
   }
+
+  public static reconstitute(data: {
+    street: string;
+    postalCode: string;
+    countryCode: string;
+  }): Address {
+    return new Address(
+      data.street,
+      data.postalCode,
+      data.countryCode
+    );
+  }
 }

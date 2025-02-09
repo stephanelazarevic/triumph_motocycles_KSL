@@ -42,6 +42,7 @@ model User {
   hashedPassword      String
   emailAddress        String       @unique
   phoneNumber         String?
+  token               String?
   address             Json
   isAdministrator     Boolean
 

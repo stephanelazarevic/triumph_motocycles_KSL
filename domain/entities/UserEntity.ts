@@ -13,8 +13,10 @@ export class UserEntity extends Entity {
     public phoneNumber: PhoneNumber,
     public address: Address,
     public isAdministrator: boolean = false,
+    private _token?: string,
+    id?: string,
   ) {
-    super();
+    super(id);
   }
 
   public static create(params: {
@@ -33,5 +35,50 @@ export class UserEntity extends Entity {
       params.phoneNumber,
       params.address,
     );
+  }
+
+  public get token(): string | undefined {
+    return this._token;
+  }
+
+  public setToken(token: string): void {
+    this._token = token;
+  }
+
+  public clearToken(): void {
+    this._token = undefined;
+  }
+
+  public isLoggedIn(): boolean {
+    return this._token !== undefined;
+  }
+
+  static reconstitute(data: {
+    id: string;
+    firstname: string;
+    lastname: string;
+    hashedPassword: string;
+    emailAddress: string;
+    phoneNumber: string;
+    address: {
+      street: string;
+      postalCode: string;
+      countryCode: string;
+    };
+    isAdministrator?: boolean;
+    token?: string;
+  }): UserEntity {
+    const user = new UserEntity(
+      Name.reconstitute(data.firstname),
+      Name.reconstitute(data.lastname),
+      data.hashedPassword,
+      EmailAddress.reconstitute(data.emailAddress),
+      PhoneNumber.reconstitute(data.phoneNumber),
+      Address.reconstitute(data.address),
+      data.isAdministrator || false,
+      data.token,
+      data.id
+    );
+    return user;
   }
 }

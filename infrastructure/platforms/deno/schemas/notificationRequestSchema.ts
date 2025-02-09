@@ -1,4 +1,4 @@
-import { z } from "zod";
+import { z } from 'npm:zod';
 import { NotificationStatus, NotificationType } from "../../../../domain/enum/NotificationEnum.ts";
 
 const notificationSchema = z.object({

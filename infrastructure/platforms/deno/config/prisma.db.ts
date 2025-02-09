@@ -1,7 +1,7 @@
 import { PrismaClient } from "../../../database/prisma/generated/client-deno/deno/edge.ts";
-import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
+import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 
-const env = await load();
+const env = config();
 
 export const prisma = new PrismaClient({
   datasources: {

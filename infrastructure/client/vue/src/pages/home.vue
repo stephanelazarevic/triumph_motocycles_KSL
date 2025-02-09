@@ -1,5 +1,6 @@
 <route lang="yaml">
   name: home
+  path: /
   meta:
     layout: base-layout
 </route>

@@ -1,4 +1,4 @@
-import { PrismaClient } from "../../database/prisma/generated/client-deno/deno/edge.ts";
+import { PrismaClient } from "../../../infrastructure/database/prisma/generated/client-deno/deno/edge.ts";
 import { MotorcycleRepository } from "../../../application/repositories/MotorcycleRepository.ts";
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
 import { DriverEntity } from "../../../domain/entities/DriverEntity.ts";

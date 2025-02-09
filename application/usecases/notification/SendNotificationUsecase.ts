@@ -8,13 +8,13 @@ import { EmailAddress } from "../../../domain/value-objects/EmailAddress.ts";
 import { UserRepository } from "../../repositories/UserRepository.ts";
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts"
 import { getSecret } from "../../../infrastructure/vaultClient.ts";
-import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
+import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { AdminIdNotFoundError } from "../../../domain/errors/AdminIdNotFoundError.ts";
 import { UserNotFoundError } from "../../../domain/errors/UserNotFoundError.ts";
 import { NotificationSentRecentlyError } from "../../../domain/errors/NotificationSentRecentlyError.ts";
 import { NotificationNotSentError } from "../../../domain/errors/NotificationNotSentError.ts";
 
-const env = await load();
+const env = config();
 const adminSecretPath = env.ADMIN_SECRET_PATH;
 
 export class SendNotificationUsecase {

@@ -1,5 +1,5 @@
-import { z } from "npm:zod";
-import { OrderStatus } from "../../../../domain/enum/OrderEnum";
+import { z } from 'npm:zod';
+import { OrderStatus } from "../../../../domain/enum/OrderEnum.ts";
 
 export const orderPartSchema = z.object({
     partId: z.string().uuid("Invalid part UUID"),

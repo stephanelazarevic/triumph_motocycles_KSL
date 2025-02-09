@@ -2,7 +2,6 @@ import Layouts from 'vite-plugin-vue-layouts'
 import Vue from '@vitejs/plugin-vue'
 import VueRouter from 'unplugin-vue-router/vite'
 import Vuetify from 'vite-plugin-vuetify'
-
 import { defineConfig } from 'vite'
 import { fileURLToPath, URL } from 'node:url'
 

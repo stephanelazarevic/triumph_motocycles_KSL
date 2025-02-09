@@ -20,7 +20,9 @@
   "imports": {
     "bcryptjs": "npm:bcryptjs@^2.4.3",
     "i18n-iso-countries": "npm:i18n-iso-countries@^7.13.0",
-    "libphonenumber-js": "npm:libphonenumber-js@^1.11.17"
+    "libphonenumber-js": "npm:libphonenumber-js@^1.11.17",
+    "jsonwebtoken": "npm:jsonwebtoken@9.0.2",
+    "dotenv": "https://deno.land/std@0.203.0/dotenv/mod.ts"
   },
   "exclude": [
     "node_modules",
