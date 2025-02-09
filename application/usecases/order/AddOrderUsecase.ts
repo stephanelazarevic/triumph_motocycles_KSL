@@ -1,4 +1,5 @@
 import { OrderEntity } from "../../../domain/entities/OrderEntity.ts";
+import { NotEnoughPartsInStockError } from "../../../domain/errors/NotEnoughPartsInStockError.ts";
 import { PartNotFoundError } from "../../../domain/errors/PartNotFoundError.ts";
 import { AddOrderCommand, PartQuantityToOrder } from "../../../domain/types/OrderType.ts";
 import type { OrderRepository } from "../../repositories/OrderRepository.ts";
@@ -19,6 +20,11 @@ export class AddOrderUsecase {
       if (part instanceof PartNotFoundError) {
         return part;
       }
+
+      if (part.stockQuantity < partToOrder.quantity) {
+        return new NotEnoughPartsInStockError();
+      }
+      
       updatedParts.push({ partId: part.id, quantity: partToOrder.quantity });
     }
 
@@ -30,6 +36,15 @@ export class AddOrderUsecase {
     });
 
     await this.orderRepository.save(order);
+
+    for (const partUsedToOrder of updatedParts) {
+      const part = await this.partRepository.findOneById(partUsedToOrder.partId);
+      if (!(part instanceof PartNotFoundError)) {
+        part.stockQuantity -= partUsedToOrder.quantity;
+        await this.partRepository.save(part);
+      }
+    }
+
     return order;
   }
 }

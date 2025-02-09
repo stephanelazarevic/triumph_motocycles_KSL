@@ -8,10 +8,14 @@ import { AddMotorcycleUsecase } from "../../../../application/usecases/motorcycl
 import { GetMotorcycleUsecase } from "../../../../application/usecases/motorcycle/GetMotorcycleUsecase.ts";
 import { UpdateMotorcycleUsecase } from "../../../../application/usecases/motorcycle/UpdateMotorcycleUsecase.ts";
 import { DeleteMotorcycleUsecase } from "../../../../application/usecases/motorcycle/DeleteMotorcycleUsecase.ts";
+import { AddMotorcycleHistoryUsecase } from "../../../../application/usecases/motorcycleHistory/AddMotorcycleHistoryUsecase.ts";
+import { MotorcycleHistoryRepository } from "../../../../application/repositories/MotorcycleHistoryRepository.ts";
 
 export class MotorcycleController implements EntityControllerInterface {
   public constructor(
     private readonly motorcycleRepository: MotorcycleRepository,
+    private readonly motorcycleHistoryRepository: MotorcycleHistoryRepository,
+    private readonly addMotorcycleHistoryUsecase: AddMotorcycleHistoryUsecase
   ) {}
 
   public async getAll(): Promise<Response> {
@@ -56,7 +60,7 @@ export class MotorcycleController implements EntityControllerInterface {
   }
 
   public async create(request: Request): Promise<Response> {
-    const addMotorcycleUsecase = new AddMotorcycleUsecase(this.motorcycleRepository);
+    const addMotorcycleUsecase = new AddMotorcycleUsecase(this.motorcycleRepository, this.addMotorcycleHistoryUsecase);
     const body = await request.json();
     const validation = addMotorcycleRequestSchema.safeParse(body);
 
@@ -92,7 +96,11 @@ export class MotorcycleController implements EntityControllerInterface {
       });
     }
 
-    const updateMotorcycleUsecase = new UpdateMotorcycleUsecase(this.motorcycleRepository)
+    const updateMotorcycleUsecase = new UpdateMotorcycleUsecase(
+      this.motorcycleRepository, 
+      this.motorcycleHistoryRepository, 
+      this.addMotorcycleHistoryUsecase);
+
     const result = await updateMotorcycleUsecase.execute(motorcycleId, validation.data);
 
     if (result instanceof MotorcycleEntity) {

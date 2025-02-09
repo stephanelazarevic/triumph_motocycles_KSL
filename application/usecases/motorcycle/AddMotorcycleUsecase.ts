@@ -3,10 +3,12 @@ import { AddMotorcycleCommand } from "../../../domain/types/MotorcycleType.ts";
 import { Brand } from "../../../domain/value-objects/Brand.ts";
 import { Model } from "../../../domain/value-objects/Model.ts";
 import type { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
+import { AddMotorcycleHistoryUsecase } from "../motorcycleHistory/AddMotorcycleHistoryUsecase.ts";
 
 export class AddMotorcycleUsecase {
   public constructor(
     private readonly motorcycleRepository: MotorcycleRepository,
+    private readonly addMotorcycleHistoryUsecase: AddMotorcycleHistoryUsecase
   ) {}
 
     public async execute(command: AddMotorcycleCommand): Promise<MotorcycleEntity | Error> { 
@@ -38,6 +40,20 @@ export class AddMotorcycleUsecase {
     }
 
     await this.motorcycleRepository.save(motorcycle);
+
+    const historyCommand = {
+      motorcycleId: motorcycle.id,
+      startDate: new Date(),
+      endDate: null,
+      incidents: [],
+      maintenances: [],
+      clientId: command.clientId ?? null,
+      drivers: command.drivers ?? null,
+      enterpriseId: command.enterpriseId ?? null
+    };
+
+    await this.addMotorcycleHistoryUsecase.execute(historyCommand);
+
     return motorcycle;
   }
 }

@@ -1,14 +1,10 @@
 import { DriverRepository } from "../../repositories/DriverRepository.ts";
-import { EnterpriseRepository } from "../../repositories/EnterpriseRepository.ts";
 import { updateDriverCommand } from "../../../domain/types/DriverType.ts";
-import { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 import { DriverEntity } from "../../../domain/entities/DriverEntity.ts";
 
 export class UpdateDriverUsecase {
   constructor(
     private driverRepository: DriverRepository,
-    private enterpriseRepository: EnterpriseRepository,
-    private motorcycleRepository: MotorcycleRepository
   ) {}
 
   public async execute(driverId: string, command: updateDriverCommand): Promise<DriverEntity | Error> {
@@ -18,19 +14,11 @@ export class UpdateDriverUsecase {
     }
 
     if (command.enterpriseId) {
-        const enterprise = await this.enterpriseRepository.findOneById(command.enterpriseId);
-        if (enterprise instanceof Error) {
-          return enterprise;
-        }
-        driver.enterprise = enterprise;
+        driver.enterpriseId = command.enterpriseId;
       }
 
     if (command.motorcycleId) {
-      const motorcycle = await this.motorcycleRepository.findOneById(command.motorcycleId);
-      if (motorcycle instanceof Error) {
-        return motorcycle;
-      }
-      driver.motorcycle = motorcycle;
+      driver.motorcycleId = command.motorcycleId;
     }
 
     if (command.firstname) {
