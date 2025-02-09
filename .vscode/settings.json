@@ -8,4 +8,7 @@
     "infrastructure/tests",
     "application"
   ],
+  "deno.disablePaths": [
+    "infrastructure/database/prisma/generated",
+  ],
 }
