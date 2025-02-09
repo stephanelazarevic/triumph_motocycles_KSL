@@ -6,6 +6,8 @@ import { MaintenanceRepository } from "../../application/repositories/Maintenanc
 import { PartRepository } from "../../application/repositories/PartRepository.ts";
 import { CronJob } from "cron"; 
 import { UserRepository } from "../../application/repositories/UserRepository.ts";
+import { ClientRepository } from "../../application/repositories/ClientRepository.ts";
+import { EnterpriseRepository } from "../../application/repositories/EnterpriseRepository.ts";
 
 export class SendNotificationsCron {
   private sendNotificationUsecase: SendNotificationUsecase;
@@ -14,6 +16,8 @@ export class SendNotificationsCron {
     private maintenanceRepository: MaintenanceRepository,
     private partRepository: PartRepository,
     private userRepository: UserRepository,
+    private clientRepository: ClientRepository,
+    private enterpriseRepository: EnterpriseRepository,
     private notificationRepository: NotificationRepository,
     private emailService: EmailService
   ) {
@@ -21,6 +25,8 @@ export class SendNotificationsCron {
       this.maintenanceRepository,
       this.partRepository,
       this.userRepository,
+      this.clientRepository,
+      this.enterpriseRepository,
       this.notificationRepository,
       this.emailService,
     );

@@ -1,3 +1,4 @@
+import { DriverEntity } from "../entities/DriverEntity.ts";
 import { MotorcycleStatus } from "../enum/MotorcycleEnum.ts";
 
 export interface AddMotorcycleCommand {
@@ -9,7 +10,8 @@ export interface AddMotorcycleCommand {
   registrationNumber: string,
   status: MotorcycleStatus,
   clientId?: string,
-  driverId?: string
+  drivers?: DriverEntity[],
+  enterpriseId?: string
 }
 
 export interface UpdateMotorcycleCommand extends Partial<AddMotorcycleCommand>{}
