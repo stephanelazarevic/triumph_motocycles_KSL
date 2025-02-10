@@ -6,8 +6,8 @@ GODARD Lucie
 
 ## Lancer le projet 
 
-# Lancer l'api 
+### Lancer l'api 
 `deno task start:api`
 
-# Lancer les fronts
+### Lancer les fronts
 `deno task start:front`
