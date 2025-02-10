@@ -66,14 +66,13 @@ export class MotorcycleController implements EntityControllerInterface {
     }
 
     return exhaustive(result.name, {
-      BrandLengthTooShortError: () => new Response("BrandLengthTooShortError", { status: 400 }),
-      ModelLengthTooShortError: () => new Response("ModelLengthTooShortError", { status: 400 }),
+      BrandLengthTooShortError: () => context.json({ message: "Brand length too short" }, 404),
+      ModelLengthTooShortError: () => context.json({ message: "Model length too short" }, 404)
     });
   }
 
   public async update(context: Context): Promise<Response> {
     const id = context.req.param('id');
-
     if (!id) {
       return context.json({ message: "Malformed ID is required" }, 400);
     }
@@ -95,11 +94,11 @@ export class MotorcycleController implements EntityControllerInterface {
 
     if (result instanceof MotorcycleEntity) {
       return context.json(JSON.stringify(result), 201);
-
     }
 
     return exhaustive(result.name, {
-      MotorcycleNotFoundError: () => context.json({ message: "Motorcycle not found" }, 404)
+      MotorcycleNotFoundError: () => context.json({ message: "Motorcycle not found" }, 404),
+      MotorcycleHistoryNotFoundError: () => context.json({ message: "Motorcycle History not found" }, 404)
     });
   }
 

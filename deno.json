@@ -1,10 +1,14 @@
 {
-  "workspace": ["./interface/api/deno","./interface/frontend/next"],
+  "workspace": [
+    "./interface/api/deno",
+    "./interface/frontend/next",
+    "./interface/frontend/vue"
+  ],
   "nodeModulesDir": "auto",
   "tasks": {
     "dev": "deno run --watch --allow-net --allow-env  --allow-read interface/api/deno/main.ts",
     "start:api": "deno run --allow-net --allow-env --allow-read interface/api/deno/main.ts",
-    "start:front": "npm run dev --prefix interface/frontend/next",
+    "start:front": "npm run dev --prefix interface/frontend/next && npm run dev --prefix interface/frontend/vue",
     "start:all": "deno task start:api & deno task start:front",
     "generate:prisma": "cd infrastructure/database/prisma && deno run -A npm:prisma@latest generate --no-engine",
     "seed": "deno run --allow-net --allow-env --allow-read infrastructure/database/prisma/seed.ts",

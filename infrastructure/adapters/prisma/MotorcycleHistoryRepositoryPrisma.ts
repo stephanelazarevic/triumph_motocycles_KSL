@@ -13,8 +13,31 @@ export class MotorcycleHistoryRepositoryPrisma implements MotorcycleHistoryRepos
   public constructor(private prisma: PrismaClient) {}
 
   public async save(motorcycleHistory: MotorcycleHistoryEntity): Promise<void> {
-    await this.prisma.motorcycleHistory.create({
-      data: {
+    await this.prisma.motorcycleHistory.upsert({
+      where: {
+        id: motorcycleHistory.id,
+      },
+      create: {
+        motorcycleId: motorcycleHistory.motorcycleId,
+        startDate: motorcycleHistory.startDate,
+        endDate: motorcycleHistory.endDate,
+        incidents: motorcycleHistory.incidents.map(incident => {
+          IncidentEntity.reconstitute({
+            id: incident.id,
+            description: incident.description,
+            motorcycle: null,
+            type: incident.type,
+            reportDate: incident.reportDate,
+            resolutionDate: incident.resolutionDate,
+            status: incident.status,
+          })
+        }),
+        maintenances: motorcycleHistory.maintenances,
+        clientId: motorcycleHistory.clientId,
+        drivers: motorcycleHistory.drivers,
+        enterpriseId: motorcycleHistory.enterpriseId
+      },
+      update: {
         id: motorcycleHistory.id,
         motorcycleId: motorcycleHistory.motorcycleId,
         startDate: motorcycleHistory.startDate,
@@ -31,72 +54,72 @@ export class MotorcycleHistoryRepositoryPrisma implements MotorcycleHistoryRepos
   public async findAll(): Promise<MotorcycleHistoryEntity[]> {
     const motorcyclesHistories = await this.prisma.motorcycleHistory.findMany();
 
-return motorcyclesHistories.map(motorcycleHistory =>
-        MotorcycleHistoryEntity.reconstitute({
-            id: motorcycleHistory.id,
-            motorcycleId: motorcycleHistory.motorcycleId,
-            startDate: motorcycleHistory.startDate,
-            endDate: motorcycleHistory.endDate,
-            incidents: motorcycleHistory.incidents.map(incident =>
-                IncidentEntity.reconstitute({
-                    id: incident.id,
-                    description: incident.description,
-                    motorcycle: incident.motorcycle.map(motorcycle =>
-                        MotorcycleEntity.reconstitute({
-                            id: motorcycle.id,
-                            dealerId: motorcycle.dealerId,
-                            brand: motorcycle.brand,
-                            model: motorcycle.model,
-                            year: motorcycle.year,
-                            registrationNumber: motorcycle.registrationNumber,
-                            status: mapMotorcycleStatusToPrismaMotorcycleStatus(motorcycle.status),
-                            clientId: motorcycle.clientId,
-                            drivers: motorcycle.drivers ? motorcycle.drivers.map(driver =>
-                                DriverEntity.reconstitute({
-                                    id: driver.id,
-                                    enterpriseId: driver.enterpriseId,
-                                    motorcycleId: driver.motorcycleId,
-                                    firstname: driver.firstname,
-                                    lastname: driver.lastname,
-                                    licenseNumber: driver.licenseNumber,
-                                    phoneNumber: driver.phoneNumber,
-                                    emailAddress: driver.emailAddress
-                                })
-                            ) : null,
-                            enterpriseId: motorcycle.enterpriseId
-                            
-                        })),
-                    type: mapIncidentTypeToPrismaIncidentType(incident.type),
-                    reportDate: incident.reportDate,
-                    resolutionDate: incident.resolutionDate,
-                    status: incident.status
-                })),
-            maintenances: motorcycleHistory.maintenances.map(maintenance =>
-                MaintenanceEntity.reconstitute({
-                    id: maintenance.id,
-                    date: maintenance.date,
-                    description: maintenance.description,
-                    motorcycle: maintenance.motorcycle,
-                    cost: maintenance.cost,
-                    type: maintenance.type,
-                    status: maintenance.status,
-                    nextMaintenanceDate: maintenance.nextMaintenanceDate
-                })),
-            clientId: motorcycleHistory.clientId,
-            drivers: motorcycleHistory.drivers.map(driver =>
-                DriverEntity.reconstitute({
-                    id: driver.id,
-                    enterpriseId: driver.enterpriseId,
-                    motorcycleId: driver.motorcycleId,
-                    firstname: driver.firstname,
-                    lastname: driver.lastname,
-                    licenseNumber: driver.licenseNumber,
-                    phoneNumber: driver.phoneNumber,
-                    emailAddress: driver.emailAddress
-                })),
-            enterpriseId: motorcycleHistory.enterpriseId
-        })
-      );
+  return motorcyclesHistories.map(motorcycleHistory =>
+      MotorcycleHistoryEntity.reconstitute({
+          id: motorcycleHistory.id,
+          motorcycleId: motorcycleHistory.motorcycleId,
+          startDate: motorcycleHistory.startDate,
+          endDate: motorcycleHistory.endDate,
+          incidents: motorcycleHistory.incidents.map(incident =>
+              IncidentEntity.reconstitute({
+                  id: incident.id,
+                  description: incident.description,
+                  motorcycle: incident.motorcycle.map(motorcycle =>
+                      MotorcycleEntity.reconstitute({
+                          id: motorcycle.id,
+                          dealerId: motorcycle.dealerId,
+                          brand: motorcycle.brand,
+                          model: motorcycle.model,
+                          year: motorcycle.year,
+                          registrationNumber: motorcycle.registrationNumber,
+                          status: mapMotorcycleStatusToPrismaMotorcycleStatus(motorcycle.status),
+                          clientId: motorcycle.clientId,
+                          drivers: motorcycle.drivers ? motorcycle.drivers.map(driver =>
+                              DriverEntity.reconstitute({
+                                  id: driver.id,
+                                  enterpriseId: driver.enterpriseId,
+                                  motorcycleId: driver.motorcycleId,
+                                  firstname: driver.firstname,
+                                  lastname: driver.lastname,
+                                  licenseNumber: driver.licenseNumber,
+                                  phoneNumber: driver.phoneNumber,
+                                  emailAddress: driver.emailAddress
+                              })
+                          ) : null,
+                          enterpriseId: motorcycle.enterpriseId
+
+                      })),
+                  type: mapIncidentTypeToPrismaIncidentType(incident.type),
+                  reportDate: incident.reportDate,
+                  resolutionDate: incident.resolutionDate,
+                  status: incident.status
+              })),
+          maintenances: motorcycleHistory.maintenances.map(maintenance =>
+              MaintenanceEntity.reconstitute({
+                  id: maintenance.id,
+                  date: maintenance.date,
+                  description: maintenance.description,
+                  motorcycle: maintenance.motorcycle,
+                  cost: maintenance.cost,
+                  type: maintenance.type,
+                  status: maintenance.status,
+                  nextMaintenanceDate: maintenance.nextMaintenanceDate
+              })),
+          clientId: motorcycleHistory.clientId,
+          drivers: motorcycleHistory.drivers.map(driver =>
+              DriverEntity.reconstitute({
+                  id: driver.id,
+                  enterpriseId: driver.enterpriseId,
+                  motorcycleId: driver.motorcycleId,
+                  firstname: driver.firstname,
+                  lastname: driver.lastname,
+                  licenseNumber: driver.licenseNumber,
+                  phoneNumber: driver.phoneNumber,
+                  emailAddress: driver.emailAddress
+              })),
+          enterpriseId: motorcycleHistory.enterpriseId
+      })
+    );
   }
 
   public async findOneById(id: string): Promise<MotorcycleHistoryEntity | MotorcycleHistoryNotFoundError> {
@@ -140,7 +163,7 @@ return motorcyclesHistories.map(motorcycleHistory =>
                           })
                       ) : null,
                       enterpriseId: motorcycle.enterpriseId
-                      
+
                   })),
               type: mapIncidentTypeToPrismaIncidentType(incident.type),
               reportDate: incident.reportDate,
@@ -207,7 +230,7 @@ return motorcyclesHistories.map(motorcycleHistory =>
                 })
             ) : null,
             enterpriseId: motorcycleHistory.enterpriseId
-            
+
         })
     );
   }
@@ -216,42 +239,24 @@ return motorcyclesHistories.map(motorcycleHistory =>
     const lastMotorcycleHistory = await this.prisma.motorcycleHistory.findFirst({
       where: {
         motorcycleId: id,
-        endDate: null
       },
-      orderBy: {
-        startDate: 'desc'
-      }
     });
 
+    console.log("PRUOT", lastMotorcycleHistory);
     if (!lastMotorcycleHistory) {
       return new MotorcycleHistoryNotFoundError();
     }
 
-    return lastMotorcycleHistory.map(lastMotorcycleHistory =>
-        MotorcycleEntity.reconstitute({
-            id: lastMotorcycleHistory.id,
-            dealerId: lastMotorcycleHistory.dealerId,
-            brand: lastMotorcycleHistory.brand,
-            model: lastMotorcycleHistory.model,
-            year: lastMotorcycleHistory.year,
-            registrationNumber: lastMotorcycleHistory.registrationNumber,
-            status: lastMotorcycleHistory.status,
-            clientId: lastMotorcycleHistory.clientId,
-            drivers: lastMotorcycleHistory.drivers ? lastMotorcycleHistory.drivers.map(driver =>
-                DriverEntity.reconstitute({
-                    id: driver.id,
-                    enterpriseId: driver.enterpriseId,
-                    motorcycleId: driver.motorcycleId,
-                    firstname: driver.firstname,
-                    lastname: driver.lastname,
-                    licenseNumber: driver.licenseNumber,
-                    phoneNumber: driver.phoneNumber,
-                    emailAddress: driver.emailAddress
-                })
-            ) : null,
-            enterpriseId: lastMotorcycleHistory.enterpriseId
-            
-        })
-    );
+    return MotorcycleHistoryEntity.reconstitute({
+      id: lastMotorcycleHistory.id,
+      motorcycleId: lastMotorcycleHistory.motorcycleId,
+      startDate: lastMotorcycleHistory.startDate,
+      endDate: lastMotorcycleHistory.endDate,
+      incidents: lastMotorcycleHistory.incidents,
+      maintenances: lastMotorcycleHistory.maintenances,
+      clientId: lastMotorcycleHistory.clientId,
+      drivers: lastMotorcycleHistory.drivers,
+      enterpriseId: lastMotorcycleHistory.enterpriseId
+    })
   }
 }

@@ -3,14 +3,31 @@ import { MotorcycleRepository } from "../../../application/repositories/Motorcyc
 import { MotorcycleEntity } from "../../../domain/entities/MotorcycleEntity.ts";
 import { DriverEntity } from "../../../domain/entities/DriverEntity.ts";
 import { MotorcycleNotFoundError } from "../../../domain/errors/MotorcycleNotFoundError.ts";
-import { mapMotorcycleStatusToPrismaMotorcycleStatus } from "./mappers/MotorcycleMapper.ts";
+// import { mapMotorcycleStatusToPrismaMotorcycleStatus } from "./mappers/MotorcycleMapper.ts";
+import * as Prisma from "../../../infrastructure/database/prisma/generated/client-deno/deno/edge.ts";
 
 export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
   public constructor(private prisma: PrismaClient) {}
 
   public async save(motorcycle: MotorcycleEntity): Promise<void> {
-    await this.prisma.motorcycle.create({
-      data: {
+    await this.prisma.motorcycle.upsert({
+      where: {
+        id: motorcycle.id,
+      },
+      create: {
+        dealerId: motorcycle.dealerId,
+        enterpriseId: motorcycle.enterpriseId,
+        clientId: motorcycle.clientId,
+        brand: motorcycle.brand.getValue(),
+        model: motorcycle.model.getValue(),
+        year: motorcycle.year,
+        registrationNumber: motorcycle.registrationNumber,
+        status: motorcycle.status.toLowerCase() as Prisma.MotorcycleStatus,
+        drivers: {
+          connect: motorcycle.drivers?.map(driver => ({ id: driver.id })) || []
+        },
+      },
+      update: {
         id: motorcycle.id,
         dealerId: motorcycle.dealerId,
         enterpriseId: motorcycle.enterpriseId,
@@ -19,9 +36,9 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
         model: motorcycle.model.getValue(),
         year: motorcycle.year,
         registrationNumber: motorcycle.registrationNumber,
-        status: mapMotorcycleStatusToPrismaMotorcycleStatus(motorcycle.status),
+        status: motorcycle.status.toLowerCase() as Prisma.MotorcycleStatus,
         drivers: {
-          connect: motorcycle.drivers?.map(driver => ({ id: driver.id })) || []
+          set: motorcycle.drivers?.map(driver => ({ id: driver.id })) || []
         },
       }
     });

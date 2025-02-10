@@ -35,7 +35,7 @@ const UserInterface = () => {
   const fetchMotorcycles = async () => {
     try {
       setLoading(true);
-      const response = await axios.get('http://localhost:8000/api/motorcycle');
+      const response = await axios.get('http://localhost:8000/api/motorcycles');
 
       // Debug logs
       console.log('API Response:', response);

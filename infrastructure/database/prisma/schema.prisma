@@ -12,11 +12,11 @@ datasource db {
 
 model Notification {
   id        String      @id @default(uuid())
-  idUser    String
+  userId    String
   type      NotificationType
   message   String
   date      DateTime
-  user      User     @relation(fields: [idUser], references: [id])
+  user      User     @relation(fields: [userId], references: [id])
   status    NotificationStatus
 
   createdAt DateTime @default(now())
@@ -78,6 +78,7 @@ model Enterprise {
   user         User      @relation(fields: [id], references: [id])
   drivers      Driver[]
   motorcycle   Motorcycle[] @relation("EnterpriseMotorcycle")
+  histories    MotorcycleHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -99,6 +100,7 @@ model Client {
   rentals   Rental[]
   testRides TestRide[]
   motorcycle Motorcycle[]   @relation("ClientMotorcycle")
+  histories MotorcycleHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -159,6 +161,7 @@ model Motorcycle {
   warranties      Warranty[]
   parts           MotorcyclePart[]
   drivers         Driver[]
+  histories       MotorcycleHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -276,7 +279,8 @@ model Maintenance {
   description     String
   cost            Float
   motorcycle      Motorcycle     @relation(fields: [idMotorcycle], references: [id])
-
+  motorcycleHistory MotorcycleHistory? @relation(fields: [motorcycleHistoryId], references: [id])
+  motorcycleHistoryId String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -290,8 +294,10 @@ model Incident {
   description    String
   reportDate     DateTime
   resolutionDate DateTime?
+  motorcycleHistoryId String?
   status         IncidentStatus
   motorcycle     Motorcycle     @relation(fields: [idMotorcycle], references: [id])
+  motorcycleHistory MotorcycleHistory? @relation(fields: [motorcycleHistoryId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -321,9 +327,33 @@ model Driver {
   emailAddress  String  @unique
   entreprise    Enterprise @relation(fields: [enterpriseId], references: [id])
   motorcycle    Motorcycle @relation(fields: [motorcycleId], references: [id])
+  motorcycleHistories MotorcycleHistory[] @relation("MotorcycleHistoryToDriver")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("drivers")
+}
+
+model MotorcycleHistory {
+  id            String         @id @default(uuid())
+  motorcycleId  String
+  motorcycle    Motorcycle     @relation(fields: [motorcycleId], references: [id])
+  startDate     DateTime
+  endDate       DateTime?
+  clientId      String?
+  client        Client?        @relation(fields: [clientId], references: [id])
+  enterpriseId  String?
+  enterprise    Enterprise?    @relation(fields: [enterpriseId], references: [id])
+
+  incidents     Incident[]
+  maintenances  Maintenance[]
+  drivers       Driver[]       @relation("MotorcycleHistoryToDriver")
+
+  @@index([motorcycleId])
+  @@index([clientId])
+  @@index([enterpriseId])
+
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
 }

@@ -75,18 +75,18 @@ export class UpdateMotorcycleUsecase {
     motorcycle.enterpriseId = command.enterpriseId;
   }
 
-   motorcycle.markAsUpdated();
-   await this.motorcycleRepository.save(motorcycle);
+  motorcycle.markAsUpdated();
+  await this.motorcycleRepository.save(motorcycle);
 
-   const lastHistory = await this.motorcycleHistoryRepository.findLastByMotorcycleId(motorcycleId);
-   if (lastHistory instanceof Error) {
-     return lastHistory;
-   } else if (lastHistory && lastHistory.endDate === null) {
-     lastHistory.endDate = new Date();
-     await this.motorcycleHistoryRepository.save(lastHistory);
-   }
+  const lastHistory = await this.motorcycleHistoryRepository.findLastByMotorcycleId(motorcycleId);
+  if (lastHistory instanceof Error) {
+    return lastHistory;
+  } else if (lastHistory && lastHistory.endDate === null) {
+    lastHistory.endDate = new Date();
+    await this.motorcycleHistoryRepository.save(lastHistory);
+  }
 
-   const historyCommand = {
+  const historyCommand = {
     motorcycleId: motorcycle.id,
     startDate: new Date(),
     endDate: null,
@@ -99,6 +99,6 @@ export class UpdateMotorcycleUsecase {
 
   await this.addMotorcycleHistoryUsecase.execute(historyCommand);
 
-   return motorcycle;
+  return motorcycle;
  }
 }

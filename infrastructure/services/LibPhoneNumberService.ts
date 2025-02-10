@@ -6,7 +6,7 @@ export class LibPhoneNumberService implements PhoneNumberService {
   public formatInternational(phoneNumber: string): string {
     try {
       const parsedPhoneNumber = parsePhoneNumberWithError(phoneNumber);
-      return parsedPhoneNumber.formatInternational();
+      return parsedPhoneNumber.format('INTERNATIONAL');
     } catch {
       throw new PhoneNumberFormatError();
     }

@@ -1,5 +1,5 @@
-import { MotorcycleEntity } from "../entities/MotorcycleEntity";
-import { MaintenanceStatus, MaintenanceType } from "../enum/MaintenanceEnum";
+import { MotorcycleEntity } from "../entities/MotorcycleEntity.ts";
+import { MaintenanceStatus, MaintenanceType } from "../enum/MaintenanceEnum.ts";
 
 export interface AddMaintenanceCommand {
   date: Date,

@@ -2,6 +2,7 @@ import { prisma } from "./config/prisma.db.ts";
 import apiRouter from "./routes/apiRouter.ts";
 import authenticationRouter from "./routes/authenticationRouter.ts";
 import motorcycleRouter from "./routes/motorcycleRouter.ts";
+import userRouter from "./routes/userRouter.ts";
 import { sendNotificationsCron, retryFailedNotificationsCron } from "../deno/config/cronDependencies.ts";
 import { logger } from './middleware/logger.ts'
 import { Hono } from "https://deno.land/x/hono@v3.11.4/mod.ts";
@@ -16,6 +17,8 @@ import maintenanceRouter from "./routes/maintenanceRouter.ts";
 import incidentRouter from "./routes/incidentRouter.ts";
 import warrantyRouter from "./routes/warrantyRouter.ts";
 import rentalRouter from "./routes/rentalRouter.ts";
+import testRideRouter from "./routes/testRideRouter.ts";
+import warrantyPartRouter from "./routes/warrantyPartRouter.ts";
 
 const app = new Hono();
 
@@ -42,17 +45,20 @@ app.use("*", logger);
 // routes
 app.route("/api", apiRouter);
 app.route("/api", authenticationRouter);
-app.route("/api/motorcycle", motorcycleRouter);
-app.route("/api/motorcycleHistory", motorcycleHistoryRouter);
-app.route("/api/motorcyclePart", motorcyclePartRouter);
-app.route("/api/notification", notificationRouter);
-app.route("/api/order", orderRouter);
-app.route("/api/part", partRouter);
-app.route("/api/driver", driverRouter);
-app.route("/api/maintenance", maintenanceRouter);
-app.route("/api/incident", incidentRouter);
-app.route("/api/warranty", warrantyRouter);
-app.route("/api/rental", rentalRouter);
+app.route("/api/motorcycles", motorcycleRouter);
+app.route("/api/users", userRouter);
+app.route("/api/motorcycle-histories", motorcycleHistoryRouter);
+app.route("/api/motorcycle-parts", motorcyclePartRouter);
+app.route("/api/notifications", notificationRouter);
+app.route("/api/orders", orderRouter);
+app.route("/api/parts", partRouter);
+app.route("/api/drivers", driverRouter);
+app.route("/api/maintenances", maintenanceRouter);
+app.route("/api/incidents", incidentRouter);
+app.route("/api/warranties", warrantyRouter);
+app.route("/api/rentals", rentalRouter);
+app.route("/api/warranty-parts", warrantyPartRouter);
+app.route("/api/test-rides", testRideRouter);
 
 // Start server
 Deno.serve({ port: 8000 }, app.fetch);
