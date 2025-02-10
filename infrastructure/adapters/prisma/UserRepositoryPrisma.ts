@@ -84,7 +84,6 @@ export class UserRepositoryPrisma implements UserRepository {
     if (!user) {
       return new UserNotFoundError();
     }
-    console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOH");
 
     return UserEntity.reconstitute({
       id: user.id,
