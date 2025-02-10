@@ -116,7 +116,7 @@ const UserInterface = () => {
             {bikes.map((bike) => (
               <Card key={bike.id} className={cn(!bike.availability && "opacity-70")}>
                 <img
-                  src={bike.image}
+                  src={"https://thegoodlife.fr/wp-content/thumbnails/uploads/sites/2/2017/08/motos-vintage-triumph-bonneville-1-56-tt-width-1872-height-1200-fill-0-crop-0-bgcolor-eeeeee.jpg"}
                   alt={bike.name}
                   className="w-full h-48 object-cover rounded-t-lg"
                 />
