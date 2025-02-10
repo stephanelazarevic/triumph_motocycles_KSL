@@ -1,19 +1,43 @@
 "use client"
 import React, { useState } from 'react';
 import Bouton from "@/components/Button";
+import DynamicForm from '@/components/DynamicFormAdmin';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { Package, ShoppingCart, AlertTriangle, Search, PackagePlus } from 'lucide-react';
+import { Package, ShoppingCart, AlertTriangle, Search, PackagePlus, Pencil, Trash2 } from 'lucide-react';
+
+interface SparePart {
+  id: number;
+  name: string;
+  reference: string;
+  currentStock: number;
+  minStock: number;
+  price: number;
+  category: string;
+}
+
+interface Order {
+  id: number;
+  reference: string;
+  date: string;
+  items: string;
+  cost: number;
+  status: string;
+  deliveryTime: string;
+}
 
 const SparePartsManagement = () => {
   // État pour la recherche
   const [searchQuery, setSearchQuery] = useState('');
+  // État pour le modal
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [selectedPart, setSelectedPart] = useState<SparePart | null>(null);
 
   // Données simulées pour les pièces
-  const [spareParts] = useState([
+  const [spareParts, setSpareParts] = useState<SparePart[]>([
     {
       id: 1,
       name: 'Filtre à huile',
@@ -43,7 +67,7 @@ const SparePartsManagement = () => {
     }
   ]);
 
-  const [orders] = useState([
+  const [orders] = useState<Order[]>([
     {
       id: 1,
       reference: 'CMD-001',
@@ -66,15 +90,45 @@ const SparePartsManagement = () => {
 
   // Gestionnaires d'événements
   const handleAjout = () => {
-    console.log("Ajout d'une nouvelle pièce");
+    setSelectedPart(null);
+    setIsFormOpen(true);
   };
 
   const handleEdit = (id: number) => {
-    console.log("Édition de la pièce:", id);
+    const partToEdit = spareParts.find(part => part.id === id);
+    if (partToEdit) {
+      setSelectedPart(partToEdit);
+      setIsFormOpen(true);
+    }
   };
 
   const handleDelete = (id: number) => {
-    console.log("Suppression de la pièce:", id);
+    setSpareParts(prevParts => prevParts.filter(part => part.id !== id));
+  };
+
+  // Gestionnaire de soumission du formulaire
+  const handleFormSubmit = (formData: Partial<SparePart>) => {
+    if (selectedPart) {
+      // Mode édition
+      setSpareParts(prevParts =>
+        prevParts.map(part =>
+          part.id === selectedPart.id ? { ...part, ...formData } : part
+        )
+      );
+    } else {
+      // Mode ajout
+      const newPart = {
+        id: Math.max(...spareParts.map(p => p.id)) + 1,
+        name: formData.name || '',
+        reference: formData.reference || '',
+        currentStock: formData.currentStock || 0,
+        minStock: formData.minStock || 0,
+        price: formData.price || 0,
+        category: formData.category || ''
+      };
+      setSpareParts(prevParts => [...prevParts, newPart]);
+    }
+    setIsFormOpen(false);
   };
 
   // Fonction de recherche
@@ -95,6 +149,14 @@ const SparePartsManagement = () => {
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-3xl font-bold">Gestion des Pièces Détachées</h1>
+
+      <DynamicForm
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        formType="sparePart"
+        initialData={selectedPart || undefined}
+        onSubmit={handleFormSubmit}
+      />
 
       {lowStockParts.length > 0 && (
         <div className="space-y-3">
@@ -181,14 +243,14 @@ const SparePartsManagement = () => {
                         <div className="flex gap-2 justify-end">
                           <Bouton
                             text="Éditer"
-                            icon={<AlertTriangle className="w-4 h-4" />}
+                            icon={<Pencil className="w-4 h-4" />}
                             variant="primary"
                             onClick={() => handleEdit(part.id)}
                             className="h-8 w-32 p-0"
                           />
                           <Bouton
                             text="Supprimer"
-                            icon={<AlertTriangle className="w-4 h-4" />}
+                            icon={<Trash2 className="w-4 h-4" />}
                             variant="danger"
                             onClick={() => handleDelete(part.id)}
                             className="h-8 w-32 p-0"
@@ -204,7 +266,43 @@ const SparePartsManagement = () => {
         </TabsContent>
 
         <TabsContent value="orders">
-          {/* Le reste du code pour les commandes reste inchangé */}
+          <Card>
+            <CardHeader>
+              <CardTitle>Historique des Commandes</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Référence</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Articles</TableHead>
+                    <TableHead>Coût total</TableHead>
+                    <TableHead>Délai livraison</TableHead>
+                    <TableHead>Statut</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {orders.map((order) => (
+                    <TableRow key={order.id}>
+                      <TableCell>{order.reference}</TableCell>
+                      <TableCell>{order.date}</TableCell>
+                      <TableCell>{order.items}</TableCell>
+                      <TableCell>{order.cost} €</TableCell>
+                      <TableCell>{order.deliveryTime}</TableCell>
+                      <TableCell>
+                        <Badge
+                          variant={order.status === 'Livrée' ? 'success' : 'default'}
+                        >
+                          {order.status}
+                        </Badge>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </CardContent>
+          </Card>
         </TabsContent>
       </Tabs>
     </div>
