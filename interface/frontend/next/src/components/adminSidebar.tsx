@@ -20,7 +20,7 @@ export default function AdminSidebar() {
         {isCollapsed ? <ChevronRight className="w-6 h-6" /> : <ChevronLeft className="w-6 h-6" />}
       </button>
 
-      <Link href="/" passHref>
+      <Link href="/admin" passHref>
         <h2 className="text-xl font-bold mb-4 text-center cursor-pointer hover:text-gray-400">
           {isCollapsed ? "KSL" : "KSL Admin Panel"}
         </h2>

@@ -24,10 +24,7 @@ sendNotificationsCron.start();
 retryFailedNotificationsCron.start();
 
 // CORS
-app.use("/*", cors({
-  origin: "http://localhost:8080",
-  credentials: true,
-}));
+app.use("/*", cors());
 
 // Logger
 app.use("*", logger);
