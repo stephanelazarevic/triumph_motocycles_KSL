@@ -4,45 +4,38 @@ import { SignInUseCase } from "../../../../application/usecases/authentification
 import { UserRepository } from '../../../../application/repositories/UserRepository.ts'
 import { PasswordService } from '../../../../application/services/PasswordService.ts'
 import { TokenGeneratorService } from '../../../../application/services/TokenGeneratorService.ts'
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
 
 export class AuthenticationController {
-public constructor(
+  constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordService: PasswordService,
-    private readonly tokenGenerator: TokenGeneratorService,
+    private readonly tokenGeneratorService: TokenGeneratorService
   ) {}
 
-  async signIn(request: Request) {
-    const body = await request.json();
-
-    const signinUsecase = new SignInUseCase(
-      this.userRepository,
-      this.passwordService,
-      this.tokenGenerator
-    );
+  async signIn(context: Context) {
+   const body = await context.req.json();
 
     const validation = signInRequestSchema.safeParse(body);
-
     if (!validation.success) {
-      return new Response('Malformed request', {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
-    const result = await signinUsecase.execute(validation.data);
+    const signInUseCase = new SignInUseCase(
+      this.userRepository,
+      this.passwordService,
+      this.tokenGeneratorService
+    );
+
+    const result = await signInUseCase.execute(validation.data);
 
     if ('token' in result) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+      return context.json(JSON.stringify(result), 200);
     }
 
     return exhaustive(result.name, {
-      UserNotFoundError: () => new Response('User not found', { status: 404 }),
-      InvalidCredentialsError: () => new Response('Invalid credentials', { status: 401 }),
+      UserNotFoundError: ()         => context.json({ message: "User not found" },       404),
+      InvalidCredentialsError: ()   => context.json({ message: "Invalid credentials" },  401),
     });
   }
 }
