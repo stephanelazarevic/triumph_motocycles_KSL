@@ -11,8 +11,9 @@ export class MaintenanceRepositoryPrisma implements MaintenanceRepository {
     await this.prisma.maintenance.create({
       data: {
         id: maintenance.id,
+        date: maintenance.date,
         description: maintenance.description,
-        motorcycleId: maintenance.motorcycleId,
+        motorcycle: maintenance.motorcycle,
         cost: maintenance.cost,
         type: mapMaintenanceTypeToPrismaMaintenanceType(maintenance.type),
         status: mapMaintenanceStatusToPrismaMaintenanceStatus(maintenance.status),  
@@ -27,8 +28,9 @@ export class MaintenanceRepositoryPrisma implements MaintenanceRepository {
     return maintenances.map(maintenance =>
       MaintenanceEntity.reconstitute({
         id: maintenance.id,
+        date: maintenance.date,
         description: maintenance.description,
-        motorcycleId: maintenance.motorcycleId,
+        motorcycle: maintenance.motorcycle,
         cost: maintenance.cost,
         type: maintenance.type,
         status: maintenance.status,
@@ -48,8 +50,9 @@ export class MaintenanceRepositoryPrisma implements MaintenanceRepository {
 
     return MaintenanceEntity.reconstitute({
       id: maintenance.id,
+      date: maintenance.date,
       description: maintenance.description,
-      motorcycleId: maintenance.motorcycleId,
+      motorcycle: maintenance.motorcycle,
       cost: maintenance.cost,
       type: maintenance.type,
       status: maintenance.status,
@@ -61,5 +64,47 @@ export class MaintenanceRepositoryPrisma implements MaintenanceRepository {
     await this.prisma.maintenance.delete({
       where: { id }
     });
+  }
+
+  public async findScheduledMaintenances(date: Date): Promise<MaintenanceEntity[]> {
+    const maintenances = await this.prisma.maintenance.findMany({
+      where: { nextMaintenanceDate: { lte: date } }
+    });
+    return maintenances.map(maintenance =>
+      MaintenanceEntity.reconstitute({
+        id: maintenance.id,
+        date: maintenance.date,
+        description: maintenance.description,
+        motorcycle: maintenance.motorcycle,
+        cost: maintenance.cost,
+        type: maintenance.type,
+        status: maintenance.status,
+        nextMaintenanceDate: maintenance.nextMaintenanceDate
+      })
+    );
+  }
+
+  public async findByMotorcycleIdAndPeriod(motorcycleId: string, startDate: Date, endDate: Date | null): Promise<MaintenanceEntity[]> {
+    const maintenances = await this.prisma.maintenance.findMany({
+      where: {
+        motorcycleId,
+        date: {
+          gte: startDate,
+          lte: endDate
+        }
+      }
+    });
+    return maintenances.map(maintenance =>
+      MaintenanceEntity.reconstitute({
+        id: maintenance.id,
+        date: maintenance.date,
+        description: maintenance.description,
+        motorcycle: maintenance.motorcycle,
+        cost: maintenance.cost,
+        type: maintenance.type,
+        status: maintenance.status,
+        nextMaintenanceDate: maintenance.nextMaintenanceDate
+      })
+    );
   }
 }

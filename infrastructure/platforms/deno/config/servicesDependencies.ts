@@ -7,8 +7,11 @@ import { BCryptPasswordService } from '../../../services/BCryptPasswordService.t
 import { JwtTokenService } from '../../../services/JwtTokenService.ts';
 import { LibPhoneNumberService } from '../../../services/LibPhoneNumberService.ts';
 import { I18nCountryService } from '../../../services/I18nCountryService.ts';
+import { EmailService } from '../../../../application/services/EmailService.ts';
+import { ResendEmailService } from '../../../services/ResendEmailService.ts';
 
 export const passwordService: PasswordService               = new BCryptPasswordService();
 export const tokenGeneratorService: TokenGeneratorService   = new JwtTokenService("oiujyhgtfghjkhgfghjk");
 export const phonenNumberService: PhoneNumberService        = new LibPhoneNumberService();
 export const countryService: CountryService                 = new I18nCountryService();
+export const emailService: EmailService                     = new ResendEmailService();

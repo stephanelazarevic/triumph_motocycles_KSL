@@ -25,12 +25,13 @@ export class DealerRepositoryPrisma implements DealerRepository {
         id: dealer.id,
         user: dealer.user.map(user => 
           UserEntity.reconstitute({
+            id: user.id,
             firstname: user.firstname,
             lastname: user.lastname,
-            emailAddress: user.emailAddress.getValue(),
-            hashedPassword: user.hashedPassword.getValue(),
-            phoneNumber: user.phoneNumber.getValue(),
-            address: user.address.getValue(),
+            emailAddress: user.emailAddress,
+            hashedPassword: user.hashedPassword,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
             isAdministrator: user.isAdministrator,
           })
         ),
@@ -55,10 +56,10 @@ export class DealerRepositoryPrisma implements DealerRepository {
           id: user.id,
           firstname: user.firstname,
           lastname: user.lastname,
-          emailAddress: user.emailAddress.getValue(),
-          hashedPassword: user.hashedPassword.getValue(),
-          phoneNumber: user.phoneNumber.getValue(),
-          address: user.address.getValue(),
+          emailAddress: user.emailAddress,
+          hashedPassword: user.hashedPassword,
+          phoneNumber: user.phoneNumber,
+          address: user.address,
           isAdministrator: user.isAdministrator,
         })
       ),

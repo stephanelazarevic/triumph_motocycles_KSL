@@ -1,8 +1,10 @@
 import { PrismaClient } from "../../database/prisma/generated/client-deno/deno/edge.ts";
 import { PartRepository } from "../../../application/repositories/PartRepository.ts";
 import { PartEntity } from "../../../domain/entities/PartEntity.ts";
-import { EnterpriseNotFoundError } from "../../../domain/errors/EnterpriseNotFoundError.ts";
 import { UserEntity } from "../../../domain/entities/UserEntity.ts";
+import { DealerEntity } from "../../../domain/entities/DealerEntity.ts";
+import { OrderEntity } from "../../../domain/entities/OrderEntity.ts";
+import { PartNotFoundError } from "../../../domain/errors/PartNotFoundError.ts";
 
 export class PartRepositoryPrisma implements PartRepository {
   public constructor(private prisma: PrismaClient) {}
@@ -11,64 +13,132 @@ export class PartRepositoryPrisma implements PartRepository {
     await this.prisma.part.create({
       data: {
         id: part.id,
-        dealer: part.dealerId,
+        dealer: part.dealer,
+        reference: part.reference,
+        type: part.type,
+        price: part.price,
+        stockQuantity: part.stockQuantity,
+        order: part.order
       }
     });
   }
 
-  public async findAll(): Promise<EnterpriseEntity[]> {
-    const enterprises = await this.prisma.enterprise.findMany({
-      include: {
-        drivers: true
-      }
-    });
+  public async findAll(): Promise<PartEntity[]> {
+    const parts = await this.prisma.part.findMany();
 
-    return enterprises.map(enterprise =>
-      EnterpriseEntity.reconstitute({
-        id: enterprise.id,
-        user: enterprise.user.map(user => UserEntity.reconstitute({
+    return parts.map(part =>
+      PartEntity.reconstitute({
+        id: part.id,
+        dealer: part.dealer.map(dealer => DealerEntity.reconstitute({
+          id: dealer.id,
+          user: dealer.user.map(user => UserEntity.reconstitute({
             id: user.id,
             firstname: user.firstname,
             lastname: user.lastname,
+            hashedPassword: user.hashedPassword,
             emailAddress: user.emailAddress,
             phoneNumber: user.phoneNumber,
             address: user.address,
-            isAdministrator: user.isAdministrator
+            isAdministrator: user.isAdministrator,
+            token: user.token
         })),
-        taxNumber: enterprise.taxNumber,
-        industryType: enterprise.industryType
+          site: dealer.site
+        })),
+        reference: part.reference,
+        type: part.type,
+        price: part.price,
+        stockQuantity: part.stockQuantity,
+        order: part.order.map(order => OrderEntity.reconstitute({
+          id: order.id,
+          parts: order.parts,
+          orderDate: order.orderDate,
+          status: order.status,
+          totalAmount: order.totalAmount,
+        }))
       })
     );
   }
 
-  public async findOneById(id: string): Promise<EnterpriseEntity | EnterpriseNotFoundError> {
-    const enterprise = await this.prisma.enterprise.findUnique({
+  public async findOneById(id: string): Promise<PartEntity | PartNotFoundError> {
+    const part = await this.prisma.part.findUnique({
       where: { id }
     });
 
-    if (!enterprise) {
-      return new EnterpriseNotFoundError();
+    if (!part) {
+      return new PartNotFoundError();
     }
 
-    return EnterpriseEntity.reconstitute({
-      id: enterprise.id,
-      user: enterprise.user.map(user => UserEntity.reconstitute({
-        id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        emailAddress: user.emailAddress,
-        phoneNumber: user.phoneNumber,
-        address: user.address,
-        isAdministrator: user.isAdministrator
-    })),
-      taxNumber: enterprise.taxNumber,
-      industryType: enterprise.industryType
+    return PartEntity.reconstitute({
+      id: part.id,
+      dealer: part.dealer.map(dealer => DealerEntity.reconstitute({
+        id: dealer.id,
+        user: dealer.user.map(user => UserEntity.reconstitute({
+          id: user.id,
+          firstname: user.firstname,
+          lastname: user.lastname,
+          hashedPassword: user.hashedPassword,
+          emailAddress: user.emailAddress,
+          phoneNumber: user.phoneNumber,
+          address: user.address,
+          isAdministrator: user.isAdministrator,
+          token: user.token
+      })),
+        site: dealer.site
+      })),
+      reference: part.reference,
+      type: part.type,
+      price: part.price,
+      stockQuantity: part.stockQuantity,
+      order: part.order.map(order => OrderEntity.reconstitute({
+        id: order.id,
+        parts: order.parts,
+        orderDate: order.orderDate,
+        status: order.status,
+        totalAmount: order.totalAmount,
+      }))
     });
   }
 
   public async delete(id: string): Promise<void> {
-    await this.prisma.enterprise.delete({
+    await this.prisma.part.delete({
       where: { id }
     });
+  }
+
+  public async findPartsBelowStock(threshold: number): Promise<PartEntity[]> {
+    const parts = await this.prisma.part.findMany({
+      where: { stockQuantity: { lt: threshold } }
+    });
+    return parts.map(part =>
+      PartEntity.reconstitute({
+        id: part.id,
+        dealer: part.dealer.map(dealer => DealerEntity.reconstitute({
+          id: dealer.id,
+          user: dealer.user.map(user => UserEntity.reconstitute({
+            id: user.id,
+            firstname: user.firstname,
+            lastname: user.lastname,
+            hashedPassword: user.hashedPassword,
+            emailAddress: user.emailAddress,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
+            isAdministrator: user.isAdministrator,
+            token: user.token
+        })),
+          site: dealer.site
+        })),
+        reference: part.reference,
+        type: part.type,
+        price: part.price,
+        stockQuantity: part.stockQuantity,
+        order: part.order.map(order => OrderEntity.reconstitute({
+          id: order.id,
+          parts: order.parts,
+          orderDate: order.orderDate,
+          status: order.status,
+          totalAmount: order.totalAmount,
+        }))
+      })
+    );
   }
 }

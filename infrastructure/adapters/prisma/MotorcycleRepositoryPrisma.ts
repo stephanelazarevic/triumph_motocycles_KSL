@@ -15,15 +15,14 @@ export class MotorcycleRepositoryPrisma implements MotorcycleRepository {
         dealerId: motorcycle.dealerId,
         enterpriseId: motorcycle.enterpriseId,
         clientId: motorcycle.clientId,
-        brand: motorcycle.brand.value,
-        model: motorcycle.model.value,
+        brand: motorcycle.brand.getValue(),
+        model: motorcycle.model.getValue(),
         year: motorcycle.year,
         registrationNumber: motorcycle.registrationNumber,
         status: mapMotorcycleStatusToPrismaMotorcycleStatus(motorcycle.status),
         drivers: {
           connect: motorcycle.drivers?.map(driver => ({ id: driver.id })) || []
         },
-        enterpriseId: motorcycle.enterpriseId
       }
     });
   }
