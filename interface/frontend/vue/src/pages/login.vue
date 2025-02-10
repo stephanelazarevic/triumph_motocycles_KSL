@@ -42,7 +42,7 @@ const submitLogin = handleSubmit(async (values) => {
       axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
     }
 
-    router.push({ name: 'dashboard' });
+    window.location.replace("http://localhost:3000/admin");
   } catch (error) {
     if (axios.isAxiosError(error)) {
       apiError.value = error.response?.data?.message || 'Erreur lors de la connexion';
