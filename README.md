@@ -1,4 +1,6 @@
-# triumph_motocycles_KSL
+# Triumph Motorcycle KSL
+
+## Membres 
 
 LAZAREVIC Stéphane  
 HALIMI Kilyan  
