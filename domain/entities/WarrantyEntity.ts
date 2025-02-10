@@ -30,6 +30,7 @@ export class WarrantyEntity extends Entity {
   }
 
   static reconstitute(data: {
+    id: string;
     startDate: Date;
     endDate: Date;
     type: string;
@@ -42,6 +43,7 @@ export class WarrantyEntity extends Entity {
       data.type,
       data.motorcycle,
       data.terms,
+      data.id
     );
   }
 }

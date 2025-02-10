@@ -663,7 +663,7 @@
       ]
     },
     "members": {
-      "infrastructure/platforms/deno": {
+      "interface/api/deno": {
         "dependencies": [
           "jsr:@std/expect@^1.0.8",
           "npm:exhaustive@^1.1.2",

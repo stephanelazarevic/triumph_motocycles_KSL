@@ -28,7 +28,7 @@ export class AddDriverUsecase {
       return validFirstname;
     }
 
-    const validLastname = Name.from(command.firstname, NameType.LASTNAME)
+    const validLastname = Name.from(command.lastname, NameType.LASTNAME)
     if(validLastname instanceof Error){
       return validLastname;
     }
@@ -38,7 +38,7 @@ export class AddDriverUsecase {
       return validPhoneNumber;
     }
 
-    const validEmailAddress = EmailAddress.from(command.phoneNumber)
+    const validEmailAddress = EmailAddress.from(command.emailAddress)
     if(validEmailAddress instanceof Error){
       return validEmailAddress;
     }

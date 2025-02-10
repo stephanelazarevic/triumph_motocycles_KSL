@@ -1,12 +1,10 @@
 import { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
-import { MotorcycleRepository } from "../../repositories/MotorcycleRepository.ts";
 import { UpdateMaintenanceCommand } from "../../../domain/types/MaintenanceType.ts";
 import { MaintenanceEntity } from "../../../domain/entities/MaintenanceEntity.ts";
 
 export class UpdateMaintenanceUsecase {
   constructor(
     private maintenanceRepository: MaintenanceRepository,
-    private motorcycleRepository: MotorcycleRepository
   ) {}
 
   public async execute(maintenanceId: string, command: UpdateMaintenanceCommand): Promise<MaintenanceEntity | Error> {
@@ -15,8 +13,8 @@ export class UpdateMaintenanceUsecase {
       return maintenance;
     }
 
-    if (command.motorcycleId) {
-      maintenance.motorcycleId = command.motorcycleId;
+    if (command.motorcycle) {
+      maintenance.motorcycle = command.motorcycle;
     }
 
     if (command.date) {

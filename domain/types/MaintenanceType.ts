@@ -1,9 +1,10 @@
+import { MotorcycleEntity } from "../entities/MotorcycleEntity";
 import { MaintenanceStatus, MaintenanceType } from "../enum/MaintenanceEnum";
 
 export interface AddMaintenanceCommand {
   date: Date,
   description: string,
-  motorcycleId: string,
+  motorcycle: MotorcycleEntity,
   cost: number,
   type: MaintenanceType,
   status: MaintenanceStatus,
