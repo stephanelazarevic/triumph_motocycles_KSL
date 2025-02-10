@@ -19,7 +19,6 @@ export class MotorcycleController implements EntityControllerInterface {
   ) {}
 
   public async getAll(context: Context): Promise<Response> {
-    console.log("GOHOOOOOOOOOOOOOOOOOOOOOOOOO")
     const listMotorcyclesUsecase = new ListMotorcyclesUsecase(
       this.motorcycleRepository,
     );
