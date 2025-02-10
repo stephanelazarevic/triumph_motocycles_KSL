@@ -50,11 +50,11 @@ app.route("/api/motorcycleParts", motorcyclePartRouter);
 app.route("/api/notifications", notificationRouter);
 app.route("/api/orders", orderRouter);
 app.route("/api/parts", partRouter);
-app.route("/api/driver", driverRouter);
-app.route("/api/maintenance", maintenanceRouter);
-app.route("/api/incident", incidentRouter);
-app.route("/api/warranty", warrantyRouter);
-app.route("/api/rental", rentalRouter);
+app.route("/api/drivers", driverRouter);
+app.route("/api/maintenances", maintenanceRouter);
+app.route("/api/incidents", incidentRouter);
+app.route("/api/warranties", warrantyRouter);
+app.route("/api/rentals", rentalRouter);
 
 // Start server
 Deno.serve({ port: 8000 }, app.fetch);

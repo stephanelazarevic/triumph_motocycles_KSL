@@ -110,7 +110,7 @@ const SparePartsManagement = () => {
 
   const fetchOrders = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/order`);
+      const response = await axios.get(`${API_BASE_URL}/orders`);
       console.log('Orders API Response:', response);
 
       // Récupérer la data qui est déjà une chaîne JSON
