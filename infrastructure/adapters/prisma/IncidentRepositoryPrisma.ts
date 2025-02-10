@@ -40,15 +40,15 @@ export class IncidentRepositoryPrisma implements IncidentRepository {
                     id: driver.id,
                     enterpriseId: driver.enterpriseId,
                     motorcycleId: driver.motorcycleId,
-                    firstname: driver.firstname.getValue(),
-                    lastname: driver.lastname.getValue(),
+                    firstname: driver.firstname,
+                    lastname: driver.lastname,
                     licenseNumber: driver.licenseNumber,
-                    phoneNumber: driver.phoneNumber.getValue(),
-                    emailAddress: driver.emailAddress.getValue()
+                    phoneNumber: driver.phoneNumber,
+                    emailAddress: driver.emailAddress
                   })
                 ) : null,
-                brand: motorcycle.brand.getValue(),
-                model: motorcycle.model.getValue(),
+                brand: motorcycle.brand,
+                model: motorcycle.model,
                 year: motorcycle.year,
                 registrationNumber: motorcycle.registrationNumber,
                 status: motorcycle.status,
@@ -111,5 +111,52 @@ export class IncidentRepositoryPrisma implements IncidentRepository {
     await this.prisma.incident.delete({
       where: { id }
     });
+  }
+
+  public async findByMotorcycleIdAndPeriod(motorcycleId: string, startDate: Date, endDate: Date | null): Promise<IncidentEntity[]> {
+    const incidents = await this.prisma.incident.findUnique({
+      where: {
+        motorcycleId,
+        reportDate: {
+          gte: startDate,
+          lte: endDate
+        }
+      }
+    });
+    return incidents.map(incident =>
+      IncidentEntity.reconstitute({
+        id: incident.id,
+        description: incident.description,
+        motorcycle: incident.motorcycle.map(motorcycle => 
+          MotorcycleEntity.reconstitute({
+            id: motorcycle.id,
+            dealerId: motorcycle.dealerId,
+            clientId: motorcycle.clientId,
+            drivers: motorcycle.drivers ? motorcycle.drivers.map(driver =>
+              DriverEntity.reconstitute({
+                id: driver.id,
+                enterpriseId: driver.enterpriseId,
+                motorcycleId: driver.motorcycleId,
+                firstname: driver.firstname,
+                lastname: driver.lastname,
+                licenseNumber: driver.licenseNumber,
+                phoneNumber: driver.phoneNumber,
+                emailAddress: driver.emailAddress
+              })
+            ) : null,
+            brand: motorcycle.brand,
+            model: motorcycle.model,
+            year: motorcycle.year,
+            registrationNumber: motorcycle.registrationNumber,
+            status: motorcycle.status,
+            enterpriseId: motorcycle.enterpriseId
+          })
+        ),
+        type: incident.type,
+        reportDate: incident.reportDate,
+        resolutionDate: incident.resolutionDate,
+        status: incident.status,
+      })
+    );
   }
 }

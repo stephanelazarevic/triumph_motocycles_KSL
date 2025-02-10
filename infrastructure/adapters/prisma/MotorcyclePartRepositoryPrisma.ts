@@ -37,11 +37,11 @@ return motorcycleParts.map(motorcyclePart =>
             id: driver.id,
             enterpriseId: driver.enterpriseId,
             motorcycleId: driver.motorcycleId,
-            firstname: driver.firstname.getValue(),
-            lastname: driver.lastname.getValue(),
+            firstname: driver.firstname,
+            lastname: driver.lastname,
             licenseNumber: driver.licenseNumber,
-            phoneNumber: driver.phoneNumber.getValue(),
-            emailAddress: driver.emailAddress.getValue()
+            phoneNumber: driver.phoneNumber,
+            emailAddress: driver.emailAddress
           })
         ) : null,
         brand: motorcycle.brand,
@@ -57,15 +57,18 @@ return motorcycleParts.map(motorcyclePart =>
         id: part.id,
         dealer: part.dealer.map(dealer =>
             DealerEntity.reconstitute({
+                id: dealer.id,
                 user: dealer.user.map(user =>
                     UserEntity.reconstitute({
-                        firstname: user.firstname.getValue(),
-                        lastname: user.lastname.getValue(),
-                        emailAddress: user.emailAddress.getValue(),
-                        hashedPassword: user.hashedPassword,
-                        phoneNumber: user.phoneNumber.getValue(),
-                        address: user.address.getValue(),
-                        isAdministrator: user.isAdministrator
+                      id: user.id,
+                      firstname: user.firstname,
+                      lastname: user.lastname,
+                      hashedPassword: user.hashedPassword,
+                      emailAddress: user.emailAddress,
+                      phoneNumber: user.phoneNumber,
+                      address: user.address,
+                      isAdministrator: user.isAdministrator,
+                      token: user.token
                     })),
                 site: dealer.site
             })),
@@ -100,11 +103,11 @@ return motorcycleParts.map(motorcyclePart =>
                 id: driver.id,
                 enterpriseId: driver.enterpriseId,
                 motorcycleId: driver.motorcycleId,
-                firstname: driver.firstname.getValue(),
-                lastname: driver.lastname.getValue(),
+                firstname: driver.firstname,
+                lastname: driver.lastname,
                 licenseNumber: driver.licenseNumber,
-                phoneNumber: driver.phoneNumber.getValue(),
-                emailAddress: driver.emailAddress.getValue()
+                phoneNumber: driver.phoneNumber,
+                emailAddress: driver.emailAddress
               })
             ) : null,
             brand: motorcycle.brand,
@@ -120,15 +123,18 @@ return motorcycleParts.map(motorcyclePart =>
             id: part.id,
             dealer: part.dealer.map(dealer =>
                 DealerEntity.reconstitute({
+                    id: dealer.id,
                     user: dealer.user.map(user =>
                         UserEntity.reconstitute({
-                            firstname: user.firstname.getValue(),
-                            lastname: user.lastname.getValue(),
-                            emailAddress: user.emailAddress.getValue(),
-                            hashedPassword: user.hashedPassword,
-                            phoneNumber: user.phoneNumber.getValue(),
-                            address: user.address.getValue(),
-                            isAdministrator: user.isAdministrator
+                          id: user.id,
+                          firstname: user.firstname,
+                          lastname: user.lastname,
+                          hashedPassword: user.hashedPassword,
+                          emailAddress: user.emailAddress,
+                          phoneNumber: user.phoneNumber,
+                          address: user.address,
+                          isAdministrator: user.isAdministrator,
+                          token: user.token
                         })),
                     site: dealer.site
                 })),

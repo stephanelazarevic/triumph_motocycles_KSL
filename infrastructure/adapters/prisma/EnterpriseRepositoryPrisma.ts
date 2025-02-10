@@ -32,10 +32,12 @@ export class EnterpriseRepositoryPrisma implements EnterpriseRepository {
             id: user.id,
             firstname: user.firstname,
             lastname: user.lastname,
+            hashedPassword: user.hashedPassword,
             emailAddress: user.emailAddress,
             phoneNumber: user.phoneNumber,
             address: user.address,
-            isAdministrator: user.isAdministrator
+            isAdministrator: user.isAdministrator,
+            token: user.token
         })),
         taxNumber: enterprise.taxNumber,
         industryType: enterprise.industryType
@@ -56,12 +58,14 @@ export class EnterpriseRepositoryPrisma implements EnterpriseRepository {
       id: enterprise.id,
       user: enterprise.user.map(user => UserEntity.reconstitute({
         id: user.id,
-        firstname: user.firstname,
-        lastname: user.lastname,
-        emailAddress: user.emailAddress,
-        phoneNumber: user.phoneNumber,
-        address: user.address,
-        isAdministrator: user.isAdministrator
+            firstname: user.firstname,
+            lastname: user.lastname,
+            hashedPassword: user.hashedPassword,
+            emailAddress: user.emailAddress,
+            phoneNumber: user.phoneNumber,
+            address: user.address,
+            isAdministrator: user.isAdministrator,
+            token: user.token
     })),
       taxNumber: enterprise.taxNumber,
       industryType: enterprise.industryType

@@ -13,7 +13,6 @@ import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity
 export class MaintenanceController implements EntityControllerInterface {
   public constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
-    private readonly motorcycleRepository: MotorcycleRepository,
   ) {}
 
   public async getAll(): Promise<Response> {
@@ -58,7 +57,6 @@ export class MaintenanceController implements EntityControllerInterface {
   public async create(request: Request): Promise<Response> {
     const addMaintenanceUsecase = new AddMaintenanceUsecase(
       this.maintenanceRepository,
-      this.motorcycleRepository,
     );
 
     const body = await request.json();
@@ -71,12 +69,12 @@ export class MaintenanceController implements EntityControllerInterface {
       });
     }
 
-    const { date, description, motorcycleId, cost, type, status, nextMaintenanceDate } = validation.data;
+    const { date, description, motorcycle, cost, type, status, nextMaintenanceDate } = validation.data;
 
     const result = await addMaintenanceUsecase.execute({
       date,
       description,
-      motorcycleId,
+      motorcycle,
       cost,
       type, 
       status,
@@ -106,7 +104,7 @@ export class MaintenanceController implements EntityControllerInterface {
       return new Response("Malformed request", { status: 400 });
     }
 
-    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository, this.motorcycleRepository);
+    const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
     const result = await updateMaintenanceUsecase.execute(maintenanceId, validation.data);
 
     if (result instanceof MaintenanceEntity) {
