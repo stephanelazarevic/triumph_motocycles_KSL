@@ -9,9 +9,12 @@ import { JwtTokenService } from '../../../../infrastructure/services/JwtTokenSer
 import { LibPhoneNumberService } from '../../../../infrastructure/services/LibPhoneNumberService.ts';
 import { I18nCountryService } from '../../../../infrastructure/services/I18nCountryService.ts';
 import { ResendEmailService } from '../../../../infrastructure/services/ResendEmailService.ts';
+import { MotorcycleHistoryService } from '../../../../application/services/MotorcycleHistoryService.ts';
+import { incidentRepository, maintenanceRepository } from './repositoriesDependencies.ts';
 
 export const emailService: EmailService                     = new ResendEmailService();
 export const passwordService: PasswordService               = new BCryptPasswordService();
 export const tokenGeneratorService: TokenGeneratorService   = new JwtTokenService("oiujyhgtfghjkhgfghjk");
 export const phonenNumberService: PhoneNumberService        = new LibPhoneNumberService();
 export const countryService: CountryService                 = new I18nCountryService();
+export const motorcycleHistoryService: MotorcycleHistoryService = new MotorcycleHistoryService(incidentRepository, maintenanceRepository)

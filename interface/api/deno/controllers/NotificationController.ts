@@ -1,172 +1,124 @@
-import type { NotificationRepository } from "../../../../application/repositories/NotificationRepository.ts";
+import { exhaustive } from "npm:exhaustive";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
+import { NotificationRepository } from "../../../../application/repositories/NotificationRepository.ts";
 import { UserRepository } from "../../../../application/repositories/UserRepository.ts";
+import { PartRepository } from "../../../../application/repositories/PartRepository.ts";
+import { MaintenanceRepository } from "../../../../application/repositories/MaintenanceRepository.ts";
+import { ClientRepository } from "../../../../application/repositories/ClientRepository.ts";
+import { EnterpriseRepository } from "../../../../application/repositories/EnterpriseRepository.ts";
+import { EmailService } from "../../../../application/services/EmailService.ts";
+import { addNotificationRequestSchema, updateNotificationRequestSchema } from "../schemas/notificationRequestSchema.ts";
 import { AddNotificationUsecase } from "../../../../application/usecases/notification/AddNotificationUsecase.ts";
 import { GetNotificationUsecase } from "../../../../application/usecases/notification/GetNotificationUsecase.ts";
 import { ListNotificationsUsecase } from "../../../../application/usecases/notification/ListNotificationsUsecase.ts";
 import { UpdateNotificationUsecase } from "../../../../application/usecases/notification/UpdateNotificationUsecase.ts";
 import { DeleteNotificationUsecase } from "../../../../application/usecases/notification/DeleteNotificationUsecase.ts";
 import { SendNotificationUsecase } from "../../../../application/usecases/notification/SendNotificationUsecase.ts";
-import { exhaustive } from "npm:exhaustive";
-import { addNotificationRequestSchema, updateNotificationRequestSchema } from "../schemas/notificationRequestSchema.ts";
-import { EntityControllerInterface } from "./EntityControllerInterface.ts";
-import { NotificationEntity } from "../../../../domain/entities/NotificationEntity.ts";
-import { PartRepository } from "../../../../application/repositories/PartRepository.ts";
-import { EmailService } from "../../../services/EmailService.ts";
-import { MaintenanceRepository } from "../../../../application/repositories/MaintenanceRepository.ts";
-import { ClientRepository } from "../../../../application/repositories/ClientRepository.ts";
-import { EnterpriseRepository } from "../../../../application/repositories/EnterpriseRepository.ts";
 
-export class NotificationController implements EntityControllerInterface{
-  public constructor(
+export class NotificationController {
+  constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
     private readonly partRepository: PartRepository,
     private readonly notificationRepository: NotificationRepository,
     private readonly userRepository: UserRepository,
     private readonly clientRepository: ClientRepository,
     private readonly enterpriseRepository: EnterpriseRepository,
-    private readonly emailService: EmailService,
+    private readonly emailService: EmailService
   ) {}
 
-  public async getAll(): Promise<Response> {
+  public async getAll(context: Context): Promise<Response> {
     const listNotificationsUsecase = new ListNotificationsUsecase(this.notificationRepository);
-
     const result = await listNotificationsUsecase.execute();
-
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return context.json(JSON.stringify(result), 200);
   }
 
-  public async getById(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async getById(context: Context) {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("Notification ID is required", { status: 400 });
+      return context.json({ message: "Notification ID is required" }, 400);
     }
 
     const getNotificationUsecase = new GetNotificationUsecase(this.notificationRepository);
-
     const result = await getNotificationUsecase.execute(id);
 
-    if (result instanceof NotificationEntity) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
-    return exhaustive(result.name, {
-      NotificationNotFoundError: () =>
-        new Response("NotificationNotFoundError", { status: 404 }),
+    return exhaustive({
+      NotificationNotFoundError: () => context.json({ message: "Notification not found" }, 404),
     });
   }
 
-  public async create(request: Request): Promise<Response> {
+  public async create(context: Context): Promise<Response> {
+    const body = await context.req.json();
+    const validation = addNotificationRequestSchema.safeParse(body);
+
+    if (!validation.success) {
+      return context.json({ message: "Malformed request" }, 400);
+    }
+
     const addNotificationUsecase = new AddNotificationUsecase(
       this.notificationRepository,
       this.userRepository
     );
+    const result = await addNotificationUsecase.execute(validation.data);
 
-    const body = await request.json();
-
-    const validation = addNotificationRequestSchema.safeParse(body);
-
-    if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 201);
     }
 
-    const { userId, type, message, date, status } = validation.data;
-
-    const result = await addNotificationUsecase.execute({
-      userId,
-      type,
-      message,
-      date,
-      status
-    });
-
-    if (result instanceof NotificationEntity) {
-      return new Response(null, { status: 201 });
-    }
-
-    return exhaustive(result.name, {
-      UserNotFoundError: () =>
-        new Response("UserNotFoundError", { status: 404 }),
+    return exhaustive({
+      UserNotFoundError: () => context.json({ message: "User not found" }, 404),
     });
   }
 
-  public async update(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const notificationId = url.searchParams.get("id");
-
-    if (!notificationId) {
-      return new Response("Notification ID is required", { status: 400 });
+  public async update(context: Context): Promise<Response> {
+    const id = context.req.param("id");
+    if (!id) {
+      return context.json({ message: "Notification ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateNotificationRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", { status: 400 });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
-    const updateNotificationUsecase = new UpdateNotificationUsecase(this.notificationRepository, this.userRepository);
-    const result = await updateNotificationUsecase.execute(notificationId, validation.data);
+    const updateNotificationUsecase = new UpdateNotificationUsecase(
+      this.notificationRepository,
+      this.userRepository
+    );
+    const result = await updateNotificationUsecase.execute(id, validation.data);
 
-    if (result instanceof NotificationEntity) {
-      return new Response(null, { status: 201 });
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
-    return exhaustive(result.name, {
-      NotificationNotFoundError: () =>
-        new Response("NotificationNotFoundError", { status: 404 }),
+    return exhaustive({
+      NotificationNotFoundError: () => context.json({ message: "Notification not found" }, 404),
     });
   }
 
-  public async delete(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async delete(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("Notification ID is required", { status: 400 });
+      return context.json({ message: "Notification ID is required" }, 400);
     }
 
-    const deleteNotificationUsecase = new DeleteNotificationUsecase(
-      this.notificationRepository
-    );
-
+    const deleteNotificationUsecase = new DeleteNotificationUsecase(this.notificationRepository);
     const result = await deleteNotificationUsecase.execute(id);
 
-    if (result === undefined) {
-      return new Response(null, { status: 204 });
+    if (!result) {
+      return context.json(null, 204);
     }
 
-    return exhaustive(result.name, {
-      NotificationNotFoundError: () =>
-        new Response("NotificationNotFoundError", { status: 404 }),
+    return exhaustive("NotificationNotFoundError", {
+      NotificationNotFoundError: () => context.json({ message: "Notification not found" }, 404),
     });
   }
 
-  public async sendNotification(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const notificationId = url.searchParams.get("id");
-
-    if (!notificationId) {
-      return new Response("Notification ID is required", { status: 400 });
-    }
-
-    const notification = await this.notificationRepository.findOneById(notificationId);
-    if (notification instanceof Error) {
-        return new Response("Notification not found", { status: 404 });
-    }
-
+  public async sendNotification(context: Context) {
     const sendNotificationUsecase = new SendNotificationUsecase(
       this.maintenanceRepository,
       this.partRepository,
@@ -174,23 +126,15 @@ export class NotificationController implements EntityControllerInterface{
       this.clientRepository,
       this.enterpriseRepository,
       this.notificationRepository,
-      this.emailService,
+      this.emailService
     );
-
+    
     try {
-      await sendNotificationUsecase.sendNotification(
-          notification.user.id,
-          notification.type,
-          notification.message,
-          notification.user.emailAddress,
-          `Notification: ${notification.type}`,
-          notification.message
-      );
-
-        return new Response("Notification sent successfully", { status: 200 });
+      await sendNotificationUsecase.execute();
+      return context.json({ message: "Notifications processed successfully" }, 200);
     } catch (error) {
-        console.error("❌ Error sending notification:", error);
-        return new Response("Failed to send notification", { status: 500 });
+      console.error("❌ Error processing notifications:", error);
+      return context.json({ message: "Failed to process notifications" }, 500);
     }
   }
 }
