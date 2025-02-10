@@ -10,6 +10,7 @@ import { UpdateMotorcycleUsecase } from "../../../../application/usecases/motorc
 import { DeleteMotorcycleUsecase } from "../../../../application/usecases/motorcycle/DeleteMotorcycleUsecase.ts";
 import { AddMotorcycleHistoryUsecase } from "../../../../application/usecases/motorcycleHistory/AddMotorcycleHistoryUsecase.ts";
 import { MotorcycleHistoryRepository } from "../../../../application/repositories/MotorcycleHistoryRepository.ts";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
 
 export class MotorcycleController implements EntityControllerInterface {
   public constructor(
@@ -17,27 +18,21 @@ export class MotorcycleController implements EntityControllerInterface {
     private readonly motorcycleHistoryRepository: MotorcycleHistoryRepository,
   ) {}
 
-  public async getAll(): Promise<Response> {
+  public async getAll(context: Context): Promise<Response> {
     const listMotorcyclesUsecase = new ListMotorcyclesUsecase(
       this.motorcycleRepository,
     );
 
     const result = await listMotorcyclesUsecase.execute();
 
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return context.json(JSON.stringify(result), 200);
   }
 
-  public async getById(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
+  public async getById(context: Context): Promise<Response> {
+    const id = context.req.param('id');
 
     if (!id) {
-      return new Response("Motorcycle ID is required", { status: 400 });
+      return context.json({ message: "Malformed ID is required" }, 400);
     }
 
     const getMotorcycleUsecase = new GetMotorcycleUsecase(this.motorcycleRepository);
@@ -45,33 +40,29 @@ export class MotorcycleController implements EntityControllerInterface {
     const result = await getMotorcycleUsecase.execute(id);
 
     if (result instanceof MotorcycleEntity) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      return context.json(JSON.stringify(result), 200);
     }
 
     return exhaustive(result.name, {
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
+      MotorcycleNotFoundError: () => context.json({ message: "Motorcycle not found" }, 404)
     });
   }
 
-  public async create(request: Request): Promise<Response> {
+  public async create(context: Context): Promise<Response> {
     const addMotorcycleHistoryUsecase = new AddMotorcycleHistoryUsecase(this.motorcycleHistoryRepository),
     const addMotorcycleUsecase = new AddMotorcycleUsecase(this.motorcycleRepository, addMotorcycleHistoryUsecase);
-    const body = await request.json();
+
+    const body = await context.req.json();
     const validation = addMotorcycleRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", { status: 400 });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
     const result = await addMotorcycleUsecase.execute(validation.data);
 
     if (result instanceof MotorcycleEntity) {
-      return new Response(null, { status: 201 });
+      return context.json(JSON.stringify(result), 201);
     }
 
     return exhaustive(result.name, {
@@ -80,20 +71,17 @@ export class MotorcycleController implements EntityControllerInterface {
     });
   }
 
-  public async update(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const motorcycleId = url.searchParams.get("id");
+  public async update(context: Context): Promise<Response> {
+    const id = context.req.param('id');
 
-    if (!motorcycleId) {
-      return new Response("Motorcycle ID is required", { status: 400 });
+    if (!id) {
+      return context.json({ message: "Malformed ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = context.req.json();
     const validation = updateMotorcycleRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
     const addMotorcycleHistoryUsecase = new AddMotorcycleHistoryUsecase(this.motorcycleHistoryRepository);
@@ -103,25 +91,23 @@ export class MotorcycleController implements EntityControllerInterface {
       addMotorcycleHistoryUsecase
     );
 
-    const result = await updateMotorcycleUsecase.execute(motorcycleId, validation.data);
+    const result = await updateMotorcycleUsecase.execute(id, validation.data);
 
     if (result instanceof MotorcycleEntity) {
-      return new Response(null, {
-        status: 201,
-      });
+      return context.json(JSON.stringify(result), 201);
+
     }
 
     return exhaustive(result.name, {
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
+      MotorcycleNotFoundError: () => context.json({ message: "Motorcycle not found" }, 404)
     });
   }
 
-  public async delete(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
+  public async delete(context: Context): Promise<Response> {
+    const id = context.req.param('id');
 
     if (!id) {
-      return new Response("Motorcycle ID is required", { status: 400 });
+      return context.json({ message: "Malformed ID is required" }, 400);
     }
 
     const deleteMotorcycleUsecase = new DeleteMotorcycleUsecase(
@@ -131,11 +117,11 @@ export class MotorcycleController implements EntityControllerInterface {
     const result = await deleteMotorcycleUsecase.execute(id);
 
     if (result === undefined) {
-      return new Response(null, { status: 204 });
+      return context.json(null, 204);
     }
 
     return exhaustive(result.name, {
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
+      MotorcycleNotFoundError: () => context.json({ message: "Motorcycle not found" }, 404)
     });
   }
 }
