@@ -1,150 +1,94 @@
-import type { WarrantyPartRepository } from "../../../../application/repositories/WarrantyPartRepository.ts";
-import type { WarrantyRepository } from "../../../../application/repositories/WarrantyRepository.ts";
-import type { PartRepository } from "../../../../application/repositories/PartRepository.ts";
+import { exhaustive } from "npm:exhaustive";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
+import { WarrantyPartRepository } from "../../../../application/repositories/WarrantyPartRepository.ts";
+import { WarrantyRepository } from "../../../../application/repositories/WarrantyRepository.ts";
+import { PartRepository } from "../../../../application/repositories/PartRepository.ts";
 import { AddWarrantyPartUsecase } from "../../../../application/usecases/warrantyPart/AddWarrantyPartUsecase.ts";
 import { GetWarrantyPartUsecase } from "../../../../application/usecases/warrantyPart/GetWarrantyPartUsecase.ts";
 import { ListWarrantyPartsUsecase } from "../../../../application/usecases/warrantyPart/ListWarrantyPartsUsecase.ts";
 import { UpdateWarrantyPartUsecase } from "../../../../application/usecases/warrantyPart/UpdateWarrantyPartUsecase.ts";
 import { DeleteWarrantyPartUsecase } from "../../../../application/usecases/warrantyPart/DeleteWarrantyPartUsecase.ts";
-import { exhaustive } from "npm:exhaustive"
-import { EntityControllerInterface } from "./EntityControllerInterface.ts";
-import { WarrantyPartEntity } from "../../../../domain/entities/WarrantyPartEntity.ts";
 import { addWarrantyPartRequestSchema, updateWarrantyPartRequestSchema } from "../schemas/warrantyPartRequestSchema.ts";
+import { WarrantyPartEntity } from "../../../../domain/entities/WarrantyPartEntity.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class WarrantyPartController implements EntityControllerInterface {
-  public constructor(
+export class WarrantyPartController implements EntityControllerInterface{
+  constructor(
     private readonly warrantyPartRepository: WarrantyPartRepository,
     private readonly warrantyRepository: WarrantyRepository,
-    private readonly partRepository: PartRepository,
+    private readonly partRepository: PartRepository
   ) {}
 
-  public async getAll(): Promise<Response> {
-    const listWarrantyPartsUsecase = new ListWarrantyPartsUsecase(
-      this.warrantyPartRepository,
-    );
-
-    const result = await listWarrantyPartsUsecase.execute();
-
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  public async getAll(context: Context): Promise<Response> {
+    const usecase = new ListWarrantyPartsUsecase(this.warrantyPartRepository);
+    const result = await usecase.execute();
+    return context.json(JSON.stringify(result), 200);
   }
 
-  public async getById(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async getById(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("WarrantyPart ID is required", { status: 400 });
+      return context.json({ message: "WarrantyPart ID is required" }, 400);
     }
-
-    const getWarrantyPartUsecase = new GetWarrantyPartUsecase(
-      this.warrantyPartRepository,
-    );
-
-    const result = await getWarrantyPartUsecase.execute(id);
-
-    if (result instanceof WarrantyPartEntity) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const usecase = new GetWarrantyPartUsecase(this.warrantyPartRepository);
+    const result = await usecase.execute(id);
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
-
-    return exhaustive(result.name, {
-      WarrantyPartNotFoundError: () => new Response("WarrantyPartNotFoundError", { status: 404 }),
+    return exhaustive({
+      WarrantyPartNotFoundError: () => context.json({ message: "WarrantyPart not found" }, 404),
     });
-
   }
 
-  public async create(request: Request): Promise<Response> {
-    const addWarrantyPartUsecase = new AddWarrantyPartUsecase(
-      this.warrantyPartRepository,
-      this.warrantyRepository,
-      this.partRepository,
-    );
-
-    const body = await request.json();
-
+  public async create(context: Context): Promise<Response> {
+    const body = await context.req.json();
     const validation = addWarrantyPartRequestSchema.safeParse(body);
-
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
-
-    const result = await addWarrantyPartUsecase.execute(validation.data);
-
+    const usecase = new AddWarrantyPartUsecase(this.warrantyPartRepository, this.warrantyRepository, this.partRepository);
+    const result = await usecase.execute(validation.data);
     if (result instanceof WarrantyPartEntity) {
-      return new Response(null, {
-        status: 201,
-      });
+      return context.json(JSON.stringify(result), 201);
     }
-
-    return exhaustive(result.name, {
-      WarrantyNotFoundError: () => new Response("WarrantyNotFoundError", { status: 404 }),
-      PartNotFoundError: () => new Response("PartNotFoundError", { status: 404 }),
+    return exhaustive({
+      WarrantyNotFoundError: () => context.json({ message: "Warranty not found" }, 404),
+      PartNotFoundError: () => context.json({ message: "Part not found" }, 404),
     });
   }
 
-  public async update(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const warrantyPartId = url.searchParams.get("id");
-
-    if (!warrantyPartId) {
-      return new Response("WarrantyPart ID is required", { status: 400 });
+  public async update(context: Context): Promise<Response> {
+    const id = context.req.param("id");
+    if (!id) {
+      return context.json({ message: "WarrantyPart ID is required" }, 400);
     }
-
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateWarrantyPartRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
-
-    const updateWarrantyPartUsecase = new UpdateWarrantyPartUsecase(this.warrantyPartRepository, this.warrantyRepository, this.partRepository);
-    const result = await updateWarrantyPartUsecase.execute(warrantyPartId, validation.data);
-
+    const usecase = new UpdateWarrantyPartUsecase(this.warrantyPartRepository, this.warrantyRepository, this.partRepository);
+    const result = await usecase.execute(id, validation.data);
     if (result instanceof WarrantyPartEntity) {
-      return new Response(null, {
-        status: 201,
-      });
+      return context.json(JSON.stringify(result), 200);
     }
-
-    return exhaustive(result.name, {
-      WarrantyPartNotFoundError: () => new Response("WarrantyPartNotFoundError", { status: 404 }),
+    return exhaustive({
+      WarrantyPartNotFoundError: () => context.json({ message: "WarrantyPart not found" }, 404),
     });
   }
 
-  public async delete(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async delete(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("WarrantyPart ID is required", { status: 400 });
+      return context.json({ message: "WarrantyPart ID is required" }, 400);
     }
-
-    const deleteWarrantyPartUsecase = new DeleteWarrantyPartUsecase(
-      this.warrantyPartRepository,
-    );
-
-    const result = await deleteWarrantyPartUsecase.execute(id);
-
-    if (result === undefined) {
-      return new Response(null, {
-        status: 204,
-      });
+    const usecase = new DeleteWarrantyPartUsecase(this.warrantyPartRepository);
+    const result = await usecase.execute(id);
+    if (!result) {
+      return context.json(null, 204);
     }
-
-    return exhaustive(result.name, {
-      WarrantyPartNotFoundError: () => new Response("WarrantyPartNotFoundError", { status: 404 }),
+    return exhaustive({
+      WarrantyPartNotFoundError: () => context.json({ message: "WarrantyPart not found" }, 404),
     });
   }
 }

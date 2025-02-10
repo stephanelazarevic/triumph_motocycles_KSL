@@ -12,5 +12,7 @@ motorcycleHistoryRouter.get("/:id",    (context) => motorcycleHistoryController.
 motorcycleHistoryRouter.post("/",      (context) => motorcycleHistoryController.create(context));
 motorcycleHistoryRouter.put("/:id",    (context) => motorcycleHistoryController.update(context));
 motorcycleHistoryRouter.delete("/:id", (context) => motorcycleHistoryController.delete(context));
+motorcycleHistoryRouter.get("/motorcycle/:id", (context) => motorcycleHistoryController.getByMotorcycleId(context));
+motorcycleHistoryRouter.get("/last/:id", (context) => motorcycleHistoryController.getLastByMotorcycleId(context));
 
 export default motorcycleHistoryRouter;

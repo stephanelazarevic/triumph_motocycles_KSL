@@ -8,8 +8,9 @@ import { ListDriversUsecase } from "../../../../application/usecases/driver/List
 import { UpdateDriverUsecase } from "../../../../application/usecases/driver/UpdateDriverUsecase.ts";
 import { DeleteDriverUsecase } from "../../../../application/usecases/driver/DeleteDriverUsecase.ts";
 import { addDriverRequestSchema, updateDriverRequestSchema } from "../schemas/driverRequestSchema.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class DriverController {
+export class DriverController implements EntityControllerInterface{
   constructor(
     private readonly driverRepository: DriverRepository,
     private readonly motorcycleRepository: MotorcycleRepository

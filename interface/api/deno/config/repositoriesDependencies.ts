@@ -29,6 +29,9 @@ import { OrderRepository } from '../../../../application/repositories/OrderRepos
 import { OrderRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/OrderRepositoryPrisma.ts';
 import { DriverRepository } from '../../../../application/repositories/DriverRepository.ts';
 import { DriverRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/DriverRepositoryPrisma.ts';
+import { RentalRepository } from '../../../../application/repositories/RentalRepository.ts';
+import { RentalRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/RentalRepositoryPrisma.ts';
+import { WarrantyPartRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/WarrantyPartRepositoryPrisma.ts';
 
 export const motorcycleRepository: MotorcycleRepository                = new MotorcycleRepositoryPrisma(prisma);
 export const userRepository: UserRepository                            = new UserRepositoryPrisma(prisma);
@@ -44,3 +47,5 @@ export const clientRepository: ClientRepository                        = new Cli
 export const enterpriseRepository: EnterpriseRepository                = new EnterpriseRepositoryPrisma(prisma);
 export const orderRepository: OrderRepository                          = new OrderRepositoryPrisma(prisma);
 export const driverRepository: DriverRepository                        = new DriverRepositoryPrisma(prisma);
+export const rentalRepository: RentalRepository                        = new RentalRepositoryPrisma(prisma);
+export const warrantyPartRepository: WarrantyPartRepositoryPrisma      = new WarrantyPartRepositoryPrisma(prisma);

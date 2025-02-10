@@ -1,141 +1,102 @@
-import type { MaintenanceRepository } from "../../../../application/repositories/MaintenanceRepository.ts";
-import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
+import { exhaustive } from "npm:exhaustive";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
+import { MaintenanceRepository } from "../../../../application/repositories/MaintenanceRepository.ts";
 import { AddMaintenanceUsecase } from "../../../../application/usecases/maintenance/AddMaintenanceUsecase.ts";
 import { GetMaintenanceUsecase } from "../../../../application/usecases/maintenance/GetMaintenanceUsecase.ts";
 import { ListMaintenancesUsecase } from "../../../../application/usecases/maintenance/ListMaintenancesUsecase.ts";
 import { UpdateMaintenanceUsecase } from "../../../../application/usecases/maintenance/UpdateMaintenanceUsecase.ts";
 import { DeleteMaintenanceUsecase } from "../../../../application/usecases/maintenance/DeleteMaintenanceUsecase.ts";
-import { exhaustive } from "npm:exhaustive";
 import { addMaintenanceRequestSchema, updateMaintenanceRequestSchema } from "../schemas/maintenanceRequestSchema.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
-import { MaintenanceEntity } from "../../../../domain/entities/MaintenanceEntity.ts";
 
-export class MaintenanceController implements EntityControllerInterface {
-  public constructor(
+export class MaintenanceController implements EntityControllerInterface{
+  constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
   ) {}
 
-  public async getAll(): Promise<Response> {
+  public async getAll(context: Context): Promise<Response> {
     const listMaintenancesUsecase = new ListMaintenancesUsecase(this.maintenanceRepository);
-
     const result = await listMaintenancesUsecase.execute();
-
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return context.json(JSON.stringify(result), 200);
   }
 
-  public async getById(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async getById(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("Maintenance ID is required", { status: 400 });
+      return context.json({ message: "Maintenance ID is required" }, 400);
     }
 
     const getMaintenanceUsecase = new GetMaintenanceUsecase(this.maintenanceRepository);
-
     const result = await getMaintenanceUsecase.execute(id);
 
-    if (result instanceof MaintenanceEntity) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
-    return exhaustive(result.name, {
-      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
+    return exhaustive({
+      MaintenanceNotFoundError: () => context.json({ message: "Maintenance not found" }, 404),
     });
   }
 
-  public async create(request: Request): Promise<Response> {
-    const addMaintenanceUsecase = new AddMaintenanceUsecase(
-      this.maintenanceRepository,
-    );
-
-    const body = await request.json();
-
+  public async create(context: Context): Promise<Response> {
+    const body = await context.req.json();
     const validation = addMaintenanceRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
-    const { date, description, motorcycle, cost, type, status, nextMaintenanceDate } = validation.data;
+    const addMaintenanceUsecase = new AddMaintenanceUsecase(this.maintenanceRepository);
+    const result = await addMaintenanceUsecase.execute(validation.data);
 
-    const result = await addMaintenanceUsecase.execute({
-      date,
-      description,
-      motorcycle,
-      cost,
-      type, 
-      status,
-      nextMaintenanceDate
-    });
-
-    if (result instanceof MaintenanceEntity) {
-      return new Response(null, { status: 201 });
+    if (result) {
+      return context.json(JSON.stringify(result), 201);
     }
 
-    return exhaustive(result.name, {
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
+    return exhaustive({
+      MotorcycleNotFoundError: () => context.json({ message: "Motorcycle not found" }, 404),
     });
   }
 
-  public async update(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const maintenanceId = url.searchParams.get("id");
-
-    if (!maintenanceId) {
-      return new Response("Maintenance ID is required", { status: 400 });
+  public async update(context: Context): Promise<Response> {
+    const id = context.req.param("id");
+    if (!id) {
+      return context.json({ message: "Maintenance ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateMaintenanceRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", { status: 400 });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
     const updateMaintenanceUsecase = new UpdateMaintenanceUsecase(this.maintenanceRepository);
-    const result = await updateMaintenanceUsecase.execute(maintenanceId, validation.data);
+    const result = await updateMaintenanceUsecase.execute(id, validation.data);
 
-    if (result instanceof MaintenanceEntity) {
-      return new Response(null, { status: 201 });
+    if (result) {
+      return context.json(result, 200);
     }
 
-    return exhaustive(result.name, {
-      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
+    return exhaustive({
+      MaintenanceNotFoundError: () => context.json({ message: "Maintenance not found" }, 404),
     });
   }
 
-  public async delete(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async delete(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("Maintenance ID is required", { status: 400 });
+      return context.json({ message: "Maintenance ID is required" }, 400);
     }
 
-    const deleteMaintenanceUsecase = new DeleteMaintenanceUsecase(
-      this.maintenanceRepository,
-    );
-
+    const deleteMaintenanceUsecase = new DeleteMaintenanceUsecase(this.maintenanceRepository);
     const result = await deleteMaintenanceUsecase.execute(id);
 
-    if (result === undefined) {
-      return new Response(null, { status: 204 });
+    if (!result) {
+      return context.json(null, 204);
     }
 
-    return exhaustive(result.name, {
-      MaintenanceNotFoundError: () => new Response("MaintenanceNotFoundError", { status: 404 }),
+    return exhaustive({
+      MaintenanceNotFoundError: () => context.json({ message: "Maintenance not found" }, 404),
     });
   }
 }

@@ -15,8 +15,9 @@ import { PasswordService } from "../../../../domain/services/PasswordService.ts"
 import { UpdateUserContactInformationUsecase } from "../../../../application/usecases/user/UpdateUserContactInformationUsecase.ts";
 import { UpdateUserPersonalInformationUsecase } from "../../../../application/usecases/user/UpdateUserPersonalInformationUsecase.ts";
 import { UpdateUserPasswordUsecase } from "../../../../application/usecases/user/UpdateUserPasswordUsecase.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class UserController {
+export class UserController implements EntityControllerInterface{
   public constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordService: PasswordService,
