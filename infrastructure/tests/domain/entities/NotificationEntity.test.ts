@@ -26,10 +26,10 @@ Deno.test("Shoud return a notification entity", () => {
     throw new Error("Invalid user entity");
   }
 
-  const type = NotificationType.ALERTE;
+  const type = NotificationType.LOW_STOCK_ALERT;
   const message = "Notification message";
   const date = new Date(2025, 1, 1);
-  const status = NotificationStatus.UNREAD;
+  const status = NotificationStatus.SENT;
 
   const result = NotificationEntity.create({
     user,
@@ -49,10 +49,10 @@ Deno.test("Shoud return a notification entity", () => {
 });
 
 Deno.test("Should throw error for invalid notification entity data", () => {
-  const type = NotificationType.ALERTE;
+  const type = NotificationType.LOW_STOCK_ALERT;
   const message = "";
   const date = new Date(2020, 1, 1);
-  const status = NotificationStatus.UNREAD;
+  const status = NotificationStatus.SENT;
 
   expect(() => {
     NotificationEntity.create({
