@@ -5,6 +5,7 @@
     "infrastructure/adapters",
     "infrastructure/database/prisma",
     "infrastructure/services",
+    "infrastructure/jobs",
     "infrastructure/tests",
     "application"
   ],
