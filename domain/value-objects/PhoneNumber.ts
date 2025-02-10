@@ -20,7 +20,7 @@ export class PhoneNumber {
     return new PhoneNumber(countryCode, nationalNumber);
   }
 
-  private static isValidPhoneNumber(phoneNumber: string): boolean {
+  public static isValidPhoneNumber(phoneNumber: string): boolean {
     const formattedPhone = PhoneNumber.phoneNumberService.formatInternational(phoneNumber);
     return PhoneNumber.phoneNumberService.isValid(formattedPhone);
   }

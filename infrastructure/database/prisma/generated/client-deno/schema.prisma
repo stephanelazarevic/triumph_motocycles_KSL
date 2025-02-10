@@ -72,12 +72,13 @@ model Dealer {
 }
 
 model Enterprise {
-  id           String       @id @default(uuid())
+  id           String              @id @default(uuid())
   taxNumber    String
   industryType IndustryType
-  user         User         @relation(fields: [id], references: [id])
+  user         User                @relation(fields: [id], references: [id])
   drivers      Driver[]
-  motorcycle   Motorcycle[] @relation("EnterpriseMotorcycle")
+  motorcycle   Motorcycle[]        @relation("EnterpriseMotorcycle")
+  histories    MotorcycleHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -92,13 +93,14 @@ enum IndustryType {
 }
 
 model Client {
-  id         String       @id @default(uuid())
+  id         String              @id @default(uuid())
   idDealer   String
-  dealer     Dealer       @relation(fields: [idDealer], references: [id])
-  user       User         @relation(fields: [id], references: [id])
+  dealer     Dealer              @relation(fields: [idDealer], references: [id])
+  user       User                @relation(fields: [id], references: [id])
   rentals    Rental[]
   testRides  TestRide[]
-  motorcycle Motorcycle[] @relation("ClientMotorcycle")
+  motorcycle Motorcycle[]        @relation("ClientMotorcycle")
+  histories  MotorcycleHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -140,18 +142,18 @@ model Rental {
 }
 
 model Motorcycle {
-  id                 String           @id @default(uuid())
+  id                 String              @id @default(uuid())
   clientId           String?
   dealerId           String
   enterpriseId       String?
   brand              String
   model              String
   year               Int
-  registrationNumber String           @unique
+  registrationNumber String              @unique
   status             MotorcycleStatus
-  client             Client?          @relation(fields: [clientId], references: [id], name: "ClientMotorcycle")
-  dealer             Dealer           @relation(fields: [dealerId], references: [id], name: "DealerMotorcycle")
-  enterprise         Enterprise?      @relation(fields: [enterpriseId], references: [id], name: "EnterpriseMotorcycle")
+  client             Client?             @relation(fields: [clientId], references: [id], name: "ClientMotorcycle")
+  dealer             Dealer              @relation(fields: [dealerId], references: [id], name: "DealerMotorcycle")
+  enterprise         Enterprise?         @relation(fields: [enterpriseId], references: [id], name: "EnterpriseMotorcycle")
   testRides          TestRide[]
   rentals            Rental[]
   maintenance        Maintenance[]
@@ -159,6 +161,7 @@ model Motorcycle {
   warranties         Warranty[]
   parts              MotorcyclePart[]
   drivers            Driver[]
+  histories          MotorcycleHistory[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -270,28 +273,31 @@ model Warranty {
 }
 
 model Maintenance {
-  id           String     @id @default(uuid())
-  idMotorcycle String
-  date         DateTime
-  description  String
-  cost         Float
-  motorcycle   Motorcycle @relation(fields: [idMotorcycle], references: [id])
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id                  String             @id @default(uuid())
+  idMotorcycle        String
+  date                DateTime
+  description         String
+  cost                Float
+  motorcycle          Motorcycle         @relation(fields: [idMotorcycle], references: [id])
+  motorcycleHistory   MotorcycleHistory? @relation(fields: [motorcycleHistoryId], references: [id])
+  motorcycleHistoryId String?
+  createdAt           DateTime           @default(now())
+  updatedAt           DateTime           @updatedAt
 
   @@map("maintenancies")
 }
 
 model Incident {
-  id             String         @id @default(uuid())
-  idMotorcycle   String
-  type           IncidentType
-  description    String
-  reportDate     DateTime
-  resolutionDate DateTime?
-  status         IncidentStatus
-  motorcycle     Motorcycle     @relation(fields: [idMotorcycle], references: [id])
+  id                  String             @id @default(uuid())
+  idMotorcycle        String
+  type                IncidentType
+  description         String
+  reportDate          DateTime
+  resolutionDate      DateTime?
+  motorcycleHistoryId String?
+  status              IncidentStatus
+  motorcycle          Motorcycle         @relation(fields: [idMotorcycle], references: [id])
+  motorcycleHistory   MotorcycleHistory? @relation(fields: [motorcycleHistoryId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -311,19 +317,43 @@ enum IncidentStatus {
 }
 
 model Driver {
-  id            String     @id @default(uuid())
-  enterpriseId  String
-  motorcycleId  String
-  firstname     String
-  lastname      String
-  licenseNumber String
-  phoneNumber   Json
-  emailAddress  String     @unique
-  entreprise    Enterprise @relation(fields: [enterpriseId], references: [id])
-  motorcycle    Motorcycle @relation(fields: [motorcycleId], references: [id])
+  id                  String              @id @default(uuid())
+  enterpriseId        String
+  motorcycleId        String
+  firstname           String
+  lastname            String
+  licenseNumber       String
+  phoneNumber         Json
+  emailAddress        String              @unique
+  entreprise          Enterprise          @relation(fields: [enterpriseId], references: [id])
+  motorcycle          Motorcycle          @relation(fields: [motorcycleId], references: [id])
+  motorcycleHistories MotorcycleHistory[] @relation("MotorcycleHistoryToDriver")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@map("drivers")
+}
+
+model MotorcycleHistory {
+  id           String      @id @default(uuid())
+  motorcycleId String
+  motorcycle   Motorcycle  @relation(fields: [motorcycleId], references: [id])
+  startDate    DateTime
+  endDate      DateTime?
+  clientId     String?
+  client       Client?     @relation(fields: [clientId], references: [id])
+  enterpriseId String?
+  enterprise   Enterprise? @relation(fields: [enterpriseId], references: [id])
+
+  incidents    Incident[]
+  maintenances Maintenance[]
+  drivers      Driver[]      @relation("MotorcycleHistoryToDriver")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([motorcycleId])
+  @@index([clientId])
+  @@index([enterpriseId])
 }

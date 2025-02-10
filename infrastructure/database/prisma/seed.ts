@@ -9,6 +9,7 @@ import { config } from "https://deno.land/x/dotenv@v3.2.0/mod.ts";
 import { loadMaintenanceFixtures } from "./fixtures/maintenanceFixtures.ts";
 import { loadWarrantyPartFixtures } from "./fixtures/warrantyPartFixtures.ts";
 import { loadNotificationFixtures } from "./fixtures/notificationFixtures.ts";
+import { loadMotorcycleHistoryFixtures } from "./fixtures/motorcycleHistoryFixtures.ts";
 
 const env = config();
 
@@ -29,11 +30,12 @@ async function seed() {
     console.log('✅ Database cleaned successfully');
 
     const { dealerId, enterpriseId, clientId }  = await loadUserFixtures();
-    const { motorcycle1Id }                     = await loadMotorcycleFixtures(dealerId, enterpriseId);
+    const { motorcycle1Id, motorcycle2Id }      = await loadMotorcycleFixtures(dealerId, enterpriseId);
     const { orderId }                           = await loadOrderFixtures();
     const { partId }                            = await loadPartFixtures(dealerId, orderId);
     const { warrantyId }                        = await loadWarrantyFixtures(motorcycle1Id);
 
+    await loadMotorcycleHistoryFixtures(motorcycle1Id, motorcycle2Id, clientId);
     await loadDriverFixtures(enterpriseId, motorcycle1Id);
     await loadMaintenanceFixtures(motorcycle1Id);
     await loadWarrantyPartFixtures(partId, warrantyId);
@@ -61,6 +63,7 @@ async function cleanDatabase() {
   await prisma.rental.deleteMany({});
   await prisma.testRide.deleteMany({});
   await prisma.driver.deleteMany({});
+  await prisma.motorcycleHistory.deleteMany({});
   await prisma.motorcycle.deleteMany({});
   await prisma.client.deleteMany({});
   await prisma.enterprise.deleteMany({});

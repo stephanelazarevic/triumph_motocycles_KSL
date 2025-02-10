@@ -8,8 +8,21 @@ export class UserRepositoryPrisma implements UserRepository {
   public constructor(private prisma: PrismaClient) {}
 
   public async save(user: UserEntity): Promise<void> {
-    await this.prisma.user.create({
-      data: {
+    await this.prisma.user.upsert({
+      where: {
+        id: user.id,
+      },
+      create: {
+        firstname: user.firstname.getValue(),
+        lastname: user.lastname.getValue(),
+        emailAddress: user.emailAddress.getValue(),
+        hashedPassword: user.hashedPassword,
+        phoneNumber: user.phoneNumber.getValue(),
+        address: user.address.getValue(),
+        isAdministrator: user.isAdministrator,
+        token: user.token
+      },
+      update: {
         id: user.id,
         firstname: user.firstname.getValue(),
         lastname: user.lastname.getValue(),
@@ -71,6 +84,7 @@ export class UserRepositoryPrisma implements UserRepository {
     if (!user) {
       return new UserNotFoundError();
     }
+    console.log("OOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOH");
 
     return UserEntity.reconstitute({
       id: user.id,

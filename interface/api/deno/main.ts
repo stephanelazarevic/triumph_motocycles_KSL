@@ -2,6 +2,7 @@ import { prisma } from "./config/prisma.db.ts";
 import apiRouter from "./routes/apiRouter.ts";
 import authenticationRouter from "./routes/authenticationRouter.ts";
 import motorcycleRouter from "./routes/motorcycleRouter.ts";
+import userRouter from "./routes/userRouter.ts";
 import { sendNotificationsCron, retryFailedNotificationsCron } from "../deno/config/cronDependencies.ts";
 import { logger } from './middleware/logger.ts'
 import { Hono } from "https://deno.land/x/hono@v3.11.4/mod.ts";
@@ -38,12 +39,13 @@ app.use("*", logger);
 // routes
 app.route("/api", apiRouter);
 app.route("/api", authenticationRouter);
-app.route("/api/motorcycle", motorcycleRouter);
-app.route("/api/motorcycleHistory", motorcycleHistoryRouter);
-app.route("/api/motorcyclePart", motorcyclePartRouter);
-app.route("/api/notification", notificationRouter);
-app.route("/api/order", orderRouter);
-app.route("/api/part", partRouter);
+app.route("/api/motorcycles", motorcycleRouter);
+app.route("/api/users", userRouter);
+app.route("/api/motorcycleHistories", motorcycleHistoryRouter);
+app.route("/api/motorcycleParts", motorcyclePartRouter);
+app.route("/api/notifications", notificationRouter);
+app.route("/api/orders", orderRouter);
+app.route("/api/parts", partRouter);
 app.route("/api/driver", driverRouter);
 
 // Start server

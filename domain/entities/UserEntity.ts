@@ -72,7 +72,7 @@ export class UserEntity extends Entity {
       Name.reconstitute(data.lastname),
       data.hashedPassword,
       EmailAddress.reconstitute(data.emailAddress),
-      PhoneNumber.reconstitute(data.phoneNumber as PhoneNumberData),
+      data.phoneNumber ? PhoneNumber.reconstitute(data.phoneNumber as PhoneNumberData) : null,
       Address.reconstitute(data.address as AddressData),
       data.isAdministrator || false,
       data.token,

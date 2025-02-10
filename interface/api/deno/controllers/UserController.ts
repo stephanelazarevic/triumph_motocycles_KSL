@@ -11,36 +11,31 @@ import {
   updateUserPersonalInformationRequestSchema,
 } from "../schemas/userRequestSchema.ts";
 import { UserEntity } from "../../../../domain/entities/UserEntity.ts";
-import { PasswordService } from "../../../../domain/services/PasswordService.ts";
+import { PasswordService } from "../../../../application/services/PasswordService.ts";
 import { UpdateUserContactInformationUsecase } from "../../../../application/usecases/user/UpdateUserContactInformationUsecase.ts";
 import { UpdateUserPersonalInformationUsecase } from "../../../../application/usecases/user/UpdateUserPersonalInformationUsecase.ts";
 import { UpdateUserPasswordUsecase } from "../../../../application/usecases/user/UpdateUserPasswordUsecase.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
 
-export class UserController {
+export class UserController implements EntityControllerInterface{
   public constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordService: PasswordService,
   ) {}
 
-  public async getAllUsers(): Promise<Response> {
+  public async getAll(context: Context): Promise<Response> {
     const listUsersUsecase = new ListUsersUsecase(this.userRepository);
-
     const result = await listUsersUsecase.execute();
 
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return context.json(JSON.stringify(result), 200);
   }
 
-  public async getUserById(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
+  public async getById(context: Context): Promise<Response> {
+    const id = context.req.param('id');
 
     if (!id) {
-      return new Response("User ID is required", { status: 400 });
+      return context.json({ message: "User ID is required" }, 400);
     }
 
     const findUserUsecase = new GetUserUsecase(this.userRepository);
@@ -48,176 +43,140 @@ export class UserController {
     const result = await findUserUsecase.execute(id);
 
     if (result instanceof UserEntity) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      return context.json(JSON.stringify(result), 200);
     }
 
     return exhaustive(result.name, {
-      UserNotFoundError: () => new Response("User not found", { status: 404 }),
+      UserNotFoundError: () => context.json({ message: "User not found" }, 404)
     });
   }
 
-  public async createUser(request: Request): Promise<Response> {
+  public async create(context: Context): Promise<Response> {
     const addUserUsecase = new AddUserUsecase(this.userRepository, this.passwordService);
-
-    const body = await request.json();
+    const body = await context.req.json();
 
     const validation = createUserRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
-    const {
-      firstname,
-      lastname,
-      emailAddress,
-      plainPassword,
-      phoneNumber,
-      address,
-    } = validation.data;
+    const result = await addUserUsecase.execute(body);
 
-    const error = await addUserUsecase.execute({
-      firstname,
-      lastname,
-      emailAddress,
-      plainPassword,
-      phoneNumber,
-      address,
-    });
-
-    if (error instanceof UserEntity) {
-      return new Response(null, { status: 201 });
+    if (result instanceof UserEntity) {
+      return context.json(JSON.stringify(result), 201);
     }
 
-    return exhaustive(error.name, {
-      UserEmailAddressAlreadyUsedError: () => new Response("Email address already used", { status: 400 }),
-      PhoneNumberInvalidError: () => new Response("Invalid phone number format", { status: 400 }),
-      EmailAddressInvalidFormatError: () => new Response("Invalid email address format", { status: 400 }),
-      AddressTooShortError: () => new Response("Address too short", { status: 400 }),
-      AddressInvalidPostalCodeError: () => new Response("Invalid postal code", { status: 400 }),
-      AddressInvalidCountryError: () => new Response("Invalid country code", { status: 400 }),
-      PasswordError: () => new Response("Invalid password", { status: 400 }),
-      default: () => new Response("An unexpected error occurred.", { status: 500 }),
+    return exhaustive(result.name, {
+      UserEmailAddressAlreadyUsedError: () =>     context.json({ message: "Email address already used" }, 400),
+      PhoneNumberInvalidError: () =>              context.json({ message: "Invalid phone number format" }, 400),
+      EmailAddressInvalidFormatError: () =>       context.json({ message: "Invalid email address format" }, 400),
+      AddressTooShortError: () =>                 context.json({ message: "Address too short" }, 400),
+      AddressInvalidPostalCodeError: () =>        context.json({ message: "Invalid postal code" }, 400),
+      AddressInvalidCountryError: () =>           context.json({ message: "Invalid country code" }, 400),
+      PasswordError: () =>                        context.json({ message: "Invalid password" }, 400),
+      default: () =>                              context.json({ message: "An unexpected error occurred" }, 500)
     });
   }
 
-  public async updateUserContactInfo(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const userId = url.searchParams.get("id");
+  public async updateContactInfo(context: Context): Promise<Response> {
+    const id = context.req.param('id');
 
-    if (!userId) {
-      return new Response("User ID is required", { status: 400 });
+    if (!id) {
+      return context.json({ message: "User ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateUserContactInformationRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
     const updateUserContactInformationUsecase = new UpdateUserContactInformationUsecase(this.userRepository);
-    const result = await updateUserContactInformationUsecase.execute(userId, validation.data);
-
+    const result = await updateUserContactInformationUsecase.execute(id, validation.data);
     if (result instanceof Error) {
       return exhaustive(result.name, {
-        UserNotFoundError: () => new Response("User not found", { status: 404 }),
-        PhoneNumberInvalidError: () => new Response("Invalid phone number", { status: 400 }),
-        EmailAddressInvalidError: () => new Response("Invalid email address", { status: 400 }),
-        default: () => new Response("An unexpected error occurred.", { status: 500 }),
+        UserNotFoundError: () => context.json({ message: "User not found" }, 404),
+        PhoneNumberInvalidError: () => context.json({ message: "Invalid phone number" }, 400),
+        EmailAddressInvalidError: () => context.json({ message: "Invalid email address" }, 400),
+        default: () => context.json({ message: "An unexpected error occurred" }, 500)
       });
     }
 
-    return new Response(null, { status: 200 });
+    return context.json(200);
   }
 
-  public async updateUserPassword(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const userId = url.searchParams.get("id");
+  public async updatePassword(context: Context): Promise<Response> {
+    const id = context.req.param('id');
 
-    if (!userId) {
-      return new Response("User ID is required", { status: 400 });
+    if (!id) {
+      return context.json({ message: "User ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateUserPasswordRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
     const updateUserPasswordUsecase = new UpdateUserPasswordUsecase(this.userRepository, this.passwordService);
-    const result = await updateUserPasswordUsecase.execute(userId, validation.data);
+    const result = await updateUserPasswordUsecase.execute(id, validation.data);
 
     if (result instanceof Error) {
       return exhaustive(result.name, {
-        UserNotFoundError: () => new Response("User not found", { status: 404 }),
-        InvalidCurrentPasswordError: () => new Response("Invalid current password", { status: 400 }),
-        PasswordError: () => new Response("Invalid new password", { status: 400 }),
-        default: () => new Response("An unexpected error occurred.", { status: 500 }),
+        UserNotFoundError: () => context.json({ message: "User not found" }, 404),
+        InvalidCurrentPasswordError: () => context.json({ message: "Invalid current password" }, 400),
+        PasswordError: () => context.json({ message: "Invalid new password" }, 400),
+        default: () => context.json({ message: "An unexpected error occurred" }, 500)
       });
     }
 
-    return new Response(null, { status: 200 });
+    return context.json(200);
   }
 
-  public async updateUserPersonalInfo(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const userId = url.searchParams.get("id");
+  public async updatePersonalInfo(context: Context): Promise<Response> {
+    const id = context.req.param('id');
 
-    if (!userId) {
-      return new Response("User ID is required", { status: 400 });
+    if (!id) {
+      return context.json({ message: "User ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateUserPersonalInformationRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
     const updateUserPersonalInformationUsecase = new UpdateUserPersonalInformationUsecase(this.userRepository);
-    const result = await updateUserPersonalInformationUsecase.execute(userId, validation.data);
+    const result = await updateUserPersonalInformationUsecase.execute(id, validation.data);
 
     if (result instanceof Error) {
       return exhaustive(result.name, {
-        UserNotFoundError: () => new Response("User not found", { status: 404 }),
-        AddressInvalidError: () => new Response("Invalid address", { status: 400 }),
-        default: () => new Response("An unexpected error occurred.", { status: 500 }),
+        UserNotFoundError: () => context.json({ message: "User not found" }, 404),
+        AddressInvalidError: () => context.json({ message: "Invalid address" }, 400),
+        default: () => context.json({ message: "An unexpected error occurred" }, 500)
       });
     }
 
-    return new Response(null, { status: 200 });
+    return context.json(200);
   }
 
-  public async deleteUser(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
+  public async delete(context: Context): Promise<Response> {
+    const id = context.req.param('id');
 
     if (!id) {
-      return new Response("User ID is required", { status: 400 });
+      return context.json({ message: "User ID is required" }, 400);
     }
 
     const softDeleteUserUsecase = new SoftDeleteUserUsecase(this.userRepository);
-
     const result = await softDeleteUserUsecase.execute(id);
 
     if (result instanceof Error) {
       return exhaustive(result.name, {
-        UserNotFoundError: () => new Response("User Not Found Error", { status: 404 }),
+        UserNotFoundError: () => context.json({ message: "User not found" }, 404)
       });
     }
 
-    return new Response(null, { status: 204 });
+    return context.json(204);
   }
 }

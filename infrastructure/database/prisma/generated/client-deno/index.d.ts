@@ -93,6 +93,11 @@ export type Incident = $Result.DefaultSelection<Prisma.$IncidentPayload>
  * 
  */
 export type Driver = $Result.DefaultSelection<Prisma.$DriverPayload>
+/**
+ * Model MotorcycleHistory
+ * 
+ */
+export type MotorcycleHistory = $Result.DefaultSelection<Prisma.$MotorcycleHistoryPayload>
 
 /**
  * Enums
@@ -497,6 +502,16 @@ export class PrismaClient<
     * ```
     */
   get driver(): Prisma.DriverDelegate<ExtArgs, ClientOptions>;
+
+  /**
+   * `prisma.motorcycleHistory`: Exposes CRUD operations for the **MotorcycleHistory** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more MotorcycleHistories
+    * const motorcycleHistories = await prisma.motorcycleHistory.findMany()
+    * ```
+    */
+  get motorcycleHistory(): Prisma.MotorcycleHistoryDelegate<ExtArgs, ClientOptions>;
 }
 
 export namespace Prisma {
@@ -952,7 +967,8 @@ export namespace Prisma {
     Warranty: 'Warranty',
     Maintenance: 'Maintenance',
     Incident: 'Incident',
-    Driver: 'Driver'
+    Driver: 'Driver',
+    MotorcycleHistory: 'MotorcycleHistory'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -968,7 +984,7 @@ export namespace Prisma {
 
   export type TypeMap<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> = {
     meta: {
-      modelProps: "notification" | "user" | "dealer" | "enterprise" | "client" | "testRide" | "rental" | "motorcycle" | "motorcyclePart" | "part" | "order" | "warrantyParts" | "warranty" | "maintenance" | "incident" | "driver"
+      modelProps: "notification" | "user" | "dealer" | "enterprise" | "client" | "testRide" | "rental" | "motorcycle" | "motorcyclePart" | "part" | "order" | "warrantyParts" | "warranty" | "maintenance" | "incident" | "driver" | "motorcycleHistory"
       txIsolationLevel: Prisma.TransactionIsolationLevel
     }
     model: {
@@ -2156,6 +2172,80 @@ export namespace Prisma {
           }
         }
       }
+      MotorcycleHistory: {
+        payload: Prisma.$MotorcycleHistoryPayload<ExtArgs>
+        fields: Prisma.MotorcycleHistoryFieldRefs
+        operations: {
+          findUnique: {
+            args: Prisma.MotorcycleHistoryFindUniqueArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload> | null
+          }
+          findUniqueOrThrow: {
+            args: Prisma.MotorcycleHistoryFindUniqueOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>
+          }
+          findFirst: {
+            args: Prisma.MotorcycleHistoryFindFirstArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload> | null
+          }
+          findFirstOrThrow: {
+            args: Prisma.MotorcycleHistoryFindFirstOrThrowArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>
+          }
+          findMany: {
+            args: Prisma.MotorcycleHistoryFindManyArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>[]
+          }
+          create: {
+            args: Prisma.MotorcycleHistoryCreateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>
+          }
+          createMany: {
+            args: Prisma.MotorcycleHistoryCreateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          createManyAndReturn: {
+            args: Prisma.MotorcycleHistoryCreateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>[]
+          }
+          delete: {
+            args: Prisma.MotorcycleHistoryDeleteArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>
+          }
+          update: {
+            args: Prisma.MotorcycleHistoryUpdateArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>
+          }
+          deleteMany: {
+            args: Prisma.MotorcycleHistoryDeleteManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateMany: {
+            args: Prisma.MotorcycleHistoryUpdateManyArgs<ExtArgs>
+            result: BatchPayload
+          }
+          updateManyAndReturn: {
+            args: Prisma.MotorcycleHistoryUpdateManyAndReturnArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>[]
+          }
+          upsert: {
+            args: Prisma.MotorcycleHistoryUpsertArgs<ExtArgs>
+            result: $Utils.PayloadToResult<Prisma.$MotorcycleHistoryPayload>
+          }
+          aggregate: {
+            args: Prisma.MotorcycleHistoryAggregateArgs<ExtArgs>
+            result: $Utils.Optional<AggregateMotorcycleHistory>
+          }
+          groupBy: {
+            args: Prisma.MotorcycleHistoryGroupByArgs<ExtArgs>
+            result: $Utils.Optional<MotorcycleHistoryGroupByOutputType>[]
+          }
+          count: {
+            args: Prisma.MotorcycleHistoryCountArgs<ExtArgs>
+            result: $Utils.Optional<MotorcycleHistoryCountAggregateOutputType> | number
+          }
+        }
+      }
     }
   } & {
     other: {
@@ -2256,6 +2346,7 @@ export namespace Prisma {
     maintenance?: MaintenanceOmit
     incident?: IncidentOmit
     driver?: DriverOmit
+    motorcycleHistory?: MotorcycleHistoryOmit
   }
 
   /* Types for Logging */
@@ -2432,11 +2523,13 @@ export namespace Prisma {
   export type EnterpriseCountOutputType = {
     drivers: number
     motorcycle: number
+    histories: number
   }
 
   export type EnterpriseCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     drivers?: boolean | EnterpriseCountOutputTypeCountDriversArgs
     motorcycle?: boolean | EnterpriseCountOutputTypeCountMotorcycleArgs
+    histories?: boolean | EnterpriseCountOutputTypeCountHistoriesArgs
   }
 
   // Custom InputTypes
@@ -2464,6 +2557,13 @@ export namespace Prisma {
     where?: MotorcycleWhereInput
   }
 
+  /**
+   * EnterpriseCountOutputType without action
+   */
+  export type EnterpriseCountOutputTypeCountHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MotorcycleHistoryWhereInput
+  }
+
 
   /**
    * Count Type ClientCountOutputType
@@ -2473,12 +2573,14 @@ export namespace Prisma {
     rentals: number
     testRides: number
     motorcycle: number
+    histories: number
   }
 
   export type ClientCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     rentals?: boolean | ClientCountOutputTypeCountRentalsArgs
     testRides?: boolean | ClientCountOutputTypeCountTestRidesArgs
     motorcycle?: boolean | ClientCountOutputTypeCountMotorcycleArgs
+    histories?: boolean | ClientCountOutputTypeCountHistoriesArgs
   }
 
   // Custom InputTypes
@@ -2513,6 +2615,13 @@ export namespace Prisma {
     where?: MotorcycleWhereInput
   }
 
+  /**
+   * ClientCountOutputType without action
+   */
+  export type ClientCountOutputTypeCountHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MotorcycleHistoryWhereInput
+  }
+
 
   /**
    * Count Type MotorcycleCountOutputType
@@ -2526,6 +2635,7 @@ export namespace Prisma {
     warranties: number
     parts: number
     drivers: number
+    histories: number
   }
 
   export type MotorcycleCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -2536,6 +2646,7 @@ export namespace Prisma {
     warranties?: boolean | MotorcycleCountOutputTypeCountWarrantiesArgs
     parts?: boolean | MotorcycleCountOutputTypeCountPartsArgs
     drivers?: boolean | MotorcycleCountOutputTypeCountDriversArgs
+    histories?: boolean | MotorcycleCountOutputTypeCountHistoriesArgs
   }
 
   // Custom InputTypes
@@ -2596,6 +2707,13 @@ export namespace Prisma {
    */
   export type MotorcycleCountOutputTypeCountDriversArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: DriverWhereInput
+  }
+
+  /**
+   * MotorcycleCountOutputType without action
+   */
+  export type MotorcycleCountOutputTypeCountHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MotorcycleHistoryWhereInput
   }
 
 
@@ -2698,6 +2816,86 @@ export namespace Prisma {
    */
   export type WarrantyCountOutputTypeCountWarrantyPartsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     where?: WarrantyPartsWhereInput
+  }
+
+
+  /**
+   * Count Type DriverCountOutputType
+   */
+
+  export type DriverCountOutputType = {
+    motorcycleHistories: number
+  }
+
+  export type DriverCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorcycleHistories?: boolean | DriverCountOutputTypeCountMotorcycleHistoriesArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * DriverCountOutputType without action
+   */
+  export type DriverCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the DriverCountOutputType
+     */
+    select?: DriverCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * DriverCountOutputType without action
+   */
+  export type DriverCountOutputTypeCountMotorcycleHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MotorcycleHistoryWhereInput
+  }
+
+
+  /**
+   * Count Type MotorcycleHistoryCountOutputType
+   */
+
+  export type MotorcycleHistoryCountOutputType = {
+    incidents: number
+    maintenances: number
+    drivers: number
+  }
+
+  export type MotorcycleHistoryCountOutputTypeSelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    incidents?: boolean | MotorcycleHistoryCountOutputTypeCountIncidentsArgs
+    maintenances?: boolean | MotorcycleHistoryCountOutputTypeCountMaintenancesArgs
+    drivers?: boolean | MotorcycleHistoryCountOutputTypeCountDriversArgs
+  }
+
+  // Custom InputTypes
+  /**
+   * MotorcycleHistoryCountOutputType without action
+   */
+  export type MotorcycleHistoryCountOutputTypeDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistoryCountOutputType
+     */
+    select?: MotorcycleHistoryCountOutputTypeSelect<ExtArgs> | null
+  }
+
+  /**
+   * MotorcycleHistoryCountOutputType without action
+   */
+  export type MotorcycleHistoryCountOutputTypeCountIncidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: IncidentWhereInput
+  }
+
+  /**
+   * MotorcycleHistoryCountOutputType without action
+   */
+  export type MotorcycleHistoryCountOutputTypeCountMaintenancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MaintenanceWhereInput
+  }
+
+  /**
+   * MotorcycleHistoryCountOutputType without action
+   */
+  export type MotorcycleHistoryCountOutputTypeCountDriversArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: DriverWhereInput
   }
 
 
@@ -6296,6 +6494,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     drivers?: boolean | Enterprise$driversArgs<ExtArgs>
     motorcycle?: boolean | Enterprise$motorcycleArgs<ExtArgs>
+    histories?: boolean | Enterprise$historiesArgs<ExtArgs>
     _count?: boolean | EnterpriseCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["enterprise"]>
 
@@ -6330,6 +6529,7 @@ export namespace Prisma {
     user?: boolean | UserDefaultArgs<ExtArgs>
     drivers?: boolean | Enterprise$driversArgs<ExtArgs>
     motorcycle?: boolean | Enterprise$motorcycleArgs<ExtArgs>
+    histories?: boolean | Enterprise$historiesArgs<ExtArgs>
     _count?: boolean | EnterpriseCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type EnterpriseIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -6345,6 +6545,7 @@ export namespace Prisma {
       user: Prisma.$UserPayload<ExtArgs>
       drivers: Prisma.$DriverPayload<ExtArgs>[]
       motorcycle: Prisma.$MotorcyclePayload<ExtArgs>[]
+      histories: Prisma.$MotorcycleHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -6749,6 +6950,7 @@ export namespace Prisma {
     user<T extends UserDefaultArgs<ExtArgs> = {}>(args?: Subset<T, UserDefaultArgs<ExtArgs>>): Prisma__UserClient<$Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     drivers<T extends Enterprise$driversArgs<ExtArgs> = {}>(args?: Subset<T, Enterprise$driversArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriverPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     motorcycle<T extends Enterprise$motorcycleArgs<ExtArgs> = {}>(args?: Subset<T, Enterprise$motorcycleArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcyclePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    histories<T extends Enterprise$historiesArgs<ExtArgs> = {}>(args?: Subset<T, Enterprise$historiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -7227,6 +7429,30 @@ export namespace Prisma {
   }
 
   /**
+   * Enterprise.histories
+   */
+  export type Enterprise$historiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    where?: MotorcycleHistoryWhereInput
+    orderBy?: MotorcycleHistoryOrderByWithRelationInput | MotorcycleHistoryOrderByWithRelationInput[]
+    cursor?: MotorcycleHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MotorcycleHistoryScalarFieldEnum | MotorcycleHistoryScalarFieldEnum[]
+  }
+
+  /**
    * Enterprise without action
    */
   export type EnterpriseDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7406,6 +7632,7 @@ export namespace Prisma {
     rentals?: boolean | Client$rentalsArgs<ExtArgs>
     testRides?: boolean | Client$testRidesArgs<ExtArgs>
     motorcycle?: boolean | Client$motorcycleArgs<ExtArgs>
+    histories?: boolean | Client$historiesArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["client"]>
 
@@ -7441,6 +7668,7 @@ export namespace Prisma {
     rentals?: boolean | Client$rentalsArgs<ExtArgs>
     testRides?: boolean | Client$testRidesArgs<ExtArgs>
     motorcycle?: boolean | Client$motorcycleArgs<ExtArgs>
+    histories?: boolean | Client$historiesArgs<ExtArgs>
     _count?: boolean | ClientCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type ClientIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -7460,6 +7688,7 @@ export namespace Prisma {
       rentals: Prisma.$RentalPayload<ExtArgs>[]
       testRides: Prisma.$TestRidePayload<ExtArgs>[]
       motorcycle: Prisma.$MotorcyclePayload<ExtArgs>[]
+      histories: Prisma.$MotorcycleHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -7865,6 +8094,7 @@ export namespace Prisma {
     rentals<T extends Client$rentalsArgs<ExtArgs> = {}>(args?: Subset<T, Client$rentalsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$RentalPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     testRides<T extends Client$testRidesArgs<ExtArgs> = {}>(args?: Subset<T, Client$testRidesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$TestRidePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     motorcycle<T extends Client$motorcycleArgs<ExtArgs> = {}>(args?: Subset<T, Client$motorcycleArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcyclePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    histories<T extends Client$historiesArgs<ExtArgs> = {}>(args?: Subset<T, Client$historiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -8363,6 +8593,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: MotorcycleScalarFieldEnum | MotorcycleScalarFieldEnum[]
+  }
+
+  /**
+   * Client.histories
+   */
+  export type Client$historiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    where?: MotorcycleHistoryWhereInput
+    orderBy?: MotorcycleHistoryOrderByWithRelationInput | MotorcycleHistoryOrderByWithRelationInput[]
+    cursor?: MotorcycleHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MotorcycleHistoryScalarFieldEnum | MotorcycleHistoryScalarFieldEnum[]
   }
 
   /**
@@ -10897,6 +11151,7 @@ export namespace Prisma {
     warranties?: boolean | Motorcycle$warrantiesArgs<ExtArgs>
     parts?: boolean | Motorcycle$partsArgs<ExtArgs>
     drivers?: boolean | Motorcycle$driversArgs<ExtArgs>
+    histories?: boolean | Motorcycle$historiesArgs<ExtArgs>
     _count?: boolean | MotorcycleCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["motorcycle"]>
 
@@ -10960,6 +11215,7 @@ export namespace Prisma {
     warranties?: boolean | Motorcycle$warrantiesArgs<ExtArgs>
     parts?: boolean | Motorcycle$partsArgs<ExtArgs>
     drivers?: boolean | Motorcycle$driversArgs<ExtArgs>
+    histories?: boolean | Motorcycle$historiesArgs<ExtArgs>
     _count?: boolean | MotorcycleCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type MotorcycleIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -10986,6 +11242,7 @@ export namespace Prisma {
       warranties: Prisma.$WarrantyPayload<ExtArgs>[]
       parts: Prisma.$MotorcyclePartPayload<ExtArgs>[]
       drivers: Prisma.$DriverPayload<ExtArgs>[]
+      histories: Prisma.$MotorcycleHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -11403,6 +11660,7 @@ export namespace Prisma {
     warranties<T extends Motorcycle$warrantiesArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$warrantiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$WarrantyPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     parts<T extends Motorcycle$partsArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$partsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcyclePartPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     drivers<T extends Motorcycle$driversArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$driversArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriverPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    histories<T extends Motorcycle$historiesArgs<ExtArgs> = {}>(args?: Subset<T, Motorcycle$historiesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -12042,6 +12300,30 @@ export namespace Prisma {
     take?: number
     skip?: number
     distinct?: DriverScalarFieldEnum | DriverScalarFieldEnum[]
+  }
+
+  /**
+   * Motorcycle.histories
+   */
+  export type Motorcycle$historiesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    where?: MotorcycleHistoryWhereInput
+    orderBy?: MotorcycleHistoryOrderByWithRelationInput | MotorcycleHistoryOrderByWithRelationInput[]
+    cursor?: MotorcycleHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MotorcycleHistoryScalarFieldEnum | MotorcycleHistoryScalarFieldEnum[]
   }
 
   /**
@@ -17784,6 +18066,7 @@ export namespace Prisma {
     date: Date | null
     description: string | null
     cost: number | null
+    motorcycleHistoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -17794,6 +18077,7 @@ export namespace Prisma {
     date: Date | null
     description: string | null
     cost: number | null
+    motorcycleHistoryId: string | null
     createdAt: Date | null
     updatedAt: Date | null
   }
@@ -17804,6 +18088,7 @@ export namespace Prisma {
     date: number
     description: number
     cost: number
+    motorcycleHistoryId: number
     createdAt: number
     updatedAt: number
     _all: number
@@ -17824,6 +18109,7 @@ export namespace Prisma {
     date?: true
     description?: true
     cost?: true
+    motorcycleHistoryId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -17834,6 +18120,7 @@ export namespace Prisma {
     date?: true
     description?: true
     cost?: true
+    motorcycleHistoryId?: true
     createdAt?: true
     updatedAt?: true
   }
@@ -17844,6 +18131,7 @@ export namespace Prisma {
     date?: true
     description?: true
     cost?: true
+    motorcycleHistoryId?: true
     createdAt?: true
     updatedAt?: true
     _all?: true
@@ -17941,6 +18229,7 @@ export namespace Prisma {
     date: Date
     description: string
     cost: number
+    motorcycleHistoryId: string | null
     createdAt: Date
     updatedAt: Date
     _count: MaintenanceCountAggregateOutputType | null
@@ -17970,9 +18259,11 @@ export namespace Prisma {
     date?: boolean
     description?: boolean
     cost?: boolean
+    motorcycleHistoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Maintenance$motorcycleHistoryArgs<ExtArgs>
   }, ExtArgs["result"]["maintenance"]>
 
   export type MaintenanceSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17981,9 +18272,11 @@ export namespace Prisma {
     date?: boolean
     description?: boolean
     cost?: boolean
+    motorcycleHistoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Maintenance$motorcycleHistoryArgs<ExtArgs>
   }, ExtArgs["result"]["maintenance"]>
 
   export type MaintenanceSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -17992,9 +18285,11 @@ export namespace Prisma {
     date?: boolean
     description?: boolean
     cost?: boolean
+    motorcycleHistoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Maintenance$motorcycleHistoryArgs<ExtArgs>
   }, ExtArgs["result"]["maintenance"]>
 
   export type MaintenanceSelectScalar = {
@@ -18003,25 +18298,30 @@ export namespace Prisma {
     date?: boolean
     description?: boolean
     cost?: boolean
+    motorcycleHistoryId?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type MaintenanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idMotorcycle" | "date" | "description" | "cost" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenance"]>
+  export type MaintenanceOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idMotorcycle" | "date" | "description" | "cost" | "motorcycleHistoryId" | "createdAt" | "updatedAt", ExtArgs["result"]["maintenance"]>
   export type MaintenanceInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Maintenance$motorcycleHistoryArgs<ExtArgs>
   }
   export type MaintenanceIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Maintenance$motorcycleHistoryArgs<ExtArgs>
   }
   export type MaintenanceIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Maintenance$motorcycleHistoryArgs<ExtArgs>
   }
 
   export type $MaintenancePayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Maintenance"
     objects: {
       motorcycle: Prisma.$MotorcyclePayload<ExtArgs>
+      motorcycleHistory: Prisma.$MotorcycleHistoryPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -18029,6 +18329,7 @@ export namespace Prisma {
       date: Date
       description: string
       cost: number
+      motorcycleHistoryId: string | null
       createdAt: Date
       updatedAt: Date
     }, ExtArgs["result"]["maintenance"]>
@@ -18426,6 +18727,7 @@ export namespace Prisma {
   export interface Prisma__MaintenanceClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     motorcycle<T extends MotorcycleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleDefaultArgs<ExtArgs>>): Prisma__MotorcycleClient<$Result.GetResult<Prisma.$MotorcyclePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    motorcycleHistory<T extends Maintenance$motorcycleHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Maintenance$motorcycleHistoryArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -18460,6 +18762,7 @@ export namespace Prisma {
     readonly date: FieldRef<"Maintenance", 'DateTime'>
     readonly description: FieldRef<"Maintenance", 'String'>
     readonly cost: FieldRef<"Maintenance", 'Float'>
+    readonly motorcycleHistoryId: FieldRef<"Maintenance", 'String'>
     readonly createdAt: FieldRef<"Maintenance", 'DateTime'>
     readonly updatedAt: FieldRef<"Maintenance", 'DateTime'>
   }
@@ -18858,6 +19161,25 @@ export namespace Prisma {
   }
 
   /**
+   * Maintenance.motorcycleHistory
+   */
+  export type Maintenance$motorcycleHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    where?: MotorcycleHistoryWhereInput
+  }
+
+  /**
    * Maintenance without action
    */
   export type MaintenanceDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -18893,6 +19215,7 @@ export namespace Prisma {
     description: string | null
     reportDate: Date | null
     resolutionDate: Date | null
+    motorcycleHistoryId: string | null
     status: $Enums.IncidentStatus | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -18905,6 +19228,7 @@ export namespace Prisma {
     description: string | null
     reportDate: Date | null
     resolutionDate: Date | null
+    motorcycleHistoryId: string | null
     status: $Enums.IncidentStatus | null
     createdAt: Date | null
     updatedAt: Date | null
@@ -18917,6 +19241,7 @@ export namespace Prisma {
     description: number
     reportDate: number
     resolutionDate: number
+    motorcycleHistoryId: number
     status: number
     createdAt: number
     updatedAt: number
@@ -18931,6 +19256,7 @@ export namespace Prisma {
     description?: true
     reportDate?: true
     resolutionDate?: true
+    motorcycleHistoryId?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -18943,6 +19269,7 @@ export namespace Prisma {
     description?: true
     reportDate?: true
     resolutionDate?: true
+    motorcycleHistoryId?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -18955,6 +19282,7 @@ export namespace Prisma {
     description?: true
     reportDate?: true
     resolutionDate?: true
+    motorcycleHistoryId?: true
     status?: true
     createdAt?: true
     updatedAt?: true
@@ -19040,6 +19368,7 @@ export namespace Prisma {
     description: string
     reportDate: Date
     resolutionDate: Date | null
+    motorcycleHistoryId: string | null
     status: $Enums.IncidentStatus
     createdAt: Date
     updatedAt: Date
@@ -19069,10 +19398,12 @@ export namespace Prisma {
     description?: boolean
     reportDate?: boolean
     resolutionDate?: boolean
+    motorcycleHistoryId?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Incident$motorcycleHistoryArgs<ExtArgs>
   }, ExtArgs["result"]["incident"]>
 
   export type IncidentSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19082,10 +19413,12 @@ export namespace Prisma {
     description?: boolean
     reportDate?: boolean
     resolutionDate?: boolean
+    motorcycleHistoryId?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Incident$motorcycleHistoryArgs<ExtArgs>
   }, ExtArgs["result"]["incident"]>
 
   export type IncidentSelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -19095,10 +19428,12 @@ export namespace Prisma {
     description?: boolean
     reportDate?: boolean
     resolutionDate?: boolean
+    motorcycleHistoryId?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Incident$motorcycleHistoryArgs<ExtArgs>
   }, ExtArgs["result"]["incident"]>
 
   export type IncidentSelectScalar = {
@@ -19108,26 +19443,31 @@ export namespace Prisma {
     description?: boolean
     reportDate?: boolean
     resolutionDate?: boolean
+    motorcycleHistoryId?: boolean
     status?: boolean
     createdAt?: boolean
     updatedAt?: boolean
   }
 
-  export type IncidentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idMotorcycle" | "type" | "description" | "reportDate" | "resolutionDate" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["incident"]>
+  export type IncidentOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "idMotorcycle" | "type" | "description" | "reportDate" | "resolutionDate" | "motorcycleHistoryId" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["incident"]>
   export type IncidentInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Incident$motorcycleHistoryArgs<ExtArgs>
   }
   export type IncidentIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Incident$motorcycleHistoryArgs<ExtArgs>
   }
   export type IncidentIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistory?: boolean | Incident$motorcycleHistoryArgs<ExtArgs>
   }
 
   export type $IncidentPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     name: "Incident"
     objects: {
       motorcycle: Prisma.$MotorcyclePayload<ExtArgs>
+      motorcycleHistory: Prisma.$MotorcycleHistoryPayload<ExtArgs> | null
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -19136,6 +19476,7 @@ export namespace Prisma {
       description: string
       reportDate: Date
       resolutionDate: Date | null
+      motorcycleHistoryId: string | null
       status: $Enums.IncidentStatus
       createdAt: Date
       updatedAt: Date
@@ -19534,6 +19875,7 @@ export namespace Prisma {
   export interface Prisma__IncidentClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     motorcycle<T extends MotorcycleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleDefaultArgs<ExtArgs>>): Prisma__MotorcycleClient<$Result.GetResult<Prisma.$MotorcyclePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    motorcycleHistory<T extends Incident$motorcycleHistoryArgs<ExtArgs> = {}>(args?: Subset<T, Incident$motorcycleHistoryArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -19569,6 +19911,7 @@ export namespace Prisma {
     readonly description: FieldRef<"Incident", 'String'>
     readonly reportDate: FieldRef<"Incident", 'DateTime'>
     readonly resolutionDate: FieldRef<"Incident", 'DateTime'>
+    readonly motorcycleHistoryId: FieldRef<"Incident", 'String'>
     readonly status: FieldRef<"Incident", 'IncidentStatus'>
     readonly createdAt: FieldRef<"Incident", 'DateTime'>
     readonly updatedAt: FieldRef<"Incident", 'DateTime'>
@@ -19968,6 +20311,25 @@ export namespace Prisma {
   }
 
   /**
+   * Incident.motorcycleHistory
+   */
+  export type Incident$motorcycleHistoryArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    where?: MotorcycleHistoryWhereInput
+  }
+
+  /**
    * Incident without action
    */
   export type IncidentDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -20188,6 +20550,8 @@ export namespace Prisma {
     updatedAt?: boolean
     entreprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistories?: boolean | Driver$motorcycleHistoriesArgs<ExtArgs>
+    _count?: boolean | DriverCountOutputTypeDefaultArgs<ExtArgs>
   }, ExtArgs["result"]["driver"]>
 
   export type DriverSelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
@@ -20237,6 +20601,8 @@ export namespace Prisma {
   export type DriverInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     entreprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
     motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    motorcycleHistories?: boolean | Driver$motorcycleHistoriesArgs<ExtArgs>
+    _count?: boolean | DriverCountOutputTypeDefaultArgs<ExtArgs>
   }
   export type DriverIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
     entreprise?: boolean | EnterpriseDefaultArgs<ExtArgs>
@@ -20252,6 +20618,7 @@ export namespace Prisma {
     objects: {
       entreprise: Prisma.$EnterprisePayload<ExtArgs>
       motorcycle: Prisma.$MotorcyclePayload<ExtArgs>
+      motorcycleHistories: Prisma.$MotorcycleHistoryPayload<ExtArgs>[]
     }
     scalars: $Extensions.GetPayloadResult<{
       id: string
@@ -20660,6 +21027,7 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: "PrismaPromise"
     entreprise<T extends EnterpriseDefaultArgs<ExtArgs> = {}>(args?: Subset<T, EnterpriseDefaultArgs<ExtArgs>>): Prisma__EnterpriseClient<$Result.GetResult<Prisma.$EnterprisePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
     motorcycle<T extends MotorcycleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleDefaultArgs<ExtArgs>>): Prisma__MotorcycleClient<$Result.GetResult<Prisma.$MotorcyclePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    motorcycleHistories<T extends Driver$motorcycleHistoriesArgs<ExtArgs> = {}>(args?: Subset<T, Driver$motorcycleHistoriesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
      * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -21095,6 +21463,30 @@ export namespace Prisma {
   }
 
   /**
+   * Driver.motorcycleHistories
+   */
+  export type Driver$motorcycleHistoriesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    where?: MotorcycleHistoryWhereInput
+    orderBy?: MotorcycleHistoryOrderByWithRelationInput | MotorcycleHistoryOrderByWithRelationInput[]
+    cursor?: MotorcycleHistoryWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MotorcycleHistoryScalarFieldEnum | MotorcycleHistoryScalarFieldEnum[]
+  }
+
+  /**
    * Driver without action
    */
   export type DriverDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
@@ -21110,6 +21502,1243 @@ export namespace Prisma {
      * Choose, which related nodes to fetch as well
      */
     include?: DriverInclude<ExtArgs> | null
+  }
+
+
+  /**
+   * Model MotorcycleHistory
+   */
+
+  export type AggregateMotorcycleHistory = {
+    _count: MotorcycleHistoryCountAggregateOutputType | null
+    _min: MotorcycleHistoryMinAggregateOutputType | null
+    _max: MotorcycleHistoryMaxAggregateOutputType | null
+  }
+
+  export type MotorcycleHistoryMinAggregateOutputType = {
+    id: string | null
+    motorcycleId: string | null
+    startDate: Date | null
+    endDate: Date | null
+    clientId: string | null
+    enterpriseId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MotorcycleHistoryMaxAggregateOutputType = {
+    id: string | null
+    motorcycleId: string | null
+    startDate: Date | null
+    endDate: Date | null
+    clientId: string | null
+    enterpriseId: string | null
+    createdAt: Date | null
+    updatedAt: Date | null
+  }
+
+  export type MotorcycleHistoryCountAggregateOutputType = {
+    id: number
+    motorcycleId: number
+    startDate: number
+    endDate: number
+    clientId: number
+    enterpriseId: number
+    createdAt: number
+    updatedAt: number
+    _all: number
+  }
+
+
+  export type MotorcycleHistoryMinAggregateInputType = {
+    id?: true
+    motorcycleId?: true
+    startDate?: true
+    endDate?: true
+    clientId?: true
+    enterpriseId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MotorcycleHistoryMaxAggregateInputType = {
+    id?: true
+    motorcycleId?: true
+    startDate?: true
+    endDate?: true
+    clientId?: true
+    enterpriseId?: true
+    createdAt?: true
+    updatedAt?: true
+  }
+
+  export type MotorcycleHistoryCountAggregateInputType = {
+    id?: true
+    motorcycleId?: true
+    startDate?: true
+    endDate?: true
+    clientId?: true
+    enterpriseId?: true
+    createdAt?: true
+    updatedAt?: true
+    _all?: true
+  }
+
+  export type MotorcycleHistoryAggregateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MotorcycleHistory to aggregate.
+     */
+    where?: MotorcycleHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MotorcycleHistories to fetch.
+     */
+    orderBy?: MotorcycleHistoryOrderByWithRelationInput | MotorcycleHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: MotorcycleHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MotorcycleHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MotorcycleHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned MotorcycleHistories
+    **/
+    _count?: true | MotorcycleHistoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: MotorcycleHistoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: MotorcycleHistoryMaxAggregateInputType
+  }
+
+  export type GetMotorcycleHistoryAggregateType<T extends MotorcycleHistoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateMotorcycleHistory]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateMotorcycleHistory[P]>
+      : GetScalarType<T[P], AggregateMotorcycleHistory[P]>
+  }
+
+
+
+
+  export type MotorcycleHistoryGroupByArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    where?: MotorcycleHistoryWhereInput
+    orderBy?: MotorcycleHistoryOrderByWithAggregationInput | MotorcycleHistoryOrderByWithAggregationInput[]
+    by: MotorcycleHistoryScalarFieldEnum[] | MotorcycleHistoryScalarFieldEnum
+    having?: MotorcycleHistoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: MotorcycleHistoryCountAggregateInputType | true
+    _min?: MotorcycleHistoryMinAggregateInputType
+    _max?: MotorcycleHistoryMaxAggregateInputType
+  }
+
+  export type MotorcycleHistoryGroupByOutputType = {
+    id: string
+    motorcycleId: string
+    startDate: Date
+    endDate: Date | null
+    clientId: string | null
+    enterpriseId: string | null
+    createdAt: Date
+    updatedAt: Date
+    _count: MotorcycleHistoryCountAggregateOutputType | null
+    _min: MotorcycleHistoryMinAggregateOutputType | null
+    _max: MotorcycleHistoryMaxAggregateOutputType | null
+  }
+
+  type GetMotorcycleHistoryGroupByPayload<T extends MotorcycleHistoryGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickEnumerable<MotorcycleHistoryGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof MotorcycleHistoryGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], MotorcycleHistoryGroupByOutputType[P]>
+            : GetScalarType<T[P], MotorcycleHistoryGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type MotorcycleHistorySelect<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    motorcycleId?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    clientId?: boolean
+    enterpriseId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    client?: boolean | MotorcycleHistory$clientArgs<ExtArgs>
+    enterprise?: boolean | MotorcycleHistory$enterpriseArgs<ExtArgs>
+    incidents?: boolean | MotorcycleHistory$incidentsArgs<ExtArgs>
+    maintenances?: boolean | MotorcycleHistory$maintenancesArgs<ExtArgs>
+    drivers?: boolean | MotorcycleHistory$driversArgs<ExtArgs>
+    _count?: boolean | MotorcycleHistoryCountOutputTypeDefaultArgs<ExtArgs>
+  }, ExtArgs["result"]["motorcycleHistory"]>
+
+  export type MotorcycleHistorySelectCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    motorcycleId?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    clientId?: boolean
+    enterpriseId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    client?: boolean | MotorcycleHistory$clientArgs<ExtArgs>
+    enterprise?: boolean | MotorcycleHistory$enterpriseArgs<ExtArgs>
+  }, ExtArgs["result"]["motorcycleHistory"]>
+
+  export type MotorcycleHistorySelectUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetSelect<{
+    id?: boolean
+    motorcycleId?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    clientId?: boolean
+    enterpriseId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+    motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    client?: boolean | MotorcycleHistory$clientArgs<ExtArgs>
+    enterprise?: boolean | MotorcycleHistory$enterpriseArgs<ExtArgs>
+  }, ExtArgs["result"]["motorcycleHistory"]>
+
+  export type MotorcycleHistorySelectScalar = {
+    id?: boolean
+    motorcycleId?: boolean
+    startDate?: boolean
+    endDate?: boolean
+    clientId?: boolean
+    enterpriseId?: boolean
+    createdAt?: boolean
+    updatedAt?: boolean
+  }
+
+  export type MotorcycleHistoryOmit<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = $Extensions.GetOmit<"id" | "motorcycleId" | "startDate" | "endDate" | "clientId" | "enterpriseId" | "createdAt" | "updatedAt", ExtArgs["result"]["motorcycleHistory"]>
+  export type MotorcycleHistoryInclude<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    client?: boolean | MotorcycleHistory$clientArgs<ExtArgs>
+    enterprise?: boolean | MotorcycleHistory$enterpriseArgs<ExtArgs>
+    incidents?: boolean | MotorcycleHistory$incidentsArgs<ExtArgs>
+    maintenances?: boolean | MotorcycleHistory$maintenancesArgs<ExtArgs>
+    drivers?: boolean | MotorcycleHistory$driversArgs<ExtArgs>
+    _count?: boolean | MotorcycleHistoryCountOutputTypeDefaultArgs<ExtArgs>
+  }
+  export type MotorcycleHistoryIncludeCreateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    client?: boolean | MotorcycleHistory$clientArgs<ExtArgs>
+    enterprise?: boolean | MotorcycleHistory$enterpriseArgs<ExtArgs>
+  }
+  export type MotorcycleHistoryIncludeUpdateManyAndReturn<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    motorcycle?: boolean | MotorcycleDefaultArgs<ExtArgs>
+    client?: boolean | MotorcycleHistory$clientArgs<ExtArgs>
+    enterprise?: boolean | MotorcycleHistory$enterpriseArgs<ExtArgs>
+  }
+
+  export type $MotorcycleHistoryPayload<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    name: "MotorcycleHistory"
+    objects: {
+      motorcycle: Prisma.$MotorcyclePayload<ExtArgs>
+      client: Prisma.$ClientPayload<ExtArgs> | null
+      enterprise: Prisma.$EnterprisePayload<ExtArgs> | null
+      incidents: Prisma.$IncidentPayload<ExtArgs>[]
+      maintenances: Prisma.$MaintenancePayload<ExtArgs>[]
+      drivers: Prisma.$DriverPayload<ExtArgs>[]
+    }
+    scalars: $Extensions.GetPayloadResult<{
+      id: string
+      motorcycleId: string
+      startDate: Date
+      endDate: Date | null
+      clientId: string | null
+      enterpriseId: string | null
+      createdAt: Date
+      updatedAt: Date
+    }, ExtArgs["result"]["motorcycleHistory"]>
+    composites: {}
+  }
+
+  type MotorcycleHistoryGetPayload<S extends boolean | null | undefined | MotorcycleHistoryDefaultArgs> = $Result.GetResult<Prisma.$MotorcycleHistoryPayload, S>
+
+  type MotorcycleHistoryCountArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> =
+    Omit<MotorcycleHistoryFindManyArgs, 'select' | 'include' | 'distinct' | 'omit'> & {
+      select?: MotorcycleHistoryCountAggregateInputType | true
+    }
+
+  export interface MotorcycleHistoryDelegate<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> {
+    [K: symbol]: { types: Prisma.TypeMap<ExtArgs>['model']['MotorcycleHistory'], meta: { name: 'MotorcycleHistory' } }
+    /**
+     * Find zero or one MotorcycleHistory that matches the filter.
+     * @param {MotorcycleHistoryFindUniqueArgs} args - Arguments to find a MotorcycleHistory
+     * @example
+     * // Get one MotorcycleHistory
+     * const motorcycleHistory = await prisma.motorcycleHistory.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUnique<T extends MotorcycleHistoryFindUniqueArgs>(args: SelectSubset<T, MotorcycleHistoryFindUniqueArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findUnique", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find one MotorcycleHistory that matches the filter or throw an error with `error.code='P2025'`
+     * if no matches were found.
+     * @param {MotorcycleHistoryFindUniqueOrThrowArgs} args - Arguments to find a MotorcycleHistory
+     * @example
+     * // Get one MotorcycleHistory
+     * const motorcycleHistory = await prisma.motorcycleHistory.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findUniqueOrThrow<T extends MotorcycleHistoryFindUniqueOrThrowArgs>(args: SelectSubset<T, MotorcycleHistoryFindUniqueOrThrowArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first MotorcycleHistory that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotorcycleHistoryFindFirstArgs} args - Arguments to find a MotorcycleHistory
+     * @example
+     * // Get one MotorcycleHistory
+     * const motorcycleHistory = await prisma.motorcycleHistory.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirst<T extends MotorcycleHistoryFindFirstArgs>(args?: SelectSubset<T, MotorcycleHistoryFindFirstArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findFirst", ClientOptions> | null, null, ExtArgs, ClientOptions>
+
+    /**
+     * Find the first MotorcycleHistory that matches the filter or
+     * throw `PrismaKnownClientError` with `P2025` code if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotorcycleHistoryFindFirstOrThrowArgs} args - Arguments to find a MotorcycleHistory
+     * @example
+     * // Get one MotorcycleHistory
+     * const motorcycleHistory = await prisma.motorcycleHistory.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     */
+    findFirstOrThrow<T extends MotorcycleHistoryFindFirstOrThrowArgs>(args?: SelectSubset<T, MotorcycleHistoryFindFirstOrThrowArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findFirstOrThrow", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Find zero or more MotorcycleHistories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotorcycleHistoryFindManyArgs} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all MotorcycleHistories
+     * const motorcycleHistories = await prisma.motorcycleHistory.findMany()
+     * 
+     * // Get first 10 MotorcycleHistories
+     * const motorcycleHistories = await prisma.motorcycleHistory.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const motorcycleHistoryWithIdOnly = await prisma.motorcycleHistory.findMany({ select: { id: true } })
+     * 
+     */
+    findMany<T extends MotorcycleHistoryFindManyArgs>(args?: SelectSubset<T, MotorcycleHistoryFindManyArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "findMany", ClientOptions>>
+
+    /**
+     * Create a MotorcycleHistory.
+     * @param {MotorcycleHistoryCreateArgs} args - Arguments to create a MotorcycleHistory.
+     * @example
+     * // Create one MotorcycleHistory
+     * const MotorcycleHistory = await prisma.motorcycleHistory.create({
+     *   data: {
+     *     // ... data to create a MotorcycleHistory
+     *   }
+     * })
+     * 
+     */
+    create<T extends MotorcycleHistoryCreateArgs>(args: SelectSubset<T, MotorcycleHistoryCreateArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "create", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Create many MotorcycleHistories.
+     * @param {MotorcycleHistoryCreateManyArgs} args - Arguments to create many MotorcycleHistories.
+     * @example
+     * // Create many MotorcycleHistories
+     * const motorcycleHistory = await prisma.motorcycleHistory.createMany({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     *     
+     */
+    createMany<T extends MotorcycleHistoryCreateManyArgs>(args?: SelectSubset<T, MotorcycleHistoryCreateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create many MotorcycleHistories and returns the data saved in the database.
+     * @param {MotorcycleHistoryCreateManyAndReturnArgs} args - Arguments to create many MotorcycleHistories.
+     * @example
+     * // Create many MotorcycleHistories
+     * const motorcycleHistory = await prisma.motorcycleHistory.createManyAndReturn({
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Create many MotorcycleHistories and only return the `id`
+     * const motorcycleHistoryWithIdOnly = await prisma.motorcycleHistory.createManyAndReturn({
+     *   select: { id: true },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    createManyAndReturn<T extends MotorcycleHistoryCreateManyAndReturnArgs>(args?: SelectSubset<T, MotorcycleHistoryCreateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "createManyAndReturn", ClientOptions>>
+
+    /**
+     * Delete a MotorcycleHistory.
+     * @param {MotorcycleHistoryDeleteArgs} args - Arguments to delete one MotorcycleHistory.
+     * @example
+     * // Delete one MotorcycleHistory
+     * const MotorcycleHistory = await prisma.motorcycleHistory.delete({
+     *   where: {
+     *     // ... filter to delete one MotorcycleHistory
+     *   }
+     * })
+     * 
+     */
+    delete<T extends MotorcycleHistoryDeleteArgs>(args: SelectSubset<T, MotorcycleHistoryDeleteArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "delete", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Update one MotorcycleHistory.
+     * @param {MotorcycleHistoryUpdateArgs} args - Arguments to update one MotorcycleHistory.
+     * @example
+     * // Update one MotorcycleHistory
+     * const motorcycleHistory = await prisma.motorcycleHistory.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    update<T extends MotorcycleHistoryUpdateArgs>(args: SelectSubset<T, MotorcycleHistoryUpdateArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "update", ClientOptions>, never, ExtArgs, ClientOptions>
+
+    /**
+     * Delete zero or more MotorcycleHistories.
+     * @param {MotorcycleHistoryDeleteManyArgs} args - Arguments to filter MotorcycleHistories to delete.
+     * @example
+     * // Delete a few MotorcycleHistories
+     * const { count } = await prisma.motorcycleHistory.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+     */
+    deleteMany<T extends MotorcycleHistoryDeleteManyArgs>(args?: SelectSubset<T, MotorcycleHistoryDeleteManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MotorcycleHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotorcycleHistoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many MotorcycleHistories
+     * const motorcycleHistory = await prisma.motorcycleHistory.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+     */
+    updateMany<T extends MotorcycleHistoryUpdateManyArgs>(args: SelectSubset<T, MotorcycleHistoryUpdateManyArgs<ExtArgs>>): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more MotorcycleHistories and returns the data updated in the database.
+     * @param {MotorcycleHistoryUpdateManyAndReturnArgs} args - Arguments to update many MotorcycleHistories.
+     * @example
+     * // Update many MotorcycleHistories
+     * const motorcycleHistory = await prisma.motorcycleHistory.updateManyAndReturn({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * 
+     * // Update zero or more MotorcycleHistories and only return the `id`
+     * const motorcycleHistoryWithIdOnly = await prisma.motorcycleHistory.updateManyAndReturn({
+     *   select: { id: true },
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: [
+     *     // ... provide data here
+     *   ]
+     * })
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * 
+     */
+    updateManyAndReturn<T extends MotorcycleHistoryUpdateManyAndReturnArgs>(args: SelectSubset<T, MotorcycleHistoryUpdateManyAndReturnArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "updateManyAndReturn", ClientOptions>>
+
+    /**
+     * Create or update one MotorcycleHistory.
+     * @param {MotorcycleHistoryUpsertArgs} args - Arguments to update or create a MotorcycleHistory.
+     * @example
+     * // Update or create a MotorcycleHistory
+     * const motorcycleHistory = await prisma.motorcycleHistory.upsert({
+     *   create: {
+     *     // ... data to create a MotorcycleHistory
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the MotorcycleHistory we want to update
+     *   }
+     * })
+     */
+    upsert<T extends MotorcycleHistoryUpsertArgs>(args: SelectSubset<T, MotorcycleHistoryUpsertArgs<ExtArgs>>): Prisma__MotorcycleHistoryClient<$Result.GetResult<Prisma.$MotorcycleHistoryPayload<ExtArgs>, T, "upsert", ClientOptions>, never, ExtArgs, ClientOptions>
+
+
+    /**
+     * Count the number of MotorcycleHistories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotorcycleHistoryCountArgs} args - Arguments to filter MotorcycleHistories to count.
+     * @example
+     * // Count the number of MotorcycleHistories
+     * const count = await prisma.motorcycleHistory.count({
+     *   where: {
+     *     // ... the filter for the MotorcycleHistories we want to count
+     *   }
+     * })
+    **/
+    count<T extends MotorcycleHistoryCountArgs>(
+      args?: Subset<T, MotorcycleHistoryCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends $Utils.Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], MotorcycleHistoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a MotorcycleHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotorcycleHistoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends MotorcycleHistoryAggregateArgs>(args: Subset<T, MotorcycleHistoryAggregateArgs>): Prisma.PrismaPromise<GetMotorcycleHistoryAggregateType<T>>
+
+    /**
+     * Group by MotorcycleHistory.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {MotorcycleHistoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends MotorcycleHistoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: MotorcycleHistoryGroupByArgs['orderBy'] }
+        : { orderBy?: MotorcycleHistoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends MaybeTupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, MotorcycleHistoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetMotorcycleHistoryGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+  /**
+   * Fields of the MotorcycleHistory model
+   */
+  readonly fields: MotorcycleHistoryFieldRefs;
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for MotorcycleHistory.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export interface Prisma__MotorcycleHistoryClient<T, Null = never, ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs, ClientOptions = {}> extends Prisma.PrismaPromise<T> {
+    readonly [Symbol.toStringTag]: "PrismaPromise"
+    motorcycle<T extends MotorcycleDefaultArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleDefaultArgs<ExtArgs>>): Prisma__MotorcycleClient<$Result.GetResult<Prisma.$MotorcyclePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | Null, Null, ExtArgs, ClientOptions>
+    client<T extends MotorcycleHistory$clientArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleHistory$clientArgs<ExtArgs>>): Prisma__ClientClient<$Result.GetResult<Prisma.$ClientPayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
+    enterprise<T extends MotorcycleHistory$enterpriseArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleHistory$enterpriseArgs<ExtArgs>>): Prisma__EnterpriseClient<$Result.GetResult<Prisma.$EnterprisePayload<ExtArgs>, T, "findUniqueOrThrow", ClientOptions> | null, null, ExtArgs, ClientOptions>
+    incidents<T extends MotorcycleHistory$incidentsArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleHistory$incidentsArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$IncidentPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    maintenances<T extends MotorcycleHistory$maintenancesArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleHistory$maintenancesArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$MaintenancePayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    drivers<T extends MotorcycleHistory$driversArgs<ExtArgs> = {}>(args?: Subset<T, MotorcycleHistory$driversArgs<ExtArgs>>): Prisma.PrismaPromise<$Result.GetResult<Prisma.$DriverPayload<ExtArgs>, T, "findMany", ClientOptions> | Null>
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): $Utils.JsPromise<TResult1 | TResult2>
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): $Utils.JsPromise<T | TResult>
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): $Utils.JsPromise<T>
+  }
+
+
+
+
+  /**
+   * Fields of the MotorcycleHistory model
+   */ 
+  interface MotorcycleHistoryFieldRefs {
+    readonly id: FieldRef<"MotorcycleHistory", 'String'>
+    readonly motorcycleId: FieldRef<"MotorcycleHistory", 'String'>
+    readonly startDate: FieldRef<"MotorcycleHistory", 'DateTime'>
+    readonly endDate: FieldRef<"MotorcycleHistory", 'DateTime'>
+    readonly clientId: FieldRef<"MotorcycleHistory", 'String'>
+    readonly enterpriseId: FieldRef<"MotorcycleHistory", 'String'>
+    readonly createdAt: FieldRef<"MotorcycleHistory", 'DateTime'>
+    readonly updatedAt: FieldRef<"MotorcycleHistory", 'DateTime'>
+  }
+    
+
+  // Custom InputTypes
+  /**
+   * MotorcycleHistory findUnique
+   */
+  export type MotorcycleHistoryFindUniqueArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotorcycleHistory to fetch.
+     */
+    where: MotorcycleHistoryWhereUniqueInput
+  }
+
+  /**
+   * MotorcycleHistory findUniqueOrThrow
+   */
+  export type MotorcycleHistoryFindUniqueOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotorcycleHistory to fetch.
+     */
+    where: MotorcycleHistoryWhereUniqueInput
+  }
+
+  /**
+   * MotorcycleHistory findFirst
+   */
+  export type MotorcycleHistoryFindFirstArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotorcycleHistory to fetch.
+     */
+    where?: MotorcycleHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MotorcycleHistories to fetch.
+     */
+    orderBy?: MotorcycleHistoryOrderByWithRelationInput | MotorcycleHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MotorcycleHistories.
+     */
+    cursor?: MotorcycleHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MotorcycleHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MotorcycleHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MotorcycleHistories.
+     */
+    distinct?: MotorcycleHistoryScalarFieldEnum | MotorcycleHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * MotorcycleHistory findFirstOrThrow
+   */
+  export type MotorcycleHistoryFindFirstOrThrowArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotorcycleHistory to fetch.
+     */
+    where?: MotorcycleHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MotorcycleHistories to fetch.
+     */
+    orderBy?: MotorcycleHistoryOrderByWithRelationInput | MotorcycleHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for MotorcycleHistories.
+     */
+    cursor?: MotorcycleHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MotorcycleHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MotorcycleHistories.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of MotorcycleHistories.
+     */
+    distinct?: MotorcycleHistoryScalarFieldEnum | MotorcycleHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * MotorcycleHistory findMany
+   */
+  export type MotorcycleHistoryFindManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter, which MotorcycleHistories to fetch.
+     */
+    where?: MotorcycleHistoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of MotorcycleHistories to fetch.
+     */
+    orderBy?: MotorcycleHistoryOrderByWithRelationInput | MotorcycleHistoryOrderByWithRelationInput[]
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing MotorcycleHistories.
+     */
+    cursor?: MotorcycleHistoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` MotorcycleHistories from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` MotorcycleHistories.
+     */
+    skip?: number
+    distinct?: MotorcycleHistoryScalarFieldEnum | MotorcycleHistoryScalarFieldEnum[]
+  }
+
+  /**
+   * MotorcycleHistory create
+   */
+  export type MotorcycleHistoryCreateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to create a MotorcycleHistory.
+     */
+    data: XOR<MotorcycleHistoryCreateInput, MotorcycleHistoryUncheckedCreateInput>
+  }
+
+  /**
+   * MotorcycleHistory createMany
+   */
+  export type MotorcycleHistoryCreateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to create many MotorcycleHistories.
+     */
+    data: MotorcycleHistoryCreateManyInput | MotorcycleHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+  }
+
+  /**
+   * MotorcycleHistory createManyAndReturn
+   */
+  export type MotorcycleHistoryCreateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelectCreateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to create many MotorcycleHistories.
+     */
+    data: MotorcycleHistoryCreateManyInput | MotorcycleHistoryCreateManyInput[]
+    skipDuplicates?: boolean
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryIncludeCreateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MotorcycleHistory update
+   */
+  export type MotorcycleHistoryUpdateArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * The data needed to update a MotorcycleHistory.
+     */
+    data: XOR<MotorcycleHistoryUpdateInput, MotorcycleHistoryUncheckedUpdateInput>
+    /**
+     * Choose, which MotorcycleHistory to update.
+     */
+    where: MotorcycleHistoryWhereUniqueInput
+  }
+
+  /**
+   * MotorcycleHistory updateMany
+   */
+  export type MotorcycleHistoryUpdateManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * The data used to update MotorcycleHistories.
+     */
+    data: XOR<MotorcycleHistoryUpdateManyMutationInput, MotorcycleHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which MotorcycleHistories to update
+     */
+    where?: MotorcycleHistoryWhereInput
+    /**
+     * Limit how many MotorcycleHistories to update.
+     */
+    limit?: number
+  }
+
+  /**
+   * MotorcycleHistory updateManyAndReturn
+   */
+  export type MotorcycleHistoryUpdateManyAndReturnArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelectUpdateManyAndReturn<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * The data used to update MotorcycleHistories.
+     */
+    data: XOR<MotorcycleHistoryUpdateManyMutationInput, MotorcycleHistoryUncheckedUpdateManyInput>
+    /**
+     * Filter which MotorcycleHistories to update
+     */
+    where?: MotorcycleHistoryWhereInput
+    /**
+     * Limit how many MotorcycleHistories to update.
+     */
+    limit?: number
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryIncludeUpdateManyAndReturn<ExtArgs> | null
+  }
+
+  /**
+   * MotorcycleHistory upsert
+   */
+  export type MotorcycleHistoryUpsertArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * The filter to search for the MotorcycleHistory to update in case it exists.
+     */
+    where: MotorcycleHistoryWhereUniqueInput
+    /**
+     * In case the MotorcycleHistory found by the `where` argument doesn't exist, create a new MotorcycleHistory with this data.
+     */
+    create: XOR<MotorcycleHistoryCreateInput, MotorcycleHistoryUncheckedCreateInput>
+    /**
+     * In case the MotorcycleHistory was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<MotorcycleHistoryUpdateInput, MotorcycleHistoryUncheckedUpdateInput>
+  }
+
+  /**
+   * MotorcycleHistory delete
+   */
+  export type MotorcycleHistoryDeleteArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
+    /**
+     * Filter which MotorcycleHistory to delete.
+     */
+    where: MotorcycleHistoryWhereUniqueInput
+  }
+
+  /**
+   * MotorcycleHistory deleteMany
+   */
+  export type MotorcycleHistoryDeleteManyArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Filter which MotorcycleHistories to delete
+     */
+    where?: MotorcycleHistoryWhereInput
+    /**
+     * Limit how many MotorcycleHistories to delete.
+     */
+    limit?: number
+  }
+
+  /**
+   * MotorcycleHistory.client
+   */
+  export type MotorcycleHistory$clientArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Client
+     */
+    select?: ClientSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Client
+     */
+    omit?: ClientOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: ClientInclude<ExtArgs> | null
+    where?: ClientWhereInput
+  }
+
+  /**
+   * MotorcycleHistory.enterprise
+   */
+  export type MotorcycleHistory$enterpriseArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Enterprise
+     */
+    select?: EnterpriseSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Enterprise
+     */
+    omit?: EnterpriseOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: EnterpriseInclude<ExtArgs> | null
+    where?: EnterpriseWhereInput
+  }
+
+  /**
+   * MotorcycleHistory.incidents
+   */
+  export type MotorcycleHistory$incidentsArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Incident
+     */
+    select?: IncidentSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Incident
+     */
+    omit?: IncidentOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: IncidentInclude<ExtArgs> | null
+    where?: IncidentWhereInput
+    orderBy?: IncidentOrderByWithRelationInput | IncidentOrderByWithRelationInput[]
+    cursor?: IncidentWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: IncidentScalarFieldEnum | IncidentScalarFieldEnum[]
+  }
+
+  /**
+   * MotorcycleHistory.maintenances
+   */
+  export type MotorcycleHistory$maintenancesArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Maintenance
+     */
+    select?: MaintenanceSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Maintenance
+     */
+    omit?: MaintenanceOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MaintenanceInclude<ExtArgs> | null
+    where?: MaintenanceWhereInput
+    orderBy?: MaintenanceOrderByWithRelationInput | MaintenanceOrderByWithRelationInput[]
+    cursor?: MaintenanceWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: MaintenanceScalarFieldEnum | MaintenanceScalarFieldEnum[]
+  }
+
+  /**
+   * MotorcycleHistory.drivers
+   */
+  export type MotorcycleHistory$driversArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the Driver
+     */
+    select?: DriverSelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the Driver
+     */
+    omit?: DriverOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: DriverInclude<ExtArgs> | null
+    where?: DriverWhereInput
+    orderBy?: DriverOrderByWithRelationInput | DriverOrderByWithRelationInput[]
+    cursor?: DriverWhereUniqueInput
+    take?: number
+    skip?: number
+    distinct?: DriverScalarFieldEnum | DriverScalarFieldEnum[]
+  }
+
+  /**
+   * MotorcycleHistory without action
+   */
+  export type MotorcycleHistoryDefaultArgs<ExtArgs extends $Extensions.InternalArgs = $Extensions.DefaultArgs> = {
+    /**
+     * Select specific fields to fetch from the MotorcycleHistory
+     */
+    select?: MotorcycleHistorySelect<ExtArgs> | null
+    /**
+     * Omit specific fields from the MotorcycleHistory
+     */
+    omit?: MotorcycleHistoryOmit<ExtArgs> | null
+    /**
+     * Choose, which related nodes to fetch as well
+     */
+    include?: MotorcycleHistoryInclude<ExtArgs> | null
   }
 
 
@@ -21307,6 +22936,7 @@ export namespace Prisma {
     date: 'date',
     description: 'description',
     cost: 'cost',
+    motorcycleHistoryId: 'motorcycleHistoryId',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
   };
@@ -21321,6 +22951,7 @@ export namespace Prisma {
     description: 'description',
     reportDate: 'reportDate',
     resolutionDate: 'resolutionDate',
+    motorcycleHistoryId: 'motorcycleHistoryId',
     status: 'status',
     createdAt: 'createdAt',
     updatedAt: 'updatedAt'
@@ -21343,6 +22974,20 @@ export namespace Prisma {
   };
 
   export type DriverScalarFieldEnum = (typeof DriverScalarFieldEnum)[keyof typeof DriverScalarFieldEnum]
+
+
+  export const MotorcycleHistoryScalarFieldEnum: {
+    id: 'id',
+    motorcycleId: 'motorcycleId',
+    startDate: 'startDate',
+    endDate: 'endDate',
+    clientId: 'clientId',
+    enterpriseId: 'enterpriseId',
+    createdAt: 'createdAt',
+    updatedAt: 'updatedAt'
+  };
+
+  export type MotorcycleHistoryScalarFieldEnum = (typeof MotorcycleHistoryScalarFieldEnum)[keyof typeof MotorcycleHistoryScalarFieldEnum]
 
 
   export const SortOrder: {
@@ -21827,6 +23472,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     drivers?: DriverListRelationFilter
     motorcycle?: MotorcycleListRelationFilter
+    histories?: MotorcycleHistoryListRelationFilter
   }
 
   export type EnterpriseOrderByWithRelationInput = {
@@ -21838,6 +23484,7 @@ export namespace Prisma {
     user?: UserOrderByWithRelationInput
     drivers?: DriverOrderByRelationAggregateInput
     motorcycle?: MotorcycleOrderByRelationAggregateInput
+    histories?: MotorcycleHistoryOrderByRelationAggregateInput
   }
 
   export type EnterpriseWhereUniqueInput = Prisma.AtLeast<{
@@ -21852,6 +23499,7 @@ export namespace Prisma {
     user?: XOR<UserScalarRelationFilter, UserWhereInput>
     drivers?: DriverListRelationFilter
     motorcycle?: MotorcycleListRelationFilter
+    histories?: MotorcycleHistoryListRelationFilter
   }, "id">
 
   export type EnterpriseOrderByWithAggregationInput = {
@@ -21889,6 +23537,7 @@ export namespace Prisma {
     rentals?: RentalListRelationFilter
     testRides?: TestRideListRelationFilter
     motorcycle?: MotorcycleListRelationFilter
+    histories?: MotorcycleHistoryListRelationFilter
   }
 
   export type ClientOrderByWithRelationInput = {
@@ -21901,6 +23550,7 @@ export namespace Prisma {
     rentals?: RentalOrderByRelationAggregateInput
     testRides?: TestRideOrderByRelationAggregateInput
     motorcycle?: MotorcycleOrderByRelationAggregateInput
+    histories?: MotorcycleHistoryOrderByRelationAggregateInput
   }
 
   export type ClientWhereUniqueInput = Prisma.AtLeast<{
@@ -21916,6 +23566,7 @@ export namespace Prisma {
     rentals?: RentalListRelationFilter
     testRides?: TestRideListRelationFilter
     motorcycle?: MotorcycleListRelationFilter
+    histories?: MotorcycleHistoryListRelationFilter
   }, "id">
 
   export type ClientOrderByWithAggregationInput = {
@@ -22116,6 +23767,7 @@ export namespace Prisma {
     warranties?: WarrantyListRelationFilter
     parts?: MotorcyclePartListRelationFilter
     drivers?: DriverListRelationFilter
+    histories?: MotorcycleHistoryListRelationFilter
   }
 
   export type MotorcycleOrderByWithRelationInput = {
@@ -22140,6 +23792,7 @@ export namespace Prisma {
     warranties?: WarrantyOrderByRelationAggregateInput
     parts?: MotorcyclePartOrderByRelationAggregateInput
     drivers?: DriverOrderByRelationAggregateInput
+    histories?: MotorcycleHistoryOrderByRelationAggregateInput
   }
 
   export type MotorcycleWhereUniqueInput = Prisma.AtLeast<{
@@ -22167,6 +23820,7 @@ export namespace Prisma {
     warranties?: WarrantyListRelationFilter
     parts?: MotorcyclePartListRelationFilter
     drivers?: DriverListRelationFilter
+    histories?: MotorcycleHistoryListRelationFilter
   }, "id" | "registrationNumber">
 
   export type MotorcycleOrderByWithAggregationInput = {
@@ -22575,9 +24229,11 @@ export namespace Prisma {
     date?: DateTimeFilter<"Maintenance"> | Date | string
     description?: StringFilter<"Maintenance"> | string
     cost?: FloatFilter<"Maintenance"> | number
+    motorcycleHistoryId?: StringNullableFilter<"Maintenance"> | string | null
     createdAt?: DateTimeFilter<"Maintenance"> | Date | string
     updatedAt?: DateTimeFilter<"Maintenance"> | Date | string
     motorcycle?: XOR<MotorcycleScalarRelationFilter, MotorcycleWhereInput>
+    motorcycleHistory?: XOR<MotorcycleHistoryNullableScalarRelationFilter, MotorcycleHistoryWhereInput> | null
   }
 
   export type MaintenanceOrderByWithRelationInput = {
@@ -22586,9 +24242,11 @@ export namespace Prisma {
     date?: SortOrder
     description?: SortOrder
     cost?: SortOrder
+    motorcycleHistoryId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     motorcycle?: MotorcycleOrderByWithRelationInput
+    motorcycleHistory?: MotorcycleHistoryOrderByWithRelationInput
   }
 
   export type MaintenanceWhereUniqueInput = Prisma.AtLeast<{
@@ -22600,9 +24258,11 @@ export namespace Prisma {
     date?: DateTimeFilter<"Maintenance"> | Date | string
     description?: StringFilter<"Maintenance"> | string
     cost?: FloatFilter<"Maintenance"> | number
+    motorcycleHistoryId?: StringNullableFilter<"Maintenance"> | string | null
     createdAt?: DateTimeFilter<"Maintenance"> | Date | string
     updatedAt?: DateTimeFilter<"Maintenance"> | Date | string
     motorcycle?: XOR<MotorcycleScalarRelationFilter, MotorcycleWhereInput>
+    motorcycleHistory?: XOR<MotorcycleHistoryNullableScalarRelationFilter, MotorcycleHistoryWhereInput> | null
   }, "id">
 
   export type MaintenanceOrderByWithAggregationInput = {
@@ -22611,6 +24271,7 @@ export namespace Prisma {
     date?: SortOrder
     description?: SortOrder
     cost?: SortOrder
+    motorcycleHistoryId?: SortOrderInput | SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     _count?: MaintenanceCountOrderByAggregateInput
@@ -22629,6 +24290,7 @@ export namespace Prisma {
     date?: DateTimeWithAggregatesFilter<"Maintenance"> | Date | string
     description?: StringWithAggregatesFilter<"Maintenance"> | string
     cost?: FloatWithAggregatesFilter<"Maintenance"> | number
+    motorcycleHistoryId?: StringNullableWithAggregatesFilter<"Maintenance"> | string | null
     createdAt?: DateTimeWithAggregatesFilter<"Maintenance"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Maintenance"> | Date | string
   }
@@ -22643,10 +24305,12 @@ export namespace Prisma {
     description?: StringFilter<"Incident"> | string
     reportDate?: DateTimeFilter<"Incident"> | Date | string
     resolutionDate?: DateTimeNullableFilter<"Incident"> | Date | string | null
+    motorcycleHistoryId?: StringNullableFilter<"Incident"> | string | null
     status?: EnumIncidentStatusFilter<"Incident"> | $Enums.IncidentStatus
     createdAt?: DateTimeFilter<"Incident"> | Date | string
     updatedAt?: DateTimeFilter<"Incident"> | Date | string
     motorcycle?: XOR<MotorcycleScalarRelationFilter, MotorcycleWhereInput>
+    motorcycleHistory?: XOR<MotorcycleHistoryNullableScalarRelationFilter, MotorcycleHistoryWhereInput> | null
   }
 
   export type IncidentOrderByWithRelationInput = {
@@ -22656,10 +24320,12 @@ export namespace Prisma {
     description?: SortOrder
     reportDate?: SortOrder
     resolutionDate?: SortOrderInput | SortOrder
+    motorcycleHistoryId?: SortOrderInput | SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
     motorcycle?: MotorcycleOrderByWithRelationInput
+    motorcycleHistory?: MotorcycleHistoryOrderByWithRelationInput
   }
 
   export type IncidentWhereUniqueInput = Prisma.AtLeast<{
@@ -22672,10 +24338,12 @@ export namespace Prisma {
     description?: StringFilter<"Incident"> | string
     reportDate?: DateTimeFilter<"Incident"> | Date | string
     resolutionDate?: DateTimeNullableFilter<"Incident"> | Date | string | null
+    motorcycleHistoryId?: StringNullableFilter<"Incident"> | string | null
     status?: EnumIncidentStatusFilter<"Incident"> | $Enums.IncidentStatus
     createdAt?: DateTimeFilter<"Incident"> | Date | string
     updatedAt?: DateTimeFilter<"Incident"> | Date | string
     motorcycle?: XOR<MotorcycleScalarRelationFilter, MotorcycleWhereInput>
+    motorcycleHistory?: XOR<MotorcycleHistoryNullableScalarRelationFilter, MotorcycleHistoryWhereInput> | null
   }, "id">
 
   export type IncidentOrderByWithAggregationInput = {
@@ -22685,6 +24353,7 @@ export namespace Prisma {
     description?: SortOrder
     reportDate?: SortOrder
     resolutionDate?: SortOrderInput | SortOrder
+    motorcycleHistoryId?: SortOrderInput | SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -22703,6 +24372,7 @@ export namespace Prisma {
     description?: StringWithAggregatesFilter<"Incident"> | string
     reportDate?: DateTimeWithAggregatesFilter<"Incident"> | Date | string
     resolutionDate?: DateTimeNullableWithAggregatesFilter<"Incident"> | Date | string | null
+    motorcycleHistoryId?: StringNullableWithAggregatesFilter<"Incident"> | string | null
     status?: EnumIncidentStatusWithAggregatesFilter<"Incident"> | $Enums.IncidentStatus
     createdAt?: DateTimeWithAggregatesFilter<"Incident"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Incident"> | Date | string
@@ -22724,6 +24394,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Driver"> | Date | string
     entreprise?: XOR<EnterpriseScalarRelationFilter, EnterpriseWhereInput>
     motorcycle?: XOR<MotorcycleScalarRelationFilter, MotorcycleWhereInput>
+    motorcycleHistories?: MotorcycleHistoryListRelationFilter
   }
 
   export type DriverOrderByWithRelationInput = {
@@ -22739,6 +24410,7 @@ export namespace Prisma {
     updatedAt?: SortOrder
     entreprise?: EnterpriseOrderByWithRelationInput
     motorcycle?: MotorcycleOrderByWithRelationInput
+    motorcycleHistories?: MotorcycleHistoryOrderByRelationAggregateInput
   }
 
   export type DriverWhereUniqueInput = Prisma.AtLeast<{
@@ -22757,6 +24429,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFilter<"Driver"> | Date | string
     entreprise?: XOR<EnterpriseScalarRelationFilter, EnterpriseWhereInput>
     motorcycle?: XOR<MotorcycleScalarRelationFilter, MotorcycleWhereInput>
+    motorcycleHistories?: MotorcycleHistoryListRelationFilter
   }, "id" | "emailAddress">
 
   export type DriverOrderByWithAggregationInput = {
@@ -22789,6 +24462,91 @@ export namespace Prisma {
     emailAddress?: StringWithAggregatesFilter<"Driver"> | string
     createdAt?: DateTimeWithAggregatesFilter<"Driver"> | Date | string
     updatedAt?: DateTimeWithAggregatesFilter<"Driver"> | Date | string
+  }
+
+  export type MotorcycleHistoryWhereInput = {
+    AND?: MotorcycleHistoryWhereInput | MotorcycleHistoryWhereInput[]
+    OR?: MotorcycleHistoryWhereInput[]
+    NOT?: MotorcycleHistoryWhereInput | MotorcycleHistoryWhereInput[]
+    id?: StringFilter<"MotorcycleHistory"> | string
+    motorcycleId?: StringFilter<"MotorcycleHistory"> | string
+    startDate?: DateTimeFilter<"MotorcycleHistory"> | Date | string
+    endDate?: DateTimeNullableFilter<"MotorcycleHistory"> | Date | string | null
+    clientId?: StringNullableFilter<"MotorcycleHistory"> | string | null
+    enterpriseId?: StringNullableFilter<"MotorcycleHistory"> | string | null
+    createdAt?: DateTimeFilter<"MotorcycleHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"MotorcycleHistory"> | Date | string
+    motorcycle?: XOR<MotorcycleScalarRelationFilter, MotorcycleWhereInput>
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
+    enterprise?: XOR<EnterpriseNullableScalarRelationFilter, EnterpriseWhereInput> | null
+    incidents?: IncidentListRelationFilter
+    maintenances?: MaintenanceListRelationFilter
+    drivers?: DriverListRelationFilter
+  }
+
+  export type MotorcycleHistoryOrderByWithRelationInput = {
+    id?: SortOrder
+    motorcycleId?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrderInput | SortOrder
+    clientId?: SortOrderInput | SortOrder
+    enterpriseId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    motorcycle?: MotorcycleOrderByWithRelationInput
+    client?: ClientOrderByWithRelationInput
+    enterprise?: EnterpriseOrderByWithRelationInput
+    incidents?: IncidentOrderByRelationAggregateInput
+    maintenances?: MaintenanceOrderByRelationAggregateInput
+    drivers?: DriverOrderByRelationAggregateInput
+  }
+
+  export type MotorcycleHistoryWhereUniqueInput = Prisma.AtLeast<{
+    id?: string
+    AND?: MotorcycleHistoryWhereInput | MotorcycleHistoryWhereInput[]
+    OR?: MotorcycleHistoryWhereInput[]
+    NOT?: MotorcycleHistoryWhereInput | MotorcycleHistoryWhereInput[]
+    motorcycleId?: StringFilter<"MotorcycleHistory"> | string
+    startDate?: DateTimeFilter<"MotorcycleHistory"> | Date | string
+    endDate?: DateTimeNullableFilter<"MotorcycleHistory"> | Date | string | null
+    clientId?: StringNullableFilter<"MotorcycleHistory"> | string | null
+    enterpriseId?: StringNullableFilter<"MotorcycleHistory"> | string | null
+    createdAt?: DateTimeFilter<"MotorcycleHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"MotorcycleHistory"> | Date | string
+    motorcycle?: XOR<MotorcycleScalarRelationFilter, MotorcycleWhereInput>
+    client?: XOR<ClientNullableScalarRelationFilter, ClientWhereInput> | null
+    enterprise?: XOR<EnterpriseNullableScalarRelationFilter, EnterpriseWhereInput> | null
+    incidents?: IncidentListRelationFilter
+    maintenances?: MaintenanceListRelationFilter
+    drivers?: DriverListRelationFilter
+  }, "id">
+
+  export type MotorcycleHistoryOrderByWithAggregationInput = {
+    id?: SortOrder
+    motorcycleId?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrderInput | SortOrder
+    clientId?: SortOrderInput | SortOrder
+    enterpriseId?: SortOrderInput | SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+    _count?: MotorcycleHistoryCountOrderByAggregateInput
+    _max?: MotorcycleHistoryMaxOrderByAggregateInput
+    _min?: MotorcycleHistoryMinOrderByAggregateInput
+  }
+
+  export type MotorcycleHistoryScalarWhereWithAggregatesInput = {
+    AND?: MotorcycleHistoryScalarWhereWithAggregatesInput | MotorcycleHistoryScalarWhereWithAggregatesInput[]
+    OR?: MotorcycleHistoryScalarWhereWithAggregatesInput[]
+    NOT?: MotorcycleHistoryScalarWhereWithAggregatesInput | MotorcycleHistoryScalarWhereWithAggregatesInput[]
+    id?: StringWithAggregatesFilter<"MotorcycleHistory"> | string
+    motorcycleId?: StringWithAggregatesFilter<"MotorcycleHistory"> | string
+    startDate?: DateTimeWithAggregatesFilter<"MotorcycleHistory"> | Date | string
+    endDate?: DateTimeNullableWithAggregatesFilter<"MotorcycleHistory"> | Date | string | null
+    clientId?: StringNullableWithAggregatesFilter<"MotorcycleHistory"> | string | null
+    enterpriseId?: StringNullableWithAggregatesFilter<"MotorcycleHistory"> | string | null
+    createdAt?: DateTimeWithAggregatesFilter<"MotorcycleHistory"> | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter<"MotorcycleHistory"> | Date | string
   }
 
   export type NotificationCreateInput = {
@@ -23042,6 +24800,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutEnterpriseInput
     drivers?: DriverCreateNestedManyWithoutEntrepriseInput
     motorcycle?: MotorcycleCreateNestedManyWithoutEnterpriseInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutEnterpriseInput
   }
 
   export type EnterpriseUncheckedCreateInput = {
@@ -23052,6 +24811,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     drivers?: DriverUncheckedCreateNestedManyWithoutEntrepriseInput
     motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutEnterpriseInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutEnterpriseInput
   }
 
   export type EnterpriseUpdateInput = {
@@ -23062,6 +24822,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutEnterpriseNestedInput
     drivers?: DriverUpdateManyWithoutEntrepriseNestedInput
     motorcycle?: MotorcycleUpdateManyWithoutEnterpriseNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutEnterpriseNestedInput
   }
 
   export type EnterpriseUncheckedUpdateInput = {
@@ -23072,6 +24833,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     drivers?: DriverUncheckedUpdateManyWithoutEntrepriseNestedInput
     motorcycle?: MotorcycleUncheckedUpdateManyWithoutEnterpriseNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutEnterpriseNestedInput
   }
 
   export type EnterpriseCreateManyInput = {
@@ -23105,6 +24867,7 @@ export namespace Prisma {
     rentals?: RentalCreateNestedManyWithoutClientInput
     testRides?: TestRideCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateInput = {
@@ -23115,6 +24878,7 @@ export namespace Prisma {
     rentals?: RentalUncheckedCreateNestedManyWithoutClientInput
     testRides?: TestRideUncheckedCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientUpdateInput = {
@@ -23125,6 +24889,7 @@ export namespace Prisma {
     rentals?: RentalUpdateManyWithoutClientNestedInput
     testRides?: TestRideUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateInput = {
@@ -23135,6 +24900,7 @@ export namespace Prisma {
     rentals?: RentalUncheckedUpdateManyWithoutClientNestedInput
     testRides?: TestRideUncheckedUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUncheckedUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientCreateManyInput = {
@@ -23332,6 +25098,7 @@ export namespace Prisma {
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateInput = {
@@ -23353,6 +25120,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUpdateInput = {
@@ -23374,6 +25142,7 @@ export namespace Prisma {
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateInput = {
@@ -23395,6 +25164,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleCreateManyInput = {
@@ -23817,6 +25587,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     motorcycle: MotorcycleCreateNestedOneWithoutMaintenanceInput
+    motorcycleHistory?: MotorcycleHistoryCreateNestedOneWithoutMaintenancesInput
   }
 
   export type MaintenanceUncheckedCreateInput = {
@@ -23825,6 +25596,7 @@ export namespace Prisma {
     date: Date | string
     description: string
     cost: number
+    motorcycleHistoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23837,6 +25609,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     motorcycle?: MotorcycleUpdateOneRequiredWithoutMaintenanceNestedInput
+    motorcycleHistory?: MotorcycleHistoryUpdateOneWithoutMaintenancesNestedInput
   }
 
   export type MaintenanceUncheckedUpdateInput = {
@@ -23845,6 +25618,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    motorcycleHistoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23855,6 +25629,7 @@ export namespace Prisma {
     date: Date | string
     description: string
     cost: number
+    motorcycleHistoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -23874,6 +25649,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    motorcycleHistoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -23888,6 +25664,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     motorcycle: MotorcycleCreateNestedOneWithoutBreakdownsInput
+    motorcycleHistory?: MotorcycleHistoryCreateNestedOneWithoutIncidentsInput
   }
 
   export type IncidentUncheckedCreateInput = {
@@ -23897,6 +25674,7 @@ export namespace Prisma {
     description: string
     reportDate: Date | string
     resolutionDate?: Date | string | null
+    motorcycleHistoryId?: string | null
     status: $Enums.IncidentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23912,6 +25690,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     motorcycle?: MotorcycleUpdateOneRequiredWithoutBreakdownsNestedInput
+    motorcycleHistory?: MotorcycleHistoryUpdateOneWithoutIncidentsNestedInput
   }
 
   export type IncidentUncheckedUpdateInput = {
@@ -23921,6 +25700,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motorcycleHistoryId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23933,6 +25713,7 @@ export namespace Prisma {
     description: string
     reportDate: Date | string
     resolutionDate?: Date | string | null
+    motorcycleHistoryId?: string | null
     status: $Enums.IncidentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -23956,6 +25737,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motorcycleHistoryId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -23972,6 +25754,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     entreprise: EnterpriseCreateNestedOneWithoutDriversInput
     motorcycle: MotorcycleCreateNestedOneWithoutDriversInput
+    motorcycleHistories?: MotorcycleHistoryCreateNestedManyWithoutDriversInput
   }
 
   export type DriverUncheckedCreateInput = {
@@ -23985,6 +25768,7 @@ export namespace Prisma {
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    motorcycleHistories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutDriversInput
   }
 
   export type DriverUpdateInput = {
@@ -23998,6 +25782,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     entreprise?: EnterpriseUpdateOneRequiredWithoutDriversNestedInput
     motorcycle?: MotorcycleUpdateOneRequiredWithoutDriversNestedInput
+    motorcycleHistories?: MotorcycleHistoryUpdateManyWithoutDriversNestedInput
   }
 
   export type DriverUncheckedUpdateInput = {
@@ -24011,6 +25796,7 @@ export namespace Prisma {
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycleHistories?: MotorcycleHistoryUncheckedUpdateManyWithoutDriversNestedInput
   }
 
   export type DriverCreateManyInput = {
@@ -24046,6 +25832,92 @@ export namespace Prisma {
     licenseNumber?: StringFieldUpdateOperationsInput | string
     phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotorcycleHistoryCreateInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorcycle: MotorcycleCreateNestedOneWithoutHistoriesInput
+    client?: ClientCreateNestedOneWithoutHistoriesInput
+    enterprise?: EnterpriseCreateNestedOneWithoutHistoriesInput
+    incidents?: IncidentCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryUncheckedCreateInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    enterpriseId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    incidents?: IncidentUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutHistoriesNestedInput
+    client?: ClientUpdateOneWithoutHistoriesNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutHistoriesNestedInput
+    incidents?: IncidentUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidents?: IncidentUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUncheckedUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryCreateManyInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    enterpriseId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MotorcycleHistoryUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -24449,7 +26321,17 @@ export namespace Prisma {
     none?: DriverWhereInput
   }
 
+  export type MotorcycleHistoryListRelationFilter = {
+    every?: MotorcycleHistoryWhereInput
+    some?: MotorcycleHistoryWhereInput
+    none?: MotorcycleHistoryWhereInput
+  }
+
   export type DriverOrderByRelationAggregateInput = {
+    _count?: SortOrder
+  }
+
+  export type MotorcycleHistoryOrderByRelationAggregateInput = {
     _count?: SortOrder
   }
 
@@ -25049,12 +26931,18 @@ export namespace Prisma {
     updatedAt?: SortOrder
   }
 
+  export type MotorcycleHistoryNullableScalarRelationFilter = {
+    is?: MotorcycleHistoryWhereInput | null
+    isNot?: MotorcycleHistoryWhereInput | null
+  }
+
   export type MaintenanceCountOrderByAggregateInput = {
     id?: SortOrder
     idMotorcycle?: SortOrder
     date?: SortOrder
     description?: SortOrder
     cost?: SortOrder
+    motorcycleHistoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25069,6 +26957,7 @@ export namespace Prisma {
     date?: SortOrder
     description?: SortOrder
     cost?: SortOrder
+    motorcycleHistoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25079,6 +26968,7 @@ export namespace Prisma {
     date?: SortOrder
     description?: SortOrder
     cost?: SortOrder
+    motorcycleHistoryId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25119,6 +27009,7 @@ export namespace Prisma {
     description?: SortOrder
     reportDate?: SortOrder
     resolutionDate?: SortOrder
+    motorcycleHistoryId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25131,6 +27022,7 @@ export namespace Prisma {
     description?: SortOrder
     reportDate?: SortOrder
     resolutionDate?: SortOrder
+    motorcycleHistoryId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25143,6 +27035,7 @@ export namespace Prisma {
     description?: SortOrder
     reportDate?: SortOrder
     resolutionDate?: SortOrder
+    motorcycleHistoryId?: SortOrder
     status?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
@@ -25220,6 +27113,39 @@ export namespace Prisma {
     lastname?: SortOrder
     licenseNumber?: SortOrder
     emailAddress?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MotorcycleHistoryCountOrderByAggregateInput = {
+    id?: SortOrder
+    motorcycleId?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    clientId?: SortOrder
+    enterpriseId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MotorcycleHistoryMaxOrderByAggregateInput = {
+    id?: SortOrder
+    motorcycleId?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    clientId?: SortOrder
+    enterpriseId?: SortOrder
+    createdAt?: SortOrder
+    updatedAt?: SortOrder
+  }
+
+  export type MotorcycleHistoryMinOrderByAggregateInput = {
+    id?: SortOrder
+    motorcycleId?: SortOrder
+    startDate?: SortOrder
+    endDate?: SortOrder
+    clientId?: SortOrder
+    enterpriseId?: SortOrder
     createdAt?: SortOrder
     updatedAt?: SortOrder
   }
@@ -25560,6 +27486,13 @@ export namespace Prisma {
     connect?: MotorcycleWhereUniqueInput | MotorcycleWhereUniqueInput[]
   }
 
+  export type MotorcycleHistoryCreateNestedManyWithoutEnterpriseInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutEnterpriseInput, MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput> | MotorcycleHistoryCreateWithoutEnterpriseInput[] | MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput | MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput[]
+    createMany?: MotorcycleHistoryCreateManyEnterpriseInputEnvelope
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+  }
+
   export type DriverUncheckedCreateNestedManyWithoutEntrepriseInput = {
     create?: XOR<DriverCreateWithoutEntrepriseInput, DriverUncheckedCreateWithoutEntrepriseInput> | DriverCreateWithoutEntrepriseInput[] | DriverUncheckedCreateWithoutEntrepriseInput[]
     connectOrCreate?: DriverCreateOrConnectWithoutEntrepriseInput | DriverCreateOrConnectWithoutEntrepriseInput[]
@@ -25572,6 +27505,13 @@ export namespace Prisma {
     connectOrCreate?: MotorcycleCreateOrConnectWithoutEnterpriseInput | MotorcycleCreateOrConnectWithoutEnterpriseInput[]
     createMany?: MotorcycleCreateManyEnterpriseInputEnvelope
     connect?: MotorcycleWhereUniqueInput | MotorcycleWhereUniqueInput[]
+  }
+
+  export type MotorcycleHistoryUncheckedCreateNestedManyWithoutEnterpriseInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutEnterpriseInput, MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput> | MotorcycleHistoryCreateWithoutEnterpriseInput[] | MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput | MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput[]
+    createMany?: MotorcycleHistoryCreateManyEnterpriseInputEnvelope
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
   }
 
   export type EnumIndustryTypeFieldUpdateOperationsInput = {
@@ -25614,6 +27554,20 @@ export namespace Prisma {
     deleteMany?: MotorcycleScalarWhereInput | MotorcycleScalarWhereInput[]
   }
 
+  export type MotorcycleHistoryUpdateManyWithoutEnterpriseNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutEnterpriseInput, MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput> | MotorcycleHistoryCreateWithoutEnterpriseInput[] | MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput | MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput[]
+    upsert?: MotorcycleHistoryUpsertWithWhereUniqueWithoutEnterpriseInput | MotorcycleHistoryUpsertWithWhereUniqueWithoutEnterpriseInput[]
+    createMany?: MotorcycleHistoryCreateManyEnterpriseInputEnvelope
+    set?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    disconnect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    delete?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    update?: MotorcycleHistoryUpdateWithWhereUniqueWithoutEnterpriseInput | MotorcycleHistoryUpdateWithWhereUniqueWithoutEnterpriseInput[]
+    updateMany?: MotorcycleHistoryUpdateManyWithWhereWithoutEnterpriseInput | MotorcycleHistoryUpdateManyWithWhereWithoutEnterpriseInput[]
+    deleteMany?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
+  }
+
   export type DriverUncheckedUpdateManyWithoutEntrepriseNestedInput = {
     create?: XOR<DriverCreateWithoutEntrepriseInput, DriverUncheckedCreateWithoutEntrepriseInput> | DriverCreateWithoutEntrepriseInput[] | DriverUncheckedCreateWithoutEntrepriseInput[]
     connectOrCreate?: DriverCreateOrConnectWithoutEntrepriseInput | DriverCreateOrConnectWithoutEntrepriseInput[]
@@ -25640,6 +27594,20 @@ export namespace Prisma {
     update?: MotorcycleUpdateWithWhereUniqueWithoutEnterpriseInput | MotorcycleUpdateWithWhereUniqueWithoutEnterpriseInput[]
     updateMany?: MotorcycleUpdateManyWithWhereWithoutEnterpriseInput | MotorcycleUpdateManyWithWhereWithoutEnterpriseInput[]
     deleteMany?: MotorcycleScalarWhereInput | MotorcycleScalarWhereInput[]
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyWithoutEnterpriseNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutEnterpriseInput, MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput> | MotorcycleHistoryCreateWithoutEnterpriseInput[] | MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput | MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput[]
+    upsert?: MotorcycleHistoryUpsertWithWhereUniqueWithoutEnterpriseInput | MotorcycleHistoryUpsertWithWhereUniqueWithoutEnterpriseInput[]
+    createMany?: MotorcycleHistoryCreateManyEnterpriseInputEnvelope
+    set?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    disconnect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    delete?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    update?: MotorcycleHistoryUpdateWithWhereUniqueWithoutEnterpriseInput | MotorcycleHistoryUpdateWithWhereUniqueWithoutEnterpriseInput[]
+    updateMany?: MotorcycleHistoryUpdateManyWithWhereWithoutEnterpriseInput | MotorcycleHistoryUpdateManyWithWhereWithoutEnterpriseInput[]
+    deleteMany?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
   }
 
   export type DealerCreateNestedOneWithoutClientsInput = {
@@ -25675,6 +27643,13 @@ export namespace Prisma {
     connect?: MotorcycleWhereUniqueInput | MotorcycleWhereUniqueInput[]
   }
 
+  export type MotorcycleHistoryCreateNestedManyWithoutClientInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutClientInput, MotorcycleHistoryUncheckedCreateWithoutClientInput> | MotorcycleHistoryCreateWithoutClientInput[] | MotorcycleHistoryUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutClientInput | MotorcycleHistoryCreateOrConnectWithoutClientInput[]
+    createMany?: MotorcycleHistoryCreateManyClientInputEnvelope
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+  }
+
   export type RentalUncheckedCreateNestedManyWithoutClientInput = {
     create?: XOR<RentalCreateWithoutClientInput, RentalUncheckedCreateWithoutClientInput> | RentalCreateWithoutClientInput[] | RentalUncheckedCreateWithoutClientInput[]
     connectOrCreate?: RentalCreateOrConnectWithoutClientInput | RentalCreateOrConnectWithoutClientInput[]
@@ -25694,6 +27669,13 @@ export namespace Prisma {
     connectOrCreate?: MotorcycleCreateOrConnectWithoutClientInput | MotorcycleCreateOrConnectWithoutClientInput[]
     createMany?: MotorcycleCreateManyClientInputEnvelope
     connect?: MotorcycleWhereUniqueInput | MotorcycleWhereUniqueInput[]
+  }
+
+  export type MotorcycleHistoryUncheckedCreateNestedManyWithoutClientInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutClientInput, MotorcycleHistoryUncheckedCreateWithoutClientInput> | MotorcycleHistoryCreateWithoutClientInput[] | MotorcycleHistoryUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutClientInput | MotorcycleHistoryCreateOrConnectWithoutClientInput[]
+    createMany?: MotorcycleHistoryCreateManyClientInputEnvelope
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
   }
 
   export type DealerUpdateOneRequiredWithoutClientsNestedInput = {
@@ -25754,6 +27736,20 @@ export namespace Prisma {
     deleteMany?: MotorcycleScalarWhereInput | MotorcycleScalarWhereInput[]
   }
 
+  export type MotorcycleHistoryUpdateManyWithoutClientNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutClientInput, MotorcycleHistoryUncheckedCreateWithoutClientInput> | MotorcycleHistoryCreateWithoutClientInput[] | MotorcycleHistoryUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutClientInput | MotorcycleHistoryCreateOrConnectWithoutClientInput[]
+    upsert?: MotorcycleHistoryUpsertWithWhereUniqueWithoutClientInput | MotorcycleHistoryUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: MotorcycleHistoryCreateManyClientInputEnvelope
+    set?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    disconnect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    delete?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    update?: MotorcycleHistoryUpdateWithWhereUniqueWithoutClientInput | MotorcycleHistoryUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: MotorcycleHistoryUpdateManyWithWhereWithoutClientInput | MotorcycleHistoryUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
+  }
+
   export type RentalUncheckedUpdateManyWithoutClientNestedInput = {
     create?: XOR<RentalCreateWithoutClientInput, RentalUncheckedCreateWithoutClientInput> | RentalCreateWithoutClientInput[] | RentalUncheckedCreateWithoutClientInput[]
     connectOrCreate?: RentalCreateOrConnectWithoutClientInput | RentalCreateOrConnectWithoutClientInput[]
@@ -25794,6 +27790,20 @@ export namespace Prisma {
     update?: MotorcycleUpdateWithWhereUniqueWithoutClientInput | MotorcycleUpdateWithWhereUniqueWithoutClientInput[]
     updateMany?: MotorcycleUpdateManyWithWhereWithoutClientInput | MotorcycleUpdateManyWithWhereWithoutClientInput[]
     deleteMany?: MotorcycleScalarWhereInput | MotorcycleScalarWhereInput[]
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyWithoutClientNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutClientInput, MotorcycleHistoryUncheckedCreateWithoutClientInput> | MotorcycleHistoryCreateWithoutClientInput[] | MotorcycleHistoryUncheckedCreateWithoutClientInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutClientInput | MotorcycleHistoryCreateOrConnectWithoutClientInput[]
+    upsert?: MotorcycleHistoryUpsertWithWhereUniqueWithoutClientInput | MotorcycleHistoryUpsertWithWhereUniqueWithoutClientInput[]
+    createMany?: MotorcycleHistoryCreateManyClientInputEnvelope
+    set?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    disconnect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    delete?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    update?: MotorcycleHistoryUpdateWithWhereUniqueWithoutClientInput | MotorcycleHistoryUpdateWithWhereUniqueWithoutClientInput[]
+    updateMany?: MotorcycleHistoryUpdateManyWithWhereWithoutClientInput | MotorcycleHistoryUpdateManyWithWhereWithoutClientInput[]
+    deleteMany?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
   }
 
   export type ClientCreateNestedOneWithoutTestRidesInput = {
@@ -25927,6 +27937,13 @@ export namespace Prisma {
     connect?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
   }
 
+  export type MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutMotorcycleInput, MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput> | MotorcycleHistoryCreateWithoutMotorcycleInput[] | MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput | MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput[]
+    createMany?: MotorcycleHistoryCreateManyMotorcycleInputEnvelope
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+  }
+
   export type TestRideUncheckedCreateNestedManyWithoutMotorcycleInput = {
     create?: XOR<TestRideCreateWithoutMotorcycleInput, TestRideUncheckedCreateWithoutMotorcycleInput> | TestRideCreateWithoutMotorcycleInput[] | TestRideUncheckedCreateWithoutMotorcycleInput[]
     connectOrCreate?: TestRideCreateOrConnectWithoutMotorcycleInput | TestRideCreateOrConnectWithoutMotorcycleInput[]
@@ -25974,6 +27991,13 @@ export namespace Prisma {
     connectOrCreate?: DriverCreateOrConnectWithoutMotorcycleInput | DriverCreateOrConnectWithoutMotorcycleInput[]
     createMany?: DriverCreateManyMotorcycleInputEnvelope
     connect?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+  }
+
+  export type MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutMotorcycleInput, MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput> | MotorcycleHistoryCreateWithoutMotorcycleInput[] | MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput | MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput[]
+    createMany?: MotorcycleHistoryCreateManyMotorcycleInputEnvelope
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
   }
 
   export type IntFieldUpdateOperationsInput = {
@@ -26114,6 +28138,20 @@ export namespace Prisma {
     deleteMany?: DriverScalarWhereInput | DriverScalarWhereInput[]
   }
 
+  export type MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutMotorcycleInput, MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput> | MotorcycleHistoryCreateWithoutMotorcycleInput[] | MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput | MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput[]
+    upsert?: MotorcycleHistoryUpsertWithWhereUniqueWithoutMotorcycleInput | MotorcycleHistoryUpsertWithWhereUniqueWithoutMotorcycleInput[]
+    createMany?: MotorcycleHistoryCreateManyMotorcycleInputEnvelope
+    set?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    disconnect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    delete?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    update?: MotorcycleHistoryUpdateWithWhereUniqueWithoutMotorcycleInput | MotorcycleHistoryUpdateWithWhereUniqueWithoutMotorcycleInput[]
+    updateMany?: MotorcycleHistoryUpdateManyWithWhereWithoutMotorcycleInput | MotorcycleHistoryUpdateManyWithWhereWithoutMotorcycleInput[]
+    deleteMany?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
+  }
+
   export type TestRideUncheckedUpdateManyWithoutMotorcycleNestedInput = {
     create?: XOR<TestRideCreateWithoutMotorcycleInput, TestRideUncheckedCreateWithoutMotorcycleInput> | TestRideCreateWithoutMotorcycleInput[] | TestRideUncheckedCreateWithoutMotorcycleInput[]
     connectOrCreate?: TestRideCreateOrConnectWithoutMotorcycleInput | TestRideCreateOrConnectWithoutMotorcycleInput[]
@@ -26210,6 +28248,20 @@ export namespace Prisma {
     update?: DriverUpdateWithWhereUniqueWithoutMotorcycleInput | DriverUpdateWithWhereUniqueWithoutMotorcycleInput[]
     updateMany?: DriverUpdateManyWithWhereWithoutMotorcycleInput | DriverUpdateManyWithWhereWithoutMotorcycleInput[]
     deleteMany?: DriverScalarWhereInput | DriverScalarWhereInput[]
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutMotorcycleInput, MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput> | MotorcycleHistoryCreateWithoutMotorcycleInput[] | MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput | MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput[]
+    upsert?: MotorcycleHistoryUpsertWithWhereUniqueWithoutMotorcycleInput | MotorcycleHistoryUpsertWithWhereUniqueWithoutMotorcycleInput[]
+    createMany?: MotorcycleHistoryCreateManyMotorcycleInputEnvelope
+    set?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    disconnect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    delete?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    update?: MotorcycleHistoryUpdateWithWhereUniqueWithoutMotorcycleInput | MotorcycleHistoryUpdateWithWhereUniqueWithoutMotorcycleInput[]
+    updateMany?: MotorcycleHistoryUpdateManyWithWhereWithoutMotorcycleInput | MotorcycleHistoryUpdateManyWithWhereWithoutMotorcycleInput[]
+    deleteMany?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
   }
 
   export type MotorcycleCreateNestedOneWithoutPartsInput = {
@@ -26498,6 +28550,12 @@ export namespace Prisma {
     connect?: MotorcycleWhereUniqueInput
   }
 
+  export type MotorcycleHistoryCreateNestedOneWithoutMaintenancesInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutMaintenancesInput, MotorcycleHistoryUncheckedCreateWithoutMaintenancesInput>
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutMaintenancesInput
+    connect?: MotorcycleHistoryWhereUniqueInput
+  }
+
   export type MotorcycleUpdateOneRequiredWithoutMaintenanceNestedInput = {
     create?: XOR<MotorcycleCreateWithoutMaintenanceInput, MotorcycleUncheckedCreateWithoutMaintenanceInput>
     connectOrCreate?: MotorcycleCreateOrConnectWithoutMaintenanceInput
@@ -26506,10 +28564,26 @@ export namespace Prisma {
     update?: XOR<XOR<MotorcycleUpdateToOneWithWhereWithoutMaintenanceInput, MotorcycleUpdateWithoutMaintenanceInput>, MotorcycleUncheckedUpdateWithoutMaintenanceInput>
   }
 
+  export type MotorcycleHistoryUpdateOneWithoutMaintenancesNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutMaintenancesInput, MotorcycleHistoryUncheckedCreateWithoutMaintenancesInput>
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutMaintenancesInput
+    upsert?: MotorcycleHistoryUpsertWithoutMaintenancesInput
+    disconnect?: MotorcycleHistoryWhereInput | boolean
+    delete?: MotorcycleHistoryWhereInput | boolean
+    connect?: MotorcycleHistoryWhereUniqueInput
+    update?: XOR<XOR<MotorcycleHistoryUpdateToOneWithWhereWithoutMaintenancesInput, MotorcycleHistoryUpdateWithoutMaintenancesInput>, MotorcycleHistoryUncheckedUpdateWithoutMaintenancesInput>
+  }
+
   export type MotorcycleCreateNestedOneWithoutBreakdownsInput = {
     create?: XOR<MotorcycleCreateWithoutBreakdownsInput, MotorcycleUncheckedCreateWithoutBreakdownsInput>
     connectOrCreate?: MotorcycleCreateOrConnectWithoutBreakdownsInput
     connect?: MotorcycleWhereUniqueInput
+  }
+
+  export type MotorcycleHistoryCreateNestedOneWithoutIncidentsInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutIncidentsInput, MotorcycleHistoryUncheckedCreateWithoutIncidentsInput>
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutIncidentsInput
+    connect?: MotorcycleHistoryWhereUniqueInput
   }
 
   export type EnumIncidentTypeFieldUpdateOperationsInput = {
@@ -26532,6 +28606,16 @@ export namespace Prisma {
     update?: XOR<XOR<MotorcycleUpdateToOneWithWhereWithoutBreakdownsInput, MotorcycleUpdateWithoutBreakdownsInput>, MotorcycleUncheckedUpdateWithoutBreakdownsInput>
   }
 
+  export type MotorcycleHistoryUpdateOneWithoutIncidentsNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutIncidentsInput, MotorcycleHistoryUncheckedCreateWithoutIncidentsInput>
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutIncidentsInput
+    upsert?: MotorcycleHistoryUpsertWithoutIncidentsInput
+    disconnect?: MotorcycleHistoryWhereInput | boolean
+    delete?: MotorcycleHistoryWhereInput | boolean
+    connect?: MotorcycleHistoryWhereUniqueInput
+    update?: XOR<XOR<MotorcycleHistoryUpdateToOneWithWhereWithoutIncidentsInput, MotorcycleHistoryUpdateWithoutIncidentsInput>, MotorcycleHistoryUncheckedUpdateWithoutIncidentsInput>
+  }
+
   export type EnterpriseCreateNestedOneWithoutDriversInput = {
     create?: XOR<EnterpriseCreateWithoutDriversInput, EnterpriseUncheckedCreateWithoutDriversInput>
     connectOrCreate?: EnterpriseCreateOrConnectWithoutDriversInput
@@ -26542,6 +28626,18 @@ export namespace Prisma {
     create?: XOR<MotorcycleCreateWithoutDriversInput, MotorcycleUncheckedCreateWithoutDriversInput>
     connectOrCreate?: MotorcycleCreateOrConnectWithoutDriversInput
     connect?: MotorcycleWhereUniqueInput
+  }
+
+  export type MotorcycleHistoryCreateNestedManyWithoutDriversInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutDriversInput, MotorcycleHistoryUncheckedCreateWithoutDriversInput> | MotorcycleHistoryCreateWithoutDriversInput[] | MotorcycleHistoryUncheckedCreateWithoutDriversInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutDriversInput | MotorcycleHistoryCreateOrConnectWithoutDriversInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+  }
+
+  export type MotorcycleHistoryUncheckedCreateNestedManyWithoutDriversInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutDriversInput, MotorcycleHistoryUncheckedCreateWithoutDriversInput> | MotorcycleHistoryCreateWithoutDriversInput[] | MotorcycleHistoryUncheckedCreateWithoutDriversInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutDriversInput | MotorcycleHistoryCreateOrConnectWithoutDriversInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
   }
 
   export type EnterpriseUpdateOneRequiredWithoutDriversNestedInput = {
@@ -26558,6 +28654,200 @@ export namespace Prisma {
     upsert?: MotorcycleUpsertWithoutDriversInput
     connect?: MotorcycleWhereUniqueInput
     update?: XOR<XOR<MotorcycleUpdateToOneWithWhereWithoutDriversInput, MotorcycleUpdateWithoutDriversInput>, MotorcycleUncheckedUpdateWithoutDriversInput>
+  }
+
+  export type MotorcycleHistoryUpdateManyWithoutDriversNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutDriversInput, MotorcycleHistoryUncheckedCreateWithoutDriversInput> | MotorcycleHistoryCreateWithoutDriversInput[] | MotorcycleHistoryUncheckedCreateWithoutDriversInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutDriversInput | MotorcycleHistoryCreateOrConnectWithoutDriversInput[]
+    upsert?: MotorcycleHistoryUpsertWithWhereUniqueWithoutDriversInput | MotorcycleHistoryUpsertWithWhereUniqueWithoutDriversInput[]
+    set?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    disconnect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    delete?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    update?: MotorcycleHistoryUpdateWithWhereUniqueWithoutDriversInput | MotorcycleHistoryUpdateWithWhereUniqueWithoutDriversInput[]
+    updateMany?: MotorcycleHistoryUpdateManyWithWhereWithoutDriversInput | MotorcycleHistoryUpdateManyWithWhereWithoutDriversInput[]
+    deleteMany?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyWithoutDriversNestedInput = {
+    create?: XOR<MotorcycleHistoryCreateWithoutDriversInput, MotorcycleHistoryUncheckedCreateWithoutDriversInput> | MotorcycleHistoryCreateWithoutDriversInput[] | MotorcycleHistoryUncheckedCreateWithoutDriversInput[]
+    connectOrCreate?: MotorcycleHistoryCreateOrConnectWithoutDriversInput | MotorcycleHistoryCreateOrConnectWithoutDriversInput[]
+    upsert?: MotorcycleHistoryUpsertWithWhereUniqueWithoutDriversInput | MotorcycleHistoryUpsertWithWhereUniqueWithoutDriversInput[]
+    set?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    disconnect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    delete?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    connect?: MotorcycleHistoryWhereUniqueInput | MotorcycleHistoryWhereUniqueInput[]
+    update?: MotorcycleHistoryUpdateWithWhereUniqueWithoutDriversInput | MotorcycleHistoryUpdateWithWhereUniqueWithoutDriversInput[]
+    updateMany?: MotorcycleHistoryUpdateManyWithWhereWithoutDriversInput | MotorcycleHistoryUpdateManyWithWhereWithoutDriversInput[]
+    deleteMany?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
+  }
+
+  export type MotorcycleCreateNestedOneWithoutHistoriesInput = {
+    create?: XOR<MotorcycleCreateWithoutHistoriesInput, MotorcycleUncheckedCreateWithoutHistoriesInput>
+    connectOrCreate?: MotorcycleCreateOrConnectWithoutHistoriesInput
+    connect?: MotorcycleWhereUniqueInput
+  }
+
+  export type ClientCreateNestedOneWithoutHistoriesInput = {
+    create?: XOR<ClientCreateWithoutHistoriesInput, ClientUncheckedCreateWithoutHistoriesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutHistoriesInput
+    connect?: ClientWhereUniqueInput
+  }
+
+  export type EnterpriseCreateNestedOneWithoutHistoriesInput = {
+    create?: XOR<EnterpriseCreateWithoutHistoriesInput, EnterpriseUncheckedCreateWithoutHistoriesInput>
+    connectOrCreate?: EnterpriseCreateOrConnectWithoutHistoriesInput
+    connect?: EnterpriseWhereUniqueInput
+  }
+
+  export type IncidentCreateNestedManyWithoutMotorcycleHistoryInput = {
+    create?: XOR<IncidentCreateWithoutMotorcycleHistoryInput, IncidentUncheckedCreateWithoutMotorcycleHistoryInput> | IncidentCreateWithoutMotorcycleHistoryInput[] | IncidentUncheckedCreateWithoutMotorcycleHistoryInput[]
+    connectOrCreate?: IncidentCreateOrConnectWithoutMotorcycleHistoryInput | IncidentCreateOrConnectWithoutMotorcycleHistoryInput[]
+    createMany?: IncidentCreateManyMotorcycleHistoryInputEnvelope
+    connect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+  }
+
+  export type MaintenanceCreateNestedManyWithoutMotorcycleHistoryInput = {
+    create?: XOR<MaintenanceCreateWithoutMotorcycleHistoryInput, MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput> | MaintenanceCreateWithoutMotorcycleHistoryInput[] | MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput[]
+    connectOrCreate?: MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput | MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput[]
+    createMany?: MaintenanceCreateManyMotorcycleHistoryInputEnvelope
+    connect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+  }
+
+  export type DriverCreateNestedManyWithoutMotorcycleHistoriesInput = {
+    create?: XOR<DriverCreateWithoutMotorcycleHistoriesInput, DriverUncheckedCreateWithoutMotorcycleHistoriesInput> | DriverCreateWithoutMotorcycleHistoriesInput[] | DriverUncheckedCreateWithoutMotorcycleHistoriesInput[]
+    connectOrCreate?: DriverCreateOrConnectWithoutMotorcycleHistoriesInput | DriverCreateOrConnectWithoutMotorcycleHistoriesInput[]
+    connect?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+  }
+
+  export type IncidentUncheckedCreateNestedManyWithoutMotorcycleHistoryInput = {
+    create?: XOR<IncidentCreateWithoutMotorcycleHistoryInput, IncidentUncheckedCreateWithoutMotorcycleHistoryInput> | IncidentCreateWithoutMotorcycleHistoryInput[] | IncidentUncheckedCreateWithoutMotorcycleHistoryInput[]
+    connectOrCreate?: IncidentCreateOrConnectWithoutMotorcycleHistoryInput | IncidentCreateOrConnectWithoutMotorcycleHistoryInput[]
+    createMany?: IncidentCreateManyMotorcycleHistoryInputEnvelope
+    connect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+  }
+
+  export type MaintenanceUncheckedCreateNestedManyWithoutMotorcycleHistoryInput = {
+    create?: XOR<MaintenanceCreateWithoutMotorcycleHistoryInput, MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput> | MaintenanceCreateWithoutMotorcycleHistoryInput[] | MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput[]
+    connectOrCreate?: MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput | MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput[]
+    createMany?: MaintenanceCreateManyMotorcycleHistoryInputEnvelope
+    connect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+  }
+
+  export type DriverUncheckedCreateNestedManyWithoutMotorcycleHistoriesInput = {
+    create?: XOR<DriverCreateWithoutMotorcycleHistoriesInput, DriverUncheckedCreateWithoutMotorcycleHistoriesInput> | DriverCreateWithoutMotorcycleHistoriesInput[] | DriverUncheckedCreateWithoutMotorcycleHistoriesInput[]
+    connectOrCreate?: DriverCreateOrConnectWithoutMotorcycleHistoriesInput | DriverCreateOrConnectWithoutMotorcycleHistoriesInput[]
+    connect?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+  }
+
+  export type MotorcycleUpdateOneRequiredWithoutHistoriesNestedInput = {
+    create?: XOR<MotorcycleCreateWithoutHistoriesInput, MotorcycleUncheckedCreateWithoutHistoriesInput>
+    connectOrCreate?: MotorcycleCreateOrConnectWithoutHistoriesInput
+    upsert?: MotorcycleUpsertWithoutHistoriesInput
+    connect?: MotorcycleWhereUniqueInput
+    update?: XOR<XOR<MotorcycleUpdateToOneWithWhereWithoutHistoriesInput, MotorcycleUpdateWithoutHistoriesInput>, MotorcycleUncheckedUpdateWithoutHistoriesInput>
+  }
+
+  export type ClientUpdateOneWithoutHistoriesNestedInput = {
+    create?: XOR<ClientCreateWithoutHistoriesInput, ClientUncheckedCreateWithoutHistoriesInput>
+    connectOrCreate?: ClientCreateOrConnectWithoutHistoriesInput
+    upsert?: ClientUpsertWithoutHistoriesInput
+    disconnect?: ClientWhereInput | boolean
+    delete?: ClientWhereInput | boolean
+    connect?: ClientWhereUniqueInput
+    update?: XOR<XOR<ClientUpdateToOneWithWhereWithoutHistoriesInput, ClientUpdateWithoutHistoriesInput>, ClientUncheckedUpdateWithoutHistoriesInput>
+  }
+
+  export type EnterpriseUpdateOneWithoutHistoriesNestedInput = {
+    create?: XOR<EnterpriseCreateWithoutHistoriesInput, EnterpriseUncheckedCreateWithoutHistoriesInput>
+    connectOrCreate?: EnterpriseCreateOrConnectWithoutHistoriesInput
+    upsert?: EnterpriseUpsertWithoutHistoriesInput
+    disconnect?: EnterpriseWhereInput | boolean
+    delete?: EnterpriseWhereInput | boolean
+    connect?: EnterpriseWhereUniqueInput
+    update?: XOR<XOR<EnterpriseUpdateToOneWithWhereWithoutHistoriesInput, EnterpriseUpdateWithoutHistoriesInput>, EnterpriseUncheckedUpdateWithoutHistoriesInput>
+  }
+
+  export type IncidentUpdateManyWithoutMotorcycleHistoryNestedInput = {
+    create?: XOR<IncidentCreateWithoutMotorcycleHistoryInput, IncidentUncheckedCreateWithoutMotorcycleHistoryInput> | IncidentCreateWithoutMotorcycleHistoryInput[] | IncidentUncheckedCreateWithoutMotorcycleHistoryInput[]
+    connectOrCreate?: IncidentCreateOrConnectWithoutMotorcycleHistoryInput | IncidentCreateOrConnectWithoutMotorcycleHistoryInput[]
+    upsert?: IncidentUpsertWithWhereUniqueWithoutMotorcycleHistoryInput | IncidentUpsertWithWhereUniqueWithoutMotorcycleHistoryInput[]
+    createMany?: IncidentCreateManyMotorcycleHistoryInputEnvelope
+    set?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+    disconnect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+    delete?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+    connect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+    update?: IncidentUpdateWithWhereUniqueWithoutMotorcycleHistoryInput | IncidentUpdateWithWhereUniqueWithoutMotorcycleHistoryInput[]
+    updateMany?: IncidentUpdateManyWithWhereWithoutMotorcycleHistoryInput | IncidentUpdateManyWithWhereWithoutMotorcycleHistoryInput[]
+    deleteMany?: IncidentScalarWhereInput | IncidentScalarWhereInput[]
+  }
+
+  export type MaintenanceUpdateManyWithoutMotorcycleHistoryNestedInput = {
+    create?: XOR<MaintenanceCreateWithoutMotorcycleHistoryInput, MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput> | MaintenanceCreateWithoutMotorcycleHistoryInput[] | MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput[]
+    connectOrCreate?: MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput | MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput[]
+    upsert?: MaintenanceUpsertWithWhereUniqueWithoutMotorcycleHistoryInput | MaintenanceUpsertWithWhereUniqueWithoutMotorcycleHistoryInput[]
+    createMany?: MaintenanceCreateManyMotorcycleHistoryInputEnvelope
+    set?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    disconnect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    delete?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    connect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    update?: MaintenanceUpdateWithWhereUniqueWithoutMotorcycleHistoryInput | MaintenanceUpdateWithWhereUniqueWithoutMotorcycleHistoryInput[]
+    updateMany?: MaintenanceUpdateManyWithWhereWithoutMotorcycleHistoryInput | MaintenanceUpdateManyWithWhereWithoutMotorcycleHistoryInput[]
+    deleteMany?: MaintenanceScalarWhereInput | MaintenanceScalarWhereInput[]
+  }
+
+  export type DriverUpdateManyWithoutMotorcycleHistoriesNestedInput = {
+    create?: XOR<DriverCreateWithoutMotorcycleHistoriesInput, DriverUncheckedCreateWithoutMotorcycleHistoriesInput> | DriverCreateWithoutMotorcycleHistoriesInput[] | DriverUncheckedCreateWithoutMotorcycleHistoriesInput[]
+    connectOrCreate?: DriverCreateOrConnectWithoutMotorcycleHistoriesInput | DriverCreateOrConnectWithoutMotorcycleHistoriesInput[]
+    upsert?: DriverUpsertWithWhereUniqueWithoutMotorcycleHistoriesInput | DriverUpsertWithWhereUniqueWithoutMotorcycleHistoriesInput[]
+    set?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+    disconnect?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+    delete?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+    connect?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+    update?: DriverUpdateWithWhereUniqueWithoutMotorcycleHistoriesInput | DriverUpdateWithWhereUniqueWithoutMotorcycleHistoriesInput[]
+    updateMany?: DriverUpdateManyWithWhereWithoutMotorcycleHistoriesInput | DriverUpdateManyWithWhereWithoutMotorcycleHistoriesInput[]
+    deleteMany?: DriverScalarWhereInput | DriverScalarWhereInput[]
+  }
+
+  export type IncidentUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput = {
+    create?: XOR<IncidentCreateWithoutMotorcycleHistoryInput, IncidentUncheckedCreateWithoutMotorcycleHistoryInput> | IncidentCreateWithoutMotorcycleHistoryInput[] | IncidentUncheckedCreateWithoutMotorcycleHistoryInput[]
+    connectOrCreate?: IncidentCreateOrConnectWithoutMotorcycleHistoryInput | IncidentCreateOrConnectWithoutMotorcycleHistoryInput[]
+    upsert?: IncidentUpsertWithWhereUniqueWithoutMotorcycleHistoryInput | IncidentUpsertWithWhereUniqueWithoutMotorcycleHistoryInput[]
+    createMany?: IncidentCreateManyMotorcycleHistoryInputEnvelope
+    set?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+    disconnect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+    delete?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+    connect?: IncidentWhereUniqueInput | IncidentWhereUniqueInput[]
+    update?: IncidentUpdateWithWhereUniqueWithoutMotorcycleHistoryInput | IncidentUpdateWithWhereUniqueWithoutMotorcycleHistoryInput[]
+    updateMany?: IncidentUpdateManyWithWhereWithoutMotorcycleHistoryInput | IncidentUpdateManyWithWhereWithoutMotorcycleHistoryInput[]
+    deleteMany?: IncidentScalarWhereInput | IncidentScalarWhereInput[]
+  }
+
+  export type MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput = {
+    create?: XOR<MaintenanceCreateWithoutMotorcycleHistoryInput, MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput> | MaintenanceCreateWithoutMotorcycleHistoryInput[] | MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput[]
+    connectOrCreate?: MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput | MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput[]
+    upsert?: MaintenanceUpsertWithWhereUniqueWithoutMotorcycleHistoryInput | MaintenanceUpsertWithWhereUniqueWithoutMotorcycleHistoryInput[]
+    createMany?: MaintenanceCreateManyMotorcycleHistoryInputEnvelope
+    set?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    disconnect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    delete?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    connect?: MaintenanceWhereUniqueInput | MaintenanceWhereUniqueInput[]
+    update?: MaintenanceUpdateWithWhereUniqueWithoutMotorcycleHistoryInput | MaintenanceUpdateWithWhereUniqueWithoutMotorcycleHistoryInput[]
+    updateMany?: MaintenanceUpdateManyWithWhereWithoutMotorcycleHistoryInput | MaintenanceUpdateManyWithWhereWithoutMotorcycleHistoryInput[]
+    deleteMany?: MaintenanceScalarWhereInput | MaintenanceScalarWhereInput[]
+  }
+
+  export type DriverUncheckedUpdateManyWithoutMotorcycleHistoriesNestedInput = {
+    create?: XOR<DriverCreateWithoutMotorcycleHistoriesInput, DriverUncheckedCreateWithoutMotorcycleHistoriesInput> | DriverCreateWithoutMotorcycleHistoriesInput[] | DriverUncheckedCreateWithoutMotorcycleHistoriesInput[]
+    connectOrCreate?: DriverCreateOrConnectWithoutMotorcycleHistoriesInput | DriverCreateOrConnectWithoutMotorcycleHistoriesInput[]
+    upsert?: DriverUpsertWithWhereUniqueWithoutMotorcycleHistoriesInput | DriverUpsertWithWhereUniqueWithoutMotorcycleHistoriesInput[]
+    set?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+    disconnect?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+    delete?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+    connect?: DriverWhereUniqueInput | DriverWhereUniqueInput[]
+    update?: DriverUpdateWithWhereUniqueWithoutMotorcycleHistoriesInput | DriverUpdateWithWhereUniqueWithoutMotorcycleHistoriesInput[]
+    updateMany?: DriverUpdateManyWithWhereWithoutMotorcycleHistoriesInput | DriverUpdateManyWithWhereWithoutMotorcycleHistoriesInput[]
+    deleteMany?: DriverScalarWhereInput | DriverScalarWhereInput[]
   }
 
   export type NestedStringFilter<$PrismaModel = never> = {
@@ -27061,6 +29351,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     drivers?: DriverCreateNestedManyWithoutEntrepriseInput
     motorcycle?: MotorcycleCreateNestedManyWithoutEnterpriseInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutEnterpriseInput
   }
 
   export type EnterpriseUncheckedCreateWithoutUserInput = {
@@ -27070,6 +29361,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     drivers?: DriverUncheckedCreateNestedManyWithoutEntrepriseInput
     motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutEnterpriseInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutEnterpriseInput
   }
 
   export type EnterpriseCreateOrConnectWithoutUserInput = {
@@ -27084,6 +29376,7 @@ export namespace Prisma {
     rentals?: RentalCreateNestedManyWithoutClientInput
     testRides?: TestRideCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutUserInput = {
@@ -27093,6 +29386,7 @@ export namespace Prisma {
     rentals?: RentalUncheckedCreateNestedManyWithoutClientInput
     testRides?: TestRideUncheckedCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutUserInput = {
@@ -27175,6 +29469,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     drivers?: DriverUpdateManyWithoutEntrepriseNestedInput
     motorcycle?: MotorcycleUpdateManyWithoutEnterpriseNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutEnterpriseNestedInput
   }
 
   export type EnterpriseUncheckedUpdateWithoutUserInput = {
@@ -27184,6 +29479,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     drivers?: DriverUncheckedUpdateManyWithoutEntrepriseNestedInput
     motorcycle?: MotorcycleUncheckedUpdateManyWithoutEnterpriseNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutEnterpriseNestedInput
   }
 
   export type ClientUpsertWithoutUserInput = {
@@ -27204,6 +29500,7 @@ export namespace Prisma {
     rentals?: RentalUpdateManyWithoutClientNestedInput
     testRides?: TestRideUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutUserInput = {
@@ -27213,6 +29510,7 @@ export namespace Prisma {
     rentals?: RentalUncheckedUpdateManyWithoutClientNestedInput
     testRides?: TestRideUncheckedUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUncheckedUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type NotificationUpsertWithWhereUniqueWithoutUserInput = {
@@ -27290,6 +29588,7 @@ export namespace Prisma {
     rentals?: RentalCreateNestedManyWithoutClientInput
     testRides?: TestRideCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutDealerInput = {
@@ -27299,6 +29598,7 @@ export namespace Prisma {
     rentals?: RentalUncheckedCreateNestedManyWithoutClientInput
     testRides?: TestRideUncheckedCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutDealerInput = {
@@ -27329,6 +29629,7 @@ export namespace Prisma {
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutDealerInput = {
@@ -27349,6 +29650,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutDealerInput = {
@@ -27581,6 +29883,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     motorcycle: MotorcycleCreateNestedOneWithoutDriversInput
+    motorcycleHistories?: MotorcycleHistoryCreateNestedManyWithoutDriversInput
   }
 
   export type DriverUncheckedCreateWithoutEntrepriseInput = {
@@ -27593,6 +29896,7 @@ export namespace Prisma {
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    motorcycleHistories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutDriversInput
   }
 
   export type DriverCreateOrConnectWithoutEntrepriseInput = {
@@ -27623,6 +29927,7 @@ export namespace Prisma {
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutEnterpriseInput = {
@@ -27643,6 +29948,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutEnterpriseInput = {
@@ -27652,6 +29958,42 @@ export namespace Prisma {
 
   export type MotorcycleCreateManyEnterpriseInputEnvelope = {
     data: MotorcycleCreateManyEnterpriseInput | MotorcycleCreateManyEnterpriseInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MotorcycleHistoryCreateWithoutEnterpriseInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorcycle: MotorcycleCreateNestedOneWithoutHistoriesInput
+    client?: ClientCreateNestedOneWithoutHistoriesInput
+    incidents?: IncidentCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    incidents?: IncidentUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryCreateOrConnectWithoutEnterpriseInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    create: XOR<MotorcycleHistoryCreateWithoutEnterpriseInput, MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput>
+  }
+
+  export type MotorcycleHistoryCreateManyEnterpriseInputEnvelope = {
+    data: MotorcycleHistoryCreateManyEnterpriseInput | MotorcycleHistoryCreateManyEnterpriseInput[]
     skipDuplicates?: boolean
   }
 
@@ -27746,6 +30088,36 @@ export namespace Prisma {
   export type MotorcycleUpdateManyWithWhereWithoutEnterpriseInput = {
     where: MotorcycleScalarWhereInput
     data: XOR<MotorcycleUpdateManyMutationInput, MotorcycleUncheckedUpdateManyWithoutEnterpriseInput>
+  }
+
+  export type MotorcycleHistoryUpsertWithWhereUniqueWithoutEnterpriseInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    update: XOR<MotorcycleHistoryUpdateWithoutEnterpriseInput, MotorcycleHistoryUncheckedUpdateWithoutEnterpriseInput>
+    create: XOR<MotorcycleHistoryCreateWithoutEnterpriseInput, MotorcycleHistoryUncheckedCreateWithoutEnterpriseInput>
+  }
+
+  export type MotorcycleHistoryUpdateWithWhereUniqueWithoutEnterpriseInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    data: XOR<MotorcycleHistoryUpdateWithoutEnterpriseInput, MotorcycleHistoryUncheckedUpdateWithoutEnterpriseInput>
+  }
+
+  export type MotorcycleHistoryUpdateManyWithWhereWithoutEnterpriseInput = {
+    where: MotorcycleHistoryScalarWhereInput
+    data: XOR<MotorcycleHistoryUpdateManyMutationInput, MotorcycleHistoryUncheckedUpdateManyWithoutEnterpriseInput>
+  }
+
+  export type MotorcycleHistoryScalarWhereInput = {
+    AND?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
+    OR?: MotorcycleHistoryScalarWhereInput[]
+    NOT?: MotorcycleHistoryScalarWhereInput | MotorcycleHistoryScalarWhereInput[]
+    id?: StringFilter<"MotorcycleHistory"> | string
+    motorcycleId?: StringFilter<"MotorcycleHistory"> | string
+    startDate?: DateTimeFilter<"MotorcycleHistory"> | Date | string
+    endDate?: DateTimeNullableFilter<"MotorcycleHistory"> | Date | string | null
+    clientId?: StringNullableFilter<"MotorcycleHistory"> | string | null
+    enterpriseId?: StringNullableFilter<"MotorcycleHistory"> | string | null
+    createdAt?: DateTimeFilter<"MotorcycleHistory"> | Date | string
+    updatedAt?: DateTimeFilter<"MotorcycleHistory"> | Date | string
   }
 
   export type DealerCreateWithoutClientsInput = {
@@ -27890,6 +30262,7 @@ export namespace Prisma {
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutClientInput = {
@@ -27910,6 +30283,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutClientInput = {
@@ -27919,6 +30293,42 @@ export namespace Prisma {
 
   export type MotorcycleCreateManyClientInputEnvelope = {
     data: MotorcycleCreateManyClientInput | MotorcycleCreateManyClientInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MotorcycleHistoryCreateWithoutClientInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorcycle: MotorcycleCreateNestedOneWithoutHistoriesInput
+    enterprise?: EnterpriseCreateNestedOneWithoutHistoriesInput
+    incidents?: IncidentCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryUncheckedCreateWithoutClientInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    enterpriseId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    incidents?: IncidentUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryCreateOrConnectWithoutClientInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    create: XOR<MotorcycleHistoryCreateWithoutClientInput, MotorcycleHistoryUncheckedCreateWithoutClientInput>
+  }
+
+  export type MotorcycleHistoryCreateManyClientInputEnvelope = {
+    data: MotorcycleHistoryCreateManyClientInput | MotorcycleHistoryCreateManyClientInput[]
     skipDuplicates?: boolean
   }
 
@@ -28073,6 +30483,22 @@ export namespace Prisma {
     data: XOR<MotorcycleUpdateManyMutationInput, MotorcycleUncheckedUpdateManyWithoutClientInput>
   }
 
+  export type MotorcycleHistoryUpsertWithWhereUniqueWithoutClientInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    update: XOR<MotorcycleHistoryUpdateWithoutClientInput, MotorcycleHistoryUncheckedUpdateWithoutClientInput>
+    create: XOR<MotorcycleHistoryCreateWithoutClientInput, MotorcycleHistoryUncheckedCreateWithoutClientInput>
+  }
+
+  export type MotorcycleHistoryUpdateWithWhereUniqueWithoutClientInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    data: XOR<MotorcycleHistoryUpdateWithoutClientInput, MotorcycleHistoryUncheckedUpdateWithoutClientInput>
+  }
+
+  export type MotorcycleHistoryUpdateManyWithWhereWithoutClientInput = {
+    where: MotorcycleHistoryScalarWhereInput
+    data: XOR<MotorcycleHistoryUpdateManyMutationInput, MotorcycleHistoryUncheckedUpdateManyWithoutClientInput>
+  }
+
   export type ClientCreateWithoutTestRidesInput = {
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28080,6 +30506,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutClientInput
     rentals?: RentalCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutTestRidesInput = {
@@ -28089,6 +30516,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     rentals?: RentalUncheckedCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutTestRidesInput = {
@@ -28114,6 +30542,7 @@ export namespace Prisma {
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutTestRidesInput = {
@@ -28134,6 +30563,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutTestRidesInput = {
@@ -28159,6 +30589,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutClientNestedInput
     rentals?: RentalUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutTestRidesInput = {
@@ -28168,6 +30599,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rentals?: RentalUncheckedUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUncheckedUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type MotorcycleUpsertWithoutTestRidesInput = {
@@ -28199,6 +30631,7 @@ export namespace Prisma {
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutTestRidesInput = {
@@ -28219,6 +30652,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type ClientCreateWithoutRentalsInput = {
@@ -28228,6 +30662,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutClientInput
     testRides?: TestRideCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutRentalsInput = {
@@ -28237,6 +30672,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     testRides?: TestRideUncheckedCreateNestedManyWithoutClientInput
     motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutRentalsInput = {
@@ -28262,6 +30698,7 @@ export namespace Prisma {
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutRentalsInput = {
@@ -28282,6 +30719,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutRentalsInput = {
@@ -28307,6 +30745,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutClientNestedInput
     testRides?: TestRideUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutRentalsInput = {
@@ -28316,6 +30755,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     testRides?: TestRideUncheckedUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUncheckedUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type MotorcycleUpsertWithoutRentalsInput = {
@@ -28347,6 +30787,7 @@ export namespace Prisma {
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutRentalsInput = {
@@ -28367,6 +30808,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type ClientCreateWithoutMotorcycleInput = {
@@ -28376,6 +30818,7 @@ export namespace Prisma {
     user?: UserCreateNestedOneWithoutClientInput
     rentals?: RentalCreateNestedManyWithoutClientInput
     testRides?: TestRideCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutClientInput
   }
 
   export type ClientUncheckedCreateWithoutMotorcycleInput = {
@@ -28385,6 +30828,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     rentals?: RentalUncheckedCreateNestedManyWithoutClientInput
     testRides?: TestRideUncheckedCreateNestedManyWithoutClientInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutClientInput
   }
 
   export type ClientCreateOrConnectWithoutMotorcycleInput = {
@@ -28422,6 +30866,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEnterpriseInput
     drivers?: DriverCreateNestedManyWithoutEntrepriseInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutEnterpriseInput
   }
 
   export type EnterpriseUncheckedCreateWithoutMotorcycleInput = {
@@ -28431,6 +30876,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     drivers?: DriverUncheckedCreateNestedManyWithoutEntrepriseInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutEnterpriseInput
   }
 
   export type EnterpriseCreateOrConnectWithoutMotorcycleInput = {
@@ -28507,6 +30953,7 @@ export namespace Prisma {
     cost: number
     createdAt?: Date | string
     updatedAt?: Date | string
+    motorcycleHistory?: MotorcycleHistoryCreateNestedOneWithoutMaintenancesInput
   }
 
   export type MaintenanceUncheckedCreateWithoutMotorcycleInput = {
@@ -28514,6 +30961,7 @@ export namespace Prisma {
     date: Date | string
     description: string
     cost: number
+    motorcycleHistoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -28537,6 +30985,7 @@ export namespace Prisma {
     status: $Enums.IncidentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
+    motorcycleHistory?: MotorcycleHistoryCreateNestedOneWithoutIncidentsInput
   }
 
   export type IncidentUncheckedCreateWithoutMotorcycleInput = {
@@ -28545,6 +30994,7 @@ export namespace Prisma {
     description: string
     reportDate: Date | string
     resolutionDate?: Date | string | null
+    motorcycleHistoryId?: string | null
     status: $Enums.IncidentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -28624,6 +31074,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     entreprise: EnterpriseCreateNestedOneWithoutDriversInput
+    motorcycleHistories?: MotorcycleHistoryCreateNestedManyWithoutDriversInput
   }
 
   export type DriverUncheckedCreateWithoutMotorcycleInput = {
@@ -28636,6 +31087,7 @@ export namespace Prisma {
     emailAddress: string
     createdAt?: Date | string
     updatedAt?: Date | string
+    motorcycleHistories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutDriversInput
   }
 
   export type DriverCreateOrConnectWithoutMotorcycleInput = {
@@ -28645,6 +31097,42 @@ export namespace Prisma {
 
   export type DriverCreateManyMotorcycleInputEnvelope = {
     data: DriverCreateManyMotorcycleInput | DriverCreateManyMotorcycleInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MotorcycleHistoryCreateWithoutMotorcycleInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client?: ClientCreateNestedOneWithoutHistoriesInput
+    enterprise?: EnterpriseCreateNestedOneWithoutHistoriesInput
+    incidents?: IncidentCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    enterpriseId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    incidents?: IncidentUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryCreateOrConnectWithoutMotorcycleInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    create: XOR<MotorcycleHistoryCreateWithoutMotorcycleInput, MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput>
+  }
+
+  export type MotorcycleHistoryCreateManyMotorcycleInputEnvelope = {
+    data: MotorcycleHistoryCreateManyMotorcycleInput | MotorcycleHistoryCreateManyMotorcycleInput[]
     skipDuplicates?: boolean
   }
 
@@ -28666,6 +31154,7 @@ export namespace Prisma {
     user?: UserUpdateOneRequiredWithoutClientNestedInput
     rentals?: RentalUpdateManyWithoutClientNestedInput
     testRides?: TestRideUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutMotorcycleInput = {
@@ -28675,6 +31164,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     rentals?: RentalUncheckedUpdateManyWithoutClientNestedInput
     testRides?: TestRideUncheckedUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type DealerUpsertWithoutMotorcycleInput = {
@@ -28724,6 +31214,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutEnterpriseNestedInput
     drivers?: DriverUpdateManyWithoutEntrepriseNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutEnterpriseNestedInput
   }
 
   export type EnterpriseUncheckedUpdateWithoutMotorcycleInput = {
@@ -28733,6 +31224,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     drivers?: DriverUncheckedUpdateManyWithoutEntrepriseNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutEnterpriseNestedInput
   }
 
   export type TestRideUpsertWithWhereUniqueWithoutMotorcycleInput = {
@@ -28792,6 +31284,7 @@ export namespace Prisma {
     date?: DateTimeFilter<"Maintenance"> | Date | string
     description?: StringFilter<"Maintenance"> | string
     cost?: FloatFilter<"Maintenance"> | number
+    motorcycleHistoryId?: StringNullableFilter<"Maintenance"> | string | null
     createdAt?: DateTimeFilter<"Maintenance"> | Date | string
     updatedAt?: DateTimeFilter<"Maintenance"> | Date | string
   }
@@ -28822,6 +31315,7 @@ export namespace Prisma {
     description?: StringFilter<"Incident"> | string
     reportDate?: DateTimeFilter<"Incident"> | Date | string
     resolutionDate?: DateTimeNullableFilter<"Incident"> | Date | string | null
+    motorcycleHistoryId?: StringNullableFilter<"Incident"> | string | null
     status?: EnumIncidentStatusFilter<"Incident"> | $Enums.IncidentStatus
     createdAt?: DateTimeFilter<"Incident"> | Date | string
     updatedAt?: DateTimeFilter<"Incident"> | Date | string
@@ -28899,6 +31393,22 @@ export namespace Prisma {
     data: XOR<DriverUpdateManyMutationInput, DriverUncheckedUpdateManyWithoutMotorcycleInput>
   }
 
+  export type MotorcycleHistoryUpsertWithWhereUniqueWithoutMotorcycleInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    update: XOR<MotorcycleHistoryUpdateWithoutMotorcycleInput, MotorcycleHistoryUncheckedUpdateWithoutMotorcycleInput>
+    create: XOR<MotorcycleHistoryCreateWithoutMotorcycleInput, MotorcycleHistoryUncheckedCreateWithoutMotorcycleInput>
+  }
+
+  export type MotorcycleHistoryUpdateWithWhereUniqueWithoutMotorcycleInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    data: XOR<MotorcycleHistoryUpdateWithoutMotorcycleInput, MotorcycleHistoryUncheckedUpdateWithoutMotorcycleInput>
+  }
+
+  export type MotorcycleHistoryUpdateManyWithWhereWithoutMotorcycleInput = {
+    where: MotorcycleHistoryScalarWhereInput
+    data: XOR<MotorcycleHistoryUpdateManyMutationInput, MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleInput>
+  }
+
   export type MotorcycleCreateWithoutPartsInput = {
     id?: string
     brand: string
@@ -28917,6 +31427,7 @@ export namespace Prisma {
     breakdowns?: IncidentCreateNestedManyWithoutMotorcycleInput
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutPartsInput = {
@@ -28937,6 +31448,7 @@ export namespace Prisma {
     breakdowns?: IncidentUncheckedCreateNestedManyWithoutMotorcycleInput
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutPartsInput = {
@@ -29004,6 +31516,7 @@ export namespace Prisma {
     breakdowns?: IncidentUpdateManyWithoutMotorcycleNestedInput
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutPartsInput = {
@@ -29024,6 +31537,7 @@ export namespace Prisma {
     breakdowns?: IncidentUncheckedUpdateManyWithoutMotorcycleNestedInput
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type PartUpsertWithoutMotorcyclePartInput = {
@@ -29470,6 +31984,7 @@ export namespace Prisma {
     breakdowns?: IncidentCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutWarrantiesInput = {
@@ -29490,6 +32005,7 @@ export namespace Prisma {
     breakdowns?: IncidentUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutWarrantiesInput = {
@@ -29558,6 +32074,7 @@ export namespace Prisma {
     breakdowns?: IncidentUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutWarrantiesInput = {
@@ -29578,6 +32095,7 @@ export namespace Prisma {
     breakdowns?: IncidentUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type WarrantyPartsUpsertWithWhereUniqueWithoutWarrantyInput = {
@@ -29614,6 +32132,7 @@ export namespace Prisma {
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutMaintenanceInput = {
@@ -29634,11 +32153,43 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutMaintenanceInput = {
     where: MotorcycleWhereUniqueInput
     create: XOR<MotorcycleCreateWithoutMaintenanceInput, MotorcycleUncheckedCreateWithoutMaintenanceInput>
+  }
+
+  export type MotorcycleHistoryCreateWithoutMaintenancesInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorcycle: MotorcycleCreateNestedOneWithoutHistoriesInput
+    client?: ClientCreateNestedOneWithoutHistoriesInput
+    enterprise?: EnterpriseCreateNestedOneWithoutHistoriesInput
+    incidents?: IncidentCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryUncheckedCreateWithoutMaintenancesInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    enterpriseId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    incidents?: IncidentUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryCreateOrConnectWithoutMaintenancesInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    create: XOR<MotorcycleHistoryCreateWithoutMaintenancesInput, MotorcycleHistoryUncheckedCreateWithoutMaintenancesInput>
   }
 
   export type MotorcycleUpsertWithoutMaintenanceInput = {
@@ -29670,6 +32221,7 @@ export namespace Prisma {
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutMaintenanceInput = {
@@ -29690,6 +32242,44 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
+  }
+
+  export type MotorcycleHistoryUpsertWithoutMaintenancesInput = {
+    update: XOR<MotorcycleHistoryUpdateWithoutMaintenancesInput, MotorcycleHistoryUncheckedUpdateWithoutMaintenancesInput>
+    create: XOR<MotorcycleHistoryCreateWithoutMaintenancesInput, MotorcycleHistoryUncheckedCreateWithoutMaintenancesInput>
+    where?: MotorcycleHistoryWhereInput
+  }
+
+  export type MotorcycleHistoryUpdateToOneWithWhereWithoutMaintenancesInput = {
+    where?: MotorcycleHistoryWhereInput
+    data: XOR<MotorcycleHistoryUpdateWithoutMaintenancesInput, MotorcycleHistoryUncheckedUpdateWithoutMaintenancesInput>
+  }
+
+  export type MotorcycleHistoryUpdateWithoutMaintenancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutHistoriesNestedInput
+    client?: ClientUpdateOneWithoutHistoriesNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutHistoriesNestedInput
+    incidents?: IncidentUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateWithoutMaintenancesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidents?: IncidentUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUncheckedUpdateManyWithoutMotorcycleHistoriesNestedInput
   }
 
   export type MotorcycleCreateWithoutBreakdownsInput = {
@@ -29710,6 +32300,7 @@ export namespace Prisma {
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutBreakdownsInput = {
@@ -29730,11 +32321,43 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
     drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutBreakdownsInput = {
     where: MotorcycleWhereUniqueInput
     create: XOR<MotorcycleCreateWithoutBreakdownsInput, MotorcycleUncheckedCreateWithoutBreakdownsInput>
+  }
+
+  export type MotorcycleHistoryCreateWithoutIncidentsInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorcycle: MotorcycleCreateNestedOneWithoutHistoriesInput
+    client?: ClientCreateNestedOneWithoutHistoriesInput
+    enterprise?: EnterpriseCreateNestedOneWithoutHistoriesInput
+    maintenances?: MaintenanceCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryUncheckedCreateWithoutIncidentsInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    enterpriseId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleHistoriesInput
+  }
+
+  export type MotorcycleHistoryCreateOrConnectWithoutIncidentsInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    create: XOR<MotorcycleHistoryCreateWithoutIncidentsInput, MotorcycleHistoryUncheckedCreateWithoutIncidentsInput>
   }
 
   export type MotorcycleUpsertWithoutBreakdownsInput = {
@@ -29766,6 +32389,7 @@ export namespace Prisma {
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutBreakdownsInput = {
@@ -29786,6 +32410,44 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
+  }
+
+  export type MotorcycleHistoryUpsertWithoutIncidentsInput = {
+    update: XOR<MotorcycleHistoryUpdateWithoutIncidentsInput, MotorcycleHistoryUncheckedUpdateWithoutIncidentsInput>
+    create: XOR<MotorcycleHistoryCreateWithoutIncidentsInput, MotorcycleHistoryUncheckedCreateWithoutIncidentsInput>
+    where?: MotorcycleHistoryWhereInput
+  }
+
+  export type MotorcycleHistoryUpdateToOneWithWhereWithoutIncidentsInput = {
+    where?: MotorcycleHistoryWhereInput
+    data: XOR<MotorcycleHistoryUpdateWithoutIncidentsInput, MotorcycleHistoryUncheckedUpdateWithoutIncidentsInput>
+  }
+
+  export type MotorcycleHistoryUpdateWithoutIncidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutHistoriesNestedInput
+    client?: ClientUpdateOneWithoutHistoriesNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutHistoriesNestedInput
+    maintenances?: MaintenanceUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateWithoutIncidentsInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUncheckedUpdateManyWithoutMotorcycleHistoriesNestedInput
   }
 
   export type EnterpriseCreateWithoutDriversInput = {
@@ -29795,6 +32457,7 @@ export namespace Prisma {
     updatedAt?: Date | string
     user?: UserCreateNestedOneWithoutEnterpriseInput
     motorcycle?: MotorcycleCreateNestedManyWithoutEnterpriseInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutEnterpriseInput
   }
 
   export type EnterpriseUncheckedCreateWithoutDriversInput = {
@@ -29804,6 +32467,7 @@ export namespace Prisma {
     createdAt?: Date | string
     updatedAt?: Date | string
     motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutEnterpriseInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutEnterpriseInput
   }
 
   export type EnterpriseCreateOrConnectWithoutDriversInput = {
@@ -29829,6 +32493,7 @@ export namespace Prisma {
     breakdowns?: IncidentCreateNestedManyWithoutMotorcycleInput
     warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleUncheckedCreateWithoutDriversInput = {
@@ -29849,11 +32514,43 @@ export namespace Prisma {
     breakdowns?: IncidentUncheckedCreateNestedManyWithoutMotorcycleInput
     warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
     parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
+    histories?: MotorcycleHistoryUncheckedCreateNestedManyWithoutMotorcycleInput
   }
 
   export type MotorcycleCreateOrConnectWithoutDriversInput = {
     where: MotorcycleWhereUniqueInput
     create: XOR<MotorcycleCreateWithoutDriversInput, MotorcycleUncheckedCreateWithoutDriversInput>
+  }
+
+  export type MotorcycleHistoryCreateWithoutDriversInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorcycle: MotorcycleCreateNestedOneWithoutHistoriesInput
+    client?: ClientCreateNestedOneWithoutHistoriesInput
+    enterprise?: EnterpriseCreateNestedOneWithoutHistoriesInput
+    incidents?: IncidentCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceCreateNestedManyWithoutMotorcycleHistoryInput
+  }
+
+  export type MotorcycleHistoryUncheckedCreateWithoutDriversInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    enterpriseId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    incidents?: IncidentUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+    maintenances?: MaintenanceUncheckedCreateNestedManyWithoutMotorcycleHistoryInput
+  }
+
+  export type MotorcycleHistoryCreateOrConnectWithoutDriversInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    create: XOR<MotorcycleHistoryCreateWithoutDriversInput, MotorcycleHistoryUncheckedCreateWithoutDriversInput>
   }
 
   export type EnterpriseUpsertWithoutDriversInput = {
@@ -29874,6 +32571,7 @@ export namespace Prisma {
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     user?: UserUpdateOneRequiredWithoutEnterpriseNestedInput
     motorcycle?: MotorcycleUpdateManyWithoutEnterpriseNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutEnterpriseNestedInput
   }
 
   export type EnterpriseUncheckedUpdateWithoutDriversInput = {
@@ -29883,6 +32581,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     motorcycle?: MotorcycleUncheckedUpdateManyWithoutEnterpriseNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutEnterpriseNestedInput
   }
 
   export type MotorcycleUpsertWithoutDriversInput = {
@@ -29914,6 +32613,7 @@ export namespace Prisma {
     breakdowns?: IncidentUpdateManyWithoutMotorcycleNestedInput
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutDriversInput = {
@@ -29934,6 +32634,378 @@ export namespace Prisma {
     breakdowns?: IncidentUncheckedUpdateManyWithoutMotorcycleNestedInput
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
+  }
+
+  export type MotorcycleHistoryUpsertWithWhereUniqueWithoutDriversInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    update: XOR<MotorcycleHistoryUpdateWithoutDriversInput, MotorcycleHistoryUncheckedUpdateWithoutDriversInput>
+    create: XOR<MotorcycleHistoryCreateWithoutDriversInput, MotorcycleHistoryUncheckedCreateWithoutDriversInput>
+  }
+
+  export type MotorcycleHistoryUpdateWithWhereUniqueWithoutDriversInput = {
+    where: MotorcycleHistoryWhereUniqueInput
+    data: XOR<MotorcycleHistoryUpdateWithoutDriversInput, MotorcycleHistoryUncheckedUpdateWithoutDriversInput>
+  }
+
+  export type MotorcycleHistoryUpdateManyWithWhereWithoutDriversInput = {
+    where: MotorcycleHistoryScalarWhereInput
+    data: XOR<MotorcycleHistoryUpdateManyMutationInput, MotorcycleHistoryUncheckedUpdateManyWithoutDriversInput>
+  }
+
+  export type MotorcycleCreateWithoutHistoriesInput = {
+    id?: string
+    brand: string
+    model: string
+    year: number
+    registrationNumber: string
+    status: $Enums.MotorcycleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    client?: ClientCreateNestedOneWithoutMotorcycleInput
+    dealer: DealerCreateNestedOneWithoutMotorcycleInput
+    enterprise?: EnterpriseCreateNestedOneWithoutMotorcycleInput
+    testRides?: TestRideCreateNestedManyWithoutMotorcycleInput
+    rentals?: RentalCreateNestedManyWithoutMotorcycleInput
+    maintenance?: MaintenanceCreateNestedManyWithoutMotorcycleInput
+    breakdowns?: IncidentCreateNestedManyWithoutMotorcycleInput
+    warranties?: WarrantyCreateNestedManyWithoutMotorcycleInput
+    parts?: MotorcyclePartCreateNestedManyWithoutMotorcycleInput
+    drivers?: DriverCreateNestedManyWithoutMotorcycleInput
+  }
+
+  export type MotorcycleUncheckedCreateWithoutHistoriesInput = {
+    id?: string
+    clientId?: string | null
+    dealerId: string
+    enterpriseId?: string | null
+    brand: string
+    model: string
+    year: number
+    registrationNumber: string
+    status: $Enums.MotorcycleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    testRides?: TestRideUncheckedCreateNestedManyWithoutMotorcycleInput
+    rentals?: RentalUncheckedCreateNestedManyWithoutMotorcycleInput
+    maintenance?: MaintenanceUncheckedCreateNestedManyWithoutMotorcycleInput
+    breakdowns?: IncidentUncheckedCreateNestedManyWithoutMotorcycleInput
+    warranties?: WarrantyUncheckedCreateNestedManyWithoutMotorcycleInput
+    parts?: MotorcyclePartUncheckedCreateNestedManyWithoutMotorcycleInput
+    drivers?: DriverUncheckedCreateNestedManyWithoutMotorcycleInput
+  }
+
+  export type MotorcycleCreateOrConnectWithoutHistoriesInput = {
+    where: MotorcycleWhereUniqueInput
+    create: XOR<MotorcycleCreateWithoutHistoriesInput, MotorcycleUncheckedCreateWithoutHistoriesInput>
+  }
+
+  export type ClientCreateWithoutHistoriesInput = {
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    dealer: DealerCreateNestedOneWithoutClientsInput
+    user?: UserCreateNestedOneWithoutClientInput
+    rentals?: RentalCreateNestedManyWithoutClientInput
+    testRides?: TestRideCreateNestedManyWithoutClientInput
+    motorcycle?: MotorcycleCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientUncheckedCreateWithoutHistoriesInput = {
+    id?: string
+    idDealer: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    rentals?: RentalUncheckedCreateNestedManyWithoutClientInput
+    testRides?: TestRideUncheckedCreateNestedManyWithoutClientInput
+    motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutClientInput
+  }
+
+  export type ClientCreateOrConnectWithoutHistoriesInput = {
+    where: ClientWhereUniqueInput
+    create: XOR<ClientCreateWithoutHistoriesInput, ClientUncheckedCreateWithoutHistoriesInput>
+  }
+
+  export type EnterpriseCreateWithoutHistoriesInput = {
+    taxNumber: string
+    industryType: $Enums.IndustryType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    user?: UserCreateNestedOneWithoutEnterpriseInput
+    drivers?: DriverCreateNestedManyWithoutEntrepriseInput
+    motorcycle?: MotorcycleCreateNestedManyWithoutEnterpriseInput
+  }
+
+  export type EnterpriseUncheckedCreateWithoutHistoriesInput = {
+    id?: string
+    taxNumber: string
+    industryType: $Enums.IndustryType
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    drivers?: DriverUncheckedCreateNestedManyWithoutEntrepriseInput
+    motorcycle?: MotorcycleUncheckedCreateNestedManyWithoutEnterpriseInput
+  }
+
+  export type EnterpriseCreateOrConnectWithoutHistoriesInput = {
+    where: EnterpriseWhereUniqueInput
+    create: XOR<EnterpriseCreateWithoutHistoriesInput, EnterpriseUncheckedCreateWithoutHistoriesInput>
+  }
+
+  export type IncidentCreateWithoutMotorcycleHistoryInput = {
+    id?: string
+    type: $Enums.IncidentType
+    description: string
+    reportDate: Date | string
+    resolutionDate?: Date | string | null
+    status: $Enums.IncidentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorcycle: MotorcycleCreateNestedOneWithoutBreakdownsInput
+  }
+
+  export type IncidentUncheckedCreateWithoutMotorcycleHistoryInput = {
+    id?: string
+    idMotorcycle: string
+    type: $Enums.IncidentType
+    description: string
+    reportDate: Date | string
+    resolutionDate?: Date | string | null
+    status: $Enums.IncidentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncidentCreateOrConnectWithoutMotorcycleHistoryInput = {
+    where: IncidentWhereUniqueInput
+    create: XOR<IncidentCreateWithoutMotorcycleHistoryInput, IncidentUncheckedCreateWithoutMotorcycleHistoryInput>
+  }
+
+  export type IncidentCreateManyMotorcycleHistoryInputEnvelope = {
+    data: IncidentCreateManyMotorcycleHistoryInput | IncidentCreateManyMotorcycleHistoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type MaintenanceCreateWithoutMotorcycleHistoryInput = {
+    id?: string
+    date: Date | string
+    description: string
+    cost: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    motorcycle: MotorcycleCreateNestedOneWithoutMaintenanceInput
+  }
+
+  export type MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput = {
+    id?: string
+    idMotorcycle: string
+    date: Date | string
+    description: string
+    cost: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceCreateOrConnectWithoutMotorcycleHistoryInput = {
+    where: MaintenanceWhereUniqueInput
+    create: XOR<MaintenanceCreateWithoutMotorcycleHistoryInput, MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput>
+  }
+
+  export type MaintenanceCreateManyMotorcycleHistoryInputEnvelope = {
+    data: MaintenanceCreateManyMotorcycleHistoryInput | MaintenanceCreateManyMotorcycleHistoryInput[]
+    skipDuplicates?: boolean
+  }
+
+  export type DriverCreateWithoutMotorcycleHistoriesInput = {
+    id?: string
+    firstname: string
+    lastname: string
+    licenseNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
+    emailAddress: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+    entreprise: EnterpriseCreateNestedOneWithoutDriversInput
+    motorcycle: MotorcycleCreateNestedOneWithoutDriversInput
+  }
+
+  export type DriverUncheckedCreateWithoutMotorcycleHistoriesInput = {
+    id?: string
+    enterpriseId: string
+    motorcycleId: string
+    firstname: string
+    lastname: string
+    licenseNumber: string
+    phoneNumber: JsonNullValueInput | InputJsonValue
+    emailAddress: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type DriverCreateOrConnectWithoutMotorcycleHistoriesInput = {
+    where: DriverWhereUniqueInput
+    create: XOR<DriverCreateWithoutMotorcycleHistoriesInput, DriverUncheckedCreateWithoutMotorcycleHistoriesInput>
+  }
+
+  export type MotorcycleUpsertWithoutHistoriesInput = {
+    update: XOR<MotorcycleUpdateWithoutHistoriesInput, MotorcycleUncheckedUpdateWithoutHistoriesInput>
+    create: XOR<MotorcycleCreateWithoutHistoriesInput, MotorcycleUncheckedCreateWithoutHistoriesInput>
+    where?: MotorcycleWhereInput
+  }
+
+  export type MotorcycleUpdateToOneWithWhereWithoutHistoriesInput = {
+    where?: MotorcycleWhereInput
+    data: XOR<MotorcycleUpdateWithoutHistoriesInput, MotorcycleUncheckedUpdateWithoutHistoriesInput>
+  }
+
+  export type MotorcycleUpdateWithoutHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    brand?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    registrationNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumMotorcycleStatusFieldUpdateOperationsInput | $Enums.MotorcycleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneWithoutMotorcycleNestedInput
+    dealer?: DealerUpdateOneRequiredWithoutMotorcycleNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutMotorcycleNestedInput
+    testRides?: TestRideUpdateManyWithoutMotorcycleNestedInput
+    rentals?: RentalUpdateManyWithoutMotorcycleNestedInput
+    maintenance?: MaintenanceUpdateManyWithoutMotorcycleNestedInput
+    breakdowns?: IncidentUpdateManyWithoutMotorcycleNestedInput
+    warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
+    parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
+    drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+  }
+
+  export type MotorcycleUncheckedUpdateWithoutHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    dealerId?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
+    brand?: StringFieldUpdateOperationsInput | string
+    model?: StringFieldUpdateOperationsInput | string
+    year?: IntFieldUpdateOperationsInput | number
+    registrationNumber?: StringFieldUpdateOperationsInput | string
+    status?: EnumMotorcycleStatusFieldUpdateOperationsInput | $Enums.MotorcycleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    testRides?: TestRideUncheckedUpdateManyWithoutMotorcycleNestedInput
+    rentals?: RentalUncheckedUpdateManyWithoutMotorcycleNestedInput
+    maintenance?: MaintenanceUncheckedUpdateManyWithoutMotorcycleNestedInput
+    breakdowns?: IncidentUncheckedUpdateManyWithoutMotorcycleNestedInput
+    warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
+    parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
+    drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+  }
+
+  export type ClientUpsertWithoutHistoriesInput = {
+    update: XOR<ClientUpdateWithoutHistoriesInput, ClientUncheckedUpdateWithoutHistoriesInput>
+    create: XOR<ClientCreateWithoutHistoriesInput, ClientUncheckedCreateWithoutHistoriesInput>
+    where?: ClientWhereInput
+  }
+
+  export type ClientUpdateToOneWithWhereWithoutHistoriesInput = {
+    where?: ClientWhereInput
+    data: XOR<ClientUpdateWithoutHistoriesInput, ClientUncheckedUpdateWithoutHistoriesInput>
+  }
+
+  export type ClientUpdateWithoutHistoriesInput = {
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    dealer?: DealerUpdateOneRequiredWithoutClientsNestedInput
+    user?: UserUpdateOneRequiredWithoutClientNestedInput
+    rentals?: RentalUpdateManyWithoutClientNestedInput
+    testRides?: TestRideUpdateManyWithoutClientNestedInput
+    motorcycle?: MotorcycleUpdateManyWithoutClientNestedInput
+  }
+
+  export type ClientUncheckedUpdateWithoutHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idDealer?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    rentals?: RentalUncheckedUpdateManyWithoutClientNestedInput
+    testRides?: TestRideUncheckedUpdateManyWithoutClientNestedInput
+    motorcycle?: MotorcycleUncheckedUpdateManyWithoutClientNestedInput
+  }
+
+  export type EnterpriseUpsertWithoutHistoriesInput = {
+    update: XOR<EnterpriseUpdateWithoutHistoriesInput, EnterpriseUncheckedUpdateWithoutHistoriesInput>
+    create: XOR<EnterpriseCreateWithoutHistoriesInput, EnterpriseUncheckedCreateWithoutHistoriesInput>
+    where?: EnterpriseWhereInput
+  }
+
+  export type EnterpriseUpdateToOneWithWhereWithoutHistoriesInput = {
+    where?: EnterpriseWhereInput
+    data: XOR<EnterpriseUpdateWithoutHistoriesInput, EnterpriseUncheckedUpdateWithoutHistoriesInput>
+  }
+
+  export type EnterpriseUpdateWithoutHistoriesInput = {
+    taxNumber?: StringFieldUpdateOperationsInput | string
+    industryType?: EnumIndustryTypeFieldUpdateOperationsInput | $Enums.IndustryType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    user?: UserUpdateOneRequiredWithoutEnterpriseNestedInput
+    drivers?: DriverUpdateManyWithoutEntrepriseNestedInput
+    motorcycle?: MotorcycleUpdateManyWithoutEnterpriseNestedInput
+  }
+
+  export type EnterpriseUncheckedUpdateWithoutHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    taxNumber?: StringFieldUpdateOperationsInput | string
+    industryType?: EnumIndustryTypeFieldUpdateOperationsInput | $Enums.IndustryType
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    drivers?: DriverUncheckedUpdateManyWithoutEntrepriseNestedInput
+    motorcycle?: MotorcycleUncheckedUpdateManyWithoutEnterpriseNestedInput
+  }
+
+  export type IncidentUpsertWithWhereUniqueWithoutMotorcycleHistoryInput = {
+    where: IncidentWhereUniqueInput
+    update: XOR<IncidentUpdateWithoutMotorcycleHistoryInput, IncidentUncheckedUpdateWithoutMotorcycleHistoryInput>
+    create: XOR<IncidentCreateWithoutMotorcycleHistoryInput, IncidentUncheckedCreateWithoutMotorcycleHistoryInput>
+  }
+
+  export type IncidentUpdateWithWhereUniqueWithoutMotorcycleHistoryInput = {
+    where: IncidentWhereUniqueInput
+    data: XOR<IncidentUpdateWithoutMotorcycleHistoryInput, IncidentUncheckedUpdateWithoutMotorcycleHistoryInput>
+  }
+
+  export type IncidentUpdateManyWithWhereWithoutMotorcycleHistoryInput = {
+    where: IncidentScalarWhereInput
+    data: XOR<IncidentUpdateManyMutationInput, IncidentUncheckedUpdateManyWithoutMotorcycleHistoryInput>
+  }
+
+  export type MaintenanceUpsertWithWhereUniqueWithoutMotorcycleHistoryInput = {
+    where: MaintenanceWhereUniqueInput
+    update: XOR<MaintenanceUpdateWithoutMotorcycleHistoryInput, MaintenanceUncheckedUpdateWithoutMotorcycleHistoryInput>
+    create: XOR<MaintenanceCreateWithoutMotorcycleHistoryInput, MaintenanceUncheckedCreateWithoutMotorcycleHistoryInput>
+  }
+
+  export type MaintenanceUpdateWithWhereUniqueWithoutMotorcycleHistoryInput = {
+    where: MaintenanceWhereUniqueInput
+    data: XOR<MaintenanceUpdateWithoutMotorcycleHistoryInput, MaintenanceUncheckedUpdateWithoutMotorcycleHistoryInput>
+  }
+
+  export type MaintenanceUpdateManyWithWhereWithoutMotorcycleHistoryInput = {
+    where: MaintenanceScalarWhereInput
+    data: XOR<MaintenanceUpdateManyMutationInput, MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryInput>
+  }
+
+  export type DriverUpsertWithWhereUniqueWithoutMotorcycleHistoriesInput = {
+    where: DriverWhereUniqueInput
+    update: XOR<DriverUpdateWithoutMotorcycleHistoriesInput, DriverUncheckedUpdateWithoutMotorcycleHistoriesInput>
+    create: XOR<DriverCreateWithoutMotorcycleHistoriesInput, DriverUncheckedCreateWithoutMotorcycleHistoriesInput>
+  }
+
+  export type DriverUpdateWithWhereUniqueWithoutMotorcycleHistoriesInput = {
+    where: DriverWhereUniqueInput
+    data: XOR<DriverUpdateWithoutMotorcycleHistoriesInput, DriverUncheckedUpdateWithoutMotorcycleHistoriesInput>
+  }
+
+  export type DriverUpdateManyWithWhereWithoutMotorcycleHistoriesInput = {
+    where: DriverScalarWhereInput
+    data: XOR<DriverUpdateManyMutationInput, DriverUncheckedUpdateManyWithoutMotorcycleHistoriesInput>
   }
 
   export type NotificationCreateManyUserInput = {
@@ -30009,6 +33081,7 @@ export namespace Prisma {
     rentals?: RentalUpdateManyWithoutClientNestedInput
     testRides?: TestRideUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateWithoutDealerInput = {
@@ -30018,6 +33091,7 @@ export namespace Prisma {
     rentals?: RentalUncheckedUpdateManyWithoutClientNestedInput
     testRides?: TestRideUncheckedUpdateManyWithoutClientNestedInput
     motorcycle?: MotorcycleUncheckedUpdateManyWithoutClientNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutClientNestedInput
   }
 
   export type ClientUncheckedUpdateManyWithoutDealerInput = {
@@ -30044,6 +33118,7 @@ export namespace Prisma {
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutDealerInput = {
@@ -30064,6 +33139,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateManyWithoutDealerInput = {
@@ -30141,6 +33217,16 @@ export namespace Prisma {
     updatedAt?: Date | string
   }
 
+  export type MotorcycleHistoryCreateManyEnterpriseInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
   export type DriverUpdateWithoutEntrepriseInput = {
     id?: StringFieldUpdateOperationsInput | string
     firstname?: StringFieldUpdateOperationsInput | string
@@ -30151,6 +33237,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     motorcycle?: MotorcycleUpdateOneRequiredWithoutDriversNestedInput
+    motorcycleHistories?: MotorcycleHistoryUpdateManyWithoutDriversNestedInput
   }
 
   export type DriverUncheckedUpdateWithoutEntrepriseInput = {
@@ -30163,6 +33250,7 @@ export namespace Prisma {
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycleHistories?: MotorcycleHistoryUncheckedUpdateManyWithoutDriversNestedInput
   }
 
   export type DriverUncheckedUpdateManyWithoutEntrepriseInput = {
@@ -30195,6 +33283,7 @@ export namespace Prisma {
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutEnterpriseInput = {
@@ -30215,6 +33304,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateManyWithoutEnterpriseInput = {
@@ -30226,6 +33316,42 @@ export namespace Prisma {
     year?: IntFieldUpdateOperationsInput | number
     registrationNumber?: StringFieldUpdateOperationsInput | string
     status?: EnumMotorcycleStatusFieldUpdateOperationsInput | $Enums.MotorcycleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotorcycleHistoryUpdateWithoutEnterpriseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutHistoriesNestedInput
+    client?: ClientUpdateOneWithoutHistoriesNestedInput
+    incidents?: IncidentUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateWithoutEnterpriseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidents?: IncidentUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUncheckedUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyWithoutEnterpriseInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30260,6 +33386,16 @@ export namespace Prisma {
     year: number
     registrationNumber: string
     status: $Enums.MotorcycleStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MotorcycleHistoryCreateManyClientInput = {
+    id?: string
+    motorcycleId: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    enterpriseId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30345,6 +33481,7 @@ export namespace Prisma {
     warranties?: WarrantyUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateWithoutClientInput = {
@@ -30365,6 +33502,7 @@ export namespace Prisma {
     warranties?: WarrantyUncheckedUpdateManyWithoutMotorcycleNestedInput
     parts?: MotorcyclePartUncheckedUpdateManyWithoutMotorcycleNestedInput
     drivers?: DriverUncheckedUpdateManyWithoutMotorcycleNestedInput
+    histories?: MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleNestedInput
   }
 
   export type MotorcycleUncheckedUpdateManyWithoutClientInput = {
@@ -30376,6 +33514,42 @@ export namespace Prisma {
     year?: IntFieldUpdateOperationsInput | number
     registrationNumber?: StringFieldUpdateOperationsInput | string
     status?: EnumMotorcycleStatusFieldUpdateOperationsInput | $Enums.MotorcycleStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotorcycleHistoryUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutHistoriesNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutHistoriesNestedInput
+    incidents?: IncidentUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidents?: IncidentUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUncheckedUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyWithoutClientInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30406,6 +33580,7 @@ export namespace Prisma {
     date: Date | string
     description: string
     cost: number
+    motorcycleHistoryId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30416,6 +33591,7 @@ export namespace Prisma {
     description: string
     reportDate: Date | string
     resolutionDate?: Date | string | null
+    motorcycleHistoryId?: string | null
     status: $Enums.IncidentStatus
     createdAt?: Date | string
     updatedAt?: Date | string
@@ -30445,6 +33621,16 @@ export namespace Prisma {
     licenseNumber: string
     phoneNumber: JsonNullValueInput | InputJsonValue
     emailAddress: string
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MotorcycleHistoryCreateManyMotorcycleInput = {
+    id?: string
+    startDate: Date | string
+    endDate?: Date | string | null
+    clientId?: string | null
+    enterpriseId?: string | null
     createdAt?: Date | string
     updatedAt?: Date | string
   }
@@ -30519,6 +33705,7 @@ export namespace Prisma {
     cost?: FloatFieldUpdateOperationsInput | number
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycleHistory?: MotorcycleHistoryUpdateOneWithoutMaintenancesNestedInput
   }
 
   export type MaintenanceUncheckedUpdateWithoutMotorcycleInput = {
@@ -30526,6 +33713,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    motorcycleHistoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30535,6 +33723,7 @@ export namespace Prisma {
     date?: DateTimeFieldUpdateOperationsInput | Date | string
     description?: StringFieldUpdateOperationsInput | string
     cost?: FloatFieldUpdateOperationsInput | number
+    motorcycleHistoryId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30548,6 +33737,7 @@ export namespace Prisma {
     status?: EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycleHistory?: MotorcycleHistoryUpdateOneWithoutIncidentsNestedInput
   }
 
   export type IncidentUncheckedUpdateWithoutMotorcycleInput = {
@@ -30556,6 +33746,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motorcycleHistoryId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30567,6 +33758,7 @@ export namespace Prisma {
     description?: StringFieldUpdateOperationsInput | string
     reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
     resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    motorcycleHistoryId?: NullableStringFieldUpdateOperationsInput | string | null
     status?: EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -30632,6 +33824,7 @@ export namespace Prisma {
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
     entreprise?: EnterpriseUpdateOneRequiredWithoutDriversNestedInput
+    motorcycleHistories?: MotorcycleHistoryUpdateManyWithoutDriversNestedInput
   }
 
   export type DriverUncheckedUpdateWithoutMotorcycleInput = {
@@ -30644,6 +33837,7 @@ export namespace Prisma {
     emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycleHistories?: MotorcycleHistoryUncheckedUpdateManyWithoutDriversNestedInput
   }
 
   export type DriverUncheckedUpdateManyWithoutMotorcycleInput = {
@@ -30654,6 +33848,42 @@ export namespace Prisma {
     licenseNumber?: StringFieldUpdateOperationsInput | string
     phoneNumber?: JsonNullValueInput | InputJsonValue
     emailAddress?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotorcycleHistoryUpdateWithoutMotorcycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    client?: ClientUpdateOneWithoutHistoriesNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutHistoriesNestedInput
+    incidents?: IncidentUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateWithoutMotorcycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidents?: IncidentUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    drivers?: DriverUncheckedUpdateManyWithoutMotorcycleHistoriesNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyWithoutMotorcycleInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -30814,6 +34044,170 @@ export namespace Prisma {
     status?: EnumWarrantyStatusFieldUpdateOperationsInput | $Enums.WarrantyStatus
     coveredCost?: FloatFieldUpdateOperationsInput | number
     remainingCost?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MotorcycleHistoryUpdateWithoutDriversInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutHistoriesNestedInput
+    client?: ClientUpdateOneWithoutHistoriesNestedInput
+    enterprise?: EnterpriseUpdateOneWithoutHistoriesNestedInput
+    incidents?: IncidentUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUpdateManyWithoutMotorcycleHistoryNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateWithoutDriversInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    incidents?: IncidentUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+    maintenances?: MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryNestedInput
+  }
+
+  export type MotorcycleHistoryUncheckedUpdateManyWithoutDriversInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    startDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    endDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    clientId?: NullableStringFieldUpdateOperationsInput | string | null
+    enterpriseId?: NullableStringFieldUpdateOperationsInput | string | null
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentCreateManyMotorcycleHistoryInput = {
+    id?: string
+    idMotorcycle: string
+    type: $Enums.IncidentType
+    description: string
+    reportDate: Date | string
+    resolutionDate?: Date | string | null
+    status: $Enums.IncidentStatus
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type MaintenanceCreateManyMotorcycleHistoryInput = {
+    id?: string
+    idMotorcycle: string
+    date: Date | string
+    description: string
+    cost: number
+    createdAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type IncidentUpdateWithoutMotorcycleHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    type?: EnumIncidentTypeFieldUpdateOperationsInput | $Enums.IncidentType
+    description?: StringFieldUpdateOperationsInput | string
+    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutBreakdownsNestedInput
+  }
+
+  export type IncidentUncheckedUpdateWithoutMotorcycleHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idMotorcycle?: StringFieldUpdateOperationsInput | string
+    type?: EnumIncidentTypeFieldUpdateOperationsInput | $Enums.IncidentType
+    description?: StringFieldUpdateOperationsInput | string
+    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type IncidentUncheckedUpdateManyWithoutMotorcycleHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idMotorcycle?: StringFieldUpdateOperationsInput | string
+    type?: EnumIncidentTypeFieldUpdateOperationsInput | $Enums.IncidentType
+    description?: StringFieldUpdateOperationsInput | string
+    reportDate?: DateTimeFieldUpdateOperationsInput | Date | string
+    resolutionDate?: NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+    status?: EnumIncidentStatusFieldUpdateOperationsInput | $Enums.IncidentStatus
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceUpdateWithoutMotorcycleHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutMaintenanceNestedInput
+  }
+
+  export type MaintenanceUncheckedUpdateWithoutMotorcycleHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idMotorcycle?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type MaintenanceUncheckedUpdateManyWithoutMotorcycleHistoryInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    idMotorcycle?: StringFieldUpdateOperationsInput | string
+    date?: DateTimeFieldUpdateOperationsInput | Date | string
+    description?: StringFieldUpdateOperationsInput | string
+    cost?: FloatFieldUpdateOperationsInput | number
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriverUpdateWithoutMotorcycleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    entreprise?: EnterpriseUpdateOneRequiredWithoutDriversNestedInput
+    motorcycle?: MotorcycleUpdateOneRequiredWithoutDriversNestedInput
+  }
+
+  export type DriverUncheckedUpdateWithoutMotorcycleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
+    emailAddress?: StringFieldUpdateOperationsInput | string
+    createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type DriverUncheckedUpdateManyWithoutMotorcycleHistoriesInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    enterpriseId?: StringFieldUpdateOperationsInput | string
+    motorcycleId?: StringFieldUpdateOperationsInput | string
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: StringFieldUpdateOperationsInput | string
+    licenseNumber?: StringFieldUpdateOperationsInput | string
+    phoneNumber?: JsonNullValueInput | InputJsonValue
+    emailAddress?: StringFieldUpdateOperationsInput | string
     createdAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }

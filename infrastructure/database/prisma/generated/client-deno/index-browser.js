@@ -258,6 +258,7 @@ exports.Prisma.MaintenanceScalarFieldEnum = {
   date: 'date',
   description: 'description',
   cost: 'cost',
+  motorcycleHistoryId: 'motorcycleHistoryId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -269,6 +270,7 @@ exports.Prisma.IncidentScalarFieldEnum = {
   description: 'description',
   reportDate: 'reportDate',
   resolutionDate: 'resolutionDate',
+  motorcycleHistoryId: 'motorcycleHistoryId',
   status: 'status',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -283,6 +285,17 @@ exports.Prisma.DriverScalarFieldEnum = {
   licenseNumber: 'licenseNumber',
   phoneNumber: 'phoneNumber',
   emailAddress: 'emailAddress',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+};
+
+exports.Prisma.MotorcycleHistoryScalarFieldEnum = {
+  id: 'id',
+  motorcycleId: 'motorcycleId',
+  startDate: 'startDate',
+  endDate: 'endDate',
+  clientId: 'clientId',
+  enterpriseId: 'enterpriseId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 };
@@ -383,7 +396,8 @@ exports.Prisma.ModelName = {
   Warranty: 'Warranty',
   Maintenance: 'Maintenance',
   Incident: 'Incident',
-  Driver: 'Driver'
+  Driver: 'Driver',
+  MotorcycleHistory: 'MotorcycleHistory'
 };
 
 /**
