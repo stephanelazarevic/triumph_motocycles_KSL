@@ -8,10 +8,10 @@ import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
 
 export class AuthenticationController {
   constructor(
-    private userRepository: UserRepository,
-    private passwordService: PasswordService,
-    private tokenGeneratorService: TokenGeneratorService
-) {}
+    private readonly userRepository: UserRepository,
+    private readonly passwordService: PasswordService,
+    private readonly tokenGeneratorService: TokenGeneratorService
+  ) {}
 
   async signIn(context: Context) {
    const body = await context.req.json();
