@@ -1,12 +1,11 @@
-import { Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
+import { Hono } from "https://deno.land/x/hono@v3.11.4/mod.ts";
 import { MotorcycleController } from "../controllers/MotorcycleController.ts";
-import { motorcycleRepository, dealerRepository, warrantyRepository } from "../config/repositoriesDependencies.ts";
-import { handleRequest } from "../utils/handleRequest.ts";
+import { motorcycleRepository, motorcycleHistoryRepository } from "../config/repositoriesDependencies.ts";
 
-const motorcycleRouter = new Router();
+const motorcycleRouter = new Hono();
 
-const motorcycleController = new MotorcycleController(motorcycleRepository, dealerRepository, warrantyRepository);
+const motorcycleController = new MotorcycleController(motorcycleRepository, motorcycleHistoryRepository);
 
-motorcycleRouter.get("/api/motorcycle", handleRequest(motorcycleController.getAll.bind(motorcycleController)));
+motorcycleRouter.get("/", () => motorcycleController.getAll());
 
 export default motorcycleRouter;

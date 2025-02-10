@@ -32,7 +32,7 @@ const submitLogin = handleSubmit(async (values) => {
     isLoading.value = true;
     apiError.value = '';
 
-    const { data } = await axios.post('/api/signin', {
+    const { data } = await axios.post('/api/login', {
       emailAddress: values.emailAddress,
       password: values.password
     });

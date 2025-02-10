@@ -1,7 +1,7 @@
-import { Application } from "https://deno.land/x/oak@v11.1.0/mod.ts";
-import apiRouter from "./routes/apiRouter.ts";
 import { prisma } from "./config/prisma.db.ts";
+import apiRouter from "./routes/apiRouter.ts";
 import authenticationRouter from "./routes/authenticationRouter.ts";
+
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
 import { SendNotificationUsecase } from "../../../application/usecases/notification/SendNotificationUsecase.ts";
 import { SendNotificationsCron } from "../../../infrastructure/jobs/SendNotificationsCron.ts";
@@ -14,10 +14,13 @@ import { EnterpriseRepositoryPrisma } from "../../../infrastructure/adapters/pri
 import { NotificationRepositoryPrisma } from "../../../infrastructure/adapters/prisma/NotificationRepositoryPrisma.ts";
 import { EmailService } from "../../../application/services/EmailService.ts";
 import { ResendEmailService } from "../../../infrastructure/services/ResendEmailService.ts";
+import { logger } from './middleware/logger.ts'
+import { Hono } from "https://deno.land/x/hono@v3.11.4/mod.ts";
+import { cors } from "https://deno.land/x/hono@v3.11.4/middleware.ts";
 
-const app = new Application();
+const app = new Hono();
 
-// test db connection
+// DB connection
 try {
   await prisma.$connect();
   console.log('✅ Successfully connected to database');
@@ -27,6 +30,7 @@ try {
 } finally {
   await prisma.$disconnect();
 }
+
 
 // lancement des cron
 const emailService: EmailService = new ResendEmailService();
@@ -48,28 +52,18 @@ sendNotificationsCron.start();
 retryFailedNotificationsCron.start();
 
 app.use(oakCors({
+// CORS
+app.use("/*", cors({
   origin: "http://localhost:8080",
   credentials: true,
 }));
 
+// Logger
+app.use("*", logger);
+
 // routes
-app
-  .use(apiRouter.routes())
-  .use(authenticationRouter.routes());
-  // .use(motorcycleRouter.routes());
+app.route("/api", apiRouter);
+app.route("/api", authenticationRouter);
 
-// allowedMethods
-app
-  .use(apiRouter.allowedMethods())
-  .use(authenticationRouter.allowedMethods());
-  // .use(motorcycleRouter.allowedMethods());
-
-app.addEventListener("listen", ({ hostname, port, secure }) => {
-  console.log(
-    `Server running on : ${secure ? "https://" : "http://"}${
-      hostname ?? "localhost"
-    }:${port}`,
-  );
-});
-
-await app.listen({ port: 8000 });
+// Start server
+Deno.serve({ port: 8000 }, app.fetch);

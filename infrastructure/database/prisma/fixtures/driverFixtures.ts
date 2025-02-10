@@ -14,8 +14,8 @@ export const loadDriverFixtures = async(
         countryCode: "FR",
         nationalNumber: "600000000"
       },
-      idEnterprise: enterpriseId,
-      idMotorcycle: motorcycleId,
+      enterpriseId: enterpriseId,
+      motorcycleId: motorcycleId,
     },
   });
 
