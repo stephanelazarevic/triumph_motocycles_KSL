@@ -78,7 +78,7 @@ export class MotorcycleController implements EntityControllerInterface {
       return context.json({ message: "Malformed ID is required" }, 400);
     }
 
-    const body = context.req.json();
+    const body = await context.req.json();
     const validation = updateMotorcycleRequestSchema.safeParse(body);
     if (!validation.success) {
       return context.json({ message: "Malformed request" }, 400);
