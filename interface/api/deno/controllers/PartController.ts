@@ -9,8 +9,9 @@ import { ListPartsUsecase } from "../../../../application/usecases/part/ListPart
 import { UpdatePartUsecase } from "../../../../application/usecases/part/UpdatePartUsecase.ts";
 import { DeletePartUsecase } from "../../../../application/usecases/part/DeletePartUsecase.ts";
 import { addPartRequestSchema, updatePartRequestSchema } from "../schemas/partRequestSchema.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class PartController {
+export class PartController implements EntityControllerInterface{
   constructor(
     private readonly partRepository: PartRepository,
     private readonly dealerRepository: DealerRepository,

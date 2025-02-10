@@ -1,147 +1,111 @@
-import type { WarrantyRepository } from "../../../../application/repositories/WarrantyRepository.ts";
-import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
+import { exhaustive } from "npm:exhaustive";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
+import { WarrantyRepository } from "../../../../application/repositories/WarrantyRepository.ts";
+import { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
 import { AddWarrantyUsecase } from "../../../../application/usecases/warranty/AddWarrantyUsecase.ts";
 import { GetWarrantyUsecase } from "../../../../application/usecases/warranty/GetWarrantyUsecase.ts";
 import { ListWarrantiesUsecase } from "../../../../application/usecases/warranty/ListWarrantiesUsecase.ts";
 import { UpdateWarrantyUsecase } from "../../../../application/usecases/warranty/UpdateWarrantyUsecase.ts";
 import { DeleteWarrantyUsecase } from "../../../../application/usecases/warranty/DeleteWarrantyUsecase.ts";
-import { exhaustive } from "npm:exhaustive"
-import { EntityControllerInterface } from "./EntityControllerInterface.ts";
-import { WarrantyEntity } from "../../../../domain/entities/WarrantyEntity.ts";
 import { addWarrantyRequestSchema, updateWarrantyRequestSchema } from "../schemas/warrantyRequestSchema.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class WarrantyController implements EntityControllerInterface {
-  public constructor(
+export class WarrantyController implements EntityControllerInterface{
+  constructor(
     private readonly warrantyRepository: WarrantyRepository,
-    private readonly motorcycleRepository: MotorcycleRepository,
+    private readonly motorcycleRepository: MotorcycleRepository
   ) {}
 
-  public async getAll(): Promise<Response> {
-    const listWarrantiesUsecase = new ListWarrantiesUsecase(
-      this.warrantyRepository,
-    );
-
+  public async getAll(context: Context): Promise<Response> {
+    const listWarrantiesUsecase = new ListWarrantiesUsecase(this.warrantyRepository);
     const result = await listWarrantiesUsecase.execute();
-
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return context.json(JSON.stringify(result), 200);
   }
 
-  public async getById(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async getById(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("Warranty ID is required", { status: 400 });
+      return context.json({ message: "Warranty ID is required" }, 400);
     }
 
-    const getWarrantyUsecase = new GetWarrantyUsecase(
-      this.warrantyRepository,
-    );
-
+    const getWarrantyUsecase = new GetWarrantyUsecase(this.warrantyRepository);
     const result = await getWarrantyUsecase.execute(id);
 
-    if (result instanceof WarrantyEntity) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
-    return exhaustive(result.name, {
-      WarrantyNotFoundError: () => new Response("WarrantyNotFoundError", { status: 404 }),
+    return exhaustive({
+      WarrantyNotFoundError: () => context.json({ message: "Warranty not found" }, 404),
     });
-
   }
 
-  public async create(request: Request): Promise<Response> {
-    const addWarrantyUsecase = new AddWarrantyUsecase(
-      this.warrantyRepository,
-      this.motorcycleRepository,
-    );
-
-    const body = await request.json();
-
+  public async create(context: Context): Promise<Response> {
+    const body = await context.req.json();
     const validation = addWarrantyRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
+    const addWarrantyUsecase = new AddWarrantyUsecase(
+      this.warrantyRepository,
+      this.motorcycleRepository
+    );
     const result = await addWarrantyUsecase.execute(validation.data);
 
-    if (result instanceof WarrantyEntity) {
-      return new Response(null, {
-        status: 201,
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 201);
     }
 
-    return exhaustive(result.name, {
-      InvalidDateError: () => new Response("InvalidDateError", { status: 400 }),
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
+    return exhaustive({
+      MotorcycleNotFoundError: () => context.json({ message: "Motorcycle not found" }, 404),
+      InvalidDateError: () => context.json({ message: "Invalid date" }, 400),
     });
   }
 
-  public async update(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const warrantyId = url.searchParams.get("id");
-
-    if (!warrantyId) {
-      return new Response("Warranty ID is required", { status: 400 });
+  public async update(context: Context): Promise<Response> {
+    const id = context.req.param("id");
+    if (!id) {
+      return context.json({ message: "Warranty ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateWarrantyRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
-    const updateWarrantyUsecase = new UpdateWarrantyUsecase(this.warrantyRepository, this.motorcycleRepository);
-    const result = await updateWarrantyUsecase.execute(warrantyId, validation.data);
+    const updateWarrantyUsecase = new UpdateWarrantyUsecase(
+      this.warrantyRepository,
+      this.motorcycleRepository
+    );
+    const result = await updateWarrantyUsecase.execute(id, validation.data);
 
-    if (result instanceof WarrantyEntity) {
-      return new Response(null, {
-        status: 201,
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
-    return exhaustive(result.name, {
-      WarrantyNotFoundError: () => new Response("WarrantyNotFoundError", { status: 404 }),
+    return exhaustive({
+      WarrantyNotFoundError: () => context.json({ message: "Warranty not found" }, 404),
     });
   }
 
-  public async delete(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async delete(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("Warranty ID is required", { status: 400 });
+      return context.json({ message: "Warranty ID is required" }, 400);
     }
 
-    const deleteWarrantyUsecase = new DeleteWarrantyUsecase(
-      this.warrantyRepository,
-    );
-
+    const deleteWarrantyUsecase = new DeleteWarrantyUsecase(this.warrantyRepository);
     const result = await deleteWarrantyUsecase.execute(id);
 
-    if (result === undefined) {
-      return new Response(null, {
-        status: 204,
-      });
+    if (!result) {
+      return context.json(null, 204);
     }
 
-    return exhaustive(result.name, {
-      WarrantyNotFoundError: () => new Response("WarrantyNotFoundError", { status: 404 }),
+    return exhaustive({
+      WarrantyNotFoundError: () => context.json({ message: "Warranty not found" }, 404),
     });
   }
 }
