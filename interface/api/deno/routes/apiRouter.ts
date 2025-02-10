@@ -1,10 +1,10 @@
-import { Router } from "https://deno.land/x/oak@v11.1.0/mod.ts";
+import { Hono } from "https://deno.land/x/hono@v3.11.4/mod.ts";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
 
-const apiRouter = new Router();
+const apiRouter = new Hono();
 
-apiRouter.get("/api", (context) => {
-  context.response.body = { status: "OK" };
+apiRouter.get("/", (context: Context) => {
+  return context.json('OK', 200);
 });
-
 
 export default apiRouter;

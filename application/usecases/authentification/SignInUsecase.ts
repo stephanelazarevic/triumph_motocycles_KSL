@@ -11,7 +11,7 @@ export class SignInUseCase {
   constructor(
     private readonly userRepository: UserRepository,
     private readonly passwordService: PasswordService,
-    private readonly tokenGenerator: TokenGeneratorService,
+    private readonly tokenGeneratorService: TokenGeneratorService,
   ) {}
 
   async execute(command: SignInCommand): Promise<UserEntity | Error> {
@@ -35,7 +35,7 @@ export class SignInUseCase {
       return new AuthenticationInvalidCredentialsError();
     }
 
-    const token = await this.tokenGenerator.generate(user);
+    const token = await this.tokenGeneratorService.generate(user);
 
     user.setToken(token);
 
