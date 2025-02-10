@@ -3,6 +3,17 @@ import apiRouter from "./routes/apiRouter.ts";
 import { prisma } from "./config/prisma.db.ts";
 import authenticationRouter from "./routes/authenticationRouter.ts";
 import { oakCors } from "https://deno.land/x/cors@v1.2.2/mod.ts";
+import { SendNotificationUsecase } from "../../../application/usecases/notification/SendNotificationUsecase.ts";
+import { SendNotificationsCron } from "../../../infrastructure/jobs/SendNotificationsCron.ts";
+import { RetryFailedNotificationsCron } from "../../../infrastructure/jobs/RetryFailedNotificationsJob.ts";
+import { MaintenanceRepositoryPrisma } from "../../../infrastructure/adapters/prisma/MaintenanceRepositoryPrisma.ts";
+import { PartRepositoryPrisma } from "../../../infrastructure/adapters/prisma/PartRepositoryPrisma.ts";
+import { UserRepositoryPrisma } from "../../../infrastructure/adapters/prisma/UserRepositoryPrisma.ts";
+import { ClientRepositoryPrisma } from "../../../infrastructure/adapters/prisma/ClientRepositoryPrisma.ts";
+import { EnterpriseRepositoryPrisma } from "../../../infrastructure/adapters/prisma/EnterpriseRepositoryPrisma.ts";
+import { NotificationRepositoryPrisma } from "../../../infrastructure/adapters/prisma/NotificationRepositoryPrisma.ts";
+import { EmailService } from "../../../application/services/EmailService.ts";
+import { ResendEmailService } from "../../../infrastructure/services/ResendEmailService.ts";
 
 const app = new Application();
 
@@ -16,6 +27,25 @@ try {
 } finally {
   await prisma.$disconnect();
 }
+
+// lancement des cron
+const emailService: EmailService = new ResendEmailService();
+
+const sendNotificationUsecase = new SendNotificationUsecase(
+  new MaintenanceRepositoryPrisma(prisma),
+  new PartRepositoryPrisma(prisma),
+  new UserRepositoryPrisma(prisma),
+  new ClientRepositoryPrisma(prisma),
+  new EnterpriseRepositoryPrisma(prisma),
+  new NotificationRepositoryPrisma(prisma),
+  emailService
+);
+
+const sendNotificationsCron = new SendNotificationsCron(sendNotificationUsecase);
+const retryFailedNotificationsCron = new RetryFailedNotificationsCron(sendNotificationUsecase);
+
+sendNotificationsCron.start();
+retryFailedNotificationsCron.start();
 
 app.use(oakCors({
   origin: "http://localhost:8080",
