@@ -13,7 +13,7 @@ export class AuthenticationController {
     private readonly tokenGeneratorService: TokenGeneratorService
   ) {}
 
-  async signIn(context: Context) {
+  public async signIn(context: Context) {
    const body = await context.req.json();
 
     const validation = signInRequestSchema.safeParse(body);

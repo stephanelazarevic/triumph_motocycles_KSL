@@ -6,6 +6,10 @@ const motorcycleRouter = new Hono();
 
 const motorcycleController = new MotorcycleController(motorcycleRepository, motorcycleHistoryRepository);
 
-motorcycleRouter.get("/", () => motorcycleController.getAll());
+motorcycleRouter.get("/",       (context) => motorcycleController.getAll(context));
+motorcycleRouter.get("/:id",    (context) => motorcycleController.getById(context));
+motorcycleRouter.post("/",      (context) => motorcycleController.create(context));
+motorcycleRouter.put("/:id",    (context) => motorcycleController.update(context));
+motorcycleRouter.delete("/:id", (context) => motorcycleController.delete(context));
 
 export default motorcycleRouter;
