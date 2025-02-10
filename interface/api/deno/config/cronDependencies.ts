@@ -1,16 +1,14 @@
-import { SendNotificationUsecase } from "../../../../application/usecases/notification/SendNotificationUsecase";
-import { ClientRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/ClientRepositoryPrisma";
-import { EnterpriseRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/EnterpriseRepositoryPrisma";
-import { MaintenanceRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/MaintenanceRepositoryPrisma";
-import { NotificationRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/NotificationRepositoryPrisma";
-import { PartRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/PartRepositoryPrisma";
-import { UserRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/UserRepositoryPrisma";
-import { RetryFailedNotificationsCron } from "../../../../infrastructure/jobs/RetryFailedNotificationsJob";
-import { SendNotificationsCron } from "../../../../infrastructure/jobs/SendNotificationsCron";
-import { emailService } from "../../deno/config/servicesDependencies";
-import { prisma } from "./prisma.db";
-
-// lancement des cron
+import { SendNotificationUsecase } from "../../../../application/usecases/notification/SendNotificationUsecase.ts";
+import { ClientRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/ClientRepositoryPrisma.ts";
+import { EnterpriseRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/EnterpriseRepositoryPrisma.ts";
+import { MaintenanceRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/MaintenanceRepositoryPrisma.ts";
+import { NotificationRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/NotificationRepositoryPrisma.ts";
+import { PartRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/PartRepositoryPrisma.ts";
+import { UserRepositoryPrisma } from "../../../../infrastructure/adapters/prisma/UserRepositoryPrisma.ts";
+import { RetryFailedNotificationsCron } from "../../../../infrastructure/jobs/RetryFailedNotificationsJob.ts";
+import { SendNotificationsCron } from "../../../../infrastructure/jobs/SendNotificationsCron.ts";
+import { emailService } from "../../deno/config/servicesDependencies.ts";
+import { prisma } from "./prisma.db.ts";
 
 const sendNotificationUsecase = new SendNotificationUsecase(
   new MaintenanceRepositoryPrisma(prisma),

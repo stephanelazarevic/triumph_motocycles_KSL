@@ -1,11 +1,11 @@
-import { CronJob } from "cron";
-import { SendNotificationUsecase } from "../../application/usecases/notification/SendNotificationUsecase";
+import { cron } from "https://deno.land/x/deno_cron@v1.0.0/cron.ts";
+import { SendNotificationUsecase } from "../../application/usecases/notification/SendNotificationUsecase.ts";
 
 export class RetryFailedNotificationsCron {
   constructor(private readonly sendNotificationUsecase: SendNotificationUsecase) {}
 
   public start(): void {
-    const cronJob = new CronJob("0 0 * * *", async () => { 
+    cron("0 0 * * *", async () => {
       try {
         console.log("🔄 Retrying failed notifications...");
         await this.sendNotificationUsecase.retryFailedNotifications();
@@ -14,7 +14,5 @@ export class RetryFailedNotificationsCron {
         console.error("❌ Error while retrying failed notifications: ", error);
       }
     });
-
-    cronJob.start();
   }
 }

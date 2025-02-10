@@ -90,7 +90,7 @@ export class MotorcycleEntity extends Entity{
       Model.reconstitute(data.model),
       data.year,
       data.registrationNumber,
-      MotorcycleStatus[data.status.toLowerCase() as keyof typeof MotorcycleStatus],
+      MotorcycleStatus[data.status.toUpperCase()],
       data.clientId,
       data.drivers,
       data.enterpriseId,
