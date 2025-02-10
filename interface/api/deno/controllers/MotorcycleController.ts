@@ -19,6 +19,7 @@ export class MotorcycleController implements EntityControllerInterface {
   ) {}
 
   public async getAll(context: Context): Promise<Response> {
+    console.log("GOHOOOOOOOOOOOOOOOOOOOOOOOOO")
     const listMotorcyclesUsecase = new ListMotorcyclesUsecase(
       this.motorcycleRepository,
     );
@@ -49,7 +50,7 @@ export class MotorcycleController implements EntityControllerInterface {
   }
 
   public async create(context: Context): Promise<Response> {
-    const addMotorcycleHistoryUsecase = new AddMotorcycleHistoryUsecase(this.motorcycleHistoryRepository),
+    const addMotorcycleHistoryUsecase = new AddMotorcycleHistoryUsecase(this.motorcycleHistoryRepository);
     const addMotorcycleUsecase = new AddMotorcycleUsecase(this.motorcycleRepository, addMotorcycleHistoryUsecase);
 
     const body = await context.req.json();

@@ -2,7 +2,7 @@
   "workspace": ["./interface/api/deno"],
   "nodeModulesDir": "auto",
   "tasks": {
-    "dev": "deno run --watch --allow-net --allow-env interface/api/deno/main.ts",
+    "dev": "deno run --watch --allow-net --allow-env  --allow-read interface/api/deno/main.ts",
     "start:api": "deno run --allow-net --allow-env --allow-read interface/api/deno/main.ts",
     "start:front": "npm run dev --prefix interface/frontend/next",
     "start:all": "deno task start:api & deno task start:front",

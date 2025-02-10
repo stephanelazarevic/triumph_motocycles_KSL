@@ -19,38 +19,38 @@ export class UpdateMotorcycleUsecase {
 ) {}
 
  public async execute(motorcycleId: string, command: UpdateMotorcycleCommand): Promise<MotorcycleEntity | Error> {
-   const motorcycle = await this.motorcycleRepository.findOneById(motorcycleId);
-   if (motorcycle instanceof Error) {
-     return motorcycle;
-   }
+  const motorcycle = await this.motorcycleRepository.findOneById(motorcycleId);
+  if (motorcycle instanceof Error) {
+    return motorcycle;
+  }
 
-   if (command.dealerId) {
+  if (command.dealerId) {
     motorcycle.dealerId = command.dealerId;
-    }
-   if (command.brand) {
+  }
+    if (command.brand) {
     const brand = Brand.from(command.brand);
-   if(brand instanceof Error){
+    if(brand instanceof Error){
       return brand;
     }
-     motorcycle.brand = brand;
-   }
-   if (command.model) {
+    motorcycle.brand = brand;
+  }
+  if (command.model) {
     const model = Model.from(command.model);
     if(model instanceof Error){
       return model;
     }
-     motorcycle.model = model;
-   }
-   if (command.year) {
-     motorcycle.year = command.year;
-   }
-   if (command.registrationNumber) {
-     motorcycle.registrationNumber = command.registrationNumber;
-   }
-   if (command.status) {
-     motorcycle.status = command.status;
-   }
-   if (command.clientId) {
+    motorcycle.model = model;
+  }
+  if (command.year) {
+    motorcycle.year = command.year;
+  }
+  if (command.registrationNumber) {
+    motorcycle.registrationNumber = command.registrationNumber;
+  }
+  if (command.status) {
+    motorcycle.status = command.status;
+  }
+  if (command.clientId) {
     if (MotorcycleEntity.isAssignedToDrivers(motorcycle.drivers)) {
       return new MotorcycleCannotAssignClientToAlreadyAssignedDriverError();
     }
@@ -58,8 +58,8 @@ export class UpdateMotorcycleUsecase {
       return new MotorcycleCannotAssignClientToAlreadyAssignedEnterpriseError();
     }
     motorcycle.clientId = command.clientId;
-   }
-   if (command.drivers) {
+  }
+  if (command.drivers) {
     if (MotorcycleEntity.isAssignedToClient(motorcycle.clientId)) {
       return new MotorcycleCannotAssignDriverToAlreadyAssignedClientError();
     }
@@ -67,8 +67,8 @@ export class UpdateMotorcycleUsecase {
       return new MotorcycleWithDriversMustBeAssignedToEnterpriseError();
     }
     motorcycle.drivers = command.drivers;
-   }
-   if (command.enterpriseId) {
+  }
+  if (command.enterpriseId) {
     if (MotorcycleEntity.isAssignedToClient(motorcycle.clientId)) {
       return new MotorcycleCannotAssignEnterpriseToAlreadyAssignedClientError();
     }
@@ -82,13 +82,13 @@ export class UpdateMotorcycleUsecase {
    if (lastHistory instanceof Error) {
      return lastHistory;
    } else if (lastHistory && lastHistory.endDate === null) {
-     lastHistory.endDate = new Date(); 
+     lastHistory.endDate = new Date();
      await this.motorcycleHistoryRepository.save(lastHistory);
    }
 
    const historyCommand = {
     motorcycleId: motorcycle.id,
-    startDate: new Date(), 
+    startDate: new Date(),
     endDate: null,
     incidents: [],
     maintenances: [],
