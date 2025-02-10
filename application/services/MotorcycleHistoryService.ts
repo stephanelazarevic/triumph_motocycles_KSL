@@ -1,6 +1,6 @@
-import { MotorcycleHistoryEntity } from "../../domain/entities/MotorcycleHistoryEntity";
-import { IncidentRepository } from "../repositories/IncidentRepository";
-import { MaintenanceRepository } from "../repositories/MaintenanceRepository";
+import { MotorcycleHistoryEntity } from "../../domain/entities/MotorcycleHistoryEntity.ts";
+import { IncidentRepository } from "../repositories/IncidentRepository.ts";
+import { MaintenanceRepository } from "../repositories/MaintenanceRepository.ts";
 
 export class MotorcycleHistoryService {
     constructor(
