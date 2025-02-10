@@ -27,18 +27,7 @@ export class NotificationRepositoryPrisma implements NotificationRepository {
     return notifications.map(notification =>
         NotificationEntity.reconstitute({
             id: notification.id,
-            user: notification.user.map(user =>
-                UserEntity.reconstitute({
-                    id: user.id,
-                    firstname: user.firstname,
-                    lastname: user.lastname,
-                    hashedPassword: user.hashedPassword,
-                    emailAddress: user.emailAddress,
-                    phoneNumber: user.phoneNumber,
-                    address: user.address,
-                    isAdministrator: user.isAdministrator,
-                    token: user.token
-                })),
+            user: notification.user.map(user => { id: user.id }),
             type: notification.type,
             message: notification.message,
             date: notification.date,

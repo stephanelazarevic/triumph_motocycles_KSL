@@ -22,6 +22,7 @@ export class WarrantyPartController implements EntityControllerInterface{
   public async getAll(context: Context): Promise<Response> {
     const usecase = new ListWarrantyPartsUsecase(this.warrantyPartRepository);
     const result = await usecase.execute();
+
     return context.json(JSON.stringify(result), 200);
   }
 

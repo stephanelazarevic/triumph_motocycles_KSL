@@ -1,10 +1,10 @@
-import { IncidentRepository } from "../../repositories/IncidentRepository";
+import { IncidentRepository } from "../../repositories/IncidentRepository.ts";
 
 export class GetIncidentByMotorcycleIdAndPeriodUsecase {
     constructor(
       private incidentRepository: IncidentRepository,
     ) {}
-  
+
     async execute(motorcycleId: string, startDate: Date, endDate: Date | null) {
       const incidents = await this.incidentRepository.findByMotorcycleIdAndPeriod(motorcycleId, startDate, endDate);
       if (incidents instanceof Error) {

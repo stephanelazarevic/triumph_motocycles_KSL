@@ -2,6 +2,7 @@ import { MotorcycleRepository } from '../../../../application/repositories/Motor
 import { UserRepository } from '../../../../application/repositories/UserRepository.ts';
 import { DealerRepository } from '../../../../application/repositories/DealerRepository.ts';
 import { WarrantyRepository } from '../../../../application/repositories/WarrantyRepository.ts';
+import { WarrantyPartRepository } from '../../../../application/repositories/WarrantyPartRepository.ts';
 import { MotorcycleHistoryRepository } from '../../../../application/repositories/MotorcycleHistoryRepository.ts';
 
 import { MotorcycleRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/MotorcycleRepositoryPrisma.ts';
@@ -11,6 +12,7 @@ import { WarrantyRepositoryPrisma } from '../../../../infrastructure/adapters/pr
 import { MotorcycleHistoryRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/MotorcycleHistoryRepositoryPrisma.ts';
 import { IncidentRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/IncidentRepositoryPrisma.ts';
 import { MotorcyclePartRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/MotorcyclePartRepositoryPrisma.ts';
+import { TestRideRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/TestRideRepositoryPrisma.ts';
 
 import { prisma } from "./prisma.db.ts";
 import { IncidentRepository } from '../../../../application/repositories/IncidentRepository.ts';
@@ -32,6 +34,7 @@ import { DriverRepositoryPrisma } from '../../../../infrastructure/adapters/pris
 import { RentalRepository } from '../../../../application/repositories/RentalRepository.ts';
 import { RentalRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/RentalRepositoryPrisma.ts';
 import { WarrantyPartRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/WarrantyPartRepositoryPrisma.ts';
+import { TestRideRepository } from '../../../../application/repositories/TestRideRepository.ts';
 
 export const motorcycleRepository: MotorcycleRepository                = new MotorcycleRepositoryPrisma(prisma);
 export const userRepository: UserRepository                            = new UserRepositoryPrisma(prisma);
@@ -40,7 +43,7 @@ export const warrantyRepository: WarrantyRepository                    = new War
 export const motorcycleHistoryRepository: MotorcycleHistoryRepository  = new MotorcycleHistoryRepositoryPrisma(prisma);
 export const incidentRepository: IncidentRepository                    = new IncidentRepositoryPrisma(prisma);
 export const maintenanceRepository: MaintenanceRepository              = new MaintenanceRepositoryPrisma(prisma);
-export const motorcyclePartRepository: MotorcyclePartRepository        = new MotorcyclePartRepositoryPrisma(prisma); 
+export const motorcyclePartRepository: MotorcyclePartRepository        = new MotorcyclePartRepositoryPrisma(prisma);
 export const partRepository: PartRepository                            = new PartRepositoryPrisma(prisma);
 export const notificationRepository: NotificationRepository            = new NotificationRepositoryPrisma(prisma);
 export const clientRepository: ClientRepository                        = new ClientRepositoryPrisma(prisma);
@@ -48,4 +51,5 @@ export const enterpriseRepository: EnterpriseRepository                = new Ent
 export const orderRepository: OrderRepository                          = new OrderRepositoryPrisma(prisma);
 export const driverRepository: DriverRepository                        = new DriverRepositoryPrisma(prisma);
 export const rentalRepository: RentalRepository                        = new RentalRepositoryPrisma(prisma);
-export const warrantyPartRepository: WarrantyPartRepositoryPrisma      = new WarrantyPartRepositoryPrisma(prisma);
+export const warrantyPartRepository: WarrantyPartRepository            = new WarrantyPartRepositoryPrisma(prisma);
+export const testRideRepository: TestRideRepository                    = new TestRideRepositoryPrisma(prisma);

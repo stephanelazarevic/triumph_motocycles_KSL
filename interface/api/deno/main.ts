@@ -17,6 +17,8 @@ import maintenanceRouter from "./routes/maintenanceRouter.ts";
 import incidentRouter from "./routes/incidentRouter.ts";
 import warrantyRouter from "./routes/warrantyRouter.ts";
 import rentalRouter from "./routes/rentalRouter.ts";
+import testRideRouter from "./routes/testRideRouter.ts";
+import warrantyPartRouter from "./routes/warrantyPartRouter.ts";
 
 const app = new Hono();
 
@@ -45,8 +47,8 @@ app.route("/api", apiRouter);
 app.route("/api", authenticationRouter);
 app.route("/api/motorcycles", motorcycleRouter);
 app.route("/api/users", userRouter);
-app.route("/api/motorcycleHistories", motorcycleHistoryRouter);
-app.route("/api/motorcycleParts", motorcyclePartRouter);
+app.route("/api/motorcycle-histories", motorcycleHistoryRouter);
+app.route("/api/motorcycle-parts", motorcyclePartRouter);
 app.route("/api/notifications", notificationRouter);
 app.route("/api/orders", orderRouter);
 app.route("/api/parts", partRouter);
@@ -55,6 +57,8 @@ app.route("/api/maintenances", maintenanceRouter);
 app.route("/api/incidents", incidentRouter);
 app.route("/api/warranties", warrantyRouter);
 app.route("/api/rentals", rentalRouter);
+app.route("/api/warranty-parts", warrantyPartRouter);
+app.route("/api/test-rides", testRideRouter);
 
 // Start server
 Deno.serve({ port: 8000 }, app.fetch);
