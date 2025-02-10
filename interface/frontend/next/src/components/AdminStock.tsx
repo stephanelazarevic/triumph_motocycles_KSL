@@ -1,5 +1,6 @@
 "use client"
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import Bouton from "@/components/Button";
 import DynamicForm from '@/components/DynamicFormAdmin';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -8,6 +9,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Package, ShoppingCart, AlertTriangle, Search, PackagePlus, Pencil, Trash2 } from 'lucide-react';
+import { toast } from "sonner";
 
 interface SparePart {
   id: number;
@@ -29,66 +31,127 @@ interface Order {
   deliveryTime: string;
 }
 
+const API_BASE_URL = 'http://localhost:8000/api';
+
+// Données mockées pour les pièces détachées
+const mockSpareParts = [
+  {
+    id: 1,
+    name: "Filtre à huile",
+    reference: "FH-2024",
+    currentStock: 15,
+    minStock: 10,
+    price: 25.99,
+    category: "Filtration"
+  },
+  {
+    id: 2,
+    name: "Plaquettes de frein",
+    reference: "PF-1850",
+    currentStock: 8,
+    minStock: 12,
+    price: 45.50,
+    category: "Freinage"
+  },
+  {
+    id: 3,
+    name: "Batterie 12V",
+    reference: "BAT-450",
+    currentStock: 20,
+    minStock: 5,
+    price: 89.99,
+    category: "Électrique"
+  },
+  {
+    id: 4,
+    name: "Amortisseur avant",
+    reference: "AM-789",
+    currentStock: 4,
+    minStock: 6,
+    price: 120.00,
+    category: "Suspension"
+  },
+  {
+    id: 5,
+    name: "Courroie distribution",
+    reference: "CD-456",
+    currentStock: 10,
+    minStock: 8,
+    price: 35.75,
+    category: "Moteur"
+  }
+];
+
 const SparePartsManagement = () => {
-  // État pour la recherche
   const [searchQuery, setSearchQuery] = useState('');
-  // État pour le modal
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [selectedPart, setSelectedPart] = useState<SparePart | null>(null);
+  const [spareParts, setSpareParts] = useState<SparePart[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Données simulées pour les pièces
-  const [spareParts, setSpareParts] = useState<SparePart[]>([
-    {
-      id: 1,
-      name: 'Filtre à huile',
-      reference: 'FH-2024',
-      currentStock: 5,
-      minStock: 10,
-      price: 15.99,
-      category: 'Filtres'
-    },
-    {
-      id: 2,
-      name: 'Plaquettes de frein',
-      reference: 'PF-2024',
-      currentStock: 2,
-      minStock: 8,
-      price: 45.99,
-      category: 'Freinage'
-    },
-    {
-      id: 3,
-      name: 'Pneu avant',
-      reference: 'PA-2024',
-      currentStock: 12,
-      minStock: 4,
-      price: 89.99,
-      category: 'Pneumatiques'
+  useEffect(() => {
+    fetchSpareParts();
+    fetchOrders();
+  }, []);
+
+  const fetchSpareParts = async () => {
+    try {
+      // Au lieu de faire l'appel API, on utilise les données mockées
+      setSpareParts(mockSpareParts);
+      setLoading(false);
+    } catch (error) {
+      console.error('Erreur:', error);
+      toast.error('Impossible de charger la liste des pièces');
+      setSpareParts([]);
+      setLoading(false);
     }
-  ]);
+  };
 
-  const [orders] = useState<Order[]>([
-    {
-      id: 1,
-      reference: 'CMD-001',
-      date: '2024-02-08',
-      items: 'Filtre à huile x5',
-      cost: 79.95,
-      status: 'Livrée',
-      deliveryTime: '3 jours'
-    },
-    {
-      id: 2,
-      reference: 'CMD-002',
-      date: '2024-02-09',
-      items: 'Plaquettes de frein x4',
-      cost: 183.96,
-      status: 'En cours',
-      deliveryTime: 'Estimé 5 jours'
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get(`${API_BASE_URL}/order`);
+      console.log('Orders API Response:', response);
+
+      // Récupérer la data qui est déjà une chaîne JSON
+      const responseData = response.data;
+
+      // Parser la première fois pour obtenir le tableau d'objets
+      const ordersData = JSON.parse(responseData);
+      console.log('Données parsées une fois:', ordersData);
+
+      const transformedOrders = ordersData.map((order: any) => {
+        // Parser le champ 'parts' qui est aussi une chaîne JSON
+        const parsedParts = JSON.parse(order.parts);
+        return {
+          id: order.id,
+          reference: order.id,
+          date: new Date(order.orderDate).toLocaleDateString('fr-FR', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric',
+            hour: '2-digit',
+            minute: '2-digit'
+          }),
+          items: parsedParts.map((p: any) => `${p.name} (x${p.quantity})`).join(', '),
+          cost: Number(order.totalAmount),
+          status: order.status,
+          deliveryTime: order.deliveryTime || 'N/A'
+        };
+      });
+
+      console.log('Commandes transformées:', transformedOrders);
+      setOrders(transformedOrders);
+
+    } catch (error) {
+      console.error('Erreur lors du chargement des commandes:', error);
+      toast.error('Impossible de charger la liste des commandes');
+      setOrders([]);
+    } finally {
+      setLoading(false);
     }
-  ]);
+  };
 
-  // Gestionnaires d'événements
   const handleAjout = () => {
     setSelectedPart(null);
     setIsFormOpen(true);
@@ -102,49 +165,62 @@ const SparePartsManagement = () => {
     }
   };
 
-  const handleDelete = (id: number) => {
-    setSpareParts(prevParts => prevParts.filter(part => part.id !== id));
-  };
-
-  // Gestionnaire de soumission du formulaire
-  const handleFormSubmit = (formData: Partial<SparePart>) => {
-    if (selectedPart) {
-      // Mode édition
-      setSpareParts(prevParts =>
-        prevParts.map(part =>
-          part.id === selectedPart.id ? { ...part, ...formData } : part
-        )
-      );
-    } else {
-      // Mode ajout
-      const newPart = {
-        id: Math.max(...spareParts.map(p => p.id)) + 1,
-        name: formData.name || '',
-        reference: formData.reference || '',
-        currentStock: formData.currentStock || 0,
-        minStock: formData.minStock || 0,
-        price: formData.price || 0,
-        category: formData.category || ''
-      };
-      setSpareParts(prevParts => [...prevParts, newPart]);
+  const handleDelete = async (id: number) => {
+    try {
+      // Simulation de la suppression avec les données mockées
+      const updatedParts = spareParts.filter(part => part.id !== id);
+      setSpareParts(updatedParts);
+      toast.success("Pièce supprimée avec succès");
+    } catch (error) {
+      console.error('Erreur lors de la suppression:', error);
+      toast.error("Erreur lors de la suppression de la pièce");
     }
-    setIsFormOpen(false);
   };
 
-  // Fonction de recherche
+  const handleFormSubmit = async (formData: Partial<SparePart>) => {
+    try {
+      if (selectedPart) {
+        // Simulation de la modification avec les données mockées
+        const updatedParts = spareParts.map(part =>
+          part.id === selectedPart.id ? { ...part, ...formData } : part
+        );
+        setSpareParts(updatedParts);
+        toast.success("Pièce modifiée avec succès");
+      } else {
+        // Simulation de l'ajout avec les données mockées
+        const newPart = {
+          ...formData,
+          id: Math.max(...spareParts.map(p => p.id)) + 1
+        } as SparePart;
+        setSpareParts([...spareParts, newPart]);
+        toast.success("Pièce ajoutée avec succès");
+      }
+      setIsFormOpen(false);
+    } catch (error) {
+      console.error('Erreur lors de l\'enregistrement:', error);
+      toast.error("Erreur lors de l'enregistrement de la pièce");
+    }
+  };
+
   const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value);
   };
 
-  // Filtrer les pièces avec stock bas
   const lowStockParts = spareParts.filter(part => part.currentStock < part.minStock);
 
-  // Filtrer les pièces en fonction de la recherche
   const filteredParts = spareParts.filter(part =>
     part.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
     part.reference.toLowerCase().includes(searchQuery.toLowerCase()) ||
     part.category.toLowerCase().includes(searchQuery.toLowerCase())
   );
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-[#112434]"></div>
+      </div>
+    );
+  }
 
   return (
     <div className="p-6 space-y-6">
