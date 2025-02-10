@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { Warehouse, Construction, RotateCcw, ChevronLeft, ChevronRight, Bell  } from "lucide-react";
+import { Warehouse, Construction, RotateCcw, ChevronLeft, ChevronRight, Bell, Settings   } from "lucide-react";
 
 export default function AdminSidebar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -28,6 +28,13 @@ export default function AdminSidebar() {
 
       <ul className="space-y-3 mt-8">
         <li>
+          <Link
+            href="/admin/general"
+            className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
+          >
+            <Settings  className="w-4 h-4" />
+            {!isCollapsed && <span>Gestion général</span>}
+          </Link>
           <Link
             href="/admin/essai"
             className="flex items-center gap-2 hover:bg-gray-700 p-2 rounded"
