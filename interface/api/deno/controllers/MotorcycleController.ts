@@ -15,7 +15,6 @@ export class MotorcycleController implements EntityControllerInterface {
   public constructor(
     private readonly motorcycleRepository: MotorcycleRepository,
     private readonly motorcycleHistoryRepository: MotorcycleHistoryRepository,
-    private readonly addMotorcycleHistoryUsecase: AddMotorcycleHistoryUsecase
   ) {}
 
   public async getAll(): Promise<Response> {
@@ -60,7 +59,8 @@ export class MotorcycleController implements EntityControllerInterface {
   }
 
   public async create(request: Request): Promise<Response> {
-    const addMotorcycleUsecase = new AddMotorcycleUsecase(this.motorcycleRepository, this.addMotorcycleHistoryUsecase);
+    const addMotorcycleHistoryUsecase = new AddMotorcycleHistoryUsecase(this.motorcycleHistoryRepository),
+    const addMotorcycleUsecase = new AddMotorcycleUsecase(this.motorcycleRepository, addMotorcycleHistoryUsecase);
     const body = await request.json();
     const validation = addMotorcycleRequestSchema.safeParse(body);
 
@@ -96,10 +96,12 @@ export class MotorcycleController implements EntityControllerInterface {
       });
     }
 
+    const addMotorcycleHistoryUsecase = new AddMotorcycleHistoryUsecase(this.motorcycleHistoryRepository);
     const updateMotorcycleUsecase = new UpdateMotorcycleUsecase(
-      this.motorcycleRepository, 
-      this.motorcycleHistoryRepository, 
-      this.addMotorcycleHistoryUsecase);
+      this.motorcycleRepository,
+      this.motorcycleHistoryRepository,
+      addMotorcycleHistoryUsecase
+    );
 
     const result = await updateMotorcycleUsecase.execute(motorcycleId, validation.data);
 
