@@ -2,27 +2,55 @@
 
 import React, { useState, useEffect } from 'react';
 import Bouton from "@/components/Button";
+import DynamicForm from '@/components/DynamicFormAdmin';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Search, UserCircle, AlertTriangle, Ticket, UserPlus, Pencil, Trash2 } from 'lucide-react';
 
+interface Driver {
+  id: number;
+  name: string;
+  licenseNumber: string;
+  status: string;
+}
+
+interface Test {
+  id: number;
+  driverId: number;
+  motoModel: string;
+  startDate: string;
+  duration: string;
+  status: string;
+}
+
+interface Incident {
+  id: number;
+  driverId: number;
+  date: string;
+  type: string;
+  description: string;
+  severity: 'mineure' | 'moyenne' | 'majeure';
+}
+
 const AdminDashboard = () => {
-  // États pour la gestion des données
+
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formType, setFormType] = useState<'driver' | 'test' | 'incident'>('driver');
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
   const [drivers, setDrivers] = useState([
     {
       id: 1,
       name: 'Jean Dupont',
       licenseNumber: '12345678',
-      experience: '5 ans',
       status: 'actif'
     },
     {
       id: 2,
       name: 'Marie Martin',
       licenseNumber: '87654321',
-      experience: '3 ans',
       status: 'inactif'
     }
   ]);
@@ -85,20 +113,119 @@ const AdminDashboard = () => {
     loadData();
   }, []);
 
-  // Gestionnaires d'événements
-  const handleAjout = () => {
-    console.log("Ajout d'un nouveau conducteur");
-    // Logique d'ajout à implémenter
+  // Gestionnaires d'événements mis à jour pour les conducteurs
+  const handleAjoutConducteur = () => {
+    setFormType('driver');
+    setSelectedItem(null);
+    setIsFormOpen(true);
   };
 
-  const handleEdit = (id: number) => {
-    console.log("Édition du conducteur:", id);
-    // Logique d'édition à implémenter
+  const handleEditConducteur = (id: number) => {
+    const driverToEdit = drivers.find(driver => driver.id === id);
+    setFormType('driver');
+    setSelectedItem(driverToEdit);
+    setIsFormOpen(true);
   };
 
-  const handleDelete = (id: number) => {
-    console.log("Suppression du conducteur:", id);
-    // Logique de suppression à implémenter
+  // Gestionnaires d'événements pour les essais
+  const handleAjoutEssai = () => {
+    setFormType('test');
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditEssai = (id: number) => {
+    const testToEdit = tests.find(test => test.id === id);
+    setFormType('test');
+    setSelectedItem(testToEdit);
+    setIsFormOpen(true);
+  };
+
+  // Gestionnaires d'événements pour les incidents
+  const handleAjoutIncident = () => {
+    setFormType('incident');
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditIncident = (id: number) => {
+    const incidentToEdit = incidents.find(incident => incident.id === id);
+    setFormType('incident');
+    setSelectedItem(incidentToEdit);
+    setIsFormOpen(true);
+  };
+
+  // Gestionnaire de soumission du formulaire
+  const handleFormSubmit = (formData: any) => {
+    switch (formType) {
+      case 'driver':
+        if (selectedItem) {
+          setDrivers(prevDrivers =>
+            prevDrivers.map(driver =>
+              driver.id === selectedItem.id ? { ...driver, ...formData } : driver
+            )
+          );
+        } else {
+          setDrivers(prevDrivers => [
+            ...prevDrivers,
+            {
+              id: Math.max(...prevDrivers.map(d => d.id)) + 1,
+              ...formData
+            }
+          ]);
+        }
+        break;
+
+      case 'test':
+        if (selectedItem) {
+          setTests(prevTests =>
+            prevTests.map(test =>
+              test.id === selectedItem.id ? { ...test, ...formData } : test
+            )
+          );
+        } else {
+          setTests(prevTests => [
+            ...prevTests,
+            {
+              id: Math.max(...prevTests.map(t => t.id)) + 1,
+              ...formData
+            }
+          ]);
+        }
+        break;
+
+      case 'incident':
+        if (selectedItem) {
+          setIncidents(prevIncidents =>
+            prevIncidents.map(incident =>
+              incident.id === selectedItem.id ? { ...incident, ...formData } : incident
+            )
+          );
+        } else {
+          setIncidents(prevIncidents => [
+            ...prevIncidents,
+            {
+              id: Math.max(...prevIncidents.map(i => i.id)) + 1,
+              ...formData
+            }
+          ]);
+        }
+        break;
+    }
+    setIsFormOpen(false);
+  };
+
+  // Gestionnaires de suppression
+  const handleDeleteConducteur = (id: number) => {
+    setDrivers(prevDrivers => prevDrivers.filter(driver => driver.id !== id));
+  };
+
+  const handleDeleteEssai = (id: number) => {
+    setTests(prevTests => prevTests.filter(test => test.id !== id));
+  };
+
+  const handleDeleteIncident = (id: number) => {
+    setIncidents(prevIncidents => prevIncidents.filter(incident => incident.id !== id));
   };
 
   const handleSearch = () => {
@@ -115,6 +242,14 @@ const AdminDashboard = () => {
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-3xl font-bold">Gestion des Essais Moto</h1>
+
+      <DynamicForm
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        formType={formType}
+        initialData={selectedItem}
+        onSubmit={handleFormSubmit}
+      />
 
       <Tabs defaultValue="drivers" className="w-full">
         <TabsList>
@@ -152,7 +287,7 @@ const AdminDashboard = () => {
                     text="Ajouter"
                     icon={<UserPlus className="w-4 h-4" />}
                     variant="default"
-                    onClick={handleAjout}
+                    onClick={handleAjoutConducteur}
                   />
                 </div>
               </CardTitle>
@@ -168,7 +303,6 @@ const AdminDashboard = () => {
                     <TableRow>
                       <TableHead>Nom</TableHead>
                       <TableHead>N° Permis</TableHead>
-                      <TableHead>Expérience</TableHead>
                       <TableHead>Statut</TableHead>
                       <TableHead className="text-right">Actions</TableHead>
                     </TableRow>
@@ -178,7 +312,6 @@ const AdminDashboard = () => {
                       <TableRow key={driver.id}>
                         <TableCell>{driver.name}</TableCell>
                         <TableCell>{driver.licenseNumber}</TableCell>
-                        <TableCell>{driver.experience}</TableCell>
                         <TableCell>
                           <Badge variant={driver.status === 'actif' ? 'success' : 'secondary'}>
                             {driver.status}
@@ -190,14 +323,14 @@ const AdminDashboard = () => {
                               text="Éditer"
                               icon={<Pencil className="w-4 h-4" />}
                               variant="primary"
-                              onClick={() => handleEdit(driver.id)}
+                              onClick={() => handleEditConducteur(driver.id)}
                               className="h-8 w-32 p-0"
                             />
                             <Bouton
                               text="Supprimer"
                               icon={<Trash2 className="w-4 h-4" />}
                               variant="danger"
-                              onClick={() => handleDelete(driver.id)}
+                              onClick={() => handleDeleteConducteur(driver.id)}
                               className="h-8 w-32 p-0"
                             />
                           </div>
@@ -220,7 +353,7 @@ const AdminDashboard = () => {
                   text="Nouvel essai"
                   icon={<Ticket className="w-4 h-4" />}
                   variant="default"
-                  onClick={() => console.log("Nouvel essai")}
+                  onClick={handleAjoutEssai}
                 />
               </CardTitle>
             </CardHeader>
@@ -259,14 +392,14 @@ const AdminDashboard = () => {
                               text="Éditer"
                               icon={<Pencil className="w-4 h-4" />}
                               variant="primary"
-                              onClick={() => console.log(`Éditer essai ${test.id}`)}
+                              onClick={() => handleEditEssai(test.id)}
                               className="h-8 w-32 p-0"
                             />
                             <Bouton
                               text="Supprimer"
                               icon={<Trash2 className="w-4 h-4" />}
                               variant="danger"
-                              onClick={() => console.log(`Supprimer essai ${test.id}`)}
+                              onClick={() => handleDeleteEssai(test.id)}
                               className="h-8 w-32 p-0"
                             />
                           </div>
@@ -289,7 +422,7 @@ const AdminDashboard = () => {
                   text="Nouvel incident"
                   icon={<AlertTriangle className="w-4 h-4" />}
                   variant="default"
-                  onClick={() => console.log("Nouvel incident")}
+                  onClick={handleAjoutIncident}
                 />
               </CardTitle>
             </CardHeader>
@@ -302,7 +435,7 @@ const AdminDashboard = () => {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Conducteur ID</TableHead>
+                      <TableHead>Moto ID</TableHead>
                       <TableHead>Date</TableHead>
                       <TableHead>Type</TableHead>
                       <TableHead>Description</TableHead>
@@ -333,14 +466,14 @@ const AdminDashboard = () => {
                               text="Éditer"
                               icon={<Pencil className="w-4 h-4" />}
                               variant="primary"
-                              onClick={() => console.log(`Éditer incident ${incident.id}`)}
+                              onClick={() => handleEditIncident(incident.id)}
                               className="h-8 w-32 p-0"
                             />
                             <Bouton
                               text="Supprimer"
                               icon={<Trash2 className="w-4 h-4" />}
                               variant="danger"
-                              onClick={() => console.log(`Supprimer incident ${incident.id}`)}
+                              onClick={() => handleDeleteIncident(incident.id)}
                               className="h-8 w-32 p-0"
                             />
                           </div>

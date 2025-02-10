@@ -1,6 +1,7 @@
 "use client"
 import React, { useState } from 'react';
 import Bouton from "@/components/Button";
+import DynamicForm from '@/components/DynamicFormAdmin';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
@@ -19,13 +20,18 @@ import {
 } from 'lucide-react';
 
 const MaintenanceManagement = () => {
+
+  const [isFormOpen, setIsFormOpen] = useState(false);
+  const [formType, setFormType] = useState<'maintenance' | 'service' | 'incident'>('maintenance');
+  const [selectedItem, setSelectedItem] = useState<any>(null);
+
   // États de recherche pour chaque onglet
   const [scheduleSearch, setScheduleSearch] = useState('');
   const [historySearch, setHistorySearch] = useState('');
   const [issuesSearch, setIssuesSearch] = useState('');
 
   // Données simulées pour les modèles de moto et leurs intervalles d'entretien
-  const [bikeModels] = useState([
+  const [bikeModels, setBikeModels] = useState([
     {
       id: 1,
       name: 'Street Triple',
@@ -45,7 +51,7 @@ const MaintenanceManagement = () => {
   ]);
 
   // Données simulées pour les entretiens
-  const [maintenances] = useState([
+  const [maintenances, setMaintenances] = useState([
     {
       id: 1,
       bikeModel: 'Street Triple',
@@ -71,7 +77,7 @@ const MaintenanceManagement = () => {
   ]);
 
   // Données simulées pour les pannes et garanties
-  const [issues] = useState([
+  const [issues, setIssues] = useState([
     {
       id: 1,
       bikeModel: 'Street Triple',
@@ -96,20 +102,113 @@ const MaintenanceManagement = () => {
     }
   ]);
 
-  // Gestionnaires d'événements
-  const handleAjout = () => {
-    console.log("Ajout d'un nouveau modèle");
+  // Gestionnaires pour la planification
+  const handleAjoutMaintenance = () => {
+    setFormType('maintenance');
+    setSelectedItem(null);
+    setIsFormOpen(true);
   };
 
-  const handleEdit = (id: number) => {
-    console.log("Édition du modèle:", id);
+  const handleEditMaintenance = (id: number) => {
+    const modelToEdit = bikeModels.find(model => model.id === id);
+    setFormType('maintenance');
+    setSelectedItem(modelToEdit);
+    setIsFormOpen(true);
   };
 
-  const handleDelete = (id: number) => {
-    console.log("Suppression du modèle:", id);
+  const handleDeleteMaintenance = (id: number) => {
+    setBikeModels(prevModels => prevModels.filter(model => model.id !== id));
   };
 
-  // Filtrer les données en fonction des recherches
+  // Gestionnaires pour l'historique
+  const handleAjoutService = () => {
+    setFormType('service');
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditService = (id: number) => {
+    const serviceToEdit = maintenances.find(service => service.id === id);
+    setFormType('service');
+    setSelectedItem(serviceToEdit);
+    setIsFormOpen(true);
+  };
+
+  // Gestionnaires pour les incidents
+  const handleAjoutIncident = () => {
+    setFormType('incident');
+    setSelectedItem(null);
+    setIsFormOpen(true);
+  };
+
+  const handleEditIncident = (id: number) => {
+    const issueToEdit = issues.find(issue => issue.id === id);
+    setFormType('incident');
+    setSelectedItem(issueToEdit);
+    setIsFormOpen(true);
+  };
+
+  // Gestionnaire de soumission du formulaire
+  const handleFormSubmit = (formData: any) => {
+    switch (formType) {
+      case 'maintenance':
+        if (selectedItem) {
+          setBikeModels(prevModels =>
+            prevModels.map(model =>
+              model.id === selectedItem.id ? { ...model, ...formData } : model
+            )
+          );
+        } else {
+          setBikeModels(prevModels => [
+            ...prevModels,
+            {
+              id: Math.max(...prevModels.map(m => m.id)) + 1,
+              ...formData
+            }
+          ]);
+        }
+        break;
+
+      case 'service':
+        if (selectedItem) {
+          setMaintenances(prevServices =>
+            prevServices.map(service =>
+              service.id === selectedItem.id ? { ...service, ...formData } : service
+            )
+          );
+        } else {
+          setMaintenances(prevServices => [
+            ...prevServices,
+            {
+              id: Math.max(...prevServices.map(s => s.id)) + 1,
+              ...formData
+            }
+          ]);
+        }
+        break;
+
+      case 'incident':
+        if (selectedItem) {
+          setIssues(prevIssues =>
+            prevIssues.map(issue =>
+              issue.id === selectedItem.id ? { ...issue, ...formData } : issue
+            )
+          );
+        } else {
+          setIssues(prevIssues => [
+            ...prevIssues,
+            {
+              id: Math.max(...prevIssues.map(i => i.id)) + 1,
+              ...formData
+            }
+          ]);
+        }
+        break;
+    }
+    setIsFormOpen(false);
+  };
+
+  // Filtres de recherche
   const filteredBikeModels = bikeModels.filter(bike =>
     bike.name.toLowerCase().includes(scheduleSearch.toLowerCase())
   );
@@ -117,20 +216,26 @@ const MaintenanceManagement = () => {
   const filteredMaintenances = maintenances.filter(maintenance =>
     maintenance.bikeModel.toLowerCase().includes(historySearch.toLowerCase()) ||
     maintenance.type.toLowerCase().includes(historySearch.toLowerCase()) ||
-    maintenance.technician.toLowerCase().includes(historySearch.toLowerCase()) ||
-    maintenance.parts.some(part => part.toLowerCase().includes(historySearch.toLowerCase()))
+    maintenance.technician.toLowerCase().includes(historySearch.toLowerCase())
   );
 
   const filteredIssues = issues.filter(issue =>
     issue.bikeModel.toLowerCase().includes(issuesSearch.toLowerCase()) ||
     issue.type.toLowerCase().includes(issuesSearch.toLowerCase()) ||
-    issue.description.toLowerCase().includes(issuesSearch.toLowerCase()) ||
-    issue.resolution.toLowerCase().includes(issuesSearch.toLowerCase())
+    issue.description.toLowerCase().includes(issuesSearch.toLowerCase())
   );
 
   return (
     <div className="p-6 space-y-6">
       <h1 className="text-3xl font-bold">Gestion des Entretiens</h1>
+
+      <DynamicForm
+        isOpen={isFormOpen}
+        onClose={() => setIsFormOpen(false)}
+        formType={formType}
+        initialData={selectedItem}
+        onSubmit={handleFormSubmit}
+      />
 
       {/* Alertes pour les entretiens à venir */}
       <div className="space-y-3">
@@ -188,7 +293,7 @@ const MaintenanceManagement = () => {
                     text="Ajouter"
                     icon={<BookmarkPlus className="w-4 h-4" />}
                     variant="default"
-                    onClick={handleAjout}
+                    onClick={handleAjoutMaintenance}
                     className="h-8 w-32 p-0"
                   />
                 </div>
@@ -199,10 +304,9 @@ const MaintenanceManagement = () => {
                 <TableHeader>
                   <TableRow>
                     <TableHead>Modèle</TableHead>
-                    <TableHead>Intervalle (km)</TableHead>
-                    <TableHead>Intervalle (mois)</TableHead>
-                    <TableHead>Kilométrage actuel</TableHead>
-                    <TableHead>Prochain entretien</TableHead>
+                    <TableHead>Date</TableHead>
+                    <TableHead>Description</TableHead>
+                    <TableHead>Prix</TableHead>
                     <TableHead>Statut</TableHead>
                     <TableHead className="text-right">Actions</TableHead>
                   </TableRow>
@@ -212,7 +316,6 @@ const MaintenanceManagement = () => {
                     <TableRow key={bike.id}>
                       <TableCell>{bike.name}</TableCell>
                       <TableCell>{bike.maintenanceInterval} km</TableCell>
-                      <TableCell>{bike.timeInterval} mois</TableCell>
                       <TableCell>{bike.currentMileage} km</TableCell>
                       <TableCell>{bike.nextService}</TableCell>
                       <TableCell>
@@ -228,14 +331,14 @@ const MaintenanceManagement = () => {
                             text="Éditer"
                             icon={<Pencil className="w-4 h-4" />}
                             variant="primary"
-                            onClick={() => handleEdit(bike.id)}
+                            onClick={() => handleEditMaintenance(bike.id)}
                             className="h-8 w-32 p-0"
                           />
                           <Bouton
                             text="Supprimer"
                             icon={<Trash2 className="w-4 h-4" />}
                             variant="danger"
-                            onClick={() => handleDelete(bike.id)}
+                            onClick={() => handleDeleteMaintenance(bike.id)}
                             className="h-8 w-32 p-0"
                           />
                         </div>
@@ -253,16 +356,18 @@ const MaintenanceManagement = () => {
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>Historique des Entretiens</span>
-                <div className="flex items-center gap-2 border rounded-md px-3 py-1">
-                  <Search className="w-4 h-4 text-gray-400" />
-                  <input
-                    type="search"
-                    value={historySearch}
-                    onChange={(e) => setHistorySearch(e.target.value)}
-                    placeholder="Rechercher un entretien..."
-                    className="border-none outline-none bg-transparent"
-                  />
-                </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 border rounded-md px-3 py-1">
+                      <Search className="w-4 h-4 text-gray-400" />
+                      <input
+                        type="search"
+                        value={historySearch}
+                        onChange={(e) => setHistorySearch(e.target.value)}
+                        placeholder="Rechercher un entretien..."
+                        className="border-none outline-none bg-transparent"
+                      />
+                    </div>
+                  </div>
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -305,16 +410,25 @@ const MaintenanceManagement = () => {
             <CardHeader>
               <CardTitle className="flex justify-between items-center">
                 <span>Pannes et Garanties</span>
-                <div className="flex items-center gap-2 border rounded-md px-3 py-1">
-                  <Search className="w-4 h-4 text-gray-400" />
-                  <input
-                    type="search"
-                    value={issuesSearch}
-                    onChange={(e) => setIssuesSearch(e.target.value)}
-                    placeholder="Rechercher une panne..."
-                    className="border-none outline-none bg-transparent"
-                  />
-                </div>
+                  <div className="flex items-center gap-4">
+                    <div className="flex items-center gap-2 border rounded-md px-3 py-1">
+                      <Search className="w-4 h-4 text-gray-400" />
+                      <input
+                        type="search"
+                        value={issuesSearch}
+                        onChange={(e) => setIssuesSearch(e.target.value)}
+                        placeholder="Rechercher une panne..."
+                        className="border-none outline-none bg-transparent"
+                      />
+                    </div>
+                    <Bouton
+                      text="Ajouter"
+                      icon={<BookmarkPlus className="w-4 h-4" />}
+                      variant="default"
+                      onClick={handleAjoutIncident}
+                      className="h-8 w-32 p-0"
+                    />
+                  </div>
               </CardTitle>
             </CardHeader>
             <CardContent>
