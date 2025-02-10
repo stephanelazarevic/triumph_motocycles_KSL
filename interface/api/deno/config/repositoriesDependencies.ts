@@ -9,12 +9,38 @@ import { UserRepositoryPrisma } from '../../../../infrastructure/adapters/prisma
 import { DealerRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/DealerRepositoryPrisma.ts';
 import { WarrantyRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/WarrantyRepositoryPrisma.ts';
 import { MotorcycleHistoryRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/MotorcycleHistoryRepositoryPrisma.ts';
+import { IncidentRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/IncidentRepositoryPrisma.ts';
+import { MotorcyclePartRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/MotorcyclePartRepositoryPrisma.ts';
 
 import { prisma } from "./prisma.db.ts";
+import { IncidentRepository } from '../../../../application/repositories/IncidentRepository.ts';
+import { MaintenanceRepository } from '../../../../application/repositories/MaintenanceRepository.ts';
+import { MaintenanceRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/MaintenanceRepositoryPrisma.ts';
+import { MotorcyclePartRepository } from '../../../../application/repositories/MotorcyclePartRepository.ts';
+import { PartRepository } from '../../../../application/repositories/PartRepository.ts';
+import { PartRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/PartRepositoryPrisma.ts';
+import { NotificationRepository } from '../../../../application/repositories/NotificationRepository.ts';
+import { NotificationRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/NotificationRepositoryPrisma.ts';
+import { ClientRepository } from '../../../../application/repositories/ClientRepository.ts';
+import { ClientRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/ClientRepositoryPrisma.ts';
+import { EnterpriseRepository } from '../../../../application/repositories/EnterpriseRepository.ts';
+import { EnterpriseRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/EnterpriseRepositoryPrisma.ts';
+import { OrderRepository } from '../../../../application/repositories/OrderRepository.ts';
+import { OrderRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/OrderRepositoryPrisma.ts';
+import { DriverRepository } from '../../../../application/repositories/DriverRepository.ts';
+import { DriverRepositoryPrisma } from '../../../../infrastructure/adapters/prisma/DriverRepositoryPrisma.ts';
 
 export const motorcycleRepository: MotorcycleRepository                = new MotorcycleRepositoryPrisma(prisma);
 export const userRepository: UserRepository                            = new UserRepositoryPrisma(prisma);
 export const dealerRepository: DealerRepository                        = new DealerRepositoryPrisma(prisma);
 export const warrantyRepository: WarrantyRepository                    = new WarrantyRepositoryPrisma(prisma);
 export const motorcycleHistoryRepository: MotorcycleHistoryRepository  = new MotorcycleHistoryRepositoryPrisma(prisma);
-
+export const incidentRepository: IncidentRepository                    = new IncidentRepositoryPrisma(prisma);
+export const maintenanceRepository: MaintenanceRepository              = new MaintenanceRepositoryPrisma(prisma);
+export const motorcyclePartRepository: MotorcyclePartRepository        = new MotorcyclePartRepositoryPrisma(prisma); 
+export const partRepository: PartRepository                            = new PartRepositoryPrisma(prisma);
+export const notificationRepository: NotificationRepository            = new NotificationRepositoryPrisma(prisma);
+export const clientRepository: ClientRepository                        = new ClientRepositoryPrisma(prisma);
+export const enterpriseRepository: EnterpriseRepository                = new EnterpriseRepositoryPrisma(prisma);
+export const orderRepository: OrderRepository                          = new OrderRepositoryPrisma(prisma);
+export const driverRepository: DriverRepository                        = new DriverRepositoryPrisma(prisma);

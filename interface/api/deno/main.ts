@@ -6,6 +6,12 @@ import { sendNotificationsCron, retryFailedNotificationsCron } from "../deno/con
 import { logger } from './middleware/logger.ts'
 import { Hono } from "https://deno.land/x/hono@v3.11.4/mod.ts";
 import { cors } from "https://deno.land/x/hono@v3.11.4/middleware.ts";
+import motorcycleHistoryRouter from "./routes/motorcycleHistoryRouter.ts";
+import motorcyclePartRouter from "./routes/motorcyclePartRouter.ts";
+import notificationRouter from "./routes/notificationRouter.ts";
+import orderRouter from "./routes/orderRouter.ts";
+import partRouter from "./routes/partRouter.ts";
+import driverRouter from "./routes/driverRouter.ts";
 
 const app = new Hono();
 
@@ -36,6 +42,12 @@ app.use("*", logger);
 app.route("/api", apiRouter);
 app.route("/api", authenticationRouter);
 app.route("/api/motorcycle", motorcycleRouter);
+app.route("/api/motorcycleHistory", motorcycleHistoryRouter);
+app.route("/api/motorcyclePart", motorcyclePartRouter);
+app.route("/api/notification", notificationRouter);
+app.route("/api/order", orderRouter);
+app.route("/api/part", partRouter);
+app.route("/api/driver", driverRouter);
 
 // Start server
 Deno.serve({ port: 8000 }, app.fetch);

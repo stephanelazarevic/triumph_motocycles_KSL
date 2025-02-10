@@ -1,126 +1,143 @@
 import type { MotorcycleHistoryRepository } from "../../../../application/repositories/MotorcycleHistoryRepository.ts";
 import { exhaustive } from "npm:exhaustive";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
 import { addMotorcycleHistoryRequestSchema, updateMotorcycleHistoryRequestSchema } from "../schemas/motorcycleHistoryRequestSchema.ts";
-import { MotorcycleHistoryEntity } from "../../../../domain/entities/MotorcycleHistoryEntity.ts";
 import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 import { ListMotorcyclesHistoriesUsecase } from "../../../../application/usecases/motorcycleHistory/ListMotorcyclesHistoriesUsecase.ts";
 import { AddMotorcycleHistoryUsecase } from "../../../../application/usecases/motorcycleHistory/AddMotorcycleHistoryUsecase.ts";
 import { GetMotorcycleHistoryUsecase } from "../../../../application/usecases/motorcycleHistory/GetMotorcycleHistoryUsecase.ts";
 import { UpdateMotorcycleHistoryUsecase } from "../../../../application/usecases/motorcycleHistory/UpdateMotorcycleHistoryUsecase.ts";
 import { DeleteMotorcycleHistoryUsecase } from "../../../../application/usecases/motorcycleHistory/DeleteMotorcycleHistoryUsecase.ts";
+import { MotorcycleHistoryService } from "../../../../application/services/MotorcycleHistoryService.ts";
+import { MotorcycleHistoryNotFoundError } from "../../../../domain/errors/MotorcycleHistoryNotFoundError.ts";
 
 export class MotorcycleHistoryController implements EntityControllerInterface {
   public constructor(
     private readonly motorcycleHistoryRepository: MotorcycleHistoryRepository,
-    private readonly listMotorcyclesHistoriesUsecase: ListMotorcyclesHistoriesUsecase,
-    private readonly getMotorcycleHistoryUsecase: GetMotorcycleHistoryUsecase,
+    private readonly motorcycleHistoryService: MotorcycleHistoryService
   ) {}
 
-  public async getAll(): Promise<Response> {
-    const result = await this.listMotorcyclesHistoriesUsecase.execute();
-
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  public async getAll(context: Context): Promise<Response> {
+    const listMotorcyclesHistoriesUsecase = new ListMotorcyclesHistoriesUsecase(
+      this.motorcycleHistoryRepository,
+      this.motorcycleHistoryService
+    );
+    const result = await listMotorcyclesHistoriesUsecase.execute();
+    return context.json(JSON.stringify(result), 200);
   }
 
-  public async getById(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async getById(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("MotorcycleHistory ID is required", { status: 400 });
+      return context.json({ message: "MotorcycleHistory ID is required" }, 400);
     }
 
-    const result = await this.getMotorcycleHistoryUsecase.execute(id);
+    const getMotorcycleHistoryUsecase = new GetMotorcycleHistoryUsecase(
+      this.motorcycleHistoryRepository,
+      this.motorcycleHistoryService
+    );
 
-    if (result instanceof MotorcycleHistoryEntity) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const result = await getMotorcycleHistoryUsecase.execute(id);
+
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
     return exhaustive({
-      MotorcycleHistoryNotFoundError: () => new Response("MotorcycleHistoryNotFoundError", { status: 404 }),
+      MotorcycleHistoryNotFoundError: () => context.json({ message: "Motorcycle history not found" }, 404),
     });
   }
 
-  public async create(request: Request): Promise<Response> {
-    const addMotorcycleHistoryUsecase = new AddMotorcycleHistoryUsecase(this.motorcycleHistoryRepository);
-    const body = await request.json();
+  public async create(context: Context): Promise<Response> {
+    const body = await context.req.json();
     const validation = addMotorcycleHistoryRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", { status: 400 });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
+    const addMotorcycleHistoryUsecase = new AddMotorcycleHistoryUsecase(
+      this.motorcycleHistoryRepository
+    );
     const result = await addMotorcycleHistoryUsecase.execute(validation.data);
 
-    if (result instanceof MotorcycleHistoryEntity) {
-      return new Response(null, { status: 201 });
+    if (result) {
+      return context.json(JSON.stringify(result), 201);
     }
 
-    return exhaustive(result.name, {
-      InvalidDateError: () => new Response("InvalidDateError", { status: 400 }),
+    return exhaustive({
+      InvalidDateError: () => context.json({ message: "Invalid date" }, 400),
     });
   }
 
-  public async update(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const motorcycleHistoryId = url.searchParams.get("id");
-
-    if (!motorcycleHistoryId) {
-      return new Response("MotorcycleHistory ID is required", { status: 400 });
+  public async update(context: Context): Promise<Response> {
+    const id = context.req.param("id");
+    if (!id) {
+      return context.json({ message: "MotorcycleHistory ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateMotorcycleHistoryRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
-    const updateMotorcycleHistoryUsecase = new UpdateMotorcycleHistoryUsecase(this.motorcycleHistoryRepository)
-    const result = await updateMotorcycleHistoryUsecase.execute(motorcycleHistoryId, validation.data);
+    const updateMotorcycleHistoryUsecase = new UpdateMotorcycleHistoryUsecase(
+      this.motorcycleHistoryRepository
+    );
+    const result = await updateMotorcycleHistoryUsecase.execute(id, validation.data);
 
-    if (result instanceof MotorcycleHistoryEntity) {
-      return new Response(null, {
-        status: 201,
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
-    return exhaustive(result.name, {
-      MotorcycleHistoryNotFoundError: () => new Response("MotorcycleHistoryNotFoundError", { status: 404 }),
+    return exhaustive({
+      MotorcycleHistoryNotFoundError: () => context.json({ message: "Motorcycle history not found" }, 404),
     });
   }
 
-  public async delete(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async delete(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("MotorcycleHistory ID is required", { status: 400 });
+      return context.json({ message: "MotorcycleHistory ID is required" }, 400);
     }
 
     const deleteMotorcycleHistoryUsecase = new DeleteMotorcycleHistoryUsecase(
-      this.motorcycleHistoryRepository,
+      this.motorcycleHistoryRepository
     );
-
     const result = await deleteMotorcycleHistoryUsecase.execute(id);
 
-    if (result === undefined) {
-      return new Response(null, { status: 204 });
+    if (!result) {
+      return context.json(null, 204);
     }
 
-    return exhaustive(result.name, {
-      MotorcycleHistoryNotFoundError: () => new Response("MotorcycleHistoryNotFoundError", { status: 404 }),
+    return exhaustive({
+      MotorcycleHistoryNotFoundError: () => context.json({ message: "Motorcycle history not found" }, 404),
     });
+  }
+
+  public async getByMotorcycleId(context: Context): Promise<Response> {
+    const id = context.req.param("id");
+    if (!id) {
+      return context.json({ message: "Motorcycle ID is required" }, 400);
+    }
+
+    const result = await this.motorcycleHistoryRepository.findByMotorcycleId(id);
+    return context.json(JSON.stringify(result), 200);
+  }
+
+  public async getLastByMotorcycleId(context: Context): Promise<Response> {
+    const id = context.req.param("id");
+    if (!id) {
+      return context.json({ message: "Motorcycle ID is required" }, 400);
+    }
+
+    const result = await this.motorcycleHistoryRepository.findLastByMotorcycleId(id);
+
+    if (result instanceof MotorcycleHistoryNotFoundError) {
+      return context.json({ message: "Motorcycle history not found" }, 404);
+    }
+
+    return context.json(JSON.stringify(result), 200);
   }
 }

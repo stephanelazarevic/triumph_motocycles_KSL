@@ -1,147 +1,107 @@
-import type { DriverRepository } from "../../../../application/repositories/DriverRepository.ts";
-import type { EnterpriseRepository } from "../../../../application/repositories/EnterpriseRepository.ts";
-import type { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
+import { exhaustive } from "npm:exhaustive";
+import { Context } from "https://deno.land/x/hono@v3.11.4/mod.ts";
+import { DriverRepository } from "../../../../application/repositories/DriverRepository.ts";
+import { MotorcycleRepository } from "../../../../application/repositories/MotorcycleRepository.ts";
 import { AddDriverUsecase } from "../../../../application/usecases/driver/AddDriverUsecase.ts";
 import { GetDriverUsecase } from "../../../../application/usecases/driver/GetDriverUsecase.ts";
 import { ListDriversUsecase } from "../../../../application/usecases/driver/ListDriversUsecase.ts";
 import { UpdateDriverUsecase } from "../../../../application/usecases/driver/UpdateDriverUsecase.ts";
 import { DeleteDriverUsecase } from "../../../../application/usecases/driver/DeleteDriverUsecase.ts";
-import { exhaustive } from "npm:exhaustive"
 import { addDriverRequestSchema, updateDriverRequestSchema } from "../schemas/driverRequestSchema.ts";
-import { EntityControllerInterface } from "./EntityControllerInterface.ts";
-import { DriverEntity } from "../../../../domain/entities/DriverEntity.ts";
 
-export class DriverController implements EntityControllerInterface{
-  public constructor(
+export class DriverController {
+  constructor(
     private readonly driverRepository: DriverRepository,
-    private readonly enterpriseRepository: EnterpriseRepository,
-    private readonly motorcycleRepository: MotorcycleRepository,
+    private readonly motorcycleRepository: MotorcycleRepository
   ) {}
 
-  public async getAll(): Promise<Response> {
-    const listDriversUsecase = new ListDriversUsecase(
-      this.driverRepository,
-    );
-
+  public async getAll(context: Context): Promise<Response> {
+    const listDriversUsecase = new ListDriversUsecase(this.driverRepository);
     const result = await listDriversUsecase.execute();
-
-    return new Response(JSON.stringify(result), {
-      status: 200,
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    return context.json(JSON.stringify(result), 200);
   }
 
-  public async getById(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async getById(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("Driver ID is required", { status: 400 });
+      return context.json({ message: "Driver ID is required" }, 400);
     }
 
     const getDriverUsecase = new GetDriverUsecase(this.driverRepository);
-
     const result = await getDriverUsecase.execute(id);
 
-    if (result instanceof DriverEntity) {
-      return new Response(JSON.stringify(result), {
-        status: 200,
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
-    return exhaustive(result.name, {
-      DriverNotFoundError: () => new Response("DriverNotFoundError", { status: 404 }),
+    return exhaustive("DriverNotFoundError", {
+      DriverNotFoundError: () => context.json({ message: "Driver not found" }, 404),
     });
-
   }
 
-  public async create(request: Request): Promise<Response> {
-    const addDriverUsecase = new AddDriverUsecase(
-      this.driverRepository,
-      this.motorcycleRepository,
-    );
-
-    const body = await request.json();
-
+  public async create(context: Context): Promise<Response> {
+    const body = await context.req.json();
     const validation = addDriverRequestSchema.safeParse(body);
 
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
+    const addDriverUsecase = new AddDriverUsecase(
+      this.driverRepository,
+      this.motorcycleRepository
+    );
     const result = await addDriverUsecase.execute(validation.data);
 
-    if (result instanceof DriverEntity) {
-      return new Response(null, {
-        status: 201,
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 201);
     }
 
-    return exhaustive(result.name, {
-      EnterpriseNotFoundError: () => new Response("EnterpriseNotFoundError", { status: 404 }),
-      MotorcycleNotFoundError: () => new Response("MotorcycleNotFoundError", { status: 404 }),
+    return exhaustive("EnterpriseNotFoundError", {
+      EnterpriseNotFoundError: () => context.json({ message: "Enterprise not found" }, 404),
+      MotorcycleNotFoundError: () => context.json({ message: "Motorcycle not found" }, 404),
     });
   }
 
-  public async update(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const driverId = url.searchParams.get("id");
-
-    if (!driverId) {
-      return new Response("Driver ID is required", { status: 400 });
+  public async update(context: Context): Promise<Response> {
+    const id = context.req.param("id");
+    if (!id) {
+      return context.json({ message: "Driver ID is required" }, 400);
     }
 
-    const body = await request.json();
+    const body = await context.req.json();
     const validation = updateDriverRequestSchema.safeParse(body);
     if (!validation.success) {
-      return new Response("Malformed request", {
-        status: 400,
-      });
+      return context.json({ message: "Malformed request" }, 400);
     }
 
     const updateDriverUsecase = new UpdateDriverUsecase(this.driverRepository);
-    const result = await updateDriverUsecase.execute(driverId, validation.data);
+    const result = await updateDriverUsecase.execute(id, validation.data);
 
-    if (result instanceof DriverEntity) {
-      return new Response(null, {
-        status: 201,
-      });
+    if (result) {
+      return context.json(JSON.stringify(result), 200);
     }
 
-    return exhaustive(result.name, {
-      DriverNotFoundError: () => new Response("DriverNotFoundError", { status: 404 }),
+    return exhaustive("DriverNotFoundError", {
+      DriverNotFoundError: () => context.json({ message: "Driver not found" }, 404),
     });
   }
 
-  public async delete(request: Request): Promise<Response> {
-    const url = new URL(request.url);
-    const id = url.searchParams.get("id");
-
+  public async delete(context: Context): Promise<Response> {
+    const id = context.req.param("id");
     if (!id) {
-      return new Response("Driver ID is required", { status: 400 });
+      return context.json({ message: "Driver ID is required" }, 400);
     }
 
-    const deleteDriverUsecase = new DeleteDriverUsecase(
-      this.driverRepository,
-    );
-
+    const deleteDriverUsecase = new DeleteDriverUsecase(this.driverRepository);
     const result = await deleteDriverUsecase.execute(id);
 
-    if (result === undefined) {
-      return new Response(null, {
-        status: 204,
-      });
+    if (!result) {
+      return context.json(null, 204);
     }
 
-    return exhaustive(result.name, {
-      DriverNotFoundError: () => new Response("DriverNotFoundError", { status: 404 }),
+    return exhaustive("DriverNotFoundError", {
+      DriverNotFoundError: () => context.json({ message: "Driver not found" }, 404),
     });
   }
 }
