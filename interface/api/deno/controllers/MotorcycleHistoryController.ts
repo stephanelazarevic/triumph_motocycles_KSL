@@ -10,6 +10,8 @@ import { UpdateMotorcycleHistoryUsecase } from "../../../../application/usecases
 import { DeleteMotorcycleHistoryUsecase } from "../../../../application/usecases/motorcycleHistory/DeleteMotorcycleHistoryUsecase.ts";
 import { MotorcycleHistoryService } from "../../../../application/services/MotorcycleHistoryService.ts";
 import { MotorcycleHistoryNotFoundError } from "../../../../domain/errors/MotorcycleHistoryNotFoundError.ts";
+import { GetMotorcycleHistoriesByMotorcycleIdUsecase } from "../../../../application/usecases/motorcycleHistory/GetMotorcycleHistoriesByMotorcycleIdUsecase.ts"
+import { GetLastMotorcycleHistoryUsecase } from "../../../../application/usecases/motorcycleHistory/GetLastMotorcycleHistoryUsecase.ts"
 
 export class MotorcycleHistoryController implements EntityControllerInterface {
   public constructor(
@@ -121,8 +123,8 @@ export class MotorcycleHistoryController implements EntityControllerInterface {
     if (!id) {
       return context.json({ message: "Motorcycle ID is required" }, 400);
     }
-
-    const result = await this.motorcycleHistoryRepository.findByMotorcycleId(id);
+    const usecase = new GetMotorcycleHistoriesByMotorcycleIdUsecase(this.motorcycleHistoryRepository, this.motorcycleHistoryService);
+    const result = await usecase.execute(id);
     return context.json(JSON.stringify(result), 200);
   }
 
@@ -131,13 +133,11 @@ export class MotorcycleHistoryController implements EntityControllerInterface {
     if (!id) {
       return context.json({ message: "Motorcycle ID is required" }, 400);
     }
-
-    const result = await this.motorcycleHistoryRepository.findLastByMotorcycleId(id);
-
+    const usecase = new GetLastMotorcycleHistoryUsecase(this.motorcycleHistoryRepository, this.motorcycleHistoryService);
+    const result = await usecase.execute(id);
     if (result instanceof MotorcycleHistoryNotFoundError) {
       return context.json({ message: "Motorcycle history not found" }, 404);
     }
-
     return context.json(JSON.stringify(result), 200);
   }
 }

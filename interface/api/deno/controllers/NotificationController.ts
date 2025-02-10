@@ -14,8 +14,9 @@ import { ListNotificationsUsecase } from "../../../../application/usecases/notif
 import { UpdateNotificationUsecase } from "../../../../application/usecases/notification/UpdateNotificationUsecase.ts";
 import { DeleteNotificationUsecase } from "../../../../application/usecases/notification/DeleteNotificationUsecase.ts";
 import { SendNotificationUsecase } from "../../../../application/usecases/notification/SendNotificationUsecase.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class NotificationController {
+export class NotificationController implements EntityControllerInterface{
   constructor(
     private readonly maintenanceRepository: MaintenanceRepository,
     private readonly partRepository: PartRepository,

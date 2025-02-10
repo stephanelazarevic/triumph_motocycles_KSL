@@ -9,8 +9,9 @@ import { AddMotorcyclePartUsecase } from "../../../../application/usecases/motor
 import { GetMotorcyclePartUsecase } from "../../../../application/usecases/motorcyclePart/GetMotorcyclePartUsecase.ts";
 import { UpdateMotorcyclePartsUsecase } from "../../../../application/usecases/motorcyclePart/UpdateMotorcyclePartsUsecase.ts";
 import { DeleteMotorcyclePartUsecase } from "../../../../application/usecases/motorcyclePart/DeleteMotorcyclePartUsecase.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class MotorcyclePartController {
+export class MotorcyclePartController implements EntityControllerInterface{
   constructor(
     private readonly motorcyclePartRepository: MotorcyclePartRepository,
     private readonly motorcycleRepository: MotorcycleRepository,

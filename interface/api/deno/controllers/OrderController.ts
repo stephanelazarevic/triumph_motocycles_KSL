@@ -8,8 +8,9 @@ import { ListOrdersUsecase } from "../../../../application/usecases/order/ListOr
 import { UpdateOrderUsecase } from "../../../../application/usecases/order/UpdateOrderUsecase.ts";
 import { DeleteOrderUsecase } from "../../../../application/usecases/order/DeleteOrderUsecase.ts";
 import { addOrderRequestSchema, updateOrderRequestSchema } from "../schemas/orderRequestSchema.ts";
+import { EntityControllerInterface } from "./EntityControllerInterface.ts";
 
-export class OrderController {
+export class OrderController implements EntityControllerInterface{
   constructor(
     private readonly orderRepository: OrderRepository,
     private readonly partRepository: PartRepository
