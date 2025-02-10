@@ -1,9 +1,8 @@
 import { prisma } from "./config/prisma.db.ts";
 import apiRouter from "./routes/apiRouter.ts";
 import authenticationRouter from "./routes/authenticationRouter.ts";
-import { logger } from './middleware/logger.ts'
-import { Hono } from "https://deno.land/x/hono@v3.11.4/mod.ts";
-import { cors } from "https://deno.land/x/hono@v3.11.4/middleware.ts";
+
+import { sendNotificationsCron, retryFailedNotificationsCron } from "../deno/config/cronDependencies.ts";
 
 const app = new Hono();
 
@@ -17,6 +16,9 @@ try {
 } finally {
   await prisma.$disconnect();
 }
+
+sendNotificationsCron.start();
+retryFailedNotificationsCron.start();
 
 // CORS
 app.use("/*", cors({

@@ -1,15 +1,13 @@
 import { EmailAddress } from "../../domain/value-objects/EmailAddress.ts";
 import { EmailNotSentError } from "../../domain/errors/EmailNotSentError.ts"
 import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
+import { EmailService } from "../../application/services/EmailService.ts";
+import { NotificationEntity } from "../../domain/entities/NotificationEntity.ts";
 
 const env = await load();
 const MAIL_API_KEY = env.MAIL_API_KEY;
 
-export interface ResendEmailService {
-    send(email: { to: EmailAddress; subject: string; body: string }): Promise<void>;
-  }
-
-  export class ResendEmailService implements ResendEmailService {
+  export class ResendEmailService implements EmailService {
 
     private readonly apiKey = MAIL_API_KEY;
 
@@ -37,5 +35,19 @@ export interface ResendEmailService {
       console.log(`📧 Email sent to ${email.to} !`);
 
     }
-  }
 
+    async resendNotification(notification: NotificationEntity): Promise<void> {
+      console.log(`🔄 Retrying email for notification ID: ${notification.id}...`);
+      try {
+        await this.send({
+          to: notification.user.emailAddress,
+          subject: `Re: ${notification.message}`,
+          body: notification.message,
+        });
+  
+        console.log(`✅ Retry success for notification ID: ${notification.id}`);
+      } catch (error) {
+        console.error(`❌ Retry failed for notification ID: ${notification.id}`, error.message);
+      }
+  }
+}

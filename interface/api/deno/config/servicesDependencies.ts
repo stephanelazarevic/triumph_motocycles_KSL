@@ -10,8 +10,8 @@ import { LibPhoneNumberService } from '../../../../infrastructure/services/LibPh
 import { I18nCountryService } from '../../../../infrastructure/services/I18nCountryService.ts';
 import { ResendEmailService } from '../../../../infrastructure/services/ResendEmailService.ts';
 
+export const emailService: EmailService                     = new ResendEmailService();
 export const passwordService: PasswordService               = new BCryptPasswordService();
 export const tokenGeneratorService: TokenGeneratorService   = new JwtTokenService("oiujyhgtfghjkhgfghjk");
 export const phonenNumberService: PhoneNumberService        = new LibPhoneNumberService();
 export const countryService: CountryService                 = new I18nCountryService();
-export const emailService: EmailService                     = new ResendEmailService();

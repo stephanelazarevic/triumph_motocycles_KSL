@@ -1,60 +1,17 @@
-import { SendNotificationUsecase } from "../../application/usecases/notification/SendNotificationUsecase.ts";
-import { NotificationStatus } from "../../domain/enum/NotificationEnum.ts";
-import { NotificationRepository } from "../../application/repositories/NotificationRepository.ts";
-import { EmailService } from "../../application/services/EmailService.ts";
-import { MaintenanceRepository } from "../../application/repositories/MaintenanceRepository.ts";
-import { PartRepository } from "../../application/repositories/PartRepository.ts";
-import { CronJob } from "cron"; 
-import { UserRepository } from "../../application/repositories/UserRepository.ts";
-import { ClientRepository } from "../../application/repositories/ClientRepository.ts";
-import { EnterpriseRepository } from "../../application/repositories/EnterpriseRepository.ts";
+import { CronJob } from "cron";
+import { SendNotificationUsecase } from "../../application/usecases/notification/SendNotificationUsecase";
 
 export class SendNotificationsCron {
-  private sendNotificationUsecase: SendNotificationUsecase;
-
-  constructor(
-    private maintenanceRepository: MaintenanceRepository,
-    private partRepository: PartRepository,
-    private userRepository: UserRepository,
-    private clientRepository: ClientRepository,
-    private enterpriseRepository: EnterpriseRepository,
-    private notificationRepository: NotificationRepository,
-    private emailService: EmailService
-  ) {
-    this.sendNotificationUsecase = new SendNotificationUsecase(
-      this.maintenanceRepository,
-      this.partRepository,
-      this.userRepository,
-      this.clientRepository,
-      this.enterpriseRepository,
-      this.notificationRepository,
-      this.emailService,
-    );
-  }
+  constructor(private readonly sendNotificationUsecase: SendNotificationUsecase) {}
 
   public start(): void {
-    // Cron pour envoyer les notifications tous les jours à minuit
     const cronJob = new CronJob("0 0 * * *", async () => {
       try {
         console.log("🔔 Sending notifications...");
         await this.sendNotificationUsecase.execute();
-
-        const toSendNotifications = await this.notificationRepository.findNotificationsByStatus(NotificationStatus.TO_SEND);
-        for (const notification of toSendNotifications) {
-          
-          await this.sendNotificationUsecase.sendNotification(
-            notification.user.id,
-            notification.type,
-            notification.message,
-            notification.user.emailAddress,
-            `Notification : ${notification.type}`,
-            notification.message
-          );
-        }
-
-        console.log("✅ Notifications send and status updated !");
+        console.log("✅ Notifications processed!");
       } catch (error) {
-        console.error("❌ Error while sending notifications : ", error);
+        console.error("❌ Error while sending notifications: ", error);
       }
     });
 

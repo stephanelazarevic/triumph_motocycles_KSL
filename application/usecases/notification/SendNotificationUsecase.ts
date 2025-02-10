@@ -42,6 +42,23 @@ export class SendNotificationUsecase {
       throw new AdminIdNotFoundError();
     }
 
+    const toSendNotifications = await this.notificationRepository.findNotificationsByStatus(NotificationStatus.TO_SEND);
+
+    for (const notification of toSendNotifications) {
+      try {
+        await this.sendNotification(
+          notification.user.id,
+          notification.type,
+          notification.message,
+          notification.user.emailAddress,
+          `Notification: ${notification.type}`,
+          notification.message
+        );
+      } catch (error) {
+        console.error(`❌ Error sending notification ${notification.id}:`, error);
+      }
+    }
+
     const thirtyDaysLater = new Date();
     thirtyDaysLater.setDate(thirtyDaysLater.getDate() + 30);
 
@@ -120,8 +137,8 @@ export class SendNotificationUsecase {
     emailBody: string
   ): Promise<void> {
 
-    const existingNotification = await this.notificationRepository.findRecentNotification(userId, type);
-    if (existingNotification) {
+    const recentNotification = await this.notificationRepository.findRecentNotification(userId, type);
+    if (recentNotification) {
       throw new NotificationSentRecentlyError();
     }
 
@@ -158,20 +175,25 @@ export class SendNotificationUsecase {
     }
   }
 
-  public async resend(notification: NotificationEntity): Promise<void> {
-    try {
-      await this.emailService.send({
-        to: notification.user.emailAddress,
-        subject: `Re: ${notification.message}`,
-        body: notification.message,
-      });
-
+  public async retryFailedNotifications(): Promise<void> {
+  
+    const failedNotifications = await this.notificationRepository.findNotificationsByStatus(NotificationStatus.FAILED);
+  
+    if (failedNotifications.length === 0) {
+      console.log("✅ No failed notifications.");
+      return;
+    }
+  
+    for (const notification of failedNotifications) {
+      try {
+        await this.emailService.resendNotification(notification);
+        console.log(`✅ Notification ${notification.id} resent!`);
+      } catch (error) {
+        console.error(`❌ Retry failed for notification ${notification.id}:`, error.message);
+      }
       notification.status = NotificationStatus.SENT;
       await this.notificationRepository.save(notification);
 
-      console.log(`✅ Retry success for notification ID: ${notification.id}`);
-    } catch (error) {
-      console.error(`❌ Retry failed for notification ID: ${notification.id}`, error.message);
     }
   }
 }

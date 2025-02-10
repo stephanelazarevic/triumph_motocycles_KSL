@@ -1,32 +1,20 @@
-import { NotificationRepository } from "../../application/repositories/NotificationRepository.ts";
-import { SendNotificationUsecase } from "../../application/usecases/notification/SendNotificationUsecase.ts";
-import { NotificationStatus } from "../../domain/enum/NotificationEnum.ts";
+import { CronJob } from "cron";
+import { SendNotificationUsecase } from "../../application/usecases/notification/SendNotificationUsecase";
 
-export class RetryFailedNotificationsJob {
-  public constructor(
-    private readonly notificationRepository: NotificationRepository,
-    private readonly sendNotificationUsecase: SendNotificationUsecase,
-  ) {}
+export class RetryFailedNotificationsCron {
+  constructor(private readonly sendNotificationUsecase: SendNotificationUsecase) {}
 
-  public async execute(): Promise<void> {
-    console.log("🔄 Retry job starting...");
-
-    const failedNotifications = await this.notificationRepository.findNotificationsByStatus(NotificationStatus.FAILED);
-
-    if (failedNotifications.length === 0) {
-      console.log("✅ No failed notifications.");
-      return;
-    }
-
-    for (const notification of failedNotifications) {
+  public start(): void {
+    const cronJob = new CronJob("0 0 * * *", async () => { 
       try {
-
-        await this.sendNotificationUsecase.resend(notification);
-
-        console.log(`✅ Notification ${notification.id} send !`);
+        console.log("🔄 Retrying failed notifications...");
+        await this.sendNotificationUsecase.retryFailedNotifications();
+        console.log("✅ Failed notifications retried!");
       } catch (error) {
-        console.error(`❌ Retry failed for notification ${notification.id}:`, error.message);
+        console.error("❌ Error while retrying failed notifications: ", error);
       }
-    }
+    });
+
+    cronJob.start();
   }
 }
