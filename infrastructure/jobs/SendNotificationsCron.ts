@@ -1,7 +1,7 @@
 import { SendNotificationUsecase } from "../../application/usecases/notification/SendNotificationUsecase.ts";
 import { NotificationStatus } from "../../domain/enum/NotificationEnum.ts";
 import { NotificationRepository } from "../../application/repositories/NotificationRepository.ts";
-import { EmailService } from "../services/EmailService.ts";
+import { EmailService } from "../../application/services/EmailService.ts";
 import { MaintenanceRepository } from "../../application/repositories/MaintenanceRepository.ts";
 import { PartRepository } from "../../application/repositories/PartRepository.ts";
 import { CronJob } from "cron"; 

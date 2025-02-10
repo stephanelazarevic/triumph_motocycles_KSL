@@ -1,7 +1,7 @@
 import { NotificationRepository } from "../../repositories/NotificationRepository.ts";
 import { MaintenanceRepository } from "../../repositories/MaintenanceRepository.ts";
 import { PartRepository } from "../../repositories/PartRepository.ts";
-import { EmailService } from "../../../infrastructure/services/EmailService.ts";
+import { EmailService } from "../../../application/services/EmailService.ts";
 import { NotificationEntity } from "../../../domain/entities/NotificationEntity.ts";
 import { NotificationType, NotificationStatus } from "../../../domain/enum/NotificationEnum.ts";
 import { EmailAddress } from "../../../domain/value-objects/EmailAddress.ts";

@@ -1,5 +1,6 @@
 import { z } from 'npm:zod';
 import { MotorcycleStatus } from "../../../../domain/enum/MotorcycleEnum.ts";
+import { addDriverRequestSchema } from "../schemas/driverRequestSchema.ts"
 
 const motorcycleSchema = z.object({
   dealerId: z.string().uuid("Invalid dealer UUID"),
@@ -14,7 +15,7 @@ const motorcycleSchema = z.object({
     .regex(/^[A-Z0-9-]+$/, "Invalid registration number format"),
   status: z.nativeEnum(MotorcycleStatus)
     .default(MotorcycleStatus.AVAILABLE),
-  drivers: z.string().array().optional(),
+  drivers: z.object().array(addDriverRequestSchema).optional(),
   clientId: z.string().uuid("Invalid client UUID format").optional(),
   enterpriseId: z.string().uuid("Invalid enterprise UUID format").optional(),
 });

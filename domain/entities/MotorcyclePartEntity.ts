@@ -20,4 +20,16 @@ export class MotorcyclePartEntity extends Entity {
       params.part,
     );
   }
+
+  static reconstitute(data: {
+    id: string;
+    motorcycle: MotorcycleEntity;
+    part: PartEntity;
+  }): MotorcyclePartEntity {
+    return new MotorcyclePartEntity(
+      data.motorcycle,
+      data.part,
+      data.id
+    );
+  }
 }

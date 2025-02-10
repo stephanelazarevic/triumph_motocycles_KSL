@@ -5,12 +5,11 @@ import { load } from "https://deno.land/std@0.208.0/dotenv/mod.ts";
 const env = await load();
 const MAIL_API_KEY = env.MAIL_API_KEY;
 
-
-export interface EmailService {
+export interface ResendEmailService {
     send(email: { to: EmailAddress; subject: string; body: string }): Promise<void>;
   }
 
-  export class ResendEmailService implements EmailService {
+  export class ResendEmailService implements ResendEmailService {
 
     private readonly apiKey = MAIL_API_KEY;
 
